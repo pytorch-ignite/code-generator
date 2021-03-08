@@ -17,5 +17,5 @@ def get_data_loaders(
     eval_batch_size: int,
     num_workers: int,
 ):
-    return [(torch.rand([1]), torch.rand([1]))], [(torch.rand([1]), torch.rand([1]))]
+    return [(torch.tensor([1.]), torch.tensor([1.]))], [(torch.tensor([1.]), torch.tensor([1.]))]
 {% endblock %}

@@ -39,10 +39,10 @@ def get_configs() -> dict:
             "Backend to use", ("gloo", "nccl", "mpi", "xla-tpu", "horovod")
         )
         config["nproc_per_node"] = st.number_input(
-            "Number of processes to launch on each node", min_value=1, value=1
+            "Number of processes to launch on each node", min_value=0, value=0
         )
         config["nnodes"] = st.number_input(
-            "Number of nodes to use for distributed training", min_value=1, value=1
+            "Number of nodes to use for distributed training", min_value=0, value=0
         )
         config["node_rank"] = st.number_input(
             "Rank of the node for multi-node distributed training", min_value=0, value=0

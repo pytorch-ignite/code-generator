@@ -3,6 +3,8 @@ from argparse import ArgumentParser
 from datetime import datetime
 from pathlib import Path
 
+import logging
+
 import ignite.distributed as idist
 import torch
 from ignite.engine import Engine
@@ -40,6 +42,8 @@ def run(local_rank: int, config, *args, **kwags):
     # ------------------------------------------
     {% block model_optimizer_loss %}
     model = idist.auto_model(get_model())
+    model.weight.data.zero_()
+    model.bias.data.zero_()
     optimizer = idist.auto_optim(optim.Adam(model.parameters(), lr=config.lr))
     loss_fn = nn.MSELoss()
     {% endblock %}
@@ -56,7 +60,12 @@ def run(local_rank: int, config, *args, **kwags):
     # attach metrics
     # ------------------
     {% block metrics %}
-    accuracy = Accuracy(output_transform=lambda x: [torch.round(x[0]), torch.round(x[1])], device=config.device)
+    def thresholded_output_transform(output):
+        y_pred, y = output
+        y_pred = torch.round(y_pred)
+        y = torch.round(y)
+        return y_pred, y
+    accuracy = Accuracy(output_transform=thresholded_output_transform, device=config.device)
     accuracy.attach(eval_engine, "eval_accuracy")
     {% endblock %}
 
@@ -66,8 +75,8 @@ def run(local_rank: int, config, *args, **kwags):
     {% block loggers %}
     name = f"bs{config.train_batch_size}-lr{config.lr}-{optimizer.__class__.__name__}"
     now = datetime.now().strftime("%Y%m%d-%X")
-    train_engine.logger = setup_logger("trainer", filepath=config.filepath / f"{name}-{now}.log")
-    eval_engine.logger = setup_logger("evaluator", filepath=config.filepath / f"{name}-{now}.log")
+    train_engine.logger = setup_logger("trainer", level=config.verbose, filepath=config.filepath / f"{name}-{now}.log")
+    eval_engine.logger = setup_logger("evaluator", level=config.verbose, filepath=config.filepath / f"{name}-{now}.log")
     {% endblock %}
 
     # ----------------------
@@ -98,6 +107,7 @@ if __name__ == "__main__":
     parser = ArgumentParser(parents=[get_default_parser()])
     config = parser.parse_args()
     manual_seed(config.seed)
+    config.verbose = logging.INFO if config.verbose else logging.WARNING
     if config.filepath:
         path = Path(config.filepath)
         path.mkdir(parents=True, exist_ok=True)
