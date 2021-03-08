@@ -1,6 +1,6 @@
+import importlib
 from pathlib import Path
 
-import importlib
 import streamlit as st
 from jinja2 import Environment, FileSystemLoader
 
