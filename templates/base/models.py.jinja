@@ -1,0 +1,8 @@
+{% block imports %}
+from torch import nn
+{% endblock %}
+
+{% block get_model %}
+def get_model():
+    return nn.Linear(1, 1)
+{% endblock %}
