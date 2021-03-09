@@ -2,6 +2,7 @@
 from argparse import ArgumentParser
 from datetime import datetime
 from pathlib import Path
+from typing import Any
 
 import logging
 
@@ -21,7 +22,7 @@ from utils import log_metrics, get_default_parser
 
 
 {% block run %}
-def run(local_rank: int, config, *args, **kwags):
+def run(local_rank: int, config: Any, *args: Any, **kwags: Any):
 
     # -----------------------------
     # datasets and dataloaders
@@ -113,10 +114,12 @@ if __name__ == "__main__":
         path.mkdir(parents=True, exist_ok=True)
         config.filepath = path
     with idist.Parallel(
-        backend=config.backend,
+        backend=idist.backend(),
         nproc_per_node=config.nproc_per_node,
         nnodes=config.nnodes,
         node_rank=config.node_rank,
+        master_addr=config.master_addr,
+        master_port=config.master_port
     ) as parallel:
         parallel.run(run, config=config)
 {% endblock %}

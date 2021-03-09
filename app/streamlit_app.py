@@ -4,6 +4,8 @@ from pathlib import Path
 import streamlit as st
 from jinja2 import Environment, FileSystemLoader
 
+from base_config import get_configs
+
 st.set_page_config(
     page_title="Code Generator",
     page_icon="https://raw.githubusercontent.com/pytorch/ignite/master/assets/logo/ignite_logomark.svg",
@@ -28,31 +30,11 @@ def generate(path: Path, fname: str, code: str) -> None:
     (path / fname).write_text(code)
 
 
-# copied from https://github.com/jrieke/traingenerator/blob/76e637975989d11c549c17694c5603a409e184dd/app/utils.py#L14-L29
-def import_from_file(module_name: str, filepath: str):
-    """Imports a module from file.
-
-    Args:
-        module_name (str): Assigned to the module's __name__ parameter (does not 
-            influence how the module is named outside of this function)
-        filepath (str): Path to the .py file
-
-    Returns:
-        The module
-    """
-    spec = importlib.util.spec_from_file_location(module_name, filepath)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
-
-
 def main():
     task_list = [p.stem for p in Path("./templates").iterdir() if p.is_dir()]
     with st.sidebar:
         task = st.selectbox("Task", task_list)
-        config = import_from_file(
-            "template_config", f"./templates/{task}/configs.py"
-        ).get_configs()
+        config = get_configs()
     env = Environment(
         loader=FileSystemLoader("./templates"), trim_blocks=True, lstrip_blocks=True
     )

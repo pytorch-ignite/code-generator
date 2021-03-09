@@ -1,8 +1,16 @@
 {% block imports %}
-from typing import Any, Union, Callable
+from typing import Any, Union
 from torch.nn.modules.module import Module
 from torch.optim import Optimizer
-from ignite.engine import supervised_training_step, supervised_training_step_amp, supervised_training_step_apex, supervised_training_step_tpu, _check_arg, supervised_evaluation_step, supervised_evaluation_step_amp
+from ignite.engine import (
+    supervised_training_step,
+    supervised_training_step_amp,
+    supervised_training_step_apex,
+    supervised_training_step_tpu,
+    _check_arg,
+    supervised_evaluation_step,
+    supervised_evaluation_step_amp
+)
 import torch
 {% endblock %}
 

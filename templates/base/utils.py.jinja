@@ -11,7 +11,7 @@ DEFAULTS = {
     "amp_mode": {
         "default": "{{ amp_mode }}",
         "type": str,
-        "help": "to use torch.cuda.amp or apex",
+        "help": "automatic mixed precision mode to use: `amp` or `apex` ({{ amp_mode }})",
     },
     "train_batch_size": {
         "default": {{ train_batch_size }},
@@ -72,28 +72,33 @@ DEFAULTS = {
         "action": "store_true",
         "help": "use logging.INFO in ignite.utils.setup_logger",
     },
-    "backend": {
-        "default": "{{ backend }}",
-        "type": str,
-        "help": "backend to use: nccl, gloo, xla-tpu, horovod. ({{ backend }})"
-    },
     "nproc_per_node": {
-        "default": {{ None if nproc_per_node == 0 else nproc_per_node }},
+        "default": {{ nproc_per_node }},
         "type": int,
         "help": """number of processes to launch on each node, for GPU training
                 this is recommended to be set to the number of GPUs in your system
                 so that each process can be bound to a single GPU ({{ nproc_per_node }})""",
     },
     "nnodes": {
-        "default": {{ None if nnodes == 0 else nnodes }},
+        "default": {{ nnodes }},
         "type": int,
         "help": "number of nodes to use for distributed training ({{ nnodes }})",
     },
     "node_rank": {
-        "default": {{ None if node_rank == 0 else node_rank }},
+        "default": {{ node_rank }},
         "type": int,
         "help": "rank of the node for multi-node distributed training ({{ node_rank }})",
     },
+    "master_addr": {
+        "default": {{ master_addr|safe }},
+        "type": str,
+        "help": "master node TCP/IP address for torch native backends ({{ master_addr }})",
+    },
+    "master_port": {
+        "default": {{ master_port }},
+        "type": int,
+        "help": "master node port for torch native backends {{ master_port }}"
+    }
 }
 
 
