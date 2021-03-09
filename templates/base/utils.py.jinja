@@ -1,0 +1,141 @@
+{% block imports %}
+from argparse import ArgumentParser
+
+from ignite.engine.engine import Engine
+
+import torch
+{% endblock %}
+
+{% block get_default_parser %}
+DEFAULTS = {
+    "amp_mode": {
+        "default": "{{ amp_mode }}",
+        "type": str,
+        "help": "automatic mixed precision mode to use: `amp` or `apex` ({{ amp_mode }})",
+    },
+    "train_batch_size": {
+        "default": {{ train_batch_size }},
+        "type": int,
+        "help": "will be equally divided by number of GPUs if in distributed ({{ train_batch_size }})",
+    },
+    "data_path": {
+        "default": "{{ data_path }}",
+        "type": str,
+        "help": "datasets path ({{ data_path }})",
+    },
+    "device": {
+        "default": "{{ device }}",
+        "type": torch.device,
+        "help": "device to use for training / evaluation / testing ({{ device }})",
+    },
+    "filepath": {
+        "default": "{{ filepath }}",
+        "type": str,
+        "help": "logging file path ({{ filepath }})",
+    },
+    "num_workers": {
+        "default": {{ num_workers }},
+        "type": int,
+        "help": "num_workers for DataLoader ({{ num_workers }})",
+    },
+    "max_epochs": {
+        "default": {{ max_epochs }},
+        "type": int,
+        "help": "max_epochs of ignite.Engine.run() ({{ max_epochs }})",
+    },
+    "lr": {
+        "default": {{ lr }},
+        "type": float,
+        "help": "learning rate used by torch.optim.* ({{ lr }})",
+    },
+    "log_train": {
+        "default": {{ log_train }},
+        "type": int,
+        "help": "logging interval of training iteration ({{ log_train }})",
+    },
+    "log_eval": {
+        "default": {{ log_eval }},
+        "type": int,
+        "help": "logging interval of evaluation epoch ({{ log_eval }})",
+    },
+    "seed": {
+        "default": {{ seed }},
+        "type": int,
+        "help": "used in ignite.utils.manual_seed() ({{ seed }})",
+    },
+    "eval_batch_size": {
+        "default": {{ eval_batch_size }},
+        "type": int,
+        "help": "will be equally divided by number of GPUs if in distributed ({{ eval_batch_size }})",
+    },
+    "verbose": {
+        "action": "store_true",
+        "help": "use logging.INFO in ignite.utils.setup_logger",
+    },
+    "nproc_per_node": {
+        "default": {{ nproc_per_node }},
+        "type": int,
+        "help": """number of processes to launch on each node, for GPU training
+                this is recommended to be set to the number of GPUs in your system
+                so that each process can be bound to a single GPU ({{ nproc_per_node }})""",
+    },
+    "nnodes": {
+        "default": {{ nnodes }},
+        "type": int,
+        "help": "number of nodes to use for distributed training ({{ nnodes }})",
+    },
+    "node_rank": {
+        "default": {{ node_rank }},
+        "type": int,
+        "help": "rank of the node for multi-node distributed training ({{ node_rank }})",
+    },
+    "master_addr": {
+        "default": {{ master_addr|safe }},
+        "type": str,
+        "help": "master node TCP/IP address for torch native backends ({{ master_addr }})",
+    },
+    "master_port": {
+        "default": {{ master_port }},
+        "type": int,
+        "help": "master node port for torch native backends {{ master_port }}"
+    }
+}
+
+
+def get_default_parser():
+    """Get the default configs for training."""
+    parser = ArgumentParser(add_help=False)
+
+    for key, value in DEFAULTS.items():
+        parser.add_argument(f"--{key}", **value)
+
+    return parser
+{% endblock %}
+
+
+{% block log_metrics %}
+def log_metrics(engine: Engine, tag: str, device: torch.device) -> None:
+    """Log ``engine.state.metrics`` with given ``engine``
+    and memory info with given ``device``.
+
+    Args:
+        engine (Engine): instance of ``Engine`` which metrics to log.
+        tag (str): a string to add at the start of output.
+        device (torch.device): current torch.device to log memory info.
+    """
+    max_epochs = len(str(engine.state.max_epochs))
+    max_iters = len(str(engine.state.max_iters))
+    metrics_format = "{tag} [{epoch:>{max_epochs}}/{iteration:0{max_iters}d}]: {metrics}".format(
+        tag=tag,
+        epoch=engine.state.epoch,
+        max_epochs=max_epochs,
+        iteration=engine.state.iteration,
+        max_iters=max_iters,
+        metrics=engine.state.metrics,
+    )
+    if "cuda" in device.type:
+        metrics_format += " Memory - {:.2f} MB".format(
+            torch.cuda.max_memory_allocated(device) / (1024.0 * 1024.0)
+        )
+    engine.logger.info(metrics_format)
+{% endblock %}

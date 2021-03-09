@@ -1,0 +1,66 @@
+{% block imports %}
+from typing import Any, Union
+from torch.nn.modules.module import Module
+from torch.optim import Optimizer
+from ignite.engine import (
+    supervised_training_step,
+    supervised_training_step_amp,
+    supervised_training_step_apex,
+    supervised_training_step_tpu,
+    _check_arg,
+    supervised_evaluation_step,
+    supervised_evaluation_step_amp
+)
+import torch
+{% endblock %}
+
+
+{% block train_fn %}
+def train_fn(
+    model: Module,
+    optimizer: Optimizer,
+    loss_fn: Module,
+    device: Union[str, torch.device],
+    config: Any,
+    non_blocking: bool = False,
+    scaler: "torch.cuda.amp.GradScaler" = None,
+):
+    device_type = device.type if isinstance(device, torch.device) else device
+    on_tpu = "xla" in device_type if device_type is not None else False
+    mode, _scaler = _check_arg(on_tpu, config.amp_mode, scaler)
+
+    if mode == "amp":
+        train_step = supervised_training_step_amp(
+            model, optimizer, loss_fn, device, non_blocking, scaler=_scaler
+        )
+    elif mode == "apex":
+        train_step = supervised_training_step_apex(
+            model, optimizer, loss_fn, device, non_blocking
+        )
+    elif mode == "tpu":
+        train_step = supervised_training_step_tpu(
+            model, optimizer, loss_fn, device, non_blocking
+        )
+    else:
+        train_step = supervised_training_step(
+            model, optimizer, loss_fn, device, non_blocking
+        )
+    return train_step
+{% endblock %}
+
+
+{% block evaluate_fn %}
+@torch.no_grad()
+def evaluate_fn(
+    model: Module, device: Union[str, torch.device], config: Any, non_blocking: bool = False
+):
+    device_type = device.type if isinstance(device, torch.device) else device
+    on_tpu = "xla" in device_type if device_type is not None else False
+    mode, _ = _check_arg(on_tpu, config.amp_mode, None)
+
+    if mode == "amp":
+        evaluate_step = supervised_evaluation_step_amp(model, device, non_blocking)
+    else:
+        evaluate_step = supervised_evaluation_step(model, device, non_blocking)
+    return evaluate_step
+{% endblock %}
