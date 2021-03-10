@@ -1,10 +1,10 @@
-"""Code Generator main module.
+"""Code Generator base module.
 """
 from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 
 
-class Model:
+class CodeGenerator:
     def __init__(self, templates_dir=None):
         templates_dir = templates_dir or "./templates"
         self.task_list = [p.stem for p in Path(templates_dir).iterdir() if p.is_dir()]
