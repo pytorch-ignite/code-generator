@@ -30,7 +30,7 @@ class CodeGenerator:
             # Render template
             code = template.render(**config)
             # Write python file
-            fname = fname.strip(f"{template_name}/").strip(".jinja")
+            fname = fname.replace(f"{template_name}/", "").replace(".jinja", "")
             self.generate(template_name, fname, code)
             yield fname, code
 
