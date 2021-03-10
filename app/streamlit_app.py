@@ -23,14 +23,14 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
 
         self.codegen = CodeGenerator()
 
-    def sidebar(self, task_list=None, config=None):
+    def sidebar(self, template_list=None, config=None):
         """Sidebar on the left.
         """
-        task_list = task_list or []
+        template_list = template_list or []
         with st.sidebar:
-            self.task = st.selectbox("Task", task_list)
-            if self.task:
-                config = config(self.task)
+            self.template_name = st.selectbox("Templates", template_list)
+            if self.template_name:
+                config = config(self.template_name)
                 self.config = config.get_configs()
             else:
                 self.config = {}
@@ -45,13 +45,13 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
             st.code(code)
 
     def add_sidebar(self):
-        config = lambda task: import_from_file("template_config", f"./templates/{task}/config.py")
-        self.sidebar(self.codegen.task_list, config)
+        config = lambda template_name: import_from_file("template_config", f"./templates/{template_name}/config.py")
+        self.sidebar(self.codegen.template_list, config)
 
     def add_content(self):
         """Get generated/rendered code from the codegen.
         """
-        content = [*self.codegen.render_templates(self.task, self.config)]
+        content = [*self.codegen.render_templates(self.template_name, self.config)]
         # Expand by default for single file template
         if len(content) == 1:
             fold = False
