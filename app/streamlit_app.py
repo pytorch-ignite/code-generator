@@ -67,7 +67,7 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
 
     def add_download(self):
         st.markdown("")
-        format = st.selectbox(
+        format = st.radio(
             "Archive format", [name for name, _ in shutil.get_archive_formats()]
         )
         # temporary hack until streamlit has official download option
