@@ -3,11 +3,15 @@
 from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 
+import shutil
+
 
 class CodeGenerator:
     def __init__(self, templates_dir=None):
         templates_dir = templates_dir or "./templates"
-        self.template_list = [p.stem for p in Path(templates_dir).iterdir() if p.is_dir()]
+        self.template_list = [
+            p.stem for p in Path(templates_dir).iterdir() if p.is_dir()
+        ]
         self.env = Environment(
             loader=FileSystemLoader(templates_dir), trim_blocks=True, lstrip_blocks=True
         )
@@ -33,9 +37,11 @@ class CodeGenerator:
     def generate(self, template_name: str, fname: str, code: str) -> None:
         """Generates `fname` with content `code` in `path`.
         """
-        path = Path(f"dist/{template_name}")
-        path.mkdir(parents=True, exist_ok=True)
-        (path / fname).write_text(code)
+        self.path = Path(f"./dist/{template_name}")
+        self.path.mkdir(parents=True, exist_ok=True)
+        (self.path / fname).write_text(code)
 
-    def make_archive(self):
-        raise NotImplementedError
+    def make_archive(self, format):
+        return shutil.make_archive(
+            base_name=str(self.path), format=format, base_dir=self.path
+        )
