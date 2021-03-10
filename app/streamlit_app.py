@@ -1,18 +1,13 @@
-import importlib
-from pathlib import Path
-
 import streamlit as st
-from jinja2 import Environment, FileSystemLoader
 
-from base_config import get_configs
+from codegen import CodeGenerator
+from utils import import_from_file
 
-st.set_page_config(
-    page_title="Code Generator",
-    page_icon="https://raw.githubusercontent.com/pytorch/ignite/master/assets/logo/ignite_logomark.svg",
-)
 
-st.write(
-    """
+class App:
+    page_title = "Code Generator"
+    page_icon = "https://raw.githubusercontent.com/pytorch/ignite/master/assets/logo/ignite_logomark.svg"
+    description = """
 <div align='center'>
 <img src="https://raw.githubusercontent.com/pytorch/ignite/master/assets/logo/ignite_logomark.svg" width="100" height="100">
 
@@ -20,39 +15,58 @@ st.write(
 
 Application to generate your training scripts with [PyTorch-Ignite](https://github.com/pytorch/ignite).
 </div>
-""",
-    unsafe_allow_html=True,
-)
+"""
 
+    def __init__(self):
+        st.set_page_config(page_title=self.page_title, page_icon=self.page_icon)
+        st.write(self.description, unsafe_allow_html=True)
 
-def generate(path: Path, fname: str, code: str) -> None:
-    """Generate `fname` with content `code` in `path`."""
-    (path / fname).write_text(code)
+        self.codegen = CodeGenerator()
+
+    def sidebar(self, template_list=None, config=None):
+        """Sidebar on the left.
+        """
+        template_list = template_list or []
+        with st.sidebar:
+            self.template_name = st.selectbox("Templates", template_list)
+            if self.template_name:
+                config = config(self.template_name)
+                self.config = config.get_configs()
+            else:
+                self.config = {}
+
+    def render_code(self, fname="", code="", fold=False):
+        """Main content with the code.
+        """
+        if fold:
+            with st.beta_expander(f"View generated {fname}"):
+                st.code(code)
+        else:
+            st.code(code)
+
+    def add_sidebar(self):
+        config = lambda template_name: import_from_file("template_config", f"./templates/{template_name}/config.py")
+        self.sidebar(self.codegen.template_list, config)
+
+    def add_content(self):
+        """Get generated/rendered code from the codegen.
+        """
+        content = [*self.codegen.render_templates(self.template_name, self.config)]
+        # Expand by default for single file template
+        if len(content) == 1:
+            fold = False
+        else:
+            fold = True
+        for fname, code in content:
+            self.render_code(fname, code, fold)
+
+    def run(self):
+        self.add_sidebar()
+        self.add_content()
 
 
 def main():
-    task_list = [p.stem for p in Path("./templates").iterdir() if p.is_dir()]
-    with st.sidebar:
-        task = st.selectbox("Task", task_list)
-        config = get_configs()
-    env = Environment(
-        loader=FileSystemLoader("./templates"), trim_blocks=True, lstrip_blocks=True
-    )
-    path = Path(f"dist/{task}")
-    path.mkdir(parents=True, exist_ok=True)
-    templates_list = (
-        template
-        for template in env.list_templates(".jinja")
-        if template.startswith(task)
-    )
-
-    for fname in templates_list:
-        template = env.get_template(fname)
-        fname = fname.strip(f"{task}/").strip(".jinja")
-        code = template.render(**config)
-        generate(path, fname, code)
-        with st.beta_expander(f"View generated {fname}"):
-            st.code(code)
+    App().run()
 
 
 if __name__ == "__main__":
