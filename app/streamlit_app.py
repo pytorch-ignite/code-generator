@@ -2,7 +2,6 @@ import shutil
 from pathlib import Path
 
 import streamlit as st
-
 from codegen import CodeGenerator
 from utils import import_from_file
 
@@ -48,9 +47,7 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
             st.code(code)
 
     def add_sidebar(self):
-        config = lambda template_name: import_from_file(
-            "template_config", f"./templates/{template_name}/config.py"
-        )
+        config = lambda template_name: import_from_file("template_config", f"./templates/{template_name}/config.py")
         self.sidebar(self.codegen.template_list, config)
 
     def add_content(self):
@@ -67,15 +64,15 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
 
     def add_download(self):
         st.markdown("")
-        format = st.radio(
-            "Archive format", [name for name, _ in sorted(shutil.get_archive_formats(), key=lambda x: x[0], reverse=True)]
-
+        format_ = st.radio(
+            "Archive format",
+            [name for name, _ in sorted(shutil.get_archive_formats(), key=lambda x: x[0], reverse=True)],
         )
         # temporary hack until streamlit has official download option
         # https://github.com/streamlit/streamlit/issues/400
         # https://github.com/streamlit/streamlit/issues/400#issuecomment-648580840
         if st.button("Generate an archive"):
-            archive_fname = self.codegen.make_archive(format)
+            archive_fname = self.codegen.make_archive(format_)
             # this is where streamlit serves static files
             # ~/site-packages/streamlit/static/static/
             dist_path = Path(st.__path__[0]) / "static/static/dist"

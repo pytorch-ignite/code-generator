@@ -1,28 +1,22 @@
 """Code Generator base module.
 """
-from pathlib import Path
-from jinja2 import Environment, FileSystemLoader
-
 import shutil
+from pathlib import Path
+
+from jinja2 import Environment, FileSystemLoader
 
 
 class CodeGenerator:
     def __init__(self, templates_dir=None):
         templates_dir = templates_dir or "./templates"
-        self.template_list = [
-            p.stem for p in Path(templates_dir).iterdir() if p.is_dir()
-        ]
-        self.env = Environment(
-            loader=FileSystemLoader(templates_dir), trim_blocks=True, lstrip_blocks=True
-        )
+        self.template_list = [p.stem for p in Path(templates_dir).iterdir() if p.is_dir()]
+        self.env = Environment(loader=FileSystemLoader(templates_dir), trim_blocks=True, lstrip_blocks=True)
 
     def render_templates(self, template_name: str, config: dict):
         """Renders all the templates from template folder for the given config.
         """
         file_template_list = (
-            template
-            for template in self.env.list_templates(".jinja")
-            if template.startswith(template_name)
+            template for template in self.env.list_templates(".jinja") if template.startswith(template_name)
         )
         for fname in file_template_list:
             # Get template
@@ -41,7 +35,5 @@ class CodeGenerator:
         self.path.mkdir(parents=True, exist_ok=True)
         (self.path / fname).write_text(code)
 
-    def make_archive(self, format):
-        return shutil.make_archive(
-            base_name=str(self.path), format=format, base_dir=self.path
-        )
+    def make_archive(self, format_):
+        return shutil.make_archive(base_name=str(self.path), format=format_, base_dir=self.path)
