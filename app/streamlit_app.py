@@ -68,7 +68,8 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
     def add_download(self):
         st.markdown("")
         format = st.radio(
-            "Archive format", [name for name, _ in shutil.get_archive_formats()]
+            "Archive format", [name for name, _ in sorted(shutil.get_archive_formats(), key=lambda x: x[0], reverse=True)]
+
         )
         # temporary hack until streamlit has official download option
         # https://github.com/streamlit/streamlit/issues/400
@@ -81,7 +82,7 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
             if not dist_path.is_dir():
                 dist_path.mkdir()
             shutil.copy(archive_fname, dist_path)
-            st.markdown(f"Download link : [{archive_fname}](./static/{archive_fname})")
+            st.success(f"Download link : [{archive_fname}](./static/{archive_fname})")
 
     def run(self):
         self.add_sidebar()
