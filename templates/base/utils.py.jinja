@@ -90,7 +90,7 @@ DEFAULTS = {
         "help": "rank of the node for multi-node distributed training ({{ node_rank }})",
     },
     "master_addr": {
-        "default": {{ master_addr|safe }},
+        "default": {{ master_addr }},
         "type": str,
         "help": "master node TCP/IP address for torch native backends ({{ master_addr }})",
     },

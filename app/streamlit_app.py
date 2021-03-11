@@ -1,5 +1,7 @@
-import streamlit as st
+import shutil
+from pathlib import Path
 
+import streamlit as st
 from codegen import CodeGenerator
 from utils import import_from_file
 
@@ -60,9 +62,29 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
         for fname, code in content:
             self.render_code(fname, code, fold)
 
+    def add_download(self):
+        st.markdown("")
+        format_ = st.radio(
+            "Archive format",
+            [name for name, _ in sorted(shutil.get_archive_formats(), key=lambda x: x[0], reverse=True)],
+        )
+        # temporary hack until streamlit has official download option
+        # https://github.com/streamlit/streamlit/issues/400
+        # https://github.com/streamlit/streamlit/issues/400#issuecomment-648580840
+        if st.button("Generate an archive"):
+            archive_fname = self.codegen.make_archive(format_)
+            # this is where streamlit serves static files
+            # ~/site-packages/streamlit/static/static/
+            dist_path = Path(st.__path__[0]) / "static/static/dist"
+            if not dist_path.is_dir():
+                dist_path.mkdir()
+            shutil.copy(archive_fname, dist_path)
+            st.success(f"Download link : [{archive_fname}](./static/{archive_fname})")
+
     def run(self):
         self.add_sidebar()
         self.add_content()
+        self.add_download()
 
 
 def main():
