@@ -11,7 +11,8 @@ class App:
     page_icon = "https://raw.githubusercontent.com/pytorch/ignite/master/assets/logo/ignite_logomark.svg"
     description = """
 <div align='center'>
-<img src="https://raw.githubusercontent.com/pytorch/ignite/master/assets/logo/ignite_logomark.svg" width="100" height="100">
+<img src="https://raw.githubusercontent.com/pytorch/ignite/master/assets/logo/ignite_logomark.svg"
+width="100" height="100">
 
 # Code Generator
 
@@ -47,7 +48,9 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
             st.code(code)
 
     def add_sidebar(self):
-        config = lambda template_name: import_from_file("template_config", f"./templates/{template_name}/config.py")
+        def config(template_name):
+            return import_from_file("template_config", f"./templates/{template_name}/config.py")
+
         self.sidebar(self.codegen.template_list, config)
 
     def add_content(self):
