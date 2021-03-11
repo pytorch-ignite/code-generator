@@ -15,5 +15,5 @@ jobs:
           python-version: 3.8
 
       - run: pip install wheel pip setuptools -U --progress-bar off
-      - run: pip install flake8 isort black
+      - run: pip install flake8 "black==19.10b0" "isort==5.7.0"
       - run: bash .github/run_code_style.sh lint
