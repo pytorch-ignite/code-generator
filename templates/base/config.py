@@ -1,14 +1,12 @@
-import streamlit as st
 from argparse import Namespace
 
+import streamlit as st
 
 params = {
     "amp_mode": {"app": ["None", "amp", "apex"], "test": ["None", "amp", "apex"]},
     "device": {"app": ["cpu", "cuda", "xla"], "test": ["cpu", "cuda"]},
-
     "data_path": {"app": {"value": "./"}, "test": {"prefix": "tmp", "suffix": ""}},
     "filepath": {"app": {"value": "./logs"}, "test": {"prefix": "tmp", "suffix": ""}},
-
     "train_batch_size": {"app": {"min_value": 1, "value": 1}, "test": {"min_value": 1, "max_value": 2}},
     "eval_batch_size": {"app": {"min_value": 1, "value": 1}, "test": {"min_value": 1, "max_value": 2}},
     "num_workers": {"app": {"min_value": 0, "value": 2}, "test": {"min_value": 1, "max_value": 2}},

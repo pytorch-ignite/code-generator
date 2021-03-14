@@ -1,11 +1,12 @@
-from pprint import pp
 import sys
+from pprint import pp
+
 sys.path.append("./templates/base")
 sys.path.append("./app")
 
+from codegen import CodeGenerator
 from config import params
 from fuzzer import *
-from codegen import CodeGenerator
 
 
 def generate_inputs(params, dist_train=False, seed=0) -> dict:
@@ -23,7 +24,6 @@ def generate_inputs(params, dist_train=False, seed=0) -> dict:
         "log_train": random_int(**params.log_train.test),
         "log_eval": random_int(**params.log_eval.test),
         "seed": random_int(**params.seed.test),
-
         "nproc_per_node": params.nproc_per_node.test["nondist_train"],
         "nnodes": params.nnodes.test["nondist_train"],
         "node_rank": params.node_rank.test["singlenode"],
@@ -31,16 +31,20 @@ def generate_inputs(params, dist_train=False, seed=0) -> dict:
         "master_port": params.master_port.test["singlenode"],
     }
     if dist_train:
-        inputs.update({
-            "nproc_per_node": random_int(**params.nproc_per_node.test["dist_train"]),
-            "nnodes": random_int(**params.nnodes.test["dist_train"]),
-        })
+        inputs.update(
+            {
+                "nproc_per_node": random_int(**params.nproc_per_node.test["dist_train"]),
+                "nnodes": random_int(**params.nnodes.test["dist_train"]),
+            }
+        )
         if inputs["nnodes"] > 1:
-            inputs.update({
-                "node_rank": random_int(**params.node_rank.test["multinode"]),
-                "master_addr": params.master_addr.test["multinode"],
-                "master_port": params.master_port.test["multinode"],
-            })
+            inputs.update(
+                {
+                    "node_rank": random_int(**params.node_rank.test["multinode"]),
+                    "master_addr": params.master_addr.test["multinode"],
+                    "master_port": params.master_port.test["multinode"],
+                }
+            )
 
     return inputs
 
