@@ -2,8 +2,7 @@ import streamlit as st
 
 
 def get_configs() -> dict:
-    """Example Config.
-    """
+    """Example Config."""
     config = {}
     st.info("Very simple single file template.")
 
