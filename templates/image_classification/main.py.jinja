@@ -1,0 +1,23 @@
+{% extends "base/main.py.jinja" %}
+{% block datasets_and_dataloaders %}
+    train_dataset, eval_dataset = get_datasets(config=config)
+    train_dataloader, eval_dataloader = get_data_loaders(
+        train_dataset=train_dataset,
+        eval_dataset=eval_dataset,
+        train_batch_size=config.train_batch_size,
+        eval_batch_size=config.eval_batch_size,
+        num_workers=config.num_workers,
+    )
+{% endblock %}
+
+{% block model_optimizer_loss %}
+    model = idist.auto_model(get_model(config.model_name))
+    optimizer = idist.auto_optim(optim.Adam(model.parameters(), lr=config.lr))
+    loss_fn = nn.CrossEntropyLoss()
+{% endblock %}
+
+{% block metrics %}
+    accuracy = Accuracy(device=config.device)
+    accuracy.attach(train_engine, "train_accuracy")
+    accuracy.attach(eval_engine, "eval_accuracy")
+{% endblock %}
