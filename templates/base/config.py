@@ -3,18 +3,54 @@ from argparse import Namespace
 import streamlit as st
 
 params = {
-    "amp_mode": {"app": ["None", "amp", "apex"], "test": ["None", "amp", "apex"]},
-    "device": {"app": ["cpu", "cuda", "xla"], "test": ["cpu", "cuda"]},
-    "data_path": {"app": {"value": "./"}, "test": {"prefix": "tmp", "suffix": ""}},
-    "filepath": {"app": {"value": "./logs"}, "test": {"prefix": "tmp", "suffix": ""}},
-    "train_batch_size": {"app": {"min_value": 1, "value": 1}, "test": {"min_value": 1, "max_value": 2}},
-    "eval_batch_size": {"app": {"min_value": 1, "value": 1}, "test": {"min_value": 1, "max_value": 2}},
-    "num_workers": {"app": {"min_value": 0, "value": 2}, "test": {"min_value": 1, "max_value": 2}},
-    "max_epochs": {"app": {"min_value": 1, "value": 2}, "test": {"min_value": 1, "max_value": 2}},
-    "lr": {"app": {"min_value": 0.0, "value": 0.001, "format": "%e"}, "test": {"min_value": 0.0, "max_value": 1}},
-    "log_train": {"app": {"min_value": 0, "value": 50}, "test": {"min_value": 1, "max_value": 10}},
-    "log_eval": {"app": {"min_value": 0, "value": 1}, "test": {"min_value": 1, "max_value": 10}},
-    "seed": {"app": {"min_value": 0, "value": 666}, "test": {"min_value": 0, "max_value": 1000}},
+    "amp_mode": {
+        "app": ["None", "amp", "apex"],
+        "test": ["None", "amp", "apex"],
+    },
+    "device": {
+        "app": ["cpu", "cuda", "xla"],
+        "test": ["cpu", "cuda"],
+    },
+    "data_path": {
+        "app": {"value": "./"},
+        "test": {"prefix": "tmp", "suffix": ""},
+    },
+    "filepath": {
+        "app": {"value": "./logs"},
+        "test": {"prefix": "tmp", "suffix": ""},
+    },
+    "train_batch_size": {
+        "app": {"min_value": 1, "value": 1},
+        "test": {"min_value": 1, "max_value": 2},
+    },
+    "eval_batch_size": {
+        "app": {"min_value": 1, "value": 1},
+        "test": {"min_value": 1, "max_value": 2},
+    },
+    "num_workers": {
+        "app": {"min_value": 0, "value": 2},
+        "test": {"min_value": 1, "max_value": 2},
+    },
+    "max_epochs": {
+        "app": {"min_value": 1, "value": 2},
+        "test": {"min_value": 1, "max_value": 2},
+    },
+    "lr": {
+        "app": {"min_value": 0.0, "value": 0.001, "format": "%e"},
+        "test": {"min_value": 0.0, "max_value": 1},
+    },
+    "log_train": {
+        "app": {"min_value": 0, "value": 50},
+        "test": {"min_value": 1, "max_value": 10},
+    },
+    "log_eval": {
+        "app": {"min_value": 0, "value": 1},
+        "test": {"min_value": 1, "max_value": 10},
+    },
+    "seed": {
+        "app": {"min_value": 0, "value": 666},
+        "test": {"min_value": 0, "max_value": 1000},
+    },
     # Distributed training part
     # {min_value: 1} if distributed training is on else None
     "nproc_per_node": {
@@ -80,10 +116,10 @@ def get_configs() -> dict:
         # Distributed training config
         if st.checkbox("Use distributed training"):
             config["nproc_per_node"] = st.number_input(
-                "Number of processes to launch on each node (nproc_per_node)", params.nproc_per_node.app["dist_train"]
+                "Number of processes to launch on each node (nproc_per_node)", **params.nproc_per_node.app["dist_train"]
             )
             config["nnodes"] = st.number_input(
-                "Number of nodes to use for distributed training (nnodes)", params.nnodes.app["dist_train"]
+                "Number of nodes to use for distributed training (nnodes)", **params.nnodes.app["dist_train"]
             )
             if config["nnodes"] > 1:
                 st.info(
@@ -92,7 +128,7 @@ def get_configs() -> dict:
                 )
                 config["node_rank"] = st.number_input(
                     "Rank of the node for multi-node distributed training (node_rank)",
-                    params.node_rank.app["multinode"],
+                    **params.node_rank.app["multinode"],
                 )
                 if config["node_rank"] > (config["nnodes"] - 1):
                     st.error(f"node_rank should be between 0 and {config['nnodes'] - 1}")

@@ -10,5 +10,5 @@ elif [ $1 = "fmt" ]; then
     isort app templates --color --settings pyproject.toml
     black app templates --config pyproject.toml
 elif [ $1 = "install" ]; then
-    pip install flake8 "black==19.10b0" "isort==5.7.0"
+    pip install flake8 "black==20.8b1" "isort==5.7.0"
 fi
