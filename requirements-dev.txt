@@ -1,4 +1,8 @@
-ignite
-hypothesis
+# dev
+pytorch-ignite
 torch
 torchvision
+
+# test
+pytest
+hypothesis

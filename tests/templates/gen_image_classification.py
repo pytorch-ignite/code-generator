@@ -1,5 +1,5 @@
 import sys
-from pprint import pp
+from pprint import pprint
 
 import ignite.distributed as idist
 
