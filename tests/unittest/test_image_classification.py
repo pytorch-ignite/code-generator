@@ -1,12 +1,11 @@
-from argparse import ArgumentParser
-
 import sys
 import unittest
+from argparse import ArgumentParser
 
 import ignite.distributed as idist
-
+from hypothesis import given, settings
+from hypothesis import strategies as st
 from ignite.engine import Engine
-from hypothesis import given, strategies as st, settings
 from torch.nn import Module
 from torch.utils.data import DataLoader, Dataset
 from torch.utils.data._utils.collate import default_collate
@@ -14,9 +13,9 @@ from torch.utils.data.sampler import RandomSampler, SequentialSampler
 
 sys.path.append("./tests/templates/dist/image_classification")
 
-from datasets import get_datasets, get_data_loaders
+from datasets import get_data_loaders, get_datasets
 from models import get_model
-from utils import log_metrics, get_default_parser
+from utils import get_default_parser, log_metrics
 
 
 class ImageClassiTester(unittest.TestCase):

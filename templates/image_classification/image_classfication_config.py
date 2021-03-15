@@ -1,11 +1,11 @@
-import sys
 import json
+import sys
+
+import streamlit as st
 
 sys.path.append("./templates/base")
 
 from base_config import get_configs as base_configs
-
-import streamlit as st
 
 
 def get_configs() -> dict:

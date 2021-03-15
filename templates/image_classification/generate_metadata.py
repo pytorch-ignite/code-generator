@@ -1,7 +1,7 @@
 """
 Generates the metadata used in the sidebar of template configurations.
 The goal is to make Code-Generator free of pytorch and its related libraries free
-when running the app on streamlit.
+when running the app on the streamlit.
 """
 
 import json
