@@ -3,6 +3,7 @@ pytorch-ignite
 torch
 torchvision
 jinja2
+requests
 
 # test
 pytest
