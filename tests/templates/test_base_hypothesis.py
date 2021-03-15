@@ -1,3 +1,4 @@
+import os
 import sys
 from pathlib import Path
 from pprint import pprint
@@ -60,12 +61,16 @@ def test_base_cpu():
     generated_path = Path(target_dir)
     generated_paths = generated_path.rglob("main.py")
     for p in generated_paths:
-        subprocess.run(
-            ["cd", f"{str(p).replace('main.py', '')}", "&&", "python", "main.py", "--verbose"],
-            check=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-        )
+        # subprocess.run(
+        #     ["cd", f"{str(p).replace('main.py', '')}", "&&", "python", "main.py", "--verbose"],
+        #     check=True,
+        #     stdout=subprocess.PIPE,
+        #     stderr=subprocess.STDOUT,
+        # )
+        os.chdir(f"{str(p).replace('main.py', '')}")
+        sys.path.append(".")
+        import main
+        main.main()
 
 
 if __name__ == "__main__":

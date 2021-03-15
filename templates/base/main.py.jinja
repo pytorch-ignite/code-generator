@@ -103,8 +103,8 @@ def run(local_rank: int, config: Any, *args: Any, **kwags: Any):
 {% endblock %}
 
 
-{% block entrypoint %}
-if __name__ == "__main__":
+{% block main_fn %}
+def main():
     parser = ArgumentParser(parents=[get_default_parser()])
     config = parser.parse_args()
     manual_seed(config.seed)
@@ -114,12 +114,18 @@ if __name__ == "__main__":
         path.mkdir(parents=True, exist_ok=True)
         config.filepath = path
     with idist.Parallel(
-        backend=idist.backend(),
-        nproc_per_node=config.nproc_per_node,
-        nnodes=config.nnodes,
-        node_rank=config.node_rank,
-        master_addr=config.master_addr,
-        master_port=config.master_port
+            backend=idist.backend(),
+            nproc_per_node=config.nproc_per_node,
+            nnodes=config.nnodes,
+            node_rank=config.node_rank,
+            master_addr=config.master_addr,
+            master_port=config.master_port
     ) as parallel:
         parallel.run(run, config=config)
+{% endblock %}
+
+
+{% block entrypoint %}
+if __name__ == "__main__":
+    main()
 {% endblock %}

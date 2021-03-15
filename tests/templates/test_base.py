@@ -1,3 +1,4 @@
+import os
 import sys
 from pprint import pp
 
@@ -64,7 +65,12 @@ def generate_plain_train():
     code_gen = CodeGenerator(target_dir=target_dir)
     [*code_gen.render_templates(template_name, inputs)]
     print(f"Generated files can be found in {target_dir}/{template_name}")
-    print(f"To run generated example:\ncd {target_dir}/{template_name}\npython main.py")
+    # Launching
+    os.chdir(f"{target_dir}/{template_name}")
+    sys.path.append(".")
+    import main
+    main.main()
+    # print(f"To run generated example:\ncd {target_dir}/{template_name}\npython main.py")
 
 
 if __name__ == "__main__":
