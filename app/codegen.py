@@ -13,8 +13,7 @@ class CodeGenerator:
         self.env = Environment(loader=FileSystemLoader(templates_dir), trim_blocks=True, lstrip_blocks=True)
 
     def render_templates(self, template_name: str, config: dict):
-        """Renders all the templates from template folder for the given config.
-        """
+        """Renders all the templates from template folder for the given config."""
         file_template_list = (
             template for template in self.env.list_templates(".jinja") if template.startswith(template_name)
         )
@@ -29,8 +28,7 @@ class CodeGenerator:
             yield fname, code
 
     def generate(self, template_name: str, fname: str, code: str) -> None:
-        """Generates `fname` with content `code` in `path`.
-        """
+        """Generates `fname` with content `code` in `target_dir/template_name`."""
         self.path = Path(f"{self.target_dir}/{template_name}")
         self.path.mkdir(parents=True, exist_ok=True)
         (self.path / fname).write_text(code)
