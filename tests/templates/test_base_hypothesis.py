@@ -58,7 +58,7 @@ def generate_base_cpu(train_batch_size, eval_batch_size, num_workers, max_epochs
 
 
 def test_base_cpu():
-    generated_path = Path(target_dir)
+    generated_path = Path(target_dir).resolve()
     generated_paths = generated_path.rglob("main.py")
     for p in generated_paths:
         # subprocess.run(
@@ -67,10 +67,15 @@ def test_base_cpu():
         #     stdout=subprocess.PIPE,
         #     stderr=subprocess.STDOUT,
         # )
-        os.chdir(f"{str(p).replace('main.py', '')}")
-        sys.path.append(".")
-        import main
-        main.main()
+        try:
+            os.chdir(Path(f"{str(p).replace('main.py', '')}").resolve())
+            sys.path.append(".")
+            import main
+            main.main()
+            sys.path.pop()
+        except Exception:
+            sys.path.pop()
+            continue
 
 
 if __name__ == "__main__":
