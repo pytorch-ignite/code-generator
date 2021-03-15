@@ -21,3 +21,30 @@
     accuracy.attach(train_engine, "train_accuracy")
     accuracy.attach(eval_engine, "eval_accuracy")
 {% endblock %}
+
+{% block main_fn %}
+def main():
+    parser = ArgumentParser(parents=[get_default_parser()])
+    parser.add_argument(
+        "--model_name",
+        default="{{ model_name }}",
+        type=str,
+        help="Image classification model name ({{ model_name}})"
+    )
+    config = parser.parse_args()
+    manual_seed(config.seed)
+    config.verbose = logging.INFO if config.verbose else logging.WARNING
+    if config.filepath:
+        path = Path(config.filepath)
+        path.mkdir(parents=True, exist_ok=True)
+        config.filepath = path
+    with idist.Parallel(
+        backend=idist.backend(),
+        nproc_per_node=config.nproc_per_node,
+        nnodes=config.nnodes,
+        node_rank=config.node_rank,
+        master_addr=config.master_addr,
+        master_port=config.master_port
+    ) as parallel:
+        parallel.run(run, config=config)
+{% endblock %}

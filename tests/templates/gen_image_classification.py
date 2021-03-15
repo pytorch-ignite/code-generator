@@ -17,7 +17,7 @@ def generate_inputs(dist_train=False, seed=0) -> dict:
     inputs = {
         "amp_mode": None,
         "device": idist.device(),
-        "data_path": ".",
+        "data_path": "./tests/templates/dist/image_classification/",
         "filepath": "logs",
         "train_batch_size": random_int(1, 2),
         "eval_batch_size": random_int(1, 2),
@@ -32,6 +32,7 @@ def generate_inputs(dist_train=False, seed=0) -> dict:
         "node_rank": None,
         "master_addr": None,
         "master_port": None,
+        "model_name": "resnet18",
     }
     # if dist_train:
     #     inputs.update(
