@@ -17,9 +17,7 @@
 {% endblock %}
 
 {% block metrics %}
-    accuracy = Accuracy(device=config.device)
-    accuracy.attach(train_engine, "train_accuracy")
-    accuracy.attach(eval_engine, "eval_accuracy")
+    Accuracy(device=config.device).attach(eval_engine, "eval_accuracy")
 {% endblock %}
 
 {% block main_fn %}
