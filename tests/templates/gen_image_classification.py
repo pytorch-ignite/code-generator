@@ -1,4 +1,5 @@
 import sys
+from pprint import pprint
 
 import ignite.distributed as idist
 
@@ -60,7 +61,7 @@ def generate_plain_train():
     print("Seed:", seed)
     print("Use distributed training:", dist_train)
     print("Generated config:")
-    pp(inputs)
+    pprint(inputs)
     code_gen = CodeGenerator(target_dir=target_dir)
     [*code_gen.render_templates(TEMPLATE_NAME, inputs)]
     print(f"Generated files can be found in {target_dir}/{TEMPLATE_NAME}")
