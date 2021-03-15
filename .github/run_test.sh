@@ -8,5 +8,5 @@ elif [ $1 = "unittest" ]; then
     pytest ./tests/unittest -vvv -ra --color=yes --durations=0
 elif [ $1 = "integration" ]; then
     cd ./tests/templates/dist/image_classification
-    python main.py --verbose
+    python main.py --verbose --max_epochs 1
 fi

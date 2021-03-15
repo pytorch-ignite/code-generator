@@ -17,8 +17,8 @@ def generate_inputs(dist_train=False, seed=0) -> dict:
     inputs = {
         "amp_mode": None,
         "device": idist.device(),
-        "data_path": random_path(),
-        "filepath": random_path(),
+        "data_path": ".",
+        "filepath": "logs",
         "train_batch_size": random_int(1, 2),
         "eval_batch_size": random_int(1, 2),
         "num_workers": random_int(0, 2),

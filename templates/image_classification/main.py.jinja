@@ -1,6 +1,6 @@
 {% extends "base/main.py.jinja" %}
 {% block datasets_and_dataloaders %}
-    train_dataset, eval_dataset = get_datasets(config=config)
+    train_dataset, eval_dataset = get_datasets(root=config.data_path)
     train_dataloader, eval_dataloader = get_data_loaders(
         train_dataset=train_dataset,
         eval_dataset=eval_dataset,
