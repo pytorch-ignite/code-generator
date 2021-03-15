@@ -52,6 +52,8 @@ class CodeGenerator:
         self.create_target_template_dir(template_name)
         self.write_files(template_name)
         archive_fname = shutil.make_archive(
-            base_name=str(self.target_template_path), format=archive_format, base_dir=self.target_template_path,
+            base_name=str(self.target_template_path),
+            format=archive_format,
+            base_dir=self.target_template_path,
         )
         return archive_fname
