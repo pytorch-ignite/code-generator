@@ -1,4 +1,3 @@
-import os
 import sys
 from pathlib import Path
 from pprint import pprint
@@ -58,24 +57,15 @@ def generate_base_cpu(train_batch_size, eval_batch_size, num_workers, max_epochs
 
 
 def test_base_cpu():
-    generated_path = Path(target_dir).resolve()
+    generated_path = Path(target_dir)
     generated_paths = generated_path.rglob("main.py")
     for p in generated_paths:
-        # subprocess.run(
-        #     ["cd", f"{str(p).replace('main.py', '')}", "&&", "python", "main.py", "--verbose"],
-        #     check=True,
-        #     stdout=subprocess.PIPE,
-        #     stderr=subprocess.STDOUT,
-        # )
-        try:
-            os.chdir(Path(f"{str(p).replace('main.py', '')}").resolve())
-            sys.path.append(".")
-            import main
-            main.main()
-            sys.path.pop()
-        except Exception:
-            sys.path.pop()
-            continue
+        subprocess.run(
+            ["cd", f"{str(p).replace('main.py', '')}", "&&", "python", "main.py", "--verbose"],
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+        )
 
 
 if __name__ == "__main__":
