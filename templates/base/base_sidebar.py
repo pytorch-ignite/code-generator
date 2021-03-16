@@ -7,10 +7,6 @@ params = {
         "app": ["None", "amp", "apex"],
         "test": ["None", "amp", "apex"],
     },
-    "device": {
-        "app": ["cpu", "cuda", "xla"],
-        "test": ["cpu", "cuda"],
-    },
     "data_path": {
         "app": {"value": "./"},
         "test": {"prefix": "tmp", "suffix": ""},
@@ -96,8 +92,7 @@ def get_configs() -> dict:
         st.info("Common base training configurations. Those in the parenthesis are used in the code.")
 
         # group by streamlit function type
-        config["amp_mode"] = st.selectbox("AMP mode (amp_mode)", params.amp_mode.app)
-        config["device"] = st.selectbox("Device to use (device)", params.device.app)
+        # config["amp_mode"] = st.selectbox("AMP mode (amp_mode)", params.amp_mode.app)
 
         config["data_path"] = st.text_input("Dataset path (data_path)", **params.data_path.app)
         config["filepath"] = st.text_input("Logging file path (filepath)", **params.filepath.app)
