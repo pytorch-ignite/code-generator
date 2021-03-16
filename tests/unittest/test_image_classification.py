@@ -11,7 +11,7 @@ from torch.utils.data import DataLoader, Dataset
 from torch.utils.data._utils.collate import default_collate
 from torch.utils.data.sampler import RandomSampler, SequentialSampler
 
-sys.path.append("./tests/templates/dist/image_classification")
+sys.path.append("./tests/dist/image_classification")
 
 from datasets import get_data_loaders, get_datasets
 from models import get_model
