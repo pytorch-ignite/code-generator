@@ -1,6 +1,6 @@
 {% block imports %}
 from argparse import ArgumentParser
-from typing import Any
+from typing import Any, Optional
 
 from ignite.contrib.engines import common
 from ignite.engine.engine import Engine
@@ -8,6 +8,7 @@ import ignite.distributed as idist
 
 import torch
 from torch import optim, nn
+from torch.optim.optimizer import Optimizer
 
 from models import get_model
 
@@ -125,6 +126,11 @@ DEFAULTS = {
         "default": {{ n_saved }},
         "type": int,
         "help": "number of best models to store ({{ n_saved }})",
+    },
+    "save_every_iters": {
+        "default": {{ save_every_iters }},
+        "type": int,
+        "help": "model saving interval ({{ save_every_iters }})",
     }
 }
 
@@ -180,7 +186,13 @@ def initialize(config: Any):
 
 
 {% block eval_ckpt_common_training %}
-def setup_common_handlers(config, eval_engine, train_engine, model, optimizer):
+def setup_common_handlers(
+    config: Any,
+    eval_engine: Engine,
+    train_engine: Engine,
+    model: nn.Module,
+    optimizer: Optimizer
+):
     eval_ckpt_handler = common.save_best_model_by_val_score(
         output_path=config.filepath,
         evaluator=eval_engine,
@@ -198,6 +210,7 @@ def setup_common_handlers(config, eval_engine, train_engine, model, optimizer):
     common.setup_common_training_handlers(
         trainer=train_engine,
         to_save=to_save,
+        save_every_iters=config.save_every_iters,
         output_path=config.filepath,
         with_pbars=False,
         clear_cuda_cache=False
@@ -206,7 +219,13 @@ def setup_common_handlers(config, eval_engine, train_engine, model, optimizer):
 {% endblock %}
 
 {% block exp_logging %}
-def setup_exp_logging(config, eval_engine, train_engine, optimizer, name):
+def setup_exp_logging(
+    train_engine: Engine,
+    config: Any,
+    eval_engine: Optional[Engine] = None,
+    optimizer: Optional[Optimizer] = None,
+    name: Optional[str] = None
+):
     {% if exp_logging == "wandb" %}
     exp_logger = common.setup_wandb_logging(
         trainer=train_engine,
