@@ -14,6 +14,6 @@ def get_configs() -> dict:
 
     config = base_configs()
     with st.beta_expander("Template Configurations"):
-        config["model_name"] = st.selectbox("Model name (model_name)", model_names)
+        config["model_name"] = st.selectbox("Model name (model_name)", model_names, 2)
 
     return config

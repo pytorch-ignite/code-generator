@@ -24,7 +24,7 @@ class ImageClassiTester(unittest.TestCase):
     @settings(deadline=None, derandomize=True)
     @given(st.integers(min_value=1, max_value=128), st.integers(min_value=0, max_value=2))
     def test_datasets(self, train_batch_size, num_workers):
-        train_dataset, eval_dataset = get_datasets("./tests/templates/dist/image_classification/")
+        train_dataset, eval_dataset = get_datasets("/tmp/cifar10")
 
         self.assertIsInstance(train_dataset, Dataset)
         self.assertIsInstance(eval_dataset, Dataset)

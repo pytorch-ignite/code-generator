@@ -38,10 +38,25 @@ DEFAULTS = {
         "type": int,
         "help": "num_workers for DataLoader ({{ num_workers }})",
     },
-    "max_epochs": {
-        "default": {{ max_epochs }},
+    "train_max_epochs": {
+        "default": {{ train_max_epochs }},
         "type": int,
-        "help": "max_epochs of ignite.Engine.run() ({{ max_epochs }})",
+        "help": "max_epochs of ignite.Engine.run() for training ({{ train_max_epochs }})",
+    },
+    "eval_max_epochs": {
+        "default": {{ eval_max_epochs }},
+        "type": int,
+        "help": "max_epochs of ignite.Engine.run() for evaluation ({{ eval_max_epochs }})",
+    },
+    "train_epoch_length": {
+        "default": {{ train_epoch_length }},
+        "type": int,
+        "help": "epoch_length of ignite.Engine.run() for training ({{ train_epoch_length }})",
+    },
+    "eval_epoch_length": {
+        "default": {{ eval_epoch_length }},
+        "type": int,
+        "help": "epoch_length of ignite.Engine.run() for evaluation ({{ eval_epoch_length }})",
     },
     "lr": {
         "default": {{ lr }},

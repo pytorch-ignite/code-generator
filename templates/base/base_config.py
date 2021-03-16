@@ -31,10 +31,16 @@ params = {
         "app": {"min_value": 0, "value": 2},
         "test": {"min_value": 1, "max_value": 2},
     },
-    "max_epochs": {
+    "train_max_epochs": {
         "app": {"min_value": 1, "value": 2},
         "test": {"min_value": 1, "max_value": 2},
     },
+    "eval_max_epochs": {
+        "app": {"min_value": 1, "value": 2},
+        "test": {"min_value": 1, "max_value": 2},
+    },
+    "train_epoch_length": None,
+    "eval_epoch_length": None,
     "lr": {
         "app": {"min_value": 0.0, "value": 0.001, "format": "%e"},
         "test": {"min_value": 0.0, "max_value": 1},
@@ -83,6 +89,9 @@ params = Namespace(**{k: Namespace(**v) if isinstance(v, dict) else v for k, v i
 
 def get_configs() -> dict:
     config = {}
+    config["train_epoch_length"] = params.train_epoch_length
+    config["eval_epoch_length"] = params.eval_epoch_length
+
     with st.beta_expander("Training Configurations"):
         st.info("Common base training configurations. Those in the parenthesis are used in the code.")
 
@@ -98,13 +107,20 @@ def get_configs() -> dict:
         )
         config["eval_batch_size"] = st.number_input("Eval batch size (eval_batch_size)", **params.eval_batch_size.app)
         config["num_workers"] = st.number_input("Number of workers (num_workers)", **params.num_workers.app)
-        config["max_epochs"] = st.number_input("Maximum epochs to train (max_epochs)", **params.max_epochs.app)
+
         config["lr"] = st.number_input("Learning rate used by torch.optim.* (lr)", **params.lr.app)
         config["log_train"] = st.number_input(
             "Logging interval of training iterations (log_train)", **params.log_train.app
         )
         config["log_eval"] = st.number_input("Logging interval of evaluation epoch (log_eval)", **params.log_eval.app)
         config["seed"] = st.number_input("Seed used in ignite.utils.manual_seed() (seed)", **params.seed.app)
+
+        config["train_max_epochs"] = st.number_input(
+            "Maximum epochs to train (train_max_epochs)", **params.train_max_epochs.app
+        )
+        config["eval_max_epochs"] = st.number_input(
+            "Maximum epochs to eval (eval_max_epochs)", **params.eval_max_epochs.app
+        )
 
         # Plain training, use None
         config["nproc_per_node"] = params.nproc_per_node.app["nondist_train"]
