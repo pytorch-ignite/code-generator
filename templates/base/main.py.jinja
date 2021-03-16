@@ -94,11 +94,19 @@ def run(local_rank: int, config: Any, *args: Any, **kwags: Any):
     {% block run_eval_engine_and_log %}
     @train_engine.on(Events.EPOCH_COMPLETED(every=config.log_eval))
     def run_eval_engine_and_log(engine):
-        eval_engine.run(eval_dataloader)
+        eval_engine.run(
+            eval_dataloader,
+            max_epochs=config.eval_max_epochs,
+            epoch_length=config.eval_epoch_length
+        )
         log_metrics(eval_engine, "Eval", config.device)
     {% endblock %}
 
-    train_engine.run(train_dataloader, max_epochs=config.max_epochs)
+    train_engine.run(
+        train_dataloader,
+        max_epochs=config.train_max_epochs,
+        epoch_length=config.train_epoch_length
+    )
     {% endblock %}
 {% endblock %}
 

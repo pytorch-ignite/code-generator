@@ -50,8 +50,7 @@ def generate_inputs(params, dist_train=False, seed=0) -> dict:
 
 
 def generate_plain_train():
-    """Example run.
-    """
+    """Example run."""
     dist_train = False
     template_name = "base"
     target_dir = "./tests/templates/dist"

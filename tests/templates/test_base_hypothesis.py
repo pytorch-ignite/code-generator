@@ -1,10 +1,9 @@
+import subprocess
 import sys
 from pathlib import Path
-from pprint import pprint
 
-import subprocess
-
-from hypothesis import given, strategies as st, settings
+from hypothesis import given, settings
+from hypothesis import strategies as st
 
 sys.path.append("./templates/base")
 sys.path.append("./app")
@@ -48,10 +47,9 @@ def generate_base_cpu(train_batch_size, eval_batch_size, num_workers, max_epochs
         "master_port": None,
     }
     template_name = "base"
-    output_path_name = f"tbs{train_batch_size}-ebs{eval_batch_size}-nw{num_workers}-me{max_epochs}-lr{lr}-lt{log_train}-le{log_eval}-seed{seed}"
     # pprint(inputs)
     code_gen = CodeGenerator(target_dir=target_dir)
-    [*code_gen.render_templates(template_name, inputs, output_path_name)]
+    [*code_gen.render_templates(template_name, inputs)]
     # print(f"Generated files can be found in {target_dir}/{output_path_name}")
     # print(f"To run generated example:\ncd {target_dir}/{output_path_name}\npython main.py")
 
