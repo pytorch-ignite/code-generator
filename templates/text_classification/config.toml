@@ -1,0 +1,113 @@
+[seed]
+label = "Random state seed to set"
+min_value = 0
+value = 543
+
+[data_dir]
+label = "Dataset cache directory"
+value = "/tmp/data"
+
+[output_dir]
+label = "Output path"
+value = "/tmp/output-imdb/"
+
+[model]
+label = "Model name (from transformers) to setup model, tokenize and config to train"
+options = ["bert-base-uncased"]
+
+[model_dir]
+label = "Cache directory to download the pretrained model"
+value = "/tmp/model"
+
+[tokenizer_dir]
+label = "Tokenizer cache directory"
+value = "/tmp/tokenizer"
+
+[num_classes]
+label ="Number of target classes. Default, 1 (binary classification)"
+min_value = 0
+value = 1
+
+[dropout]
+label = "Dropout probability"
+min_value = 0.0
+max_value = 1.0
+value = 0.3
+format = "%f"
+
+[n_fc]
+label = "Number of neurons in the last fully connected layer"
+min_value = 1
+value = 768
+
+[max_length]
+label = "Maximum number of tokens for the inputs to the transformer model"
+min_value = 1
+value = 256
+
+[batch_size]
+label = "Total batch size"
+min_value = 1
+value = 128
+
+[weight_decay]
+label = "Weight decay"
+min_value = 0.0
+value = 0.01
+format = "%f"
+
+[num_workers]
+label = "Number of workers in the data loader"
+min_value = 1
+value = 4
+
+[num_epochs]
+label = "Number of epochs to train the model"
+min_value = 1
+value = 3
+
+[learning_rate]
+label = "Peak of piecewise linear learning rate scheduler"
+min_value = 0.0
+value = 5e-5
+format = "%e"
+
+[num_warmup_epochs]
+label = "Number of warm-up epochs before learning rate decay"
+min_value = 0
+value = 0
+
+[validate_every]
+label = "Run model's validation every validate_every epochs"
+min_value = 0
+value = 1
+
+[checkpoint_every]
+label = "Store training checkpoint every checkpoint_every iterations"
+min_value = 0
+value = 1000
+
+[backend]
+label = "Backend to use for distributed configuration"
+options = ["", "nccl", "xla-tpu","gloo"]
+
+[nproc_per_node]
+label = "Optional argument to setup number of processes per node"
+value = ""
+
+[resume_from]
+label = "Path to checkpoint to use to resume the training from"
+value = ""
+
+[log_every_iters]
+label = "Argument to log batch loss every log_every_iters iterations. 0 to disable it"
+min_value = 0
+value = 15
+
+[with_clearml]
+label = "Setup experiment ClearML logger"
+value = false
+
+[with_amp]
+label = "Enable native automatic mixed precision"
+value = false
