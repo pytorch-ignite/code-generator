@@ -22,7 +22,7 @@ class CodeGenerator:
         # Render template
         code = template.render(**config)
         # Store rendered code
-        fname = fname.rstrip(".jinja").lstrip(f"{template_name}/")
+        fname = fname.replace(".jinja", "").replace(f"{template_name}/", "")
         self.rendered_code[template_name][fname] = code
         return fname, code
 
