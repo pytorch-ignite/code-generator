@@ -89,7 +89,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwags: Any):
     # --------------------------------
     # setup common experiment loggers
     # --------------------------------
-    {% block exp_logging %}
+    {% block exp_loggers %}
     exp_logger = setup_exp_logging(
         config=config,
         eval_engine=eval_engine,

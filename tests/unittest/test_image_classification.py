@@ -22,7 +22,7 @@ class ImageClassiTester(unittest.TestCase):
 
     # test datasets.py
     @settings(deadline=None, derandomize=True)
-    @given(st.integers(min_value=1, max_value=128), st.integers(min_value=0, max_value=2))
+    @given(st.integers(min_value=1, max_value=4), st.integers(min_value=0, max_value=2))
     def test_datasets(self, train_batch_size, num_workers):
         train_dataset, eval_dataset = get_datasets("/tmp/cifar10")
 
@@ -75,11 +75,15 @@ class ImageClassiTester(unittest.TestCase):
 
     # test log_metrics of utils.py
     def test_log_metrics(self):
+        device = idist.device()
         engine = Engine(lambda engine, batch: None)
         engine.run(list(range(100)), max_epochs=2)
         with self.assertLogs() as log:
-            log_metrics(engine, "train", "cpu")
-        self.assertEqual(log.output[0], "INFO:ignite.engine.engine.Engine:train [2/0200]: {}")
+            log_metrics(engine, "train", device)
+        if device.type == "cpu":
+            self.assertEqual(log.output[0], "INFO:ignite.engine.engine.Engine:train [2/0200]: {}")
+        else:
+            self.assertEqual(log.output[0], "INFO:ignite.engine.engine.Engine:train [2/0200]: {} Memory - 0.00 MB")
 
 
 if __name__ == "__main__":
