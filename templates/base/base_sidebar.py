@@ -3,10 +3,6 @@ from argparse import Namespace
 import streamlit as st
 
 params = {
-    "amp_mode": {
-        "app": ["None", "amp", "apex"],
-        "test": ["None", "amp", "apex"],
-    },
     "data_path": {
         "app": {"value": "./"},
         "test": {"prefix": "tmp", "suffix": ""},
@@ -16,11 +12,11 @@ params = {
         "test": {"prefix": "tmp", "suffix": ""},
     },
     "train_batch_size": {
-        "app": {"min_value": 1, "value": 1},
+        "app": {"min_value": 1, "value": 4},
         "test": {"min_value": 1, "max_value": 2},
     },
     "eval_batch_size": {
-        "app": {"min_value": 1, "value": 1},
+        "app": {"min_value": 1, "value": 4},
         "test": {"min_value": 1, "max_value": 2},
     },
     "num_workers": {
@@ -92,8 +88,6 @@ def get_configs() -> dict:
         st.info("Common base training configurations. Those in the parenthesis are used in the code.")
 
         # group by streamlit function type
-        # config["amp_mode"] = st.selectbox("AMP mode (amp_mode)", params.amp_mode.app)
-
         config["data_path"] = st.text_input("Dataset path (data_path)", **params.data_path.app)
         config["filepath"] = st.text_input("Logging file path (filepath)", **params.filepath.app)
 

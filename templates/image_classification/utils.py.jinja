@@ -15,11 +15,6 @@ from models import get_model
 
 {% block get_default_parser %}
 DEFAULTS = {
-    "amp_mode": {
-        "default": "{{ amp_mode }}",
-        "type": str,
-        "help": "automatic mixed precision mode to use: `amp` or `apex` ({{ amp_mode }})",
-    },
     "train_batch_size": {
         "default": {{ train_batch_size }},
         "type": int,
@@ -115,6 +110,16 @@ DEFAULTS = {
         "default": {{ master_port }},
         "type": int,
         "help": "master node port for torch native backends {{ master_port }}"
+    },
+    "model_name": {
+        "default": "{{ model_name }}",
+        "type": str,
+        "help": "image classification model name ({{ model_name }})",
+    },
+    "project_name": {
+        "default": "{{ project_name }}",
+        "type": str,
+        "help": "project name of experiment tracking system ({{ project_name }})"
     }
 }
 
