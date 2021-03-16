@@ -1,9 +1,13 @@
 import shutil
 from pathlib import Path
+from datetime import datetime
 
 import streamlit as st
 from codegen import CodeGenerator
 from utils import import_from_file
+
+__version__ = f"0.1.0.dev{datetime.now().strftime('%Y%m%d')}"
+# __version__ = "0.1.0"
 
 
 class App:
@@ -82,6 +86,7 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
         self.add_sidebar()
         self.add_content()
         self.add_download()
+        st.markdown(f"Release: v{__version__}")
 
 
 def main():
