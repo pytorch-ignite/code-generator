@@ -64,15 +64,12 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
 
     def add_download(self):
         st.markdown("")
-        format_ = st.radio(
-            "Archive format",
-            [name for name, _ in sorted(shutil.get_archive_formats(), key=lambda x: x[0], reverse=True)],
-        )
+        archive_format = st.radio("Archive format", self.codegen.available_archive_formats)
         # temporary hack until streamlit has official download option
         # https://github.com/streamlit/streamlit/issues/400
         # https://github.com/streamlit/streamlit/issues/400#issuecomment-648580840
         if st.button("Generate an archive"):
-            archive_fname = self.codegen.make_archive(format_)
+            archive_fname = self.codegen.make_archive(self.template_name, archive_format)
             # this is where streamlit serves static files
             # ~/site-packages/streamlit/static/static/
             dist_path = Path(st.__path__[0]) / "static/static/dist"
