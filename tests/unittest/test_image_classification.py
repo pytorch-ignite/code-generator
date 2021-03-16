@@ -11,7 +11,7 @@ from torch.utils.data import DataLoader, Dataset
 from torch.utils.data._utils.collate import default_collate
 from torch.utils.data.sampler import RandomSampler, SequentialSampler
 
-sys.path.append("./tests/templates/dist/image_classification")
+sys.path.append("./tests/dist/image_classification")
 
 from datasets import get_data_loaders, get_datasets
 from models import get_model
@@ -78,7 +78,7 @@ class ImageClassiTester(unittest.TestCase):
         engine = Engine(lambda engine, batch: None)
         engine.run(list(range(100)), max_epochs=2)
         with self.assertLogs() as log:
-            log_metrics(engine, "train", idist.device())
+            log_metrics(engine, "train", "cpu")
         self.assertEqual(log.output[0], "INFO:ignite.engine.engine.Engine:train [2/0200]: {}")
 
 
