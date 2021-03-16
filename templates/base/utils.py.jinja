@@ -8,11 +8,6 @@ import torch
 
 {% block get_default_parser %}
 DEFAULTS = {
-    "amp_mode": {
-        "default": "{{ amp_mode }}",
-        "type": str,
-        "help": "automatic mixed precision mode to use: `amp` or `apex` ({{ amp_mode }})",
-    },
     "train_batch_size": {
         "default": {{ train_batch_size }},
         "type": int,
@@ -22,11 +17,6 @@ DEFAULTS = {
         "default": "{{ data_path }}",
         "type": str,
         "help": "datasets path ({{ data_path }})",
-    },
-    "device": {
-        "default": "{{ device }}",
-        "type": torch.device,
-        "help": "device to use for training / evaluation / testing ({{ device }})",
     },
     "filepath": {
         "default": "{{ filepath }}",

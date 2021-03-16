@@ -1,6 +1,6 @@
 import shutil
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
 
 import streamlit as st
 from codegen import CodeGenerator
@@ -51,7 +51,7 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
 
     def add_sidebar(self):
         def config(template_name):
-            return import_from_file("template_config", f"./templates/{template_name}/{template_name}_config.py")
+            return import_from_file("template_config", f"./templates/{template_name}/sidebar.py")
 
         self.sidebar(self.codegen.template_list, config)
 
