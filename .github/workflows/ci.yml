@@ -38,6 +38,7 @@ jobs:
           restore-keys: |
             ${{ steps.get-date.outputs.date }}-${{ runner.os }}-${{ matrix.python-version }}-
 
+      - run: pip install -r requirements.txt --progress-bar off
       - run: pip install -r requirements-dev.txt -f https://download.pytorch.org/whl/cpu/torch_stable.html --progress-bar off
       - run: python -m torch.utils.collect_env
       - run: bash .github/run_test.sh generate
