@@ -22,7 +22,7 @@ class ImageClassiTester(unittest.TestCase):
 
     # test datasets.py
     @settings(deadline=None, derandomize=True)
-    @given(st.integers(min_value=1, max_value=4), st.integers(min_value=0, max_value=2))
+    @given(st.integers(min_value=1, max_value=4), st.integers(min_value=0, max_value=1))
     def test_datasets(self, train_batch_size, num_workers):
         train_dataset, eval_dataset = get_datasets("/tmp/cifar10")
 

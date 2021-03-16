@@ -9,3 +9,4 @@ python main.py \
     --log_eval 1 \
     --train_batch_size 4 \
     --eval_batch_size 4 \
+    --data_path /tmp/cifar10
