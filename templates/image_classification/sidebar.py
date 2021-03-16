@@ -39,6 +39,6 @@ def get_configs() -> dict:
         if config["exp_logging"] is not None:
             config["project_name"] = st.text_input("Project name of experiment tracking system (project_name)")
 
-        config["n_saved"] = st.number_input("Number of best models to store", min_value=1, value=2)
+        config["n_saved"] = st.number_input("Number of best models to store (n_saved)", min_value=1, value=2)
 
     return config
