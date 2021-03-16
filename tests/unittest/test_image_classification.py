@@ -88,11 +88,8 @@ class ImageClassiTester(unittest.TestCase):
         engine = Engine(lambda engine, batch: None)
         engine.run(list(range(100)), max_epochs=2)
         with self.assertLogs() as log:
-            log_metrics(engine, "train", device)
-        if device.type == "cpu":
-            self.assertEqual(log.output[0], "INFO:ignite.engine.engine.Engine:train [2/0200]: {}")
-        else:
-            self.assertEqual(log.output[0], "INFO:ignite.engine.engine.Engine:train [2/0200]: {} Memory - 0.00 MB")
+            log_metrics(engine, "train", torch.device("cpu"))
+        self.assertEqual(log.output[0], "INFO:ignite.engine.engine.Engine:train [2/0200]: {}")
 
     # test initialize of utils.py
     def test_initialize(self):
@@ -127,10 +124,7 @@ class ImageClassiTester(unittest.TestCase):
 
     # test setup_exp_logging of utils.py
     def test_setup_exp_logging(self):
-        engine = Engine(lambda e, b: b)
-        config = Namespace(project_name="abc")
-        with self.assertRaisesRegex(RuntimeError, r"This contrib module requires wandb to be installed."):
-            setup_exp_logging(train_engine=engine, config=config)
+        self.assertIsNone(setup_exp_logging(train_engine=None, config=None))
 
 
 if __name__ == "__main__":
