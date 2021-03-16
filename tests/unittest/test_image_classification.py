@@ -78,7 +78,7 @@ class ImageClassiTester(unittest.TestCase):
         engine = Engine(lambda engine, batch: None)
         engine.run(list(range(100)), max_epochs=2)
         with self.assertLogs() as log:
-            log_metrics(engine, "train", idist.device())
+            log_metrics(engine, "train", "cpu")
         self.assertEqual(log.output[0], "INFO:ignite.engine.engine.Engine:train [2/0200]: {}")
 
 
