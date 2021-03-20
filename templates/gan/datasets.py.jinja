@@ -2,7 +2,7 @@ from torchvision import transforms as T
 from torchvision import datasets as dset
 
 
-def check_dataset(dataset, dataroot):
+def get_datasets(dataset, dataroot):
     """
 
     Args:
@@ -10,8 +10,7 @@ def check_dataset(dataset, dataroot):
         dataroot (str): root directory where the dataset will be stored.
 
     Returns:
-        dataset (data.Dataset): torchvision Dataset object
-
+        dataset, num_channels
     """
     resize = T.Resize(64)
     crop = T.CenterCrop(64)
