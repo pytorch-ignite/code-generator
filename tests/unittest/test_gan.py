@@ -5,14 +5,14 @@ from argparse import ArgumentParser
 from torch import nn
 from torch.utils.data import Dataset
 
-sys.path.append("./tests/dist/gan")
+sys.path.append("./tests/dist/")
 
-from datasets import get_datasets
-from models import Discriminator, Generator
-from utils import get_default_parser
+from gan.datasets import get_datasets
+from gan.models import Discriminator, Generator
+from gan.utils import get_default_parser
 
 
-class ImageClassiTester(unittest.TestCase):
+class GANTester(unittest.TestCase):
     # test datasets.py
     def test_datasets(self):
         dataset, nc = get_datasets("cifar10", "/tmp/cifar10")
