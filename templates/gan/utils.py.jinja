@@ -85,6 +85,12 @@ DEFAULTS = {
         "type": int,
         "help": "number of best models to store ({{ n_saved }})",
     },
+    "dataset": {
+        "default": "{{ dataset }}",
+        "type": str,
+        "choices": ["cifar10", "lsun", "imagenet", "folder", "lfw", "fake", "mnist"],
+        "help": "dataset to use ({{ dataset }})"
+    }
 }
 
 

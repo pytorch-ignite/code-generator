@@ -5,6 +5,14 @@ def get_configs() -> dict:
     config = {}
     config["train_epoch_length"] = None
     config["eval_epoch_length"] = None
+
+    # distributed configs
+    config["nproc_per_node"] = None
+    config["nnodes"] = None
+    config["node_rank"] = None
+    config["master_addr"] = None
+    config["master_port"] = None
+
     with st.beta_expander("GAN Configurations"):
         # group by st function type
         config["dataset"] = st.selectbox(
