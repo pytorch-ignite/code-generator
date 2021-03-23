@@ -12,6 +12,9 @@ def get_configs() -> dict:
     config["node_rank"] = None
     config["master_addr"] = None
     config["master_port"] = None
+    config["saved_G"] = None
+    config["saved_D"] = None
+
 
     with st.beta_expander("GAN Configurations"):
         # group by st function type
@@ -21,8 +24,6 @@ def get_configs() -> dict:
 
         config["data_path"] = st.text_input("Dataset path (data_path)", "./")
         config["filepath"] = st.text_input("Logging file path (filepath)", "./logs")
-        config["saved_G"] = st.text_input("Path to saved generator (saved_G)", ".")
-        config["saved_D"] = st.text_input("Path to saved discriminator (saved_D)", ".")
 
         config["batch_size"] = st.number_input("Train batch size (batch_size)", min_value=1, value=4)
         config["num_workers"] = st.number_input("Number of workers (num_workers)", min_value=0, value=2)
