@@ -15,7 +15,6 @@ def get_configs() -> dict:
     config["saved_G"] = None
     config["saved_D"] = None
 
-
     with st.beta_expander("GAN Configurations"):
         # group by st function type
         config["dataset"] = st.selectbox(
