@@ -89,8 +89,33 @@ DEFAULTS = {
         "default": "{{ dataset }}",
         "type": str,
         "choices": ["cifar10", "lsun", "imagenet", "folder", "lfw", "fake", "mnist"],
-        "help": "dataset to use ({{ dataset }})"
-    }
+        "help": "dataset to use ({{ dataset }})",
+    },
+    "z_dim": {
+        "default": {{ z_dim }},
+        "type": int,
+        "help": "size of the latent z vector ({{ z_dim }})",
+    },
+    "alpha": {
+        "default": {{ alpha }},
+        "type": float,
+        "help": "running average decay factor ({{ alpha }})",
+    },
+    "g_filters": {
+        "default": {{ g_filters }},
+        "type": int,
+        "help": "number of filters in the second-to-last generator deconv layer ({{ g_filters }})",
+    },
+    "d_filters": {
+        "default": {{ d_filters }},
+        "type": int,
+        "help": "number of filters in first discriminator conv layer ({{ d_filters }})",
+    },
+    "beta_1": {
+        "default": {{ beta_1 }},
+        "type": float,
+        "help": "beta_1 for Adam optimizer ({{ beta_1 }})",
+    },
 }
 
 
