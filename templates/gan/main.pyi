@@ -1,27 +1,24 @@
-from argparse import ArgumentParser
-from pathlib import Path
 import logging
 import os
-from typing import Any
 import warnings
+from argparse import ArgumentParser
+from pathlib import Path
+from typing import Any
 
+import ignite.distributed as idist
 import torch
 import torch.nn as nn
 import torch.optim as optim
-
-import ignite.distributed as idist
+from datasets import get_datasets
+from fn import update
 from ignite.contrib.handlers import ProgressBar
 from ignite.engine import Engine, Events
 from ignite.handlers import ModelCheckpoint, Timer
 from ignite.metrics import RunningAverage
 from ignite.utils import manual_seed
+from models import Discriminator, Generator
 from torchvision import utils as vutils
-
-from models import Generator, Discriminator
-from datasets import get_datasets
-from fn import update
 from utils import get_default_parser
-
 
 PRINT_FREQ = 100
 FAKE_IMG_FNAME = "fake_sample_epoch_{:04d}.png"

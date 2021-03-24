@@ -1,5 +1,6 @@
 {% block imports %}
 from torchvision import models
+
 {% endblock %}
 
 {% block get_model %}

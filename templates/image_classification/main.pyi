@@ -1,19 +1,24 @@
 {% block imports %}
+import logging
 from argparse import ArgumentParser
 from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-import logging
-
 import ignite.distributed as idist
+from datasets import get_data_loaders, get_datasets
 from ignite.engine import create_supervised_evaluator, create_supervised_trainer
 from ignite.engine.events import Events
-from ignite.utils import setup_logger, manual_seed
 from ignite.metrics import Accuracy, Loss
+from ignite.utils import manual_seed, setup_logger
+from utils import (
+    get_default_parser,
+    initialize,
+    log_metrics,
+    setup_common_handlers,
+    setup_exp_logging,
+)
 
-from datasets import get_datasets, get_data_loaders
-from utils import log_metrics, get_default_parser, initialize, setup_common_handlers, setup_exp_logging
 {% endblock %}
 
 

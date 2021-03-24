@@ -1,7 +1,7 @@
 [tool.black]
 line-length = 120
 target-version = ['py38']
-include = '\.pyi?$'
+include = '\.py?$'
 exclude = '''
 
 (
@@ -25,3 +25,4 @@ exclude = '''
 [tool.isort]
 profile = "black"
 multi_line_output = 3
+supported_extensions = "py"

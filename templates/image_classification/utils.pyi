@@ -2,15 +2,13 @@
 from argparse import ArgumentParser
 from typing import Any, Optional
 
+import ignite.distributed as idist
+import torch
 from ignite.contrib.engines import common
 from ignite.engine.engine import Engine
-import ignite.distributed as idist
-
-import torch
-from torch import optim, nn
-from torch.optim.optimizer import Optimizer
-
 from models import get_model
+from torch import nn, optim
+from torch.optim.optimizer import Optimizer
 
 {% endblock %}
 

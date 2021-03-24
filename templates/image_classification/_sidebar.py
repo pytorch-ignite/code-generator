@@ -4,7 +4,7 @@ import streamlit as st
 
 sys.path.append("./templates/")
 
-from base.sidebar import get_configs as base_configs
+from _base.sidebar import get_configs as base_configs
 
 params = {
     "model_name": [

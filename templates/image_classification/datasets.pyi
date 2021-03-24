@@ -1,8 +1,9 @@
 {% block imports %}
 from ignite.distributed import auto_dataloader
 from torch.utils.data import Dataset
-from torchvision.datasets import CIFAR10
 from torchvision import transforms as T
+from torchvision.datasets import CIFAR10
+
 {% endblock %}
 
 {% block datasets %}
