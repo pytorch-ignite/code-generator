@@ -1,6 +1,6 @@
 # Image Classification Template by Code-Generator
 
-This template is ported from [PyTorch-Ignite MNIST example](https://github.com/pytorch/ignite/blob/master/examples/mnist/mnist.py).
+This template is ported from [PyTorch-Ignite CIFAR10 example](https://github.com/pytorch/ignite/tree/master/examples/contrib/cifar10).
 
 After downloading the archive, install the requirements with:
 
