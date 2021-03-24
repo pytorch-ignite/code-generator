@@ -1,3 +1,4 @@
+import os
 import sys
 from pathlib import Path
 
@@ -18,6 +19,8 @@ def generate():
             [*code_gen.render_templates(p.stem, configs)]
             code_gen.create_target_template_dir(p.stem)
             code_gen.write_files(p.stem)
+            with open(os.path.join(target_dir, "__init__.py"), "w"):
+                pass
             print(f"Generated files can be found in {target_dir}/{p.stem}")
 
 

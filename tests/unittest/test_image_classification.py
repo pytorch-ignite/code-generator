@@ -84,7 +84,6 @@ class ImageClassiTester(unittest.TestCase):
 
     # test log_metrics of utils.py
     def test_log_metrics(self):
-        device = idist.device()
         engine = Engine(lambda engine, batch: None)
         engine.run(list(range(100)), max_epochs=2)
         with self.assertLogs() as log:
