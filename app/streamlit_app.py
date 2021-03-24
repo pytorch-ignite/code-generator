@@ -1,19 +1,17 @@
 import shutil
-from datetime import datetime
 from pathlib import Path
 
 import streamlit as st
 from codegen import CodeGenerator
 from utils import import_from_file
 
-__version__ = f"0.1.0.dev{datetime.now().strftime('%Y%m%d')}"
-# __version__ = "0.1.0"
+__version__ = "0.1.0"
 
 
 class App:
     page_title = "Code Generator"
     page_icon = "https://raw.githubusercontent.com/pytorch/ignite/master/assets/logo/ignite_logomark.svg"
-    description = """
+    description = f"""
 <div align='center'>
 <img src="https://raw.githubusercontent.com/pytorch/ignite/master/assets/logo/ignite_logomark.svg"
 width="100" height="100">
@@ -21,6 +19,10 @@ width="100" height="100">
 # Code Generator
 
 Application to generate your training scripts with [PyTorch-Ignite](https://github.com/pytorch/ignite).
+
+[Twitter](https://twitter.com/pytorch_ignite) •
+[GitHub](https://github.com/pytorch-ignite/code-generator) •
+[Release: v{__version__}](https://github.com/pytorch-ignite/code-generator/releases)
 </div>
 """
 
@@ -33,8 +35,9 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
     def sidebar(self, template_list=None, config=None):
         """Sidebar on the left."""
         template_list = template_list or []
+        st.markdown("### Choose a Template")
+        self.template_name = st.selectbox("Available Templates are:", options=template_list)
         with st.sidebar:
-            self.template_name = st.selectbox("Templates", template_list)
             if self.template_name:
                 config = config(self.template_name)
                 self.config = config.get_configs()
@@ -43,10 +46,7 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
 
     def render_code(self, fname="", code="", fold=False):
         """Main content with the code."""
-        if fold:
-            with st.beta_expander(f"View generated {fname}"):
-                st.code(code)
-        else:
+        with st.beta_expander(f"View generated {fname}"):
             st.code(code)
 
     def add_sidebar(self):
@@ -63,8 +63,9 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
             fold = False
         else:
             fold = True
-        for fname, code in content:
-            self.render_code(fname, code, fold)
+        if st.checkbox("View generated code ?"):
+            for fname, code in content:
+                self.render_code(fname, code, fold)
 
     def add_download(self):
         st.markdown("")
@@ -86,7 +87,6 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
         self.add_sidebar()
         self.add_content()
         self.add_download()
-        st.markdown(f"Release: v{__version__}")
 
 
 def main():
