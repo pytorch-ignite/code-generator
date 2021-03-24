@@ -10,7 +10,7 @@ class CodeGenerator:
     def __init__(self, templates_dir: str = "./templates", target_dir: str = "./dist"):
         self.templates_dir = Path(templates_dir)
         self.target_dir = Path(target_dir)
-        self.template_list = [p.stem for p in self.templates_dir.iterdir() if p.is_dir()]
+        self.template_list = [p.stem for p in self.templates_dir.iterdir() if p.is_dir() and not p.stem.startswith("_")]
         self.env = Environment(loader=FileSystemLoader(self.templates_dir), trim_blocks=True, lstrip_blocks=True)
         self.rendered_code = {t: {} for t in self.template_list}
         self.available_archive_formats = sorted(map(lambda x: x[0], shutil.get_archive_formats()), reverse=True)
@@ -29,9 +29,12 @@ class CodeGenerator:
     def render_templates(self, template_name: str, config: dict):
         """Renders all the templates files from template folder for the given config."""
         self.rendered_code[template_name] = {}
-        for fname in filter(lambda t: t.startswith(template_name), self.env.list_templates(".jinja")):
-            fname, code = self.render_template(template_name, fname, config)
-            yield fname, code
+        for fname in filter(
+            lambda t: t.startswith(template_name), self.env.list_templates(filter_func=lambda x: not x.endswith(".pyc"))
+        ):
+            if not fname.startswith("_"):
+                fname, code = self.render_template(template_name, fname, config)
+                yield fname, code
 
     def create_target_template_dir(self, template_name: str):
         self.target_template_path = Path(f"{self.target_dir}/{template_name}")
