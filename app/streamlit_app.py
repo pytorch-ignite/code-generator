@@ -44,7 +44,7 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
             else:
                 self.config = {}
 
-    def render_code(self, fname="", code="", fold=False):
+    def render_code(self, fname="", code=""):
         """Main content with the code."""
         with st.beta_expander(f"View generated {fname}"):
             st.code(code)
@@ -58,18 +58,13 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
     def add_content(self):
         """Get generated/rendered code from the codegen."""
         content = [*self.codegen.render_templates(self.template_name, self.config)]
-        # Expand by default for single file template
-        if len(content) == 1:
-            fold = False
-        else:
-            fold = True
         if st.checkbox("View generated code ?"):
             for fname, code in content:
-                self.render_code(fname, code, fold)
+                self.render_code(fname, code)
 
     def add_download(self):
         st.markdown("")
-        archive_format = st.radio("Archive format", self.codegen.available_archive_formats)
+        archive_format = st.radio("Archive formats", self.codegen.available_archive_formats)
         # temporary hack until streamlit has official download option
         # https://github.com/streamlit/streamlit/issues/400
         # https://github.com/streamlit/streamlit/issues/400#issuecomment-648580840
