@@ -15,25 +15,41 @@ def get_configs() -> dict:
     config["saved_G"] = None
     config["saved_D"] = None
 
-    with st.beta_expander("GAN Configurations"):
-        # group by st function type
+    with st.beta_expander("GAN Template Configurations", expanded=True):
+        st.info("Those in the parenthesis are used in the generated code.")
+
+        # group by configurations type
+
+        st.markdown("## Dataset Options")
         config["dataset"] = st.selectbox(
             "Dataset to use (dataset)", ["cifar10", "lsun", "imagenet", "folder", "lfw", "fake", "mnist"]
         )
-
         config["data_path"] = st.text_input("Dataset path (data_path)", "./")
-        config["filepath"] = st.text_input("Logging file path (filepath)", "./logs")
 
+        config["filepath"] = st.text_input("Logging file path (filepath)", "./logs")
+        st.markdown("---")
+
+        st.markdown("## DataLoader Options")
         config["batch_size"] = st.number_input("Train batch size (batch_size)", min_value=1, value=4)
         config["num_workers"] = st.number_input("Number of workers (num_workers)", min_value=0, value=2)
-        config["max_epochs"] = st.number_input("Maximum epochs to train (max_epochs)", min_value=1, value=2)
+        st.markdown("---")
+
+        st.markdown("## Optimizer Options")
+        config["beta_1"] = st.number_input("beta_1 for Adam optimizer (beta_1)", value=0.5)
         config["lr"] = st.number_input(
             "Learning rate used by torch.optim.* (lr)", min_value=0.0, value=1e-3, format="%e"
         )
+        st.markdown("---")
+
+        st.markdown("## Training Options")
+        config["max_epochs"] = st.number_input("Maximum epochs to train (max_epochs)", min_value=1, value=2)
         config["log_train"] = st.number_input(
             "Logging interval of training iterations (log_train)", min_value=0, value=50
         )
         config["seed"] = st.number_input("Seed used in ignite.utils.manual_seed() (seed)", min_value=0, value=666)
+        st.markdown("---")
+
+        st.markdown("## Distributed Training Options")
         if st.checkbox("Use distributed training"):
             config["nproc_per_node"] = st.number_input(
                 "Number of processes to launch on each node (nproc_per_node)", min_value=1
@@ -56,8 +72,13 @@ def get_configs() -> dict:
                 config["master_port"] = st.text_input(
                     "Master node port for torch native backends (master_port)", value=8080
                 )
+        st.markdown("---")
 
+        st.markdown("## Ignite Handlers Options")
         config["n_saved"] = st.number_input("Number of best models to store (n_saved)", min_value=1, value=2)
+        st.markdown("---")
+
+        st.markdown("## Model Options")
         config["z_dim"] = st.number_input("Size of the latent z vector (z_dim)", value=100)
         config["alpha"] = st.number_input("Running average decay factor (alpha)", value=0.98)
         config["g_filters"] = st.number_input(
@@ -66,5 +87,6 @@ def get_configs() -> dict:
         config["d_filters"] = st.number_input(
             "Number of filters in first discriminator conv layer (d_filters)", value=64
         )
-        config["beta_1"] = st.number_input("beta_1 for Adam optimizer (beta_1)", value=0.5)
+        st.markdown("---")
+
     return config
