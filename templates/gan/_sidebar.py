@@ -75,7 +75,36 @@ def get_configs() -> dict:
         st.markdown("---")
 
         st.markdown("## Ignite Handlers Options")
+        config["output_path"] = st.text_input(
+            "Output path to indicate where to_save objects are stored (output_path)", value="./logs"
+        )
+        config["save_every_iters"] = st.number_input(
+            "Saving iteration interval (save_every_iters)", min_value=1, value=1000
+        )
         config["n_saved"] = st.number_input("Number of best models to store (n_saved)", min_value=1, value=2)
+        config["log_every_iters"] = st.number_input(
+            "Logging interval for iteration progress bar",
+            min_value=1,
+            value=100,
+            help="Setting to a lower value can cause tqdm to fluch quickly for fast trainings",
+        )
+        config["with_pbars"] = st.checkbox(
+            "Show two progress bars",
+            value=False,
+            help=(
+                "This option will enable two progress bars - one for epoch, one for iteration"
+                "if `with_pbar_on_iters` is `False`, only epoch-wise progress bar will be enabled."
+            ),
+        )
+        config["with_pbar_on_iters"] = st.checkbox(
+            "Show iteration-wise progress bar", value=False, help="This option has no effect if `with_pbars` is `False`"
+        )
+        config["stop_on_nan"] = st.checkbox("Stop on NaN/inf values", value=False)
+        config["clear_cuda_cache"] = st.checkbox(
+            "Clear cuda cache every end of epoch",
+            value=False,
+            help="This is calling `torch.cuda.empty_cache()` every end of epoch",
+        )
         st.markdown("---")
 
         st.markdown("## Model Options")
