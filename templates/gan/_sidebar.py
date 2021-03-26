@@ -77,7 +77,7 @@ def ignite_handlers_options(config):
     )
     config["with_pbars"] = st.checkbox(
         "Show two progress bars",
-        value=False,
+        value=True,
         help=(
             "This option will enable two progress bars - one for epoch,"
             " one for iteration if `with_pbar_on_iters` is `False`,"
@@ -85,12 +85,12 @@ def ignite_handlers_options(config):
         ),
     )
     config["with_pbar_on_iters"] = st.checkbox(
-        "Show iteration-wise progress bar", value=False, help="This option has no effect if `with_pbars` is `False`"
+        "Show iteration-wise progress bar", value=True, help="This option has no effect if `with_pbars` is `False`"
     )
-    config["stop_on_nan"] = st.checkbox("Stop the training if engine output contains NaN/inf values", value=False)
+    config["stop_on_nan"] = st.checkbox("Stop the training if engine output contains NaN/inf values", value=True)
     config["clear_cuda_cache"] = st.checkbox(
         "Clear cuda cache every end of epoch",
-        value=False,
+        value=True,
         help="This is calling `torch.cuda.empty_cache()` every end of epoch",
     )
     st.markdown("---")
