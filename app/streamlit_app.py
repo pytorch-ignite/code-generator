@@ -1,5 +1,7 @@
+import os
 import shutil
 from pathlib import Path
+from subprocess import check_output
 
 import streamlit as st
 from codegen import CodeGenerator
@@ -46,8 +48,16 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
 
     def render_code(self, fname="", code=""):
         """Main content with the code."""
-        with st.beta_expander(f"View generated {fname}"):
-            st.code(code)
+        with st.beta_expander(f"View rendered {fname}"):
+            if fname.endswith(".md"):
+                st.markdown(code)
+            else:
+                st.code(code)
+
+    def render_directory(self, dir):
+        output = check_output(["tree", dir], encoding="utf-8")
+        st.markdown("Generated files and directory structure")
+        st.code(output)
 
     def add_sidebar(self):
         def config(template_name):
@@ -58,25 +68,29 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
     def add_content(self):
         """Get generated/rendered code from the codegen."""
         content = [*self.codegen.render_templates(self.template_name, self.config)]
-        if st.checkbox("View generated code ?"):
+        if st.checkbox("View rendered code ?"):
             for fname, code in content:
                 self.render_code(fname, code)
 
     def add_download(self):
         st.markdown("")
-        archive_format = st.radio("Archive formats", self.codegen.available_archive_formats)
-        # temporary hack until streamlit has official download option
-        # https://github.com/streamlit/streamlit/issues/400
-        # https://github.com/streamlit/streamlit/issues/400#issuecomment-648580840
-        if st.button("Generate an archive"):
-            archive_fname = self.codegen.make_archive(self.template_name, archive_format)
-            # this is where streamlit serves static files
-            # ~/site-packages/streamlit/static/static/
-            dist_path = Path(st.__path__[0]) / "static/static/dist"
-            if not dist_path.is_dir():
-                dist_path.mkdir()
-            shutil.copy(archive_fname, dist_path)
-            st.success(f"Download link : [{archive_fname}](./static/{archive_fname})")
+        col1, col2 = st.beta_columns(2)
+        with col1:
+            archive_format = st.radio("Archive formats", self.codegen.available_archive_formats)
+            # temporary hack until streamlit has official download option
+            # https://github.com/streamlit/streamlit/issues/400
+            # https://github.com/streamlit/streamlit/issues/400#issuecomment-648580840
+            if st.button("Generate an archive"):
+                archive_fname = self.codegen.make_archive(self.template_name, archive_format)
+                # this is where streamlit serves static files
+                # ~/site-packages/streamlit/static/static/
+                dist_path = Path(st.__path__[0]) / "static/static/dist"
+                if not dist_path.is_dir():
+                    dist_path.mkdir()
+                shutil.copy(archive_fname, dist_path)
+                st.success(f"Download link : [{archive_fname}](./static/{archive_fname})")
+                with col2:
+                    self.render_directory(os.path.join(self.codegen.dist_dir, self.template_name))
 
     def run(self):
         self.add_sidebar()
