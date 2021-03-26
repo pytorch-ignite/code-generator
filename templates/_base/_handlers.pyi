@@ -1,10 +1,10 @@
     from ignite.contrib.engines import common
     {% if setup_common_training_handlers %}
     common.setup_common_training_handlers(
-        trainer=train_engine,
+        trainer=trainer,
         train_sampler=None,
         to_save=to_save,
-        output_path={{ output_path }},
+        output_path='{{ output_path }}',
         save_every_iters={{ save_every_iters }},
         n_saved={{ n_saved }},
         log_every_iters={{ log_every_iters }},

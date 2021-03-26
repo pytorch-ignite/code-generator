@@ -90,6 +90,7 @@ def run(
     RunningAverage(alpha=config.alpha, output_transform=lambda x: x["D_G_z2"]).attach(trainer, "D_G_z2")
 
     # attach ignite handlers
+    to_save = {'netD': netD, 'netG': netG, 'optimizerD': optimizerD, 'optimizerG': optimizerG, 'trainer': trainer}
     {% include "_handlers.pyi" %}
 
     # attach progress bar

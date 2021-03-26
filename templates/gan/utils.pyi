@@ -95,7 +95,7 @@ DEFAULTS = {
     },
     # ignite handlers options
     "output_path": {
-        "default": {{output_path}},
+        "default": "{{output_path}}",
         "type": str,
         "help": "output path to indicate where to_save objects are stored",
     },
