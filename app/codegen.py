@@ -17,9 +17,11 @@ class CodeGenerator:
     def render_templates(self, template_name: str, config: dict):
         """Renders all the templates files from template folder for the given config."""
         self.rendered_code[template_name] = {}  # clean up the rendered code for given template
-        # loading the template files based on given template
+        # loading the template files based on given template and from the _base folder
+        # since we are using some templates from _base folder
+        loader = FileSystemLoader([self.templates_dir / "_base", self.templates_dir / template_name])
         env = Environment(
-            loader=FileSystemLoader(self.templates_dir / template_name),
+            loader=loader,
             trim_blocks=True,
             lstrip_blocks=True,
         )
