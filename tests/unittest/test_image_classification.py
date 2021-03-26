@@ -119,7 +119,10 @@ class ImageClassiTester(unittest.TestCase):
             engine.run(data, max_epochs=max_epochs)
             self.assertIsInstance(handler, Checkpoint)
             self.assertTrue(os.path.isfile(f"{tmpdir}/training_checkpoint_{len(data) * max_epochs}.pt"))
-            self.assertTrue(handler.last_checkpoint, f"{tmpdir}/best_model_3_eval_eval_accuracy=1.0000.pt")
+            self.assertTrue(
+                handler.last_checkpoint,
+                f"{tmpdir}/best_model_3_eval_eval_accuracy=1.0000.pt",
+            )
 
     # test setup_exp_logging of utils.py
     def test_setup_exp_logging(self):

@@ -95,10 +95,12 @@ def get_configs() -> dict:
         st.markdown("## Distributed Training Options")
         if st.checkbox("Use distributed training"):
             config["nproc_per_node"] = st.number_input(
-                "Number of processes to launch on each node (nproc_per_node)", **params.nproc_per_node["dist_train"]
+                "Number of processes to launch on each node (nproc_per_node)",
+                **params.nproc_per_node["dist_train"],
             )
             config["nnodes"] = st.number_input(
-                "Number of nodes to use for distributed training (nnodes)", **params.nnodes["dist_train"]
+                "Number of nodes to use for distributed training (nnodes)",
+                **params.nnodes["dist_train"],
             )
             if config["nnodes"] > 1:
                 st.info(
@@ -117,7 +119,8 @@ def get_configs() -> dict:
                 )
                 st.warning("Please include single quote in master_addr.")
                 config["master_port"] = st.text_input(
-                    "Master node port for torch native backends (master_port)", params.master_port["multinode"]
+                    "Master node port for torch native backends (master_port)",
+                    params.master_port["multinode"],
                 )
         st.markdown("---")
 
@@ -125,7 +128,8 @@ def get_configs() -> dict:
         config["exp_logging"] = st.selectbox("Experiment tracking (exp_logging)", params.exp_logging)
         if config["exp_logging"] is not None:
             config["project_name"] = st.text_input(
-                "Project name of experiment tracking system (project_name)", "code-generator"
+                "Project name of experiment tracking system (project_name)",
+                "code-generator",
             )
         config["n_saved"] = st.number_input("Number of best models to store (n_saved)", min_value=1, value=2)
         config["save_every_iters"] = st.number_input(

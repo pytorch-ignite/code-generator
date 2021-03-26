@@ -4,7 +4,8 @@ import streamlit as st
 def dataset_options(config):
     st.markdown("## Dataset Options")
     config["dataset"] = st.selectbox(
-        "Dataset to use (dataset)", ["cifar10", "lsun", "imagenet", "folder", "lfw", "fake", "mnist"]
+        "Dataset to use (dataset)",
+        ["cifar10", "lsun", "imagenet", "folder", "lfw", "fake", "mnist"],
     )
     config["data_path"] = st.text_input("Dataset path (data_path)", "./")
 
@@ -20,7 +21,12 @@ def dataloader_options(config):
 
     st.markdown("## Optimizer Options")
     config["beta_1"] = st.number_input("beta_1 for Adam optimizer (beta_1)", value=0.5)
-    config["lr"] = st.number_input("Learning rate used by torch.optim.* (lr)", min_value=0.0, value=1e-3, format="%e")
+    config["lr"] = st.number_input(
+        "Learning rate used by torch.optim.* (lr)",
+        min_value=0.0,
+        value=1e-3,
+        format="%e",
+    )
     st.markdown("---")
 
 
@@ -46,12 +52,14 @@ def distributed_options(config):
                 " please specify spawn_kwargs in main.py"
             )
             config["node_rank"] = st.number_input(
-                "Rank of the node for multi-node distributed training (node_rank)", min_value=0
+                "Rank of the node for multi-node distributed training (node_rank)",
+                min_value=0,
             )
             if config["node_rank"] > (config["nnodes"] - 1):
                 st.error(f"node_rank should be between 0 and {config['nnodes'] - 1}")
             config["master_addr"] = st.text_input(
-                "Master node TCP/IP address for torch native backends (master_addr)", value="'127.0.0.1'"
+                "Master node TCP/IP address for torch native backends (master_addr)",
+                value="'127.0.0.1'",
             )
             st.warning("Please include single quote in master_addr.")
             config["master_port"] = st.text_input(
@@ -63,7 +71,8 @@ def distributed_options(config):
 def ignite_handlers_options(config):
     st.markdown("## Ignite Handlers Options")
     config["output_path"] = st.text_input(
-        "Output path to indicate where to_save objects are stored (output_path)", value="./logs"
+        "Output path to indicate where to_save objects are stored (output_path)",
+        value="./logs",
     )
     config["save_every_iters"] = st.number_input(
         "Saving iteration interval (save_every_iters)", min_value=1, value=1000
@@ -85,7 +94,9 @@ def ignite_handlers_options(config):
         ),
     )
     config["with_pbar_on_iters"] = st.checkbox(
-        "Show iteration-wise progress bar", value=True, help="This option has no effect if `with_pbars` is `False`"
+        "Show iteration-wise progress bar",
+        value=True,
+        help="This option has no effect if `with_pbars` is `False`",
     )
     config["stop_on_nan"] = st.checkbox("Stop the training if engine output contains NaN/inf values", value=True)
     config["clear_cuda_cache"] = st.checkbox(
@@ -102,7 +113,8 @@ def model_options(config):
     config["z_dim"] = st.number_input("Size of the latent z vector (z_dim)", value=100)
     config["alpha"] = st.number_input("Running average decay factor (alpha)", value=0.98)
     config["g_filters"] = st.number_input(
-        "Number of filters in the second-to-last generator deconv layer (g_filters)", value=64
+        "Number of filters in the second-to-last generator deconv layer (g_filters)",
+        value=64,
     )
     config["d_filters"] = st.number_input("Number of filters in first discriminator conv layer (d_filters)", value=64)
     st.markdown("---")
