@@ -46,7 +46,7 @@
         log_every_iters=config.logger_log_every_iters,
     )
     {% elif logger == 'tensorboard' %}
-    logger_handler = common.setup_tensorboard_logging(
+    logger_handler = common.setup_tb_logging(
         trainer=trainer,
         optimizers=optimizers,
         evaluators=evaluators,
