@@ -91,6 +91,8 @@ def run(
 
     # attach ignite handlers
     to_save = {'netD': netD, 'netG': netG, 'optimizerD': optimizerD, 'optimizerG': optimizerG, 'trainer': trainer}
+    optimizers = {'optimizerD': optimizerD, 'optimizerG': optimizerG}
+    evaluators = None
     {% include "_handlers.pyi" %}
 
     # attach progress bar

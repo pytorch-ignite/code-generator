@@ -13,11 +13,6 @@ DEFAULTS = {
         "type": str,
         "help": "datasets path ({{ data_path }})",
     },
-    "filepath": {
-        "default": "{{ filepath }}",
-        "type": str,
-        "help": "logging file path ({{ filepath }})",
-    },
     # dataloader options
     "batch_size": {
         "default": {{batch_size}},
@@ -133,6 +128,17 @@ DEFAULTS = {
         "default": {{clear_cuda_cache}},
         "type": bool,
         "help": "clear cuda cache every end of epoch",
+    },
+    # ignite logger options
+    "logger_log_every_iters": {
+        "default": {{logger_log_every_iters}},
+        "type": int,
+        "help": "logging interval for experiment tracking system ({{logger_log_every_iters}})",
+    },
+    "filepath": {
+        "default": "{{ filepath }}",
+        "type": str,
+        "help": "logging file path ({{ filepath }})",
     },
     # model options
     "z_dim": {
