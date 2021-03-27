@@ -39,33 +39,33 @@ def run(
     # -----------------------------
     # datasets and dataloaders
     # -----------------------------
-    {% block datasets_and_dataloaders %}
     dataset, num_channels = get_datasets(config.dataset, config.data_path)
-    loader = idist.auto_dataloader(dataset, batch_size=config.batch_size, shuffle=True, num_workers=config.num_workers, drop_last=True)
-    {% endblock %}
+    loader = idist.auto_dataloader(
+        dataset,
+        batch_size=config.batch_size,
+        shuffle=True,
+        num_workers=config.num_workers,
+        drop_last=True
+    )
 
     # ------------------------------------------
     # models, optimizers, loss function, device
     # ------------------------------------------
-    {% block model_optimizer_loss %}
     device = idist.device()
     netG = idist.auto_model(Generator(config.z_dim, config.g_filters, num_channels))
     netD = idist.auto_model(Discriminator(num_channels, config.d_filters))
     bce = nn.BCELoss()
     optimizerG = optim.Adam(netG.parameters(), lr=config.lr, betas=(config.beta_1, 0.999))
     optimizerD = optim.Adam(netD.parameters(), lr=config.lr, betas=(config.beta_1, 0.999))
-    {% endblock %}
 
     # --------------------------
     # load pre-trained models
     # --------------------------
-    {% block pretrained %}
     if config.saved_G:
         netG.load_state_dict(torch.load(config.saved_G))
 
     if config.saved_D:
         netD.load_state_dict(torch.load(config.saved_D))
-    {% endblock %}
 
     # ------
     # misc
@@ -93,7 +93,6 @@ def run(
     to_save = {'netD': netD, 'netG': netG, 'optimizerD': optimizerD, 'optimizerG': optimizerG, 'trainer': trainer}
     optimizers = {'optimizerD': optimizerD, 'optimizerG': optimizerG}
     evaluators = None
-    {% include "_handlers.pyi" %}
 
     # attach progress bar
     pbar = ProgressBar()
@@ -205,7 +204,6 @@ def run(
     trainer.run(loader, max_epochs=config.max_epochs, epoch_length=config.epoch_length)
 
 
-{% block main_fn %}
 def main():
     parser = ArgumentParser(parents=[get_default_parser()])
     config = parser.parse_args()
@@ -224,9 +222,6 @@ def main():
         master_port=config.master_port
     ) as parallel:
         parallel.run(run, config=config)
-{% endblock %}
 
-{% block entrypoint %}
 if __name__ == "__main__":
     main()
-{% endblock %}

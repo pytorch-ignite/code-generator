@@ -1,0 +1,4 @@
+torch
+pytorch-ignite
+{{ handler_deps }}
+{{ logger_deps }}
