@@ -134,6 +134,12 @@ DEFAULTS = {
         "type": bool,
         "help": "clear cuda cache every end of epoch",
     },
+    # ignite logger options
+    "logger_log_every_iters": {
+        "default": {{logger_log_every_iters}},
+        "type": int,
+        "help": "logging interval for experiment tracking system ({{logger_log_every_iters}})",
+    },
     # model options
     "z_dim": {
         "default": {{z_dim}},

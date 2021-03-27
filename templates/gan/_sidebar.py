@@ -82,7 +82,7 @@ def ignite_handlers_options(config):
         "Logging interval for iteration progress bar (log_every_iters)",
         min_value=1,
         value=100,
-        help="Setting to a lower value can cause tqdm to fluch quickly for fast trainings",
+        help="Setting to a lower value can cause `tqdm` to fluch quickly for fast trainings",
     )
     config["with_pbars"] = st.checkbox(
         "Show two progress bars",
@@ -106,22 +106,27 @@ def ignite_handlers_options(config):
     )
     st.markdown("---")
     config["setup_common_training_handlers"] = True
+    if config["with_pbars"]:
+        config["handler_deps"] = "tqdm"
 
 
 def ignite_loggers_options(config):
+    config["logger"] = ""
     st.markdown("## Ignite Loggers Options")
-    config["logger"] = None
     if st.checkbox("Use experiment tracking system ?", value=True):
         config["logger"] = st.selectbox(
             "Select experiment eracking system",
             ["ClearML", "MLflow", "Neptune", "Polyaxon", "TensorBoard", "Visdom", "WandB"],
             index=4,
         ).lower()
+        # for logger requirement
+        if config["logger"] == "neptune":
+            config["logger"] = "neptune-client"
         config["logger_log_every_iters"] = st.number_input(
             "Logging interval for experiment tracking system (logger_log_every_iters)",
             min_value=1,
             value=100,
-            help="This logging interval is iteration based",
+            help="This logging interval is iteration based.",
         )
     st.markdown("---")
 
