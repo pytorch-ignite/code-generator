@@ -4,4 +4,4 @@ pytorch-ignite
 matplotlib
 pandas
 {{ handler_deps }}
-{{ logger }}
+{{ logger_deps }}

@@ -17,35 +17,35 @@
         output_names=None,
     )
     {% endif %}
-    {% if logger == 'clearml' %}
+    {% if logger_deps == 'clearml' %}
     logger_handler = common.setup_clearml_logging(
         trainer=trainer,
         optimizers=optimizers,
         evaluators=evaluators,
         log_every_iters=config.logger_log_every_iters,
     )
-    {% elif logger == 'mlflow' %}
+    {% elif logger_deps == 'mlflow' %}
     logger_handler = common.setup_mlflow_logging(
         trainer=trainer,
         optimizers=optimizers,
         evaluators=evaluators,
         log_every_iters=config.logger_log_every_iters,
     )
-    {% elif logger == 'neptune-client' %}
+    {% elif logger_deps == 'neptune-client' %}
     logger_handler = common.setup_neptune_logging(
         trainer=trainer,
         optimizers=optimizers,
         evaluators=evaluators,
         log_every_iters=config.logger_log_every_iters,
     )
-    {% elif logger == 'polyaxon' %}
+    {% elif logger_deps == 'polyaxon' %}
     logger_handler = common.setup_plx_logging(
         trainer=trainer,
         optimizers=optimizers,
         evaluators=evaluators,
         log_every_iters=config.logger_log_every_iters,
     )
-    {% elif logger == 'tensorboard' %}
+    {% elif logger_deps == 'tensorboard' %}
     logger_handler = common.setup_tb_logging(
         output_path=config.filepath,
         trainer=trainer,
@@ -53,14 +53,14 @@
         evaluators=evaluators,
         log_every_iters=config.logger_log_every_iters,
     )
-    {% elif logger == 'visdom' %}
+    {% elif logger_deps == 'visdom' %}
     logger_handler = common.setup_visdom_logging(
         trainer=trainer,
         optimizers=optimizers,
         evaluators=evaluators,
         log_every_iters=config.logger_log_every_iters,
     )
-    {% elif logger == 'wandb' %}
+    {% elif logger_deps == 'wandb' %}
     logger_handler = common.setup_wandb_logging(
         trainer=trainer,
         optimizers=optimizers,
