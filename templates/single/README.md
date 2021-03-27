@@ -11,8 +11,8 @@ This is a template generated for single model, single optimizer based training.
 Table of Contents
 </summary>
 
-- [Getting Started](gettting-started)
-- [Training](training)
+- [Getting Started](#getting-started)
+- [Training](#training)
 
 </details>
 
