@@ -39,7 +39,7 @@
         log_every_iters=config.logger_log_every_iters,
     )
     {% elif logger == 'polyaxon' %}
-    logger_handler = common.setup_polyaxon_logging(
+    logger_handler = common.setup_plx_logging(
         trainer=trainer,
         optimizers=optimizers,
         evaluators=evaluators,
@@ -47,6 +47,7 @@
     )
     {% elif logger == 'tensorboard' %}
     logger_handler = common.setup_tb_logging(
+        output_path=config.filepath,
         trainer=trainer,
         optimizers=optimizers,
         evaluators=evaluators,

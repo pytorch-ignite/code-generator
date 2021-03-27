@@ -8,8 +8,6 @@ def dataset_options(config):
         ["cifar10", "lsun", "imagenet", "folder", "lfw", "fake", "mnist"],
     )
     config["data_path"] = st.text_input("Dataset path (data_path)", "./")
-
-    config["filepath"] = st.text_input("Logging file path (filepath)", "./logs")
     st.markdown("---")
 
 
@@ -113,6 +111,11 @@ def ignite_handlers_options(config):
 def ignite_loggers_options(config):
     config["logger"] = ""
     st.markdown("## Ignite Loggers Options")
+    config["filepath"] = st.text_input(
+        "Logging file path (filepath)",
+        "./logs",
+        help="This option will be used by both python logging and ignite loggers if possible",
+    )
     if st.checkbox("Use experiment tracking system ?", value=True):
         config["logger"] = st.selectbox(
             "Select experiment eracking system",
@@ -120,8 +123,8 @@ def ignite_loggers_options(config):
             index=4,
         ).lower()
         # for logger requirement
-        if config["logger"] == "neptune":
-            config["logger"] = "neptune-client"
+        if config["logger"] in ("neptune", "polyaxon"):
+            config["logger"] += "-client"
         config["logger_log_every_iters"] = st.number_input(
             "Logging interval for experiment tracking system (logger_log_every_iters)",
             min_value=1,
