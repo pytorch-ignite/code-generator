@@ -27,7 +27,7 @@ Table of Contents
 
 _Below files are in `single_cg` folder after downloaded and extracted._
 
-_**A WORD OF TIP:** To adapt the generate code structure quickly, there are TODOs in the files that are needed to be edited. PyCharm TODO feature or [VSCode Todo Tree](https://marketplace.visualstudio.com/items?itemName=Gruntfuggly.todo-tree) can easily detect them._
+_**A WORD OF TIP:** To adapt the generate code structure quickly, there are TODOs in the files that are needed to be edited. PyCharm TODO feature or [VSCode Todo Tree](https://marketplace.visualstudio.com/items?itemName=Gruntfuggly.todo-tree) can easily help you detect them._
 
 - Edit `datasets.py` for your custom datasets and dataloaders.
 - Edit `models.py` for your custom models.
