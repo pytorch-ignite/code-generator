@@ -4,7 +4,7 @@ import streamlit as st
 
 sys.path.append("./templates")
 
-from _base._sidebar import distributed_options, ignite_handlers_options, ignite_loggers_options
+from _base._sidebar import distributed_options, ignite_handlers_options, ignite_loggers_options, config
 
 
 def dataset_options(config):
@@ -55,7 +55,6 @@ def model_options(config):
 
 
 def get_configs() -> dict:
-    config = {}
     config["train_epoch_length"] = None
     config["eval_epoch_length"] = None
 

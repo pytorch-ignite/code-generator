@@ -1,4 +1,3 @@
-import os
 import shutil
 from pathlib import Path
 from subprocess import check_output
@@ -8,6 +7,13 @@ from codegen import CodeGenerator
 from utils import import_from_file
 
 __version__ = "0.1.0"
+
+
+FOLDER_TO_TEMPLATE_NAME = {
+    "Single Model, Single Optimizer": "single",
+    "Generative Adversarial Network": "gan",
+    "Image Classification": "image_classification",
+}
 
 
 class App:
@@ -39,6 +45,7 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
         template_list = template_list or []
         st.markdown("### Choose a Template")
         self.template_name = st.selectbox("Available Templates are:", options=template_list)
+        self.template_name = FOLDER_TO_TEMPLATE_NAME[self.template_name]
         with st.sidebar:
             if self.template_name:
                 config = config(self.template_name)
@@ -46,11 +53,11 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
             else:
                 self.config = {}
 
-    def render_code(self, fname="", code=""):
+    def render_code(self, fname: str = "", code: str = ""):
         """Main content with the code."""
-        with st.beta_expander(f"View rendered {fname}"):
+        with st.beta_expander(f"View rendered {fname}", expanded=fname.endswith(".md")):
             if fname.endswith(".md"):
-                st.markdown(code)
+                st.markdown(code, unsafe_allow_html=True)
             else:
                 st.code(code)
 
@@ -63,12 +70,12 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
         def config(template_name):
             return import_from_file("template_config", f"./templates/{template_name}/_sidebar.py")
 
-        self.sidebar(self.codegen.template_list, config)
+        self.sidebar([*FOLDER_TO_TEMPLATE_NAME], config)
 
     def add_content(self):
         """Get generated/rendered code from the codegen."""
         content = [*self.codegen.render_templates(self.template_name, self.config)]
-        if st.checkbox("View rendered code ?"):
+        if st.checkbox("View rendered code ?", value=True):
             for fname, code in content:
                 self.render_code(fname, code)
 
@@ -90,7 +97,7 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
                 shutil.copy(archive_fname, dist_path)
                 st.success(f"Download link : [{archive_fname}](./static/{archive_fname})")
                 with col2:
-                    self.render_directory(os.path.join(self.codegen.dist_dir, self.template_name))
+                    self.render_directory(Path(self.codegen.dist_dir, self.template_name))
 
     def run(self):
         self.add_sidebar()

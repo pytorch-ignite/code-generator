@@ -1,14 +1,28 @@
 import streamlit as st
 
 
-def distributed_options(config):
-    # distributed configs
+def default_none_options(config):
+    # no distributed configs
     config["nproc_per_node"] = None
     config["nnodes"] = None
     config["node_rank"] = None
     config["master_addr"] = None
     config["master_port"] = None
 
+    # no limit_sec input
+    config["limit_sec"] = None
+
+    # no patience input
+    config["patience"] = None
+
+    # no experiment tracking used
+    config["logger_log_every_iters"] = None
+
+    # no ignite handler dependencies
+    config["handler_deps"] = ""
+
+
+def distributed_options(config):
     st.markdown("## Distributed Training Options")
     if st.checkbox("Use distributed training"):
         config["nproc_per_node"] = st.number_input(
@@ -55,10 +69,12 @@ def ignite_handlers_options(config):
         )
     st.markdown("---")
 
-    if config["with_pbars"]:
-        config["handler_deps"] = "tqdm"
-    if config["with_gpu_stats"]:
-        config["handler_deps"] += "\npynvml"
+    handler_deps = ("tqdm>=4.59.0", "pynvml>=8.0.4")
+    if not config["handler_deps"] in handler_deps:
+        if config["with_pbars"]:
+            config["handler_deps"] = handler_deps[0]
+        if config["with_gpu_stats"]:
+            config["handler_deps"] += "\n" + handler_deps[1]
 
 
 def ignite_loggers_options(config):

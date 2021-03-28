@@ -15,6 +15,8 @@ def get_handlers(
     model: Module,
     train_engine: Engine,
     eval_engine: Engine,
+    metric_name: str,
+    es_metric_name: str,
     train_sampler: Optional[DistributedSampler] = None,
     to_save: Optional[Mapping] = None,
     lr_scheduler: Optional[LRScheduler] = None,
@@ -35,18 +37,18 @@ def get_handlers(
         - `stop_on_nan`: Stop the training if engine output contains NaN/inf values
         - `clear_cuda_cache`: clear cuda cache every end of epoch
         - `with_gpu_stats`: show GPU information: used memory percentage, gpu utilization percentage values
-        - `metric_name`: evaluation metric to save the best model
-        - `patience`: number of events to wait if no improvement and then stop the training.
-        - `es_metric_name`: evaluation metric to early stop the model
-        - `limit_sec`: 
+        - `patience`: number of events to wait if no improvement and then stop the training
+        - `limit_sec`: maximum time before training terminates in seconds
 
         model: best model to save
         train_engine: the engine used for training
         eval_engine: the engine used for evaluation
+        metric_name: evaluation metric to save the best model
+        es_metric_name: evaluation metric to early stop the model
         train_sampler: distributed training sampler to call `set_epoch`
         to_save: objects to save during training
         lr_scheduler: learning rate scheduler as native torch LRScheduler or ignite’s parameter scheduler
-        output_names: list of names associated with `train_engine`'s process_function output dictionary.
+        output_names: list of names associated with `train_engine`'s process_function output dictionary
 
     Returns:
         best_model_handler, es_handler, timer_handler
@@ -78,7 +80,7 @@ def get_handlers(
         output_path=config.output_path,
         evaluator=eval_engine,
         model=model,
-        metric_name=config.metric_name,
+        metric_name=metric_name,
         n_saved=config.n_saved,
         trainer=train_engine,
         tag='eval',
@@ -91,7 +93,7 @@ def get_handlers(
         patience=config.patience,
         evaluator=eval_engine,
         trainer=train_engine,
-        metric_name=config.es_metric_name,
+        metric_name=es_metric_name,
     )
     {% endif %}
     {% if setup_timer %}
