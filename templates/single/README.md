@@ -3,6 +3,7 @@
 # Single Model, Single Optimizer Template
 
 This is a template generated for single model, single optimizer based training.
+This template has structured like a python package to imports modules easily.
 
 <details>
 <summary>
@@ -11,22 +12,28 @@ Table of Contents
 
 - [Getting Started](#getting-started)
 - [Training](#training)
+- [PyTorch Hub](#pytorch-hub)
 
 </details>
 
 ## Getting Started
 
-- Install the dependencies with `pip`:
+- Install the dependencies with `pip` and install the package in `editable` mode:
 
   ```sh
   pip install -r requirements.txt --progress-bar off -U
+  pip install -e .
   ```
 
-- Edit `datasets.py` for your custom datasets and dataloaders
-- Edit `engines.py` for your custom models' forward pass, backward pass, and evaluation
-- Edit `models.py` for your custom models
-- Extend `utils.py` for additional command line arguments
-- Extend `handlers.py` for your custom handlers _(**Optional**)_
+_Below files are in `single_cg` folder after downloaded and extracted._
+
+_**A WORD OF TIP:** To adapt the generate code structure quickly, there are TODOs in the files that are needed to be edited. PyCharm TODO feature or [VSCode Todo Tree](https://marketplace.visualstudio.com/items?itemName=Gruntfuggly.todo-tree) can easily detect them._
+
+- Edit `datasets.py` for your custom datasets and dataloaders.
+- Edit `models.py` for your custom models.
+- Extend `utils.py` for additional command line arguments.
+- Extend `engines.py` for your custom models' forward pass, backward pass, and evaluation.
+- Extend `handlers.py` for your custom handlers. _(**OPTIONAL**)_
 
 ## Training
 
@@ -88,3 +95,8 @@ Let's start training on two nodes with 2 gpus each. We assuming that master node
 ```sh
 python main.py --verbose --backend='xla-tpu'  --nproc_per_node=8
 ```
+
+## PyTorch Hub
+
+- Edit `hubconf.py` to use the custom model easily via `torch.hub.load()`.
+- Add additional requirements inside `dependencies` list in `hubconf.py`.

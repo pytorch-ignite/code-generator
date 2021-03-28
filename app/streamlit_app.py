@@ -15,6 +15,15 @@ FOLDER_TO_TEMPLATE_NAME = {
     "Image Classification": "image_classification",
 }
 
+TIP = """
+**A WORD OF TIP:**
+
+_To adapt the generate code structure quickly, there are TODOs in the files that are needed to be edited.
+PyCharm TODO feature or
+[VSCode Todo Tree](https://marketplace.visualstudio.com/items?itemName=Gruntfuggly.todo-tree)
+can easily detect them._
+"""
+
 
 class App:
     page_title = "Code Generator"
@@ -77,7 +86,8 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
         content = [*self.codegen.render_templates(self.template_name, self.config)]
         if st.checkbox("View rendered code ?", value=True):
             for fname, code in content:
-                self.render_code(fname, code)
+                if len(code):  # don't show files which don't have content in them
+                    self.render_code(fname, code)
 
     def add_download(self):
         st.markdown("")
@@ -103,6 +113,7 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
         self.add_sidebar()
         self.add_content()
         self.add_download()
+        st.info(TIP)
 
 
 def main():

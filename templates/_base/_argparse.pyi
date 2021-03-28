@@ -10,6 +10,11 @@ DEFAULTS = {
     },
 
     # distributed training options
+    "backend": {
+        "default": None,
+        "type": str,
+        "help": "backend to use for distributed training (None)",
+    },
     "nproc_per_node": {
         "default": {{nproc_per_node}},
         "type": int,

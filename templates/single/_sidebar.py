@@ -4,7 +4,12 @@ import streamlit as st
 
 sys.path.append("./templates")
 
-from _base._sidebar import default_none_options, distributed_options, ignite_handlers_options, ignite_loggers_options
+from _base._sidebar import (
+    default_none_options,
+    distributed_options,
+    ignite_handlers_options,
+    ignite_loggers_options,
+)
 
 
 def get_configs():

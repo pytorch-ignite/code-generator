@@ -3,6 +3,7 @@ import streamlit as st
 
 def default_none_options(config):
     # no distributed configs
+    config["backend"] = None
     config["nproc_per_node"] = None
     config["nnodes"] = None
     config["node_rank"] = None

@@ -24,34 +24,36 @@ def get_handlers(
 ) -> Union[Tuple[Checkpoint, EarlyStopping, Timer], Tuple[None, None, None]]:
     """Get best model, earlystopping, timer handlers.
 
-    Args:
-        config: Config object for setting up handlers
+    Parameters
+    ----------
+    config: Config object for setting up handlers
 
-        `config` has to contain
-        - `output_path`: output path to indicate where to_save objects are stored
-        - `save_every_iters`: saving iteration interval
-        - `n_saved`: number of best models to store
-        - `log_every_iters`: logging interval for iteration progress bar and `GpuInfo` if true
-        - `with_pbars`: show two progress bars
-        - `with_pbar_on_iters`: show iteration-wise progress bar
-        - `stop_on_nan`: Stop the training if engine output contains NaN/inf values
-        - `clear_cuda_cache`: clear cuda cache every end of epoch
-        - `with_gpu_stats`: show GPU information: used memory percentage, gpu utilization percentage values
-        - `patience`: number of events to wait if no improvement and then stop the training
-        - `limit_sec`: maximum time before training terminates in seconds
+    `config` has to contain
+    - `output_path`: output path to indicate where to_save objects are stored
+    - `save_every_iters`: saving iteration interval
+    - `n_saved`: number of best models to store
+    - `log_every_iters`: logging interval for iteration progress bar and `GpuInfo` if true
+    - `with_pbars`: show two progress bars
+    - `with_pbar_on_iters`: show iteration-wise progress bar
+    - `stop_on_nan`: Stop the training if engine output contains NaN/inf values
+    - `clear_cuda_cache`: clear cuda cache every end of epoch
+    - `with_gpu_stats`: show GPU information: used memory percentage, gpu utilization percentage values
+    - `patience`: number of events to wait if no improvement and then stop the training
+    - `limit_sec`: maximum time before training terminates in seconds
 
-        model: best model to save
-        train_engine: the engine used for training
-        eval_engine: the engine used for evaluation
-        metric_name: evaluation metric to save the best model
-        es_metric_name: evaluation metric to early stop the model
-        train_sampler: distributed training sampler to call `set_epoch`
-        to_save: objects to save during training
-        lr_scheduler: learning rate scheduler as native torch LRScheduler or ignite’s parameter scheduler
-        output_names: list of names associated with `train_engine`'s process_function output dictionary
+    model: best model to save
+    train_engine: the engine used for training
+    eval_engine: the engine used for evaluation
+    metric_name: evaluation metric to save the best model
+    es_metric_name: evaluation metric to early stop the model
+    train_sampler: distributed training sampler to call `set_epoch`
+    to_save: objects to save during training
+    lr_scheduler: learning rate scheduler as native torch LRScheduler or ignite’s parameter scheduler
+    output_names: list of names associated with `train_engine`'s process_function output dictionary
 
-    Returns:
-        best_model_handler, es_handler, timer_handler
+    Returns
+    -------
+    best_model_handler, es_handler, timer_handler
     """
 
     best_model_handler, es_handler, timer_handler = None, None, None
@@ -119,23 +121,27 @@ def get_handlers(
 def get_logger(
     config: Any,
     train_engine: Engine,
-    eval_engine: Engine,
-    optimizers: Union[Dict[Optimizer], Optimizer]
+    eval_engine: Optional[Union[Engine, Dict[str, Engine]]] = None,
+    optimizers: Optional[Union[Optimizer, Dict[str, Optimizer]]] = None,
+    **kwargs: Any,
 ) -> Optional[BaseLogger]:
     """Get Ignite provided logger.
 
-    Args:
-        config: Config object for setting up loggers
+    Parameters
+    ----------
+    config: Config object for setting up loggers
 
-        `config` has to contain
-        - `logger_log_every_iters`: logging iteration interval for loggers
+    `config` has to contain
+    - `logger_log_every_iters`: logging iteration interval for loggers
 
-        train_engine: trainer engine
-        eval_engine: evaluator engine
-        optimizers: optimizers to log optimizer parameters
+    train_engine: trainer engine
+    eval_engine: evaluator engine
+    optimizers: optimizers to log optimizer parameters
+    kwargs: optional keyword arguments passed to the logger
 
-    Returns:
-        Ignite provided logger instance - logger_handler
+    Returns
+    -------
+    Ignite provided logger instance - logger_handler
     """
 
     {% if logger_deps == 'clearml' %}
@@ -144,6 +150,7 @@ def get_logger(
         optimizers=optimizers,
         evaluators=eval_engine,
         log_every_iters=config.logger_log_every_iters,
+        **kwargs,
     )
     {% elif logger_deps == 'mlflow' %}
     logger_handler = common.setup_mlflow_logging(
@@ -151,6 +158,7 @@ def get_logger(
         optimizers=optimizers,
         evaluators=eval_engine,
         log_every_iters=config.logger_log_every_iters,
+        **kwargs,
     )
     {% elif logger_deps == 'neptune-client' %}
     logger_handler = common.setup_neptune_logging(
@@ -158,6 +166,7 @@ def get_logger(
         optimizers=optimizers,
         evaluators=eval_engine,
         log_every_iters=config.logger_log_every_iters,
+        **kwargs,
     )
     {% elif logger_deps == 'polyaxon' %}
     logger_handler = common.setup_plx_logging(
@@ -165,6 +174,7 @@ def get_logger(
         optimizers=optimizers,
         evaluators=eval_engine,
         log_every_iters=config.logger_log_every_iters,
+        **kwargs,
     )
     {% elif logger_deps == 'tensorboard' %}
     logger_handler = common.setup_tb_logging(
@@ -173,6 +183,7 @@ def get_logger(
         optimizers=optimizers,
         evaluators=eval_engine,
         log_every_iters=config.logger_log_every_iters,
+        **kwargs,
     )
     {% elif logger_deps == 'visdom' %}
     logger_handler = common.setup_visdom_logging(
@@ -180,6 +191,7 @@ def get_logger(
         optimizers=optimizers,
         evaluators=eval_engine,
         log_every_iters=config.logger_log_every_iters,
+        **kwargs,
     )
     {% elif logger_deps == 'wandb' %}
     logger_handler = common.setup_wandb_logging(
@@ -187,6 +199,7 @@ def get_logger(
         optimizers=optimizers,
         evaluators=eval_engine,
         log_every_iters=config.logger_log_every_iters,
+        **kwargs,
     )
     {% else %}
     return None
