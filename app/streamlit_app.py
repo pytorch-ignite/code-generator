@@ -1,6 +1,5 @@
 import shutil
 from pathlib import Path
-from subprocess import check_output
 
 import streamlit as st
 from codegen import CodeGenerator
@@ -71,7 +70,40 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
                 st.code(code)
 
     def render_directory(self, dir):
-        output = check_output(["tree", dir], encoding="utf-8")
+        """tree command is not available in all systems."""
+        output = f"{dir}\n"
+        # prefix components:
+        space = "    "
+        branch = "│   "
+        # pointers:
+        tee = "├── "
+        last = "└── "
+        file_count = 0
+        dir_count = 0
+
+        def tree(dir_path: Path, prefix: str = ""):
+            """A recursive generator, given a directory Path object
+            will yield a visual tree structure line by line
+            with each line prefixed by the same characters
+            """
+            nonlocal file_count
+            nonlocal dir_count
+            contents = sorted(dir_path.iterdir())
+            # contents each get pointers that are ├── with a final └── :
+            pointers = [tee] * (len(contents) - 1) + [last]
+            for pointer, path in zip(pointers, contents):
+                if path.is_file():
+                    file_count += 1
+                yield prefix + pointer + path.name
+                if path.is_dir():  # extend the prefix and recurse:
+                    dir_count += 1
+                    extension = branch if pointer == tee else space
+                    # i.e. space because last, └── , above so no more |
+                    yield from tree(path, prefix=prefix + extension)
+
+        for line in tree(dir):
+            output += line + "\n"
+        output += f"\n{dir_count} directories, {file_count} files"
         st.markdown("Generated files and directory structure")
         st.code(output)
 
