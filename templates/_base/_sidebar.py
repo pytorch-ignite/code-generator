@@ -113,7 +113,7 @@ def _setup_common_training_handlers_options(config):
     )
     config["n_saved"] = st.number_input("Number of best models to store (n_saved)", min_value=1, value=2)
     config["log_every_iters"] = st.number_input(
-        "Logging interval for iteration progress bar and GpuInfo if true (log_every_iters)",
+        "Logging interval for stderr logging, iteration progress bar, and GpuInfo if true (log_every_iters)",
         min_value=1,
         value=100,
         help="Setting to a lower value can cause `tqdm` to fluch quickly for fast trainings",
@@ -155,7 +155,7 @@ def _save_best_model_by_val_score_options(config):
     )
     if config["save_best_model_by_val_score"]:
         config["metric_name"] = st.text_input(
-            "Metric name associated with eval_engine",
+            "Metric name associated with eval_engine (metric_name)",
             key="ckpt_metric_name",
         )
         if not config["metric_name"]:
@@ -179,7 +179,7 @@ def _add_early_stopping_by_val_score_options(config):
             value=3,
         )
         config["es_metric_name"] = st.text_input(
-            "Metric name associated with eval_engine",
+            "Metric name associated with eval_engine (es_metric_name)",
             key="es_metric_name",
             help="This input `metric_name` can either be same as above or not."
             if config["save_best_model_by_val_score"]

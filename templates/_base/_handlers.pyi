@@ -116,7 +116,11 @@ def get_handlers(
     {% endif %}
     {% if setup_timer %}
 
-    timer_handler = Timer()
+    # https://pytorch.org/ignite/handlers.html#ignite.handlers.Timer
+    # measure the average time to process a single batch of samples
+    # Events for that are - ITERATION_STARTED and ITERATION_COMPLETED
+    # you can replace with the events you want to measure
+    timer_handler = Timer(average=True)
     timer_handler.attach(
         engine=train_engine,
         start=Events.EPOCH_STARTED,
@@ -127,6 +131,7 @@ def get_handlers(
     {% endif %}
     {% if setup_timelimit %}
 
+    # training will terminate if training time exceed `limit_sec`.
     train_engine.add_event_handler(
         Events.ITERATION_COMPLETED, TimeLimit(limit_sec=config.limit_sec)
     )

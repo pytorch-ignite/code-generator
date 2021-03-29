@@ -121,7 +121,7 @@ DEFAULTS = {
 
 
 {% block get_default_parser %}
-def get_default_parser():
+def get_default_parser() -> ArgumentParser:
     """Get the default configs for training."""
     parser = ArgumentParser(add_help=False)
 

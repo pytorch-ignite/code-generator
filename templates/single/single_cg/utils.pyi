@@ -32,7 +32,7 @@ def log_metrics(engine: Engine, tag: str) -> None:
     engine.logger.info(metrics_format)
 
 
-def setup_logging(config: Any) -> Tuple[Logger, str]:
+def setup_logging(config: Any) -> Logger:
     """Setup logger with `ignite.utils.setup_logger()`.
 
     Parameters

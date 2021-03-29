@@ -1,10 +1,11 @@
 """
 main entrypoint training
 """
-import logging
 from argparse import ArgumentParser
 from pathlib import Path
+from pprint import pformat
 from typing import Any
+from ignite.contrib.handlers.wandb_logger import WandBLogger
 
 import ignite.distributed as idist
 from ignite.engine.events import Events
@@ -12,7 +13,7 @@ from ignite.utils import manual_seed
 
 from single_cg.engines import create_engines
 from single_cg.handlers import get_handlers, get_logger
-from single_cg.utils import get_default_parser
+from single_cg.utils import get_default_parser, setup_logging, log_metrics
 
 
 def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
@@ -60,21 +61,61 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
         device=device,
     )
 
+    # -------------------------------------------
+    # update config with optimizer parameters
+    # setup engines logger with python logging
+    # print training configurations
+    # -------------------------------------------
+
+    config.__dict__.update(**optimizer.defaults)
+    logger = setup_logging(config)
+    logger.info("%s", pformat(vars(config)))
+    train_engine.logger = logger
+    eval_engine.logger = logger
+
     # -------------------------------------
     # ignite handlers and ignite loggers
     # -------------------------------------
 
-    best_model_handler, es_handler, timer_handler = get_handlers()
-    logger_handler = get_logger()
+    to_save = {"model": model, "optimizer": optimizer, "train_engine": train_engine}
+    best_model_handler, es_handler, timer_handler = get_handlers(
+        config=config,
+        model=model,
+        train_engine=train_engine,
+        eval_engine=eval_engine,
+        metric_name=None,
+        # TODO : replace with the name you have input in the Code-Generator
+        # if you check `Save the best model by evaluation score` otherwise leave it None
+        es_metric_name=None,
+        # TODO : replace with the name you have input in the Code-Generator
+        # if you check `Early stop the training by evaluation score` otherwise leave it None
+        to_save=to_save,
+        lr_scheduler=None,
+        output_names=None,
+    )
+    logger_handler = get_logger(config=config, train_engine=train_engine, eval_engine=eval_engine, optimizers=optimizer)
+
+    # --------------------------------
+    # print metrics to the stderr
+    # with `add_event_handler` API
+    # for training stats
+    # --------------------------------
+
+    train_engine.add_event_handler(Events.ITERATION_COMPLETED(config.log_every_iters), log_metrics, tag="train")
 
     # ---------------------------------------------
     # run evaluation at every training epoch end
+    # with shortcut `on` decorator API and
+    # print metrics to the stderr
+    # again with `add_event_handler` API
+    # for evaluation stats
     # ---------------------------------------------
 
     @train_engine.on(Events.EPOCH_COMPLETED(every=1))
     def _():
-        # PLEASE provide `max_epochs` parameter
+        # PLEASE provide `max_epochs` parameter if you want to evaluate more than one epochs
         eval_engine.run(eval_dataloader)
+        eval_engine.add_event_handler(Events.EPOCH_COMPLETED(every=1), log_metrics, tag="eval")
 
     # ------------------------------------------
     # setup if done. let's run the training
@@ -83,20 +124,39 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
 
     train_engine.run(train_dataloader)
 
+    # ------------------------------------------------------------
+    # close the logger after the training completed / terminated
+    # ------------------------------------------------------------
+
+    if isinstance(logger_handler, WandBLogger):
+        # why handle differently for wandb ?
+        # See : https://github.com/pytorch/ignite/issues/1894
+        logger_handler.finish()
+    elif logger_handler:
+        logger_handler.close()
+
+    # -----------------------------------------
+    # where is my best and last checkpoint ?
+    # -----------------------------------------
+
+    logger.info(best_model_handler.last_checkpoint)
+
 
 def main():
     parser = ArgumentParser(parents=[get_default_parser()])
     config = parser.parse_args()
     manual_seed(config.seed)
-    config.verbose = logging.INFO if config.verbose else logging.WARNING
+
     if config.filepath:
         path = Path(config.filepath)
         path.mkdir(parents=True, exist_ok=True)
         config.filepath = path
+
     if config.output_path:
         path = Path(config.output_path)
         path.mkdir(parents=True, exist_ok=True)
         config.output_path = path
+
     with idist.Parallel(
         backend=config.backend,
         nproc_per_node=config.nproc_per_node,
