@@ -16,12 +16,12 @@ FOLDER_TO_TEMPLATE_NAME = {
 }
 
 TIP = """
-**A WORD OF TIP:**
-
-_To adapt the generate code structure quickly, there are TODOs in the files that are needed to be edited.
-PyCharm TODO feature or
-[VSCode Todo Tree](https://marketplace.visualstudio.com/items?itemName=Gruntfuggly.todo-tree)
-can easily help you detect them._
+> **💡 TIP**
+>
+> To adapt the generated code structure quickly, there are TODOs in the files that are needed to be edited.
+> [PyCharm TODO comments](https://www.jetbrains.com/help/pycharm/using-todo.html) or
+> [VSCode Todo Tree](https://marketplace.visualstudio.com/items?itemName=Gruntfuggly.todo-tree)
+> can easily help you detect them.
 """
 
 

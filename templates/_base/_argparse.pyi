@@ -4,6 +4,11 @@ from argparse import ArgumentParser
 
 {% block defaults %}
 DEFAULTS = {
+    "seed": {
+        "default": 666,
+        "type": int,
+        "help": "seed to use in ignite.utils.manual_seed()"
+    },
     "verbose": {
         "action": "store_true",
         "help": "use logging.INFO in ignite.utils.setup_logger",

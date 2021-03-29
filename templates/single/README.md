@@ -18,6 +18,47 @@ Table of Contents
 
 ## Getting Started
 
+- After downloaded and extracted an archive, there will be a folder named `single` (directory name). Inside that there will be an another folder named `single_cg` (package name).
+
+<details>
+<summary>
+Detail Directory List
+</summary>
+
+```sh
+single
+├── README.md
+├── find_and_replace.sh
+├── hubconf.py
+├── requirements.txt
+├── setup.py
+├── single_cg
+│   ├── __init__.py
+│   ├── datasets.py
+│   ├── engines.py
+│   ├── handlers.py
+│   ├── main.py
+│   ├── models.py
+│   └── utils.py
+└── tests
+    ├── __init__.py
+    ├── test_engines.py
+    ├── test_handlers.py
+    └── test_utils.py
+
+2 directories, 16 files
+```
+
+</details>
+
+- Folder names must be renamed by using `mv` command in Unix/macOS and Linux and `move` in Windows. Or simply rename them.
+
+- Since the generated code are using absolute imports, the package name must be renamed to the name you have changed in the above step. There is a script named `find_and_replace.sh` (Unix and Linux only) to easily find and replace the package name in the generated code. Usage is:
+
+  ```sh
+  bash find_and_replace.sh old_pkg_name new_pkg_name
+  ```
+
 - Install the dependencies with `pip` and install the package in `editable` mode:
 
   ```sh
@@ -25,9 +66,12 @@ Table of Contents
   pip install -e .
   ```
 
-_Below files are in `single_cg` folder after downloaded and extracted._
-
-_**A WORD OF TIP:** To adapt the generate code structure quickly, there are TODOs in the files that are needed to be edited. PyCharm TODO feature or [VSCode Todo Tree](https://marketplace.visualstudio.com/items?itemName=Gruntfuggly.todo-tree) can easily help you detect them._
+> **💡 TIP**
+>
+> To adapt the generated code structure quickly, there are TODOs in the files that are needed to be edited.
+> [PyCharm TODO comments](https://www.jetbrains.com/help/pycharm/using-todo.html) or
+> [VSCode Todo Tree](https://marketplace.visualstudio.com/items?itemName=Gruntfuggly.todo-tree)
+> can easily help you detect them.
 
 - Edit `datasets.py` for your custom datasets and dataloaders.
 - Edit `models.py` for your custom models.

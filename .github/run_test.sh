@@ -2,11 +2,11 @@
 
 set -xeu
 
-if [ $1 = "generate" ]; then
+if [ $1 == "generate" ]; then
     python ./tests/generate.py
-elif [ $1 = "unittest" ]; then
+elif [ $1 == "unittest" ]; then
     pytest ./tests/unittest -vvv -ra --color=yes --durations=0
-elif [ $1 = "integration" ]; then
+elif [ $1 == "integration" ]; then
     for file in $(find ./tests/integration -iname "*.sh")
     do
         bash $file

@@ -24,7 +24,7 @@ requirements = dependencies("requirements.txt")
 
 setup(
     # Metadata
-    name="single-cg",
+    name="single_cg",
     version=VERSION,
     long_description_content_type="text/markdown",
     long_description=readme,
