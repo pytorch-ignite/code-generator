@@ -4,7 +4,7 @@ from ignite.contrib.handlers.base_logger import BaseLogger
 from ignite.contrib.handlers.param_scheduler import LRScheduler
 from ignite.engine.engine import Engine
 from ignite.engine.events import Events
-from ignite.handlers import TimeLimit, Timer, Checkpoint, EarlyStopping, global_step_from_engine
+from ignite.handlers import TimeLimit, Timer, Checkpoint, EarlyStopping
 from torch.nn import Module
 from torch.optim.optimizer import Optimizer
 from torch.utils.data.distributed import DistributedSampler
@@ -27,7 +27,8 @@ def get_handlers(
 
     Parameters
     ----------
-    config: Config object for setting up handlers
+    config
+        Config object for setting up handlers
 
     `config` has to contain
     - `output_path`: output path to indicate where to_save objects are stored
@@ -42,16 +43,26 @@ def get_handlers(
     - `patience`: number of events to wait if no improvement and then stop the training
     - `limit_sec`: maximum time before training terminates in seconds
 
-    model: best model to save
-    train_engine: the engine used for training
-    eval_engine: the engine used for evaluation
-    metric_name: evaluation metric to save the best model
-    es_metric_name: evaluation metric to early stop the model
-    train_sampler: distributed training sampler to call `set_epoch`
-    to_save: objects to save during training
-    lr_scheduler: learning rate scheduler as native torch LRScheduler or ignite’s parameter scheduler
-    output_names: list of names associated with `train_engine`'s process_function output dictionary
-    kwargs: keyword arguments passed to Checkpoint handler
+    model
+        best model to save
+    train_engine
+        the engine used for training
+    eval_engine
+        the engine used for evaluation
+    metric_name
+        evaluation metric to save the best model
+    es_metric_name
+        evaluation metric to early stop the model
+    train_sampler
+        distributed training sampler to call `set_epoch`
+    to_save
+        objects to save during training
+    lr_scheduler
+        learning rate scheduler as native torch LRScheduler or ignite’s parameter scheduler
+    output_names
+        list of names associated with `train_engine`'s process_function output dictionary
+    kwargs
+        keyword arguments passed to Checkpoint handler
 
     Returns
     -------
@@ -134,19 +145,25 @@ def get_logger(
 
     Parameters
     ----------
-    config: Config object for setting up loggers
+    config
+        Config object for setting up loggers
 
     `config` has to contain
     - `logger_log_every_iters`: logging iteration interval for loggers
 
-    train_engine: trainer engine
-    eval_engine: evaluator engine
-    optimizers: optimizers to log optimizer parameters
-    kwargs: optional keyword arguments passed to the logger
+    train_engine
+        trainer engine
+    eval_engine
+        evaluator engine
+    optimizers
+        optimizers to log optimizer parameters
+    kwargs
+        optional keyword arguments passed to the logger
 
     Returns
     -------
-    Ignite provided logger instance - logger_handler
+    logger_handler
+        Ignite provided logger instance
     """
 
     {% if logger_deps == 'clearml' %}

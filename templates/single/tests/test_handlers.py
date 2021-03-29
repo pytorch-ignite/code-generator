@@ -1,7 +1,6 @@
-import shutil
-import tempfile
 import unittest
 from argparse import Namespace
+from tempfile import TemporaryDirectory
 
 from ignite.contrib.handlers import (
     ClearMLLogger,
@@ -24,40 +23,33 @@ from torch import nn, optim
 class TestHandlers(unittest.TestCase):
     """Testing handlers.py"""
 
-    def setUp(self) -> None:
-        self.tmp = tempfile.mkdtemp()
-        return super().setUp()
-
-    def tearDown(self) -> None:
-        shutil.rmtree(self.tmp)
-        return super().tearDown()
-
     def test_get_handlers(self):
         train_engine = Engine(lambda e, b: b)
-        config = Namespace(
-            output_path=self.tmp,
-            save_every_iters=1,
-            n_saved=2,
-            log_every_iters=1,
-            with_pbars=False,
-            with_pbar_on_iters=False,
-            stop_on_nan=False,
-            clear_cuda_cache=False,
-            with_gpu_stats=False,
-            patience=1,
-            limit_sec=30,
-        )
-        bm_handler, es_handler, timer_handler = get_handlers(
-            config=config,
-            model=nn.Linear(1, 1),
-            train_engine=train_engine,
-            eval_engine=train_engine,
-            metric_name="eval_loss",
-            es_metric_name="eval_loss",
-        )
-        self.assertIsInstance(bm_handler, (type(None), Checkpoint), "Should be Checkpoint or None")
-        self.assertIsInstance(es_handler, (type(None), EarlyStopping), "Should be EarlyStopping or None")
-        self.assertIsInstance(timer_handler, (type(None), Timer), "Shoulde be Timer or None")
+        with TemporaryDirectory() as tmp:
+            config = Namespace(
+                output_path=tmp,
+                save_every_iters=1,
+                n_saved=2,
+                log_every_iters=1,
+                with_pbars=False,
+                with_pbar_on_iters=False,
+                stop_on_nan=False,
+                clear_cuda_cache=False,
+                with_gpu_stats=False,
+                patience=1,
+                limit_sec=30,
+            )
+            bm_handler, es_handler, timer_handler = get_handlers(
+                config=config,
+                model=nn.Linear(1, 1),
+                train_engine=train_engine,
+                eval_engine=train_engine,
+                metric_name="eval_loss",
+                es_metric_name="eval_loss",
+            )
+            self.assertIsInstance(bm_handler, (type(None), Checkpoint), "Should be Checkpoint or None")
+            self.assertIsInstance(es_handler, (type(None), EarlyStopping), "Should be EarlyStopping or None")
+            self.assertIsInstance(timer_handler, (type(None), Timer), "Shoulde be Timer or None")
 
     def test_get_logger(self):
         config = Namespace(logger_log_every_iters=1)

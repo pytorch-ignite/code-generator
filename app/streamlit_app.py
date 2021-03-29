@@ -72,6 +72,7 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
     def render_directory(self, dir):
         """tree command is not available in all systems."""
         output = f"{dir}\n"
+        # https://stackoverflow.com/questions/9727673/list-directory-tree-structure-in-python
         # prefix components:
         space = "    "
         branch = "│   "
