@@ -4,7 +4,7 @@ from ignite.contrib.handlers.base_logger import BaseLogger
 from ignite.contrib.handlers.param_scheduler import LRScheduler
 from ignite.engine.engine import Engine
 from ignite.engine.events import Events
-from ignite.handlers import TimeLimit, Timer, Checkpoint, EarlyStopping
+from ignite.handlers import TimeLimit, Timer, Checkpoint, EarlyStopping, global_step_from_engine
 from torch.nn import Module
 from torch.optim.optimizer import Optimizer
 from torch.utils.data.distributed import DistributedSampler
@@ -21,6 +21,7 @@ def get_handlers(
     to_save: Optional[Mapping] = None,
     lr_scheduler: Optional[LRScheduler] = None,
     output_names: Optional[Iterable[str]] = None,
+    **kwargs: Any,
 ) -> Union[Tuple[Checkpoint, EarlyStopping, Timer], Tuple[None, None, None]]:
     """Get best model, earlystopping, timer handlers.
 
@@ -50,6 +51,7 @@ def get_handlers(
     to_save: objects to save during training
     lr_scheduler: learning rate scheduler as native torch LRScheduler or ignite’s parameter scheduler
     output_names: list of names associated with `train_engine`'s process_function output dictionary
+    kwargs: keyword arguments passed to Checkpoint handler
 
     Returns
     -------
@@ -59,6 +61,8 @@ def get_handlers(
     best_model_handler, es_handler, timer_handler = None, None, None
 
     # https://pytorch.org/ignite/contrib/engines.html#ignite.contrib.engines.common.setup_common_training_handlers
+    # kwargs can be passed to save the model based on training stats
+    # like score_name, score_function
     common.setup_common_training_handlers(
         trainer=train_engine,
         train_sampler=train_sampler,
@@ -74,6 +78,7 @@ def get_handlers(
         stop_on_nan=config.stop_on_nan,
         clear_cuda_cache=config.clear_cuda_cache,
         with_gpu_stats=config.with_gpu_stats,
+        **kwargs,
     )
     {% if save_best_model_by_val_score %}
 

@@ -22,7 +22,7 @@ Table of Contents
 
 <details>
 <summary>
-Detail Directory List
+Detailed Directory List
 </summary>
 
 ```sh
