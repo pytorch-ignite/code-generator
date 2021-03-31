@@ -3,7 +3,6 @@ main entrypoint training
 """
 from argparse import ArgumentParser
 from pathlib import Path
-from pprint import pformat
 from typing import Any
 from ignite.contrib.handlers.wandb_logger import WandBLogger
 
@@ -14,7 +13,7 @@ from ignite.utils import manual_seed
 from single_cg.engines import create_engines
 from single_cg.events import TrainEvents
 from single_cg.handlers import get_handlers, get_logger
-from single_cg.utils import get_default_parser, setup_logging, log_metrics
+from single_cg.utils import get_default_parser, setup_logging, log_metrics, log_basic_info, initialize
 
 
 def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
@@ -43,12 +42,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # TODO : PLEASE provide your custom model, optimizer, and loss function
 
     device = idist.device()
-    model = ...
-    optimizer = ...
-    loss_fn = ...
-    model = idist.auto_model(model=model, **kwargs)
-    optimizer = idist.auto_optim(optimizer=optimizer)
-    loss_fn = loss_fn.to(device)
+    model, optimizer, loss_fn, lr_scheduler = initialize()
 
     # -----------------------------
     # train_engine and eval_engine
@@ -70,7 +64,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
 
     config.__dict__.update(**optimizer.defaults)
     logger = setup_logging(config)
-    logger.info("%s", pformat(vars(config)))
+    log_basic_info(logger, config)
     train_engine.logger = logger
     eval_engine.logger = logger
 
@@ -138,8 +132,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
 
     @train_engine.on(Events.EPOCH_COMPLETED(every=1))
     def _():
-        # PLEASE provide `max_epochs` parameter if you want to evaluate more than one epochs
-        eval_engine.run(eval_dataloader)
+        eval_engine.run(eval_dataloader, max_epochs=1)
         eval_engine.add_event_handler(Events.EPOCH_COMPLETED(every=1), log_metrics, tag="eval")
 
     # ------------------------------------------

@@ -11,7 +11,7 @@ DEFAULTS = {
     "seed": {
         "default": 666,
         "type": int,
-        "help": "seed to use in ignite.utils.manual_seed()"
+        "help": "seed to use in ignite.utils.manual_seed() (666)"
     },
     "verbose": {
         "action": "store_true",
@@ -49,7 +49,7 @@ DEFAULTS = {
     "master_port": {
         "default": {{master_port}},
         "type": int,
-        "help": "master node port for torch native backends {{ master_port }}",
+        "help": "master node port for torch native backends ({{ master_port }})",
     },
 
     # ignite handlers options

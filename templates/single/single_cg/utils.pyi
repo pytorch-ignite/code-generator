@@ -8,12 +8,79 @@ import shutil
 from datetime import datetime
 from logging import Logger
 from pathlib import Path
-from typing import Any, Tuple, Union
+from pprint import pformat
+from typing import Any, Optional, Tuple, Union
 
+import ignite.distributed as idist
+import torch
 from ignite.engine import Engine
 from ignite.utils import setup_logger
+from torch.nn import Module
+from torch.optim.optimizer import Optimizer
+from torch.optim.lr_scheduler import _LRScheduler
+
 
 {% include "_argparse.pyi" %}
+
+
+def initialize(config: Optional[Any]) -> Tuple[Module, Optimizer, Module, _LRScheduler]:
+    """Initializing model, optimizer, loss function, and lr scheduler
+    with correct settings.
+
+    Parameters
+    ----------
+    config:
+        config object
+
+    Returns
+    -------
+    model, optimizer, loss_fn, lr_scheduler
+    """
+    model = ...
+    optimizer = ...
+    loss_fn = ...
+    lr_scheduler = ...
+    model = idist.auto_model(model)
+    optimizer = idist.auto_optim(optimizer)
+    loss_fn = loss_fn.to(idist.device())
+
+    return model, optimizer, loss_fn, lr_scheduler
+
+
+def log_basic_info(logger: Logger, config: Any) -> None:
+    """Logging about pytorch, ignite, configurations, gpu system
+    distributed settings.
+
+    Parameters
+    ----------
+    logger
+        Logger instance for logging
+    config
+        config object to log
+    """
+    import ignite
+
+    logger.info("- PyTorch version: %s", torch.__version__)
+    logger.info("- Ignite version: %s", ignite.__version__)
+    if torch.cuda.is_available():
+        # explicitly import cudnn as
+        # torch.backends.cudnn can not be pickled with hvd spawning procs
+        from torch.backends import cudnn
+
+        logger.info("- GPU device: %s", torch.cuda.get_device_name(idist.get_local_rank()))
+        logger.info("- CUDA version: %s", torch.version.cuda)
+        logger.info("- CUDNN version: %s", cudnn.version())
+
+    logger.info("\n")
+    logger.info("Configuration:")
+    logger.info("%s", pformat(vars(config)))
+    logger.info("\n")
+
+    if idist.get_world_size() > 1:
+        logger.info("\nDistributed setting:")
+        logger.info("\tbackend: %s", idist.backend())
+        logger.info("\tworld size: %s", idist.get_world_size())
+        logger.info("\n")
 
 
 def log_metrics(engine: Engine, tag: str) -> None:
@@ -26,12 +93,7 @@ def log_metrics(engine: Engine, tag: str) -> None:
     tag
         a string to add at the start of output.
     """
-    metrics_format = "{0} [{1}/{2}]: {3}".format(
-        tag,
-        engine.state.epoch,
-        engine.state.iteration,
-        engine.state.metrics
-    )
+    metrics_format = "{0} [{1}/{2}]: {3}".format(tag, engine.state.epoch, engine.state.iteration, engine.state.metrics)
     engine.logger.info(metrics_format)
 
 
