@@ -52,7 +52,11 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
             if fname.endswith(".md"):
                 st.markdown(code)
             else:
-                st.code(code)
+                col1, col2 = st.beta_columns([1, 20])
+                with col1:
+                    st.code("\n".join(map("{:>3}".format, range(1, code.count("\n") + 1))))
+                with col2:
+                    st.code(code)
 
     def render_directory(self, dir):
         output = check_output(["tree", dir], encoding="utf-8")
