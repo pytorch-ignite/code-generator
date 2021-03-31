@@ -8,6 +8,11 @@ DEFAULTS = {
         "action": "store_true",
         "help": "use torch.cuda.amp for automatic mixed precision"
     },
+    "resume_from": {
+        "default": None,
+        "type": str,
+        "help": "path to the checkpoint file to resume, can also url starting with https (None)"
+    },
     "seed": {
         "default": 666,
         "type": int,

@@ -13,7 +13,7 @@ from ignite.utils import manual_seed
 from single_cg.engines import create_engines
 from single_cg.events import TrainEvents
 from single_cg.handlers import get_handlers, get_logger
-from single_cg.utils import get_default_parser, setup_logging, log_metrics, log_basic_info, initialize
+from single_cg.utils import get_default_parser, setup_logging, log_metrics, log_basic_info, initialize, resume_from
 
 
 def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
@@ -72,7 +72,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # ignite handlers and ignite loggers
     # -------------------------------------
 
-    to_save = {"model": model, "optimizer": optimizer, "train_engine": train_engine}
+    to_save = {"model": model, "optimizer": optimizer, "train_engine": train_engine, "lr_scheduler": lr_scheduler}
     best_model_handler, es_handler, timer_handler = get_handlers(
         config=config,
         model=model,
@@ -85,10 +85,17 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
         # TODO : replace with the name you have input in the Code-Generator
         # if you check `Early stop the training by evaluation score` otherwise leave it None
         to_save=to_save,
-        lr_scheduler=None,
+        lr_scheduler=lr_scheduler,
         output_names=None,
     )
     logger_handler = get_logger(config=config, train_engine=train_engine, eval_engine=eval_engine, optimizers=optimizer)
+
+    # -----------------------------------
+    # resume from the saved checkpoints
+    # -----------------------------------
+
+    if config.resume_from:
+        resume_from(to_load=to_save, checkpoint_fp=config.resume_from)
 
     # --------------------------------------------
     # let's trigger custom events we registered
@@ -157,7 +164,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # where is my best and last checkpoint ?
     # -----------------------------------------
 
-    logger.info(best_model_handler.last_checkpoint)
+    logger.info("Last and best checkpoint: %s", best_model_handler.last_checkpoint)
 
 
 def main():

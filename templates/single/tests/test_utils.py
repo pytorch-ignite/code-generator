@@ -1,14 +1,19 @@
 import logging
-from pathlib import Path
-from tempfile import TemporaryDirectory
 import unittest
 from argparse import ArgumentParser, Namespace
+from pathlib import Path
+from tempfile import TemporaryDirectory
 
 import torch
 from ignite.engine import Engine
 from ignite.utils import setup_logger
-
-from single_cg.utils import get_default_parser, log_metrics, setup_logging, hash_checkpoint
+from single_cg.utils import (
+    get_default_parser,
+    hash_checkpoint,
+    log_metrics,
+    resume_from,
+    setup_logging,
+)
 
 
 class TestUtils(unittest.TestCase):
@@ -46,20 +51,62 @@ class TestUtils(unittest.TestCase):
             torch.jit.save(scripted_model, f"{tmp}/squeezenet1_0.ckptc")
             # download un-jitted model
             torch.hub.download_url_to_file(
-                "https://download.pytorch.org/models/squeezenet1_0-a815701f.pth",
+                "https://download.pytorch.org/models/squeezenet1_0-b66bff10.pth",
                 f"{tmp}/squeezenet1_0.ckpt",
             )
 
             checkpoint = f"{tmp}/squeezenet1_0.ckpt"
-            filename, sha_hash = hash_checkpoint(checkpoint, False, tmp)
-            model.load_state_dict(torch.load(f"{tmp}/{filename}"), True)
-            self.assertEqual(sha_hash[:8], "a815701f")
-            self.assertEqual(filename, f"squeezenet1_0-{sha_hash[:8]}.pt")
+            hashed_fp, sha_hash = hash_checkpoint(checkpoint, False, tmp)
+            model.load_state_dict(torch.load(hashed_fp), True)
+            self.assertEqual(sha_hash[:8], "b66bff10")
+            self.assertEqual(hashed_fp.name, f"squeezenet1_0-{sha_hash[:8]}.pt")
 
             checkpoint = f"{tmp}/squeezenet1_0.ckptc"
-            filename, sha_hash = hash_checkpoint(checkpoint, True, tmp)
-            scripted_model = torch.jit.load(f"{tmp}/{filename}")
-            self.assertEqual(filename, f"squeezenet1_0-{sha_hash[:8]}.ptc")
+            hashed_fp, sha_hash = hash_checkpoint(checkpoint, True, tmp)
+            scripted_model = torch.jit.load(hashed_fp)
+            self.assertEqual(hashed_fp.name, f"squeezenet1_0-{sha_hash[:8]}.ptc")
+
+    def test_resume_from_url(self):
+        logger = logging.getLogger()
+        logging.basicConfig(level=logging.INFO)
+        with TemporaryDirectory() as tmp:
+            checkpoint_fp = "https://download.pytorch.org/models/squeezenet1_0-b66bff10.pth"
+            model = torch.hub.load("pytorch/vision", "squeezenet1_0")
+            to_load = {"model": model}
+            with self.assertLogs() as log:
+                resume_from(to_load, checkpoint_fp, logger, model_dir=tmp)
+            self.assertRegex(log.output[0], r"Successfully resumed from a checkpoint", "checkpoint fail to load")
+
+    def test_resume_from_fp(self):
+        logger = logging.getLogger()
+        logging.basicConfig(level=logging.INFO)
+        with TemporaryDirectory() as tmp:
+            torch.hub.download_url_to_file(
+                "https://download.pytorch.org/models/squeezenet1_0-b66bff10.pth",
+                f"{tmp}/squeezenet1_0.pt",
+            )
+            checkpoint_fp = f"{tmp}/squeezenet1_0.pt"
+            model = torch.hub.load("pytorch/vision", "squeezenet1_0")
+            to_load = {"model": model}
+            with self.assertLogs() as log:
+                resume_from(to_load, checkpoint_fp, logger)
+            self.assertRegex(log.output[0], r"Successfully resumed from a checkpoint", "checkpoint fail to load")
+
+        with TemporaryDirectory() as tmp:
+            torch.hub.download_url_to_file(
+                "https://download.pytorch.org/models/squeezenet1_0-b66bff10.pth",
+                f"{tmp}/squeezenet1_0.pt",
+            )
+            checkpoint_fp = Path(f"{tmp}/squeezenet1_0.pt")
+            model = torch.hub.load("pytorch/vision", "squeezenet1_0")
+            to_load = {"model": model}
+            with self.assertLogs() as log:
+                resume_from(to_load, checkpoint_fp, logger)
+            self.assertRegex(log.output[0], r"Successfully resumed from a checkpoint", "checkpoint fail to load")
+
+    def test_resume_from_error(self):
+        with self.assertRaisesRegex(FileNotFoundError, r"Given \w+ does not exist"):
+            resume_from({}, "abcdef/", None)
 
 
 if __name__ == "__main__":

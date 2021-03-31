@@ -3,22 +3,21 @@ utility functions which can be used in training
 """
 import hashlib
 import logging
-import os
 import shutil
 from datetime import datetime
 from logging import Logger
 from pathlib import Path
 from pprint import pformat
-from typing import Any, Optional, Tuple, Union
+from typing import Any, Mapping, Optional, Tuple, Union
 
 import ignite.distributed as idist
 import torch
 from ignite.engine import Engine
+from ignite.handlers.checkpoint import Checkpoint
 from ignite.utils import setup_logger
 from torch.nn import Module
-from torch.optim.optimizer import Optimizer
 from torch.optim.lr_scheduler import _LRScheduler
-
+from torch.optim.optimizer import Optimizer
 
 {% include "_argparse.pyi" %}
 
@@ -121,17 +120,17 @@ def setup_logging(config: Any) -> Logger:
 
 
 def hash_checkpoint(
-    checkpoint: str,
+    checkpoint_fp: Union[str, Path],
     jitted: bool,
     output_path: Union[str, Path],
-) -> Tuple[str, str]:
+) -> Tuple[Path, str]:
     """Hash the checkpoint file to be used with `check_hash` of
     `torch.hub.load_state_dict_from_url`.
 
     Parameters
     ----------
-    checkpoint
-        checkpoint file.
+    checkpoint_fp
+        path to the checkpoint file.
     jitted
         indicate the checkpoint is already applied torch.jit or not.
     output_path
@@ -139,22 +138,64 @@ def hash_checkpoint(
 
     Returns
     -------
-    filename and sha_hash
-        the hashed filename and SHA hash
+    hashed_fp and sha_hash
+        path to the hashed file and SHA hash
     """
-    with open(checkpoint, "rb") as file:
-        sha_hash = hashlib.sha256(file.read()).hexdigest()
+    if isinstance(checkpoint_fp, str):
+        checkpoint_fp = Path(checkpoint_fp)
 
-    ckpt_file_name = os.path.splitext(checkpoint.split(os.sep)[-1])[0]
+    sha_hash = hashlib.sha256(checkpoint_fp.read_bytes()).hexdigest()
+    ckpt_file_name = checkpoint_fp.stem
+
     if jitted:
-        filename = "-".join((ckpt_file_name, sha_hash[:8])) + ".ptc"
+        hashed_fp = "-".join((ckpt_file_name, sha_hash[:8])) + ".ptc"
     else:
-        filename = "-".join((ckpt_file_name, sha_hash[:8])) + ".pt"
+        hashed_fp = "-".join((ckpt_file_name, sha_hash[:8])) + ".pt"
 
     if isinstance(output_path, str):
         output_path = Path(output_path)
 
-    shutil.move(checkpoint, output_path / filename)
-    print("Saved state dict into %s | SHA256: %s", filename, sha_hash)
+    hashed_fp = output_path / hashed_fp
+    shutil.move(checkpoint_fp, hashed_fp)
+    print(f"Saved state dict into {hashed_fp} | SHA256: {sha_hash}")
 
-    return filename, sha_hash
+    return hashed_fp, sha_hash
+
+
+def resume_from(
+    to_load: Mapping,
+    checkpoint_fp: Union[str, Path],
+    logger: Logger,
+    strict: bool = True,
+    model_dir: Optional[str] = None,
+) -> None:
+    """Loads state dict from a checkpoint file to resume the training.
+
+    Parameters
+    ----------
+    to_load
+        a dictionary with objects, e.g. {“model”: model, “optimizer”: optimizer, …}
+    checkpoint_fp
+        path to the checkpoint file
+    logger
+        to log info about resuming from a checkpoint
+    strict
+        whether to strictly enforce that the keys in `state_dict` match the keys
+        returned by this module’s `state_dict()` function. Default: True
+    model_dir
+        directory in which to save the object
+    """
+    if isinstance(checkpoint_fp, str) and checkpoint_fp.startswith("https"):
+        checkpoint = torch.hub.load_state_dict_from_url(
+            checkpoint_fp, model_dir=model_dir, map_location="cpu", check_hash=True
+        )
+    else:
+        if isinstance(checkpoint_fp, str):
+            checkpoint_fp = Path(checkpoint_fp)
+
+        if not checkpoint_fp.exists():
+            raise FileNotFoundError(f"Given {str(checkpoint_fp)} does not exist.")
+        checkpoint = torch.load(checkpoint_fp, map_location="cpu")
+
+    Checkpoint.load_objects(to_load=to_load, checkpoint=checkpoint, strict=strict)
+    logger.info("Successfully resumed from a checkpoint: %s", checkpoint_fp)
