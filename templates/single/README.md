@@ -36,6 +36,7 @@ single
 │   ├── __init__.py
 │   ├── datasets.py
 │   ├── engines.py
+│   ├── events.py
 │   ├── handlers.py
 │   ├── main.py
 │   ├── models.py
@@ -45,7 +46,7 @@ single
     ├── test_handlers.py
     └── test_utils.py
 
-2 directories, 15 files
+2 directories, 16 files
 ```
 
 </details>
@@ -88,19 +89,23 @@ python main.py --verbose
 
 ### Single Node, Multiple GPUs
 
-- Using function spawn inside the code
-
-  ```sh
-  python main.py run --backend="nccl" --nproc_per_node=2
-  ```
-
-- Using `torch.distributed.launch`
+- Using `torch.distributed.launch` (preferred)
 
   ```sh
   python -m torch.distributed.launch \
     --nproc_per_node=2 \
     --use_env main.py \
-    --backend="nccl"
+    --backend="nccl" \
+    --verbose \
+  ```
+
+- Using function spawn inside the code
+
+  ```sh
+  python main.py \
+    --backend="nccl" \
+    --nproc_per_node=2 \
+    --verbose \
   ```
 
 ### Multiple Nodes, Multiple GPUs
@@ -117,7 +122,8 @@ Let's start training on two nodes with 2 gpus each. We assuming that master node
     --master_addr=master \
     --master_port=2222 \
     --use_env main.py \
-    --backend="nccl"
+    --backend="nccl" \
+    --verbose \
   ```
 
 - Execute on worker node
@@ -130,13 +136,14 @@ Let's start training on two nodes with 2 gpus each. We assuming that master node
     --master_addr=master \
     --master_port=2222 \
     --use_env main.py \
-    --backend="nccl"
+    --backend="nccl" \
+    --verbose \
   ```
 
 ### Colab 8 TPUs
 
 ```sh
-python main.py --verbose --backend='xla-tpu'  --nproc_per_node=8
+python main.py --verbose --backend='xla-tpu' --nproc_per_node=8
 ```
 
 ## PyTorch Hub
