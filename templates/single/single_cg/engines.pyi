@@ -2,8 +2,10 @@
 `train_engine` and `eval_engine` like trainer and evaluator
 """
 from typing import Any, Tuple
+
 import torch
 from ignite.engine import Engine
+from torch.cuda.amp import autocast
 from torch.optim.optimizer import Optimizer
 
 from single_cg.events import TrainEvents, train_events_to_attr
@@ -11,13 +13,13 @@ from single_cg.events import TrainEvents, train_events_to_attr
 
 # Edit below functions the way how the model will be training
 
-# train_fn is how the model will be learning with given batch
-# below in the train_fn, common parameters are provided
+# train_function is how the model will be learning with given batch
+# below in the train_function, common parameters are provided
 # you can add any additional parameters depending on the training
 # NOTE : engine and batch parameters are needed to work with
 # Ignite's Engine.
 # TODO: Extend with your custom training.
-def train_fn(
+def train_function(
     config: Any,
     engine: Engine,
     batch: Any,
@@ -26,7 +28,7 @@ def train_fn(
     optimizer: Optimizer,
     device: torch.device,
 ):
-    """Training.
+    """Model training step.
 
     Parameters
     ----------
@@ -48,8 +50,9 @@ def train_fn(
     samples = batch[0].to(device, non_blocking=True)
     targets = batch[1].to(device, non_blocking=True)
 
-    outputs = model(samples)
-    loss = loss_fn(outputs, targets)
+    with autocast(enabled=config.use_amp):
+        outputs = model(samples)
+        loss = loss_fn(outputs, targets)
 
     loss.backward()
     engine.state.backward_completed += 1
@@ -66,14 +69,14 @@ def train_fn(
     return loss_value
 
 
-# evaluate_fn is how the model will be learning with given batch
-# below in the evaluate_fn, common parameters are provided
+# evaluate_function is how the model will be learning with given batch
+# below in the evaluate_function, common parameters are provided
 # you can add any additional parameters depending on the training
 # NOTE : engine and batch parameters are needed to work with
 # Ignite's Engine.
 # TODO: Extend with your custom evaluation.
 @torch.no_grad()
-def evaluate_fn(
+def evaluate_function(
     config: Any,
     engine: Engine,
     batch: Any,
@@ -81,7 +84,7 @@ def evaluate_fn(
     loss_fn: torch.nn.Module,
     device: torch.device,
 ):
-    """Evaluating.
+    """Model evaluating step.
 
     Parameters
     ----------
@@ -102,10 +105,11 @@ def evaluate_fn(
     samples = batch[0].to(device, non_blocking=True)
     targets = batch[1].to(device, non_blocking=True)
 
-    outputs = model(samples)
-    loss = loss_fn(outputs, targets)
-    loss_value = loss.item()
+    with autocast(enabled=config.use_amp):
+        outputs = model(samples)
+        loss = loss_fn(outputs, targets)
 
+    loss_value = loss.item()
     engine.state.metrics = {"eval_loss": loss_value}
     return loss_value
 
@@ -117,21 +121,21 @@ def create_engines(**kwargs) -> Tuple[Engine, Engine]:
 
     Parameters
     ----------
-    kwargs: keyword arguments passed to both train_fn and evaluate_fn
+    kwargs: keyword arguments passed to both train_function and evaluate_function
 
     Returns
     -------
     train_engine, eval_engine
     """
     train_engine = Engine(
-        lambda e, b: train_fn(
+        lambda e, b: train_function(
             engine=e,
             batch=b,
             **kwargs,
         )
     )
     eval_engine = Engine(
-        lambda e, b: evaluate_fn(
+        lambda e, b: evaluate_function(
             engine=e,
             batch=b,
             **kwargs,

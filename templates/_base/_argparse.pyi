@@ -4,6 +4,10 @@ from argparse import ArgumentParser
 
 {% block defaults %}
 DEFAULTS = {
+    "use_amp": {
+        "action": "store_true",
+        "help": "use torch.cuda.amp for automatic mixed precision"
+    },
     "seed": {
         "default": 666,
         "type": int,

@@ -52,30 +52,31 @@ class TestHandlers(unittest.TestCase):
             self.assertIsInstance(timer_handler, (type(None), Timer), "Shoulde be Timer or None")
 
     def test_get_logger(self):
-        config = Namespace(logger_log_every_iters=1)
-        train_engine = Engine(lambda e, b: b)
-        optimizer = optim.Adam(nn.Linear(1, 1).parameters())
-        logger_handler = get_logger(
-            config=config,
-            train_engine=train_engine,
-            eval_engine=train_engine,
-            optimizers=optimizer,
-        )
-        self.assertIsInstance(
-            logger_handler,
-            (
-                BaseLogger,
-                ClearMLLogger,
-                MLflowLogger,
-                NeptuneLogger,
-                PolyaxonLogger,
-                TensorboardLogger,
-                VisdomLogger,
-                WandBLogger,
-                type(None),
-            ),
-            "Should be Ignite provided loggers or None",
-        )
+        with TemporaryDirectory() as tmp:
+            config = Namespace(filepath=tmp, logger_log_every_iters=1)
+            train_engine = Engine(lambda e, b: b)
+            optimizer = optim.Adam(nn.Linear(1, 1).parameters())
+            logger_handler = get_logger(
+                config=config,
+                train_engine=train_engine,
+                eval_engine=train_engine,
+                optimizers=optimizer,
+            )
+            self.assertIsInstance(
+                logger_handler,
+                (
+                    BaseLogger,
+                    ClearMLLogger,
+                    MLflowLogger,
+                    NeptuneLogger,
+                    PolyaxonLogger,
+                    TensorboardLogger,
+                    VisdomLogger,
+                    WandBLogger,
+                    type(None),
+                ),
+                "Should be Ignite provided loggers or None",
+            )
 
 
 if __name__ == "__main__":

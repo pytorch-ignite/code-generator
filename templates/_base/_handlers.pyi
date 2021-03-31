@@ -157,6 +157,7 @@ def get_logger(
         Config object for setting up loggers
 
     `config` has to contain
+    - `filepath`: logging path to output file
     - `logger_log_every_iters`: logging iteration interval for loggers
 
     train_engine
@@ -232,5 +233,6 @@ def get_logger(
         **kwargs,
     )
     {% else %}
-    return None
+    logger_handler = None
     {% endif %}
+    return logger_handler

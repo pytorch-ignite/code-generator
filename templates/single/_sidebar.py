@@ -19,7 +19,7 @@ def get_configs():
     default_none_options(config)
 
     with st.beta_expander("Single Model, Single Optimizer Template Configurations", expanded=True):
-        st.info("Those in the parenthesis are used in the generated code.")
+        st.info("Names in the parenthesis are variable names used in the generated code.")
 
         # group by configurations type
         distributed_options(config)
