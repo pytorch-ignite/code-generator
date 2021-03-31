@@ -12,6 +12,7 @@ from ignite.engine.events import Events
 from ignite.utils import manual_seed
 
 from single_cg.engines import create_engines
+from single_cg.events import TrainEvents
 from single_cg.handlers import get_handlers, get_logger
 from single_cg.utils import get_default_parser, setup_logging, log_metrics
 
@@ -94,6 +95,30 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
         output_names=None,
     )
     logger_handler = get_logger(config=config, train_engine=train_engine, eval_engine=eval_engine, optimizers=optimizer)
+
+    # --------------------------------------------
+    # let's trigger custom events we registered
+    # we will use a `event_filter` to trigger that
+    # `event_filter` has to return boolean
+    # whether this event should be executed
+    # here will log the gradients on the 1st iteration
+    # and every 100 iterations
+    # --------------------------------------------
+
+    @train_engine.on(TrainEvents.BACKWARD_COMPLETED(lambda _, ev: (ev % 100 == 0) or (ev == 1)))
+    def _():
+        # do something interesting
+        pass
+
+    # ----------------------------------------
+    # here we will use `every` to trigger
+    # every 100 iterations
+    # ----------------------------------------
+
+    @train_engine.on(TrainEvents.OPTIM_STEP_COMPLETED(every=100))
+    def _():
+        # do something interesting
+        pass
 
     # --------------------------------
     # print metrics to the stderr

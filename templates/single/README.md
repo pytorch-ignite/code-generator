@@ -52,7 +52,7 @@ single
 
 - Folder names must be renamed by using `mv` command in Unix/macOS and Linux and `move` in Windows. Or simply rename them.
 
-- Since the generated code are using absolute imports, the package name must be renamed to the name you have changed in the above step. There is a script named `find_and_replace.sh` (Unix and Linux only) to easily find and replace the package name in the generated code. Usage is:
+- Since the generated code are using absolute imports, the package name must be renamed to the name you have changed in the above step. There is a `find_and_replace.sh` script (Unix and Linux only) to easily find and replace the package name in the generated code. Usage is:
 
   ```sh
   bash find_and_replace.sh old_pkg_name new_pkg_name
@@ -67,10 +67,10 @@ single
 
 > **💡 TIP**
 >
-> To adapt the generated code structure quickly, there are TODOs in the files that are needed to be edited.
+> To quickly adapt to the generated code structure, there are TODOs in the files that are needed to be edited.
 > [PyCharm TODO comments](https://www.jetbrains.com/help/pycharm/using-todo.html) or
 > [VSCode Todo Tree](https://marketplace.visualstudio.com/items?itemName=Gruntfuggly.todo-tree)
-> can easily help you detect them.
+> can help you find them easily.
 
 - Edit `datasets.py` for your custom datasets and dataloaders.
 - Edit `models.py` for your custom models.

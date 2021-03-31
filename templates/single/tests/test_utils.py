@@ -6,27 +6,27 @@ from argparse import ArgumentParser, Namespace
 
 import torch
 from ignite.engine import Engine
+from ignite.utils import setup_logger
 
 from single_cg.utils import get_default_parser, log_metrics, setup_logging, hash_checkpoint
 
 
 class TestUtils(unittest.TestCase):
+    """Testing utils.py"""
 
-    # test get_default_parser of utils.py
     def test_get_default_parser(self):
         parser = get_default_parser()
         self.assertIsInstance(parser, ArgumentParser)
         self.assertFalse(parser.add_help)
 
-    # test log_metrics of utils.py
     def test_log_metrics(self):
         engine = Engine(lambda e, b: None)
+        engine.logger = setup_logger(format="%(message)s")
         engine.run(list(range(100)), max_epochs=2)
         with self.assertLogs() as log:
             log_metrics(engine, "train")
-        self.assertEqual(log.output[0], "INFO:ignite.engine.engine.Engine:train [2/200]: {}")
+        self.assertEqual(log.output[0], "INFO:root:train [2/200]: {}")
 
-    # test setup_logging of utils.py
     def test_setup_logging(self):
         with TemporaryDirectory() as tmp:
             tmp = Path(tmp)
@@ -36,7 +36,6 @@ class TestUtils(unittest.TestCase):
             self.assertIsInstance(logger, logging.Logger)
             self.assertTrue(next(tmp.rglob("*.log")).is_file())
 
-    # test hash_checkpoint of utils.py
     def test_hash_checkpoint(self):
         with TemporaryDirectory() as tmp:
             # download lightweight model
@@ -64,4 +63,4 @@ class TestUtils(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    unittest.main()
+    unittest.main(verbosity=2)

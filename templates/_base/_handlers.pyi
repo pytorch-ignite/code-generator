@@ -1,3 +1,6 @@
+"""
+Ignite handlers
+"""
 from typing import Any, Dict, Iterable, Mapping, Optional, Tuple, Union
 from ignite.contrib.engines import common
 from ignite.contrib.handlers.base_logger import BaseLogger

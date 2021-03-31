@@ -1,10 +1,12 @@
 import unittest
 from numbers import Number
+from unittest.mock import MagicMock
 
 import ignite.distributed as idist
 import torch
 from ignite.engine.engine import Engine
 from single_cg.engines import create_engines, evaluate_fn, train_fn
+from single_cg.events import TrainEvents, train_events_to_attr
 from torch import nn, optim
 
 
@@ -17,21 +19,88 @@ class TestEngines(unittest.TestCase):
         self.device = idist.device()
         self.loss_fn = nn.MSELoss()
         self.batch = [torch.tensor([1.0]), torch.tensor([1.0])]
-        self.engine = Engine(lambda e, b: b)
 
     def test_train_fn(self):
-        output = train_fn(None, self.engine, self.batch, self.model, self.loss_fn, self.optimizer, self.device)
+        engine = Engine(lambda e, b: 1)
+        engine.register_events(*TrainEvents, event_to_attr=train_events_to_attr)
+        backward = MagicMock()
+        optim = MagicMock()
+        engine.add_event_handler(TrainEvents.BACKWARD_COMPLETED, backward)
+        engine.add_event_handler(TrainEvents.OPTIM_STEP_COMPLETED, optim)
+        output = train_fn(None, engine, self.batch, self.model, self.loss_fn, self.optimizer, self.device)
         self.assertIsInstance(output, Number)
+        self.assertTrue(hasattr(engine.state, "backward_completed"))
+        self.assertTrue(hasattr(engine.state, "optim_step_completed"))
+        self.assertEqual(engine.state.backward_completed, 1)
+        self.assertEqual(engine.state.optim_step_completed, 1)
+        self.assertEqual(backward.call_count, 1)
+        self.assertEqual(optim.call_count, 1)
+        self.assertTrue(backward.called)
+        self.assertTrue(optim.called)
+
+    def test_train_fn_event_filter(self):
+        engine = Engine(lambda e, b: train_fn(None, e, b, self.model, self.loss_fn, self.optimizer, self.device))
+        engine.register_events(*TrainEvents, event_to_attr=train_events_to_attr)
+        backward = MagicMock()
+        optim = MagicMock()
+        engine.add_event_handler(
+            TrainEvents.BACKWARD_COMPLETED(event_filter=lambda _, x: (x % 2 == 0) or x == 3), backward
+        )
+        engine.add_event_handler(
+            TrainEvents.OPTIM_STEP_COMPLETED(event_filter=lambda _, x: (x % 2 == 0) or x == 3), optim
+        )
+        engine.run([self.batch] * 5)
+        self.assertTrue(hasattr(engine.state, "backward_completed"))
+        self.assertTrue(hasattr(engine.state, "optim_step_completed"))
+        self.assertEqual(engine.state.backward_completed, 5)
+        self.assertEqual(engine.state.optim_step_completed, 5)
+        self.assertEqual(backward.call_count, 3)
+        self.assertEqual(optim.call_count, 3)
+        self.assertTrue(backward.called)
+        self.assertTrue(optim.called)
+
+    def test_train_fn_every(self):
+        engine = Engine(lambda e, b: train_fn(None, e, b, self.model, self.loss_fn, self.optimizer, self.device))
+        engine.register_events(*TrainEvents, event_to_attr=train_events_to_attr)
+        backward = MagicMock()
+        optim = MagicMock()
+        engine.add_event_handler(TrainEvents.BACKWARD_COMPLETED(every=2), backward)
+        engine.add_event_handler(TrainEvents.OPTIM_STEP_COMPLETED(every=2), optim)
+        engine.run([self.batch] * 5)
+        self.assertTrue(hasattr(engine.state, "backward_completed"))
+        self.assertTrue(hasattr(engine.state, "optim_step_completed"))
+        self.assertEqual(engine.state.backward_completed, 5)
+        self.assertEqual(engine.state.optim_step_completed, 5)
+        self.assertEqual(backward.call_count, 2)
+        self.assertEqual(optim.call_count, 2)
+        self.assertTrue(backward.called)
+        self.assertTrue(optim.called)
+
+    def test_train_fn_once(self):
+        engine = Engine(lambda e, b: train_fn(None, e, b, self.model, self.loss_fn, self.optimizer, self.device))
+        engine.register_events(*TrainEvents, event_to_attr=train_events_to_attr)
+        backward = MagicMock()
+        optim = MagicMock()
+        engine.add_event_handler(TrainEvents.BACKWARD_COMPLETED(once=3), backward)
+        engine.add_event_handler(TrainEvents.OPTIM_STEP_COMPLETED(once=3), optim)
+        engine.run([self.batch] * 5)
+        self.assertTrue(hasattr(engine.state, "backward_completed"))
+        self.assertTrue(hasattr(engine.state, "optim_step_completed"))
+        self.assertEqual(engine.state.backward_completed, 5)
+        self.assertEqual(engine.state.optim_step_completed, 5)
+        self.assertEqual(backward.call_count, 1)
+        self.assertEqual(optim.call_count, 1)
+        self.assertTrue(backward.called)
+        self.assertTrue(optim.called)
 
     def test_evaluate_fn(self):
-        output = evaluate_fn(None, self.engine, self.batch, self.model, self.loss_fn, self.device)
+        engine = Engine(lambda e, b: 1)
+        output = evaluate_fn(None, engine, self.batch, self.model, self.loss_fn, self.device)
         self.assertIsInstance(output, Number)
 
     def test_create_engines(self):
         train_engine, eval_engine = create_engines(
             config=None,
-            engine=self.engine,
-            batch=self.batch,
             model=self.model,
             loss_fn=self.loss_fn,
             optimizer=self.optimizer,
@@ -39,7 +108,9 @@ class TestEngines(unittest.TestCase):
         )
         self.assertIsInstance(train_engine, Engine)
         self.assertIsInstance(eval_engine, Engine)
+        self.assertTrue(hasattr(train_engine.state, "backward_completed"))
+        self.assertTrue(hasattr(train_engine.state, "optim_step_completed"))
 
 
 if __name__ == "__main__":
-    unittest.main()
+    unittest.main(verbosity=2)

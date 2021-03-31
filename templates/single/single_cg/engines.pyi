@@ -1,10 +1,12 @@
 """
-`train_engine` and `eval_engine`
+`train_engine` and `eval_engine` like trainer and evaluator
 """
 from typing import Any, Tuple
 import torch
 from ignite.engine import Engine
 from torch.optim.optimizer import Optimizer
+
+from single_cg.events import TrainEvents, train_events_to_attr
 
 
 # Edit below functions the way how the model will be training
@@ -48,12 +50,18 @@ def train_fn(
 
     outputs = model(samples)
     loss = loss_fn(outputs, targets)
-    loss_value = loss.item()
 
     loss.backward()
+    engine.state.backward_completed += 1
+    engine.fire_event(TrainEvents.BACKWARD_COMPLETED)
+
     optimizer.step()
+    engine.state.optim_step_completed += 1
+    engine.fire_event(TrainEvents.OPTIM_STEP_COMPLETED)
+
     optimizer.zero_grad()
 
+    loss_value = loss.item()
     engine.state.metrics = {"epoch": engine.state.epoch, "train_loss": loss_value}
     return loss_value
 
@@ -129,4 +137,5 @@ def create_engines(**kwargs) -> Tuple[Engine, Engine]:
             **kwargs,
         )
     )
+    train_engine.register_events(*TrainEvents, event_to_attr=train_events_to_attr)
     return train_engine, eval_engine

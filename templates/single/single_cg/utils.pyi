@@ -1,3 +1,6 @@
+"""
+utility functions which can be used in training
+"""
 import hashlib
 import logging
 import os
