@@ -22,6 +22,13 @@ from torch.optim.optimizer import Optimizer
 {% include "_argparse.pyi" %}
 
 
+# we can use `idist.auto_model` to handle distributed configurations
+# for your model : https://pytorch.org/ignite/distributed.html#ignite.distributed.auto.auto_model
+# same also for optimizer, `idist.auto_optim` also handles distributed configurations
+# See : https://pytorch.org/ignite/distributed.html#ignite.distributed.auto.auto_model
+# TODO : PLEASE provide your custom model, optimizer, and loss function
+
+
 def initialize(config: Optional[Any]) -> Tuple[Module, Optimizer, Module, _LRScheduler]:
     """Initializing model, optimizer, loss function, and lr scheduler
     with correct settings.
@@ -174,7 +181,7 @@ def resume_from(
     Parameters
     ----------
     to_load
-        a dictionary with objects, e.g. {“model”: model, “optimizer”: optimizer, …}
+        a dictionary with objects, e.g. {“model”: model, “optimizer”: optimizer, ...}
     checkpoint_fp
         path to the checkpoint file
     logger
@@ -185,7 +192,7 @@ def resume_from(
     model_dir
         directory in which to save the object
     """
-    if isinstance(checkpoint_fp, str) and checkpoint_fp.startswith("https"):
+    if isinstance(checkpoint_fp, str) and checkpoint_fp.startswith("https://"):
         checkpoint = torch.hub.load_state_dict_from_url(
             checkpoint_fp, model_dir=model_dir, map_location="cpu", check_hash=True
         )

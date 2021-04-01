@@ -35,11 +35,6 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # ------------------------------------------
     # model, optimizer, loss function, device
     # ------------------------------------------
-    # we can use `idist.auto_model` to handle distributed configurations
-    # for your model : https://pytorch.org/ignite/distributed.html#ignite.distributed.auto.auto_model
-    # same also for optimizer, `idist.auto_optim` also handles distributed configurations
-    # See : https://pytorch.org/ignite/distributed.html#ignite.distributed.auto.auto_model
-    # TODO : PLEASE provide your custom model, optimizer, and loss function
 
     device = idist.device()
     model, optimizer, loss_fn, lr_scheduler = initialize()
