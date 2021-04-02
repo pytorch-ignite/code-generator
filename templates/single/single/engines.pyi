@@ -8,7 +8,7 @@ from ignite.engine import Engine
 from torch.cuda.amp import autocast
 from torch.optim.optimizer import Optimizer
 
-from single_cg.events import TrainEvents, train_events_to_attr
+from {{project_name}}.events import TrainEvents, train_events_to_attr
 
 
 # Edit below functions the way how the model will be training

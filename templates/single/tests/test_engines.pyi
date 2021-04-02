@@ -6,8 +6,8 @@ from unittest.mock import MagicMock
 import ignite.distributed as idist
 import torch
 from ignite.engine.engine import Engine
-from single_cg.engines import create_engines, evaluate_function, train_function
-from single_cg.events import TrainEvents, train_events_to_attr
+from {{project_name}}.engines import create_engines, evaluate_function, train_function
+from {{project_name}}.events import TrainEvents, train_events_to_attr
 from torch import nn, optim
 
 

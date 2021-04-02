@@ -10,10 +10,10 @@ import ignite.distributed as idist
 from ignite.engine.events import Events
 from ignite.utils import manual_seed
 
-from single_cg.engines import create_engines
-from single_cg.events import TrainEvents
-from single_cg.handlers import get_handlers, get_logger
-from single_cg.utils import get_default_parser, setup_logging, log_metrics, log_basic_info, initialize, resume_from
+from {{project_name}}.engines import create_engines
+from {{project_name}}.events import TrainEvents
+from {{project_name}}.handlers import get_handlers, get_logger
+from {{project_name}}.utils import get_default_parser, setup_logging, log_metrics, log_basic_info, initialize, resume_from
 
 
 def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):

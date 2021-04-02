@@ -53,11 +53,13 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
         template_list = template_list or []
         st.markdown("### Choose a Template")
         self.template_name = st.selectbox("Available Templates are:", options=template_list)
+        self.project_name = st.text_input("Project Name:", "project_1")
         self.template_name = FOLDER_TO_TEMPLATE_NAME[self.template_name]
         with st.sidebar:
             if self.template_name:
                 config = config(self.template_name)
                 self.config = config.get_configs()
+                self.config["project_name"] = self.project_name
             else:
                 self.config = {}
 
@@ -120,7 +122,7 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
 
     def add_content(self):
         """Get generated/rendered code from the codegen."""
-        content = [*self.codegen.render_templates(self.template_name, self.config)]
+        content = [*self.codegen.render_templates(self.template_name, self.project_name, self.config)]
         if st.checkbox("View rendered code ?", value=True):
             for fname, code in content:
                 if len(code):  # don't show files which don't have content in them
@@ -135,7 +137,7 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
             # https://github.com/streamlit/streamlit/issues/400
             # https://github.com/streamlit/streamlit/issues/400#issuecomment-648580840
             if st.button("Generate an archive"):
-                archive_fname = self.codegen.make_archive(self.template_name, archive_format)
+                archive_fname = self.codegen.make_archive(self.template_name, self.project_name, archive_format)
                 # this is where streamlit serves static files
                 # ~/site-packages/streamlit/static/static/
                 dist_path = Path(st.__path__[0]) / "static/static/dist"
@@ -144,7 +146,7 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
                 shutil.copy(archive_fname, dist_path)
                 st.success(f"Download link : [{archive_fname}](./static/{archive_fname})")
                 with col2:
-                    self.render_directory(Path(self.codegen.dist_dir, self.template_name))
+                    self.render_directory(Path(self.codegen.dist_dir, self.project_name))
 
     def run(self):
         self.add_sidebar()
