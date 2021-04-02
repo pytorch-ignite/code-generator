@@ -31,7 +31,7 @@ class CodeGenerator:
 
     def make_and_write(self, template_name: str, project_name: str):
         """Make the directories first and write to the files"""
-        for p in (self.templates_dir / template_name).iterdir():
+        for p in (self.templates_dir / template_name).rglob("*"):
             if not p.stem.startswith("_") and p.is_dir():
                 # p is templates/template_name/...
                 # remove "templates" from p.parts and join with "/", so we'll have
