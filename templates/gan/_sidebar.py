@@ -1,4 +1,15 @@
+import sys
+
 import streamlit as st
+
+sys.path.append("./templates")
+
+from _base._sidebar import (
+    config,
+    distributed_options,
+    ignite_handlers_options,
+    ignite_loggers_options,
+)
 
 
 def dataset_options(config):
@@ -36,103 +47,6 @@ def training_options(config):
     st.markdown("---")
 
 
-def distributed_options(config):
-    st.markdown("## Distributed Training Options")
-    if st.checkbox("Use distributed training"):
-        config["nproc_per_node"] = st.number_input(
-            "Number of processes to launch on each node (nproc_per_node)", min_value=1
-        )
-        config["nnodes"] = st.number_input("Number of nodes to use for distributed training (nnodes)", min_value=1)
-        if config["nnodes"] > 1:
-            st.info(
-                "The following options are only supported by torch.distributed,"
-                " namely 'gloo' and 'nccl' backends. For other backends,"
-                " please specify spawn_kwargs in main.py"
-            )
-            config["node_rank"] = st.number_input(
-                "Rank of the node for multi-node distributed training (node_rank)",
-                min_value=0,
-            )
-            if config["node_rank"] > (config["nnodes"] - 1):
-                st.error(f"node_rank should be between 0 and {config['nnodes'] - 1}")
-            config["master_addr"] = st.text_input(
-                "Master node TCP/IP address for torch native backends (master_addr)",
-                value="'127.0.0.1'",
-            )
-            st.warning("Please include single quote in master_addr.")
-            config["master_port"] = st.text_input(
-                "Master node port for torch native backends (master_port)", value=8080
-            )
-    st.markdown("---")
-
-
-def ignite_handlers_options(config):
-    st.markdown("## Ignite Handlers Options")
-    config["output_path"] = st.text_input(
-        "Output path to indicate where to_save objects are stored (output_path)",
-        value="./logs",
-    )
-    config["save_every_iters"] = st.number_input(
-        "Saving iteration interval (save_every_iters)", min_value=1, value=1000
-    )
-    config["n_saved"] = st.number_input("Number of best models to store (n_saved)", min_value=1, value=2)
-    config["log_every_iters"] = st.number_input(
-        "Logging interval for iteration progress bar (log_every_iters)",
-        min_value=1,
-        value=100,
-        help="Setting to a lower value can cause `tqdm` to fluch quickly for fast trainings",
-    )
-    config["with_pbars"] = st.checkbox(
-        "Show two progress bars",
-        value=True,
-        help=(
-            "This option will enable two progress bars - one for epoch,"
-            " one for iteration if `with_pbar_on_iters` is `False`,"
-            " only epoch-wise progress bar will be enabled."
-        ),
-    )
-    config["with_pbar_on_iters"] = st.checkbox(
-        "Show iteration-wise progress bar",
-        value=True,
-        help="This option has no effect if `with_pbars` is `False`",
-    )
-    config["stop_on_nan"] = st.checkbox("Stop the training if engine output contains NaN/inf values", value=True)
-    config["clear_cuda_cache"] = st.checkbox(
-        "Clear cuda cache every end of epoch",
-        value=True,
-        help="This is calling `torch.cuda.empty_cache()` every end of epoch",
-    )
-    st.markdown("---")
-    config["setup_common_training_handlers"] = True
-    if config["with_pbars"]:
-        config["handler_deps"] = "tqdm"
-
-
-def ignite_loggers_options(config):
-    st.markdown("## Ignite Loggers Options")
-    config["filepath"] = st.text_input(
-        "Logging file path (filepath)",
-        "./logs",
-        help="This option will be used by both python logging and ignite loggers if possible",
-    )
-    if st.checkbox("Use experiment tracking system ?", value=True):
-        config["logger_deps"] = st.selectbox(
-            "Select experiment eracking system",
-            ["ClearML", "MLflow", "Neptune", "Polyaxon", "TensorBoard", "Visdom", "WandB"],
-            index=4,
-        ).lower()
-        # for logger requirement
-        if config["logger_deps"] in ("neptune", "polyaxon"):
-            config["logger_deps"] += "-client"
-        config["logger_log_every_iters"] = st.number_input(
-            "Logging interval for experiment tracking system (logger_log_every_iters)",
-            min_value=1,
-            value=100,
-            help="This logging interval is iteration based.",
-        )
-    st.markdown("---")
-
-
 def model_options(config):
     st.markdown("## Model Options")
     config["z_dim"] = st.number_input("Size of the latent z vector (z_dim)", value=100)
@@ -146,16 +60,9 @@ def model_options(config):
 
 
 def get_configs() -> dict:
-    config = {}
     config["train_epoch_length"] = None
     config["eval_epoch_length"] = None
 
-    # distributed configs
-    config["nproc_per_node"] = None
-    config["nnodes"] = None
-    config["node_rank"] = None
-    config["master_addr"] = None
-    config["master_port"] = None
     config["saved_G"] = None
     config["saved_D"] = None
 

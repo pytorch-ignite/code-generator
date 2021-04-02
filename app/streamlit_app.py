@@ -1,13 +1,27 @@
-import os
 import shutil
 from pathlib import Path
-from subprocess import check_output
 
 import streamlit as st
 from codegen import CodeGenerator
 from utils import import_from_file
 
 __version__ = "0.1.0"
+
+
+FOLDER_TO_TEMPLATE_NAME = {
+    "Single Model, Single Optimizer": "single",
+    "Generative Adversarial Network": "gan",
+    "Image Classification": "image_classification",
+}
+
+TIP = """
+> **💡 TIP**
+>
+> To quickly adapt to the generated code structure, there are TODOs in the files that are needed to be edited.
+> [PyCharm TODO comments](https://www.jetbrains.com/help/pycharm/using-todo.html) or
+> [VSCode Todo Tree](https://marketplace.visualstudio.com/items?itemName=Gruntfuggly.todo-tree)
+> can help you find them easily.
+"""
 
 
 class App:
@@ -39,6 +53,7 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
         template_list = template_list or []
         st.markdown("### Choose a Template")
         self.template_name = st.selectbox("Available Templates are:", options=template_list)
+        self.template_name = FOLDER_TO_TEMPLATE_NAME[self.template_name]
         with st.sidebar:
             if self.template_name:
                 config = config(self.template_name)
@@ -46,11 +61,11 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
             else:
                 self.config = {}
 
-    def render_code(self, fname="", code=""):
+    def render_code(self, fname: str = "", code: str = ""):
         """Main content with the code."""
-        with st.beta_expander(f"View rendered {fname}"):
+        with st.beta_expander(f"View rendered {fname}", expanded=fname.endswith(".md")):
             if fname.endswith(".md"):
-                st.markdown(code)
+                st.markdown(code, unsafe_allow_html=True)
             else:
                 col1, col2 = st.beta_columns([1, 20])
                 with col1:
@@ -59,7 +74,41 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
                     st.code(code)
 
     def render_directory(self, dir):
-        output = check_output(["tree", dir], encoding="utf-8")
+        """tree command is not available in all systems."""
+        output = f"{dir}\n"
+        # https://stackoverflow.com/questions/9727673/list-directory-tree-structure-in-python
+        # prefix components:
+        space = "    "
+        branch = "│   "
+        # pointers:
+        tee = "├── "
+        last = "└── "
+        file_count = 0
+        dir_count = 0
+
+        def tree(dir_path: Path, prefix: str = ""):
+            """A recursive generator, given a directory Path object
+            will yield a visual tree structure line by line
+            with each line prefixed by the same characters
+            """
+            nonlocal file_count
+            nonlocal dir_count
+            contents = sorted(dir_path.iterdir())
+            # contents each get pointers that are ├── with a final └── :
+            pointers = [tee] * (len(contents) - 1) + [last]
+            for pointer, path in zip(pointers, contents):
+                if path.is_file():
+                    file_count += 1
+                yield prefix + pointer + path.name
+                if path.is_dir():  # extend the prefix and recurse:
+                    dir_count += 1
+                    extension = branch if pointer == tee else space
+                    # i.e. space because last, └── , above so no more |
+                    yield from tree(path, prefix=prefix + extension)
+
+        for line in tree(dir):
+            output += line + "\n"
+        output += f"\n{dir_count} directories, {file_count} files"
         st.markdown("Generated files and directory structure")
         st.code(output)
 
@@ -67,14 +116,15 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
         def config(template_name):
             return import_from_file("template_config", f"./templates/{template_name}/_sidebar.py")
 
-        self.sidebar(self.codegen.template_list, config)
+        self.sidebar([*FOLDER_TO_TEMPLATE_NAME], config)
 
     def add_content(self):
         """Get generated/rendered code from the codegen."""
         content = [*self.codegen.render_templates(self.template_name, self.config)]
-        if st.checkbox("View rendered code ?"):
+        if st.checkbox("View rendered code ?", value=True):
             for fname, code in content:
-                self.render_code(fname, code)
+                if len(code):  # don't show files which don't have content in them
+                    self.render_code(fname, code)
 
     def add_download(self):
         st.markdown("")
@@ -94,12 +144,13 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
                 shutil.copy(archive_fname, dist_path)
                 st.success(f"Download link : [{archive_fname}](./static/{archive_fname})")
                 with col2:
-                    self.render_directory(os.path.join(self.codegen.dist_dir, self.template_name))
+                    self.render_directory(Path(self.codegen.dist_dir, self.template_name))
 
     def run(self):
         self.add_sidebar()
         self.add_content()
         self.add_download()
+        st.info(TIP)
 
 
 def main():
