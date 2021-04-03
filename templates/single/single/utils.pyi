@@ -19,8 +19,6 @@ from torch.nn import Module
 from torch.optim.lr_scheduler import _LRScheduler
 from torch.optim.optimizer import Optimizer
 
-{% include "_argparse.pyi" %}
-
 
 # we can use `idist.auto_model` to handle distributed configurations
 # for your model : https://pytorch.org/ignite/distributed.html#ignite.distributed.auto.auto_model

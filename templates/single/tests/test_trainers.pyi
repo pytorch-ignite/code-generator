@@ -6,8 +6,7 @@ from unittest.mock import MagicMock
 import ignite.distributed as idist
 import torch
 from ignite.engine.engine import Engine
-from {{project_name}}.engines import create_engines, evaluate_function, train_function
-from {{project_name}}.events import TrainEvents, train_events_to_attr
+from {{project_name}}.trainers import create_trainers, evaluate_function, train_function, TrainEvents, train_events_to_attr
 from torch import nn, optim
 
 
@@ -110,8 +109,8 @@ class TestEngines(unittest.TestCase):
         output = evaluate_function(config, engine, self.batch, self.model, self.loss_fn, self.device)
         self.assertIsInstance(output, Number)
 
-    def test_create_engines(self):
-        train_engine, eval_engine = create_engines(
+    def test_create_trainers(self):
+        train_engine, eval_engine = create_trainers(
             config=Namespace(use_amp=True),
             model=self.model,
             loss_fn=self.loss_fn,

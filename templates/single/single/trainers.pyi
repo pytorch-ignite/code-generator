@@ -8,7 +8,8 @@ from ignite.engine import Engine
 from torch.cuda.amp import autocast
 from torch.optim.optimizer import Optimizer
 
-from {{project_name}}.events import TrainEvents, train_events_to_attr
+
+{% include "_events.pyi" %}
 
 
 # Edit below functions the way how the model will be training
@@ -116,7 +117,7 @@ def evaluate_function(
 
 # function for creating engines which will be used in main.py
 # any necessary arguments can be provided.
-def create_engines(**kwargs) -> Tuple[Engine, Engine]:
+def create_trainers(**kwargs) -> Tuple[Engine, Engine]:
     """Create Engines for training and evaluation.
 
     Parameters

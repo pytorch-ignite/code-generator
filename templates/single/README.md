@@ -18,8 +18,6 @@ Table of Contents
 
 ## Getting Started
 
-- After downloaded and extracted an archive, there will be a folder named `single` (directory name). Inside that there will be an another folder named `single_cg` (package name).
-
 <details>
 <summary>
 Detailed Directory List
@@ -51,15 +49,7 @@ single
 
 </details>
 
-- Folder names must be renamed by using `mv` command in Unix/macOS and Linux and `move` in Windows. Or simply rename them.
-
-- Since the generated code are using absolute imports, the package name must be renamed to the name you have changed in the above step. There is a `find_and_replace.sh` script (Unix and Linux only) to easily find and replace the package name in the generated code. Usage is:
-
-  ```sh
-  bash find_and_replace.sh old_pkg_name new_pkg_name
-  ```
-
-- Install the dependencies with `pip` and install the package in `editable` mode:
+- Install the dependencies with `pip` and install the project in `editable` mode:
 
   ```sh
   pip install -r requirements.txt --progress-bar off -U
@@ -75,8 +65,8 @@ single
 
 - Edit `datasets.py` for your custom datasets and dataloaders.
 - Edit `models.py` for your custom models.
-- Extend `utils.py` for additional command line arguments.
-- Extend `engines.py` for your custom models' forward pass, backward pass, and evaluation.
+- Extend `config.py` for additional command line arguments.
+- Extend `trainers.py` for your custom models' forward pass, backward pass, and evaluation.
 - Extend `handlers.py` for your custom handlers. _(**OPTIONAL**)_
 
 ## Training

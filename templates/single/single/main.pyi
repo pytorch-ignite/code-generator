@@ -10,10 +10,10 @@ import ignite.distributed as idist
 from ignite.engine.events import Events
 from ignite.utils import manual_seed
 
-from {{project_name}}.engines import create_engines
-from {{project_name}}.events import TrainEvents
+from {{project_name}}.trainers import create_trainers, TrainEvents
 from {{project_name}}.handlers import get_handlers, get_logger
-from {{project_name}}.utils import get_default_parser, setup_logging, log_metrics, log_basic_info, initialize, resume_from
+from {{project_name}}.utils import setup_logging, log_metrics, log_basic_info, initialize, resume_from
+from {{project_name}}.config import get_default_parser
 
 
 def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
@@ -43,7 +43,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # train_engine and eval_engine
     # -----------------------------
 
-    train_engine, eval_engine = create_engines(
+    train_engine, eval_engine = create_trainers(
         config=config,
         model=model,
         optimizer=optimizer,
