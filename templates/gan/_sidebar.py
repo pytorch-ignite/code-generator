@@ -5,7 +5,7 @@ import streamlit as st
 sys.path.append("./templates")
 
 from _base._sidebar import (
-    config,
+    default_none_options,
     distributed_options,
     ignite_handlers_options,
     ignite_loggers_options,
@@ -42,8 +42,6 @@ def dataloader_options(config):
 def training_options(config):
     st.markdown("## Training Options")
     config["max_epochs"] = st.number_input("Maximum epochs to train (max_epochs)", min_value=1, value=2)
-    config["log_train"] = st.number_input("Logging interval of training iterations (log_train)", min_value=0, value=50)
-    config["seed"] = st.number_input("Seed used in ignite.utils.manual_seed() (seed)", min_value=0, value=666)
     st.markdown("---")
 
 
@@ -60,22 +58,24 @@ def model_options(config):
 
 
 def get_configs() -> dict:
+    config = {}
     config["train_epoch_length"] = None
     config["eval_epoch_length"] = None
 
     config["saved_G"] = None
     config["saved_D"] = None
+    default_none_options(config)
 
     with st.beta_expander("GAN Template Configurations", expanded=True):
-        st.info("Those in the parenthesis are used in the generated code.")
+        st.info("Names in the parenthesis are variable names used in the generated code.")
 
         # group by configurations type
-        dataset_options(config)
-        dataloader_options(config)
-        training_options(config)
         distributed_options(config)
         ignite_handlers_options(config)
         ignite_loggers_options(config)
+        dataset_options(config)
+        dataloader_options(config)
+        training_options(config)
         model_options(config)
 
     return config

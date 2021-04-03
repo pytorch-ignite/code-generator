@@ -26,25 +26,24 @@ Detailed Directory List
 ```sh
 single
 ├── README.md
-├── find_and_replace.sh
 ├── hubconf.py
 ├── requirements.txt
 ├── setup.py
-├── single_cg
+├── single
 │   ├── __init__.py
+│   ├── config.py
 │   ├── datasets.py
-│   ├── engines.py
-│   ├── events.py
 │   ├── handlers.py
 │   ├── main.py
 │   ├── models.py
+│   ├── trainers.py
 │   └── utils.py
 └── tests
-    ├── test_engines.py
     ├── test_handlers.py
+    ├── test_trainers.py
     └── test_utils.py
 
-2 directories, 16 files
+2 directories, 15 files
 ```
 
 </details>
