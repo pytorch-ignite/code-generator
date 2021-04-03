@@ -7,7 +7,7 @@ from tempfile import TemporaryDirectory
 import torch
 from ignite.engine import Engine
 from ignite.utils import setup_logger
-from single_cg.utils import (
+from {{project_name}}.utils import (
     get_default_parser,
     hash_checkpoint,
     log_metrics,

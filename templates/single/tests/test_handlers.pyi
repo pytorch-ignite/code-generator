@@ -16,7 +16,7 @@ from ignite.engine.engine import Engine
 from ignite.handlers.checkpoint import Checkpoint
 from ignite.handlers.early_stopping import EarlyStopping
 from ignite.handlers.timing import Timer
-from single_cg.handlers import get_handlers, get_logger
+from {{project_name}}.handlers import get_handlers, get_logger
 from torch import nn, optim
 
 
