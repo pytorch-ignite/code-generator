@@ -9,6 +9,7 @@ from logging import Logger
 from pathlib import Path
 from pprint import pformat
 from typing import Any, Mapping, Optional, Tuple, Union
+from ignite.contrib.handlers.param_scheduler import ParamScheduler
 
 import ignite.distributed as idist
 import torch
@@ -29,7 +30,7 @@ from {{project_name}}.models import Generator, Discriminator
 # TODO : PLEASE provide your custom model, optimizer, and loss function
 
 
-def initialize(config: Optional[Any], num_channels: int) -> Tuple[Module, Optimizer, Module, _LRScheduler]:
+def initialize(config: Optional[Any]) -> Tuple[Module, Optimizer, Module, Union[_LRScheduler, ParamScheduler]]:
     """Initializing model, optimizer, loss function, and lr scheduler
     with correct settings.
 

@@ -1,3 +1,5 @@
-torch
-torchvision
-pytorch-ignite
+setuptools
+torch>=1.7.0
+pytorch-ignite>=0.4.4
+{{ handler_deps }}
+{{ logger_deps }}

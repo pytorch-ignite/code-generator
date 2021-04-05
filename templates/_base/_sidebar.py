@@ -154,15 +154,9 @@ def _save_best_model_by_val_score_options(config):
         value=False,
     )
     if config["save_best_model_by_val_score"]:
-        config["metric_name"] = st.text_input(
-            "Metric name associated with eval_engine (metric_name)",
-            key="ckpt_metric_name",
-        )
-        if not config["metric_name"]:
-            st.error(":warning: Please input the evaluation metric name that will be used :warning:")
         st.warning(
-            "Please make sure `eval_engine.state.metrics` has above provided metric name."
-            " Otherwise it can result `KeyError`."
+            "Please make sure to pass argument to `metric_name` parameter of `get_handlers` in `main.py`."
+            " Otherwise it can result KeyError.",
         )
     st.markdown("---")
 
@@ -178,17 +172,8 @@ def _add_early_stopping_by_val_score_options(config):
             min_value=1,
             value=3,
         )
-        config["es_metric_name"] = st.text_input(
-            "Metric name associated with eval_engine (es_metric_name)",
-            key="es_metric_name",
-            help="This input `metric_name` can either be same as above or not."
-            if config["save_best_model_by_val_score"]
-            else None,
-        )
-        if not config["es_metric_name"]:
-            st.error(":warning: Please input the evaluation metric name that will be used :warning:")
         st.warning(
-            "Please make sure `eval_engine.state.metrics` has above provided metric name."
-            " Otherwise it can result `KeyError`."
+            "Please make sure to pass argument to `es_metric_name` parameter of `get_handlers` in `main.py`."
+            " Otherwise it can result KeyError.",
         )
     st.markdown("---")

@@ -1,14 +1,11 @@
-{% block imports %}
+from torch import nn
 from torchvision import models
 
-{% endblock %}
 
-{% block get_model %}
-def get_model(name):
+def get_model(name: str) -> nn.Module:
     if name in models.__dict__:
         fn = models.__dict__[name]
     else:
         raise RuntimeError(f"Unknown model name {name}")
 
     return fn(num_classes=10)
-{% endblock %}

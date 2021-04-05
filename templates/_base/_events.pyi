@@ -1,7 +1,3 @@
-"""
-Additional Events to inspect the training at custom events.
-"""
-
 from ignite.engine.events import EventEnum
 
 
@@ -25,4 +21,4 @@ train_events_to_attr = {
 
 # Any custom events can go below
 # fire them in process_function of the respective engine and
-# register them with the respective engine in the `engines.py`
+# register them with the respective engine
