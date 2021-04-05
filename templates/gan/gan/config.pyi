@@ -47,11 +47,6 @@ UPDATES = {
         "type": int,
         "help": "size of the latent z vector ({{ z_dim }})",
     },
-    "alpha": {
-        "default": {{alpha}},
-        "type": float,
-        "help": "running average decay factor ({{ alpha }})",
-    },
     "g_filters": {
         "default": {{g_filters}},
         "type": int,
@@ -61,16 +56,6 @@ UPDATES = {
         "default": {{d_filters}},
         "type": int,
         "help": "number of filters in first discriminator conv layer ({{ d_filters }})",
-    },
-    "saved_G": {
-        "default": {{saved_G}},
-        "type": str,
-        "help": "path to saved generator ({{ saved_G }})",
-    },
-    "saved_D": {
-        "default": {{saved_D}},
-        "type": str,
-        "help": "path to saved discriminator ({{ saved_D }})",
     },
 }
 

@@ -48,7 +48,6 @@ def training_options(config):
 def model_options(config):
     st.markdown("## Model Options")
     config["z_dim"] = st.number_input("Size of the latent z vector (z_dim)", value=100)
-    config["alpha"] = st.number_input("Running average decay factor (alpha)", value=0.98)
     config["g_filters"] = st.number_input(
         "Number of filters in the second-to-last generator deconv layer (g_filters)",
         value=64,
