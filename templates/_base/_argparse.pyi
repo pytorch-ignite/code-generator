@@ -91,7 +91,7 @@ DEFAULTS = {
     "stop_on_nan": {
         "default": {{stop_on_nan}},
         "type": bool,
-        "help": "stop the training if engine output contains NaN/inf values (stop_on_nan)",
+        "help": "stop the training if engine output contains NaN/inf values ({{stop_on_nan}})",
     },
     "clear_cuda_cache": {
         "default": {{clear_cuda_cache}},
