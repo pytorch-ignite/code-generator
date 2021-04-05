@@ -28,6 +28,8 @@ def dataloader_options(config):
     config["num_workers"] = st.number_input("Number of workers (num_workers)", min_value=0, value=2)
     st.markdown("---")
 
+
+def optimizer_options(config):
     st.markdown("## Optimizer Options")
     config["beta_1"] = st.number_input("beta_1 for Adam optimizer (beta_1)", value=0.5)
     config["lr"] = st.number_input(
@@ -74,6 +76,7 @@ def get_configs() -> dict:
         ignite_loggers_options(config)
         dataset_options(config)
         dataloader_options(config)
+        optimizer_options(config)
         training_options(config)
         model_options(config)
 

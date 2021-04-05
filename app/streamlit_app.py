@@ -53,7 +53,7 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
         template_list = template_list or []
         st.markdown("### Choose a Template")
         self.template_name = st.selectbox("Available Templates are:", options=template_list)
-        self.project_name = st.text_input("Project Name:", "project_1")
+        self.project_name = st.text_input("Project Name:", FOLDER_TO_TEMPLATE_NAME[self.template_name])
         self.template_name = FOLDER_TO_TEMPLATE_NAME[self.template_name]
         with st.sidebar:
             if self.template_name:

@@ -26,7 +26,7 @@ def train_function(
     loss_fn: torch.nn.Module,
     optimizer: Optimizer,
     device: torch.device,
-):
+) -> dict:
     """Model training step.
 
     Parameters
@@ -41,7 +41,7 @@ def train_function(
 
     Returns
     -------
-    {INSERT HERE}
+    training loss dict
     """
 
     model.train()
@@ -65,7 +65,7 @@ def train_function(
 
     loss_value = loss.item()
     engine.state.metrics = {"epoch": engine.state.epoch, "train_loss": loss_value}
-    return loss_value
+    return {"train_loss": loss_value}
 
 
 # evaluate_function is how the model will be learning with given batch
@@ -80,9 +80,8 @@ def evaluate_function(
     engine: Engine,
     batch: Any,
     model: torch.nn.Module,
-    loss_fn: torch.nn.Module,
     device: torch.device,
-):
+) -> Tuple[torch.Tensor]:
     """Model evaluating step.
 
     Parameters
@@ -96,7 +95,7 @@ def evaluate_function(
 
     Returns
     -------
-    {INSERT HERE}
+    outputs, targets
     """
 
     model.eval()
@@ -106,11 +105,8 @@ def evaluate_function(
 
     with autocast(enabled=config.use_amp):
         outputs = model(samples)
-        loss = loss_fn(outputs, targets)
 
-    loss_value = loss.item()
-    engine.state.metrics = {"eval_loss": loss_value}
-    return loss_value
+    return outputs, targets
 
 
 # function for creating engines which will be used in main.py

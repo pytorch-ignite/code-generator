@@ -16,16 +16,12 @@ import torch
 from ignite.engine import Engine
 from ignite.handlers.checkpoint import Checkpoint
 from ignite.utils import setup_logger
-from torch.nn import Module
+from ignite.contrib.handlers import PiecewiseLinear
+from torch.nn import Module, CrossEntropyLoss
 from torch.optim.lr_scheduler import _LRScheduler
-from torch.optim.optimizer import Optimizer
+from torch.optim import Optimizer, SGD
 
-
-# we can use `idist.auto_model` to handle distributed configurations
-# for your model : https://pytorch.org/ignite/distributed.html#ignite.distributed.auto.auto_model
-# same also for optimizer, `idist.auto_optim` also handles distributed configurations
-# See : https://pytorch.org/ignite/distributed.html#ignite.distributed.auto.auto_model
-# TODO : PLEASE provide your custom model, optimizer, and loss function
+from {{project_name}}.models import get_model
 
 
 def initialize(config: Optional[Any]) -> Tuple[Module, Optimizer, Module, Union[_LRScheduler, ParamScheduler]]:
@@ -41,10 +37,22 @@ def initialize(config: Optional[Any]) -> Tuple[Module, Optimizer, Module, Union[
     -------
     model, optimizer, loss_fn, lr_scheduler
     """
-    model = ...
-    optimizer = ...
-    loss_fn = ...
-    lr_scheduler = ...
+    model = get_model(config.model)
+    optimizer = SGD(
+        model.parameters(),
+        lr=config.lr,
+        momentum=config.momentum,
+        weight_decay=config.weight_decay,
+        nesterov=True,
+    )
+    loss_fn = CrossEntropyLoss().to(idist.device())
+    le = config.num_iters_per_epoch
+    milestones_values = [
+        (0, 0.0),
+        (le * config.num_warmup_epochs, config.lr),
+        (le * config.max_epochs, 0.0),
+    ]
+    lr_scheduler = PiecewiseLinear(optimizer, param_name="lr", milestones_values=milestones_values)
     model = idist.auto_model(model)
     optimizer = idist.auto_optim(optimizer)
     loss_fn = loss_fn.to(idist.device())
