@@ -25,7 +25,7 @@ class CodeGenerator:
         )
         for fname in env.list_templates(filter_func=lambda x: not x.startswith("_")):
             code = env.get_template(fname).render(**config)
-            fname = fname.replace(".pyi", ".py").replace(template_name, project_name)
+            fname = fname.replace(template_name, project_name)
             self.rendered_code[fname] = code
             yield fname, code
 
