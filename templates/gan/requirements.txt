@@ -2,7 +2,7 @@ setuptools
 torch>=1.7.0
 pytorch-ignite>=0.4.4
 torchvision>=0.8.0
-matplotlib>=3.4.1
+matplotlib>=3.3.0
 pandas>=1.2.3
 {{ handler_deps }}
 {{ logger_deps }}
