@@ -14,6 +14,7 @@ FOLDER_TO_TEMPLATE_NAME = {
     "Image Classification": "image_classification",
     "Generative Adversarial Network": "gan",
     "Single Model, Single Optimizer": "single",
+    "Text Classification": "text_classification",
 }
 
 TIP = """
