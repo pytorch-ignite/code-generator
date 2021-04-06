@@ -1,1 +1,1 @@
-{% include "_argparse.pyi" %}
+{% include "_argparse.py" %}
