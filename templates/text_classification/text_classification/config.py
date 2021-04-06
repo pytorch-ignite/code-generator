@@ -1,98 +1,107 @@
-DEFAULTS = {
+{% extends "_argparse.py" %}
+{% block imports %}{% endblock %}
+{% block defaults %}
+{{ super() }}
+UPDATES = {
     "data_dir": {
-        "default": "/tmp/data",
+        "default": "{{ data_dir }}",
         "type": str,
         "help": "Dataset cache directory",
     },
     "model": {
-        "default": "bert-base-uncased",
+        "default": "{{ model }}",
         "type": str,
         "choices": ["bert-base-uncased"],
         "help": "Model name (from transformers) to setup model, tokenize and config to train",
     },
     "model_dir": {
-        "default": "/tmp/model",
+        "default": "{{ model_dir }}",
         "type": str,
         "help": "Cache directory to download the pretrained model",
     },
     "tokenizer_dir": {
-        "default": "/tmp/tokenizer",
+        "default": "{{ tokenizer_dir }}",
         "type": str,
         "help": "Tokenizer cache directory",
     },
     "num_classes": {
-        "default": 1,
+        "default": {{ num_classes }},
         "type": int,
         "help": "Number of target classes. Default, 1 (binary classification)",
     },
     "dropout": {
-        "default": 0.3,
+        "default": {{ dropout }},
         "type": float,
         "help": "Dropout probability",
     },
     "n_fc": {
-        "default": 768,
+        "default": {{ n_fc }},
         "type": int,
         "help": "Number of neurons in the last fully connected layer",
     },
     "max_length": {
-        "default": 256,
+        "default": {{ max_length }},
         "type": int,
         "help": "Maximum number of tokens for the inputs to the transformer model",
     },
     "batch_size": {
-        "default": 1,
+        "default": {{ batch_size }},
         "type": int,
         "help": "Total batch size",
     },
     "weight_decay": {
-        "default": 0.01,
+        "default": {{ weight_decay }},
         "type": float,
         "help": "Weight decay",
     },
     "num_workers": {
-        "default": 4,
+        "default": {{ num_workers }},
         "type": int,
         "help": "Number of workers in the data loader",
     },
     "num_epochs": {
-        "default": 3,
+        "default": {{ num_epochs }},
         "type": int,
         "help": "Number of epochs to train the model",
     },
     "learning_rate": {
-        "default": 5e-5,
+        "default": {{ learning_rate }},
         "type": float,
         "help": "Peak of piecewise linear learning rate scheduler",
     },
     "num_warmup_epochs": {
-        "default": 0,
+        "default": {{ num_warmup_epochs }},
         "type": int,
         "help": "Number of warm-up epochs before learning rate decay",
     },
     "validate_every": {
-        "default": 1,
+        "default": {{ validate_every }},
         "type": int,
         "help": "Run model's validation every validate_every epochs",
     },
     "checkpoint_every": {
-        "default": 1000,
+        "default": {{ checkpoint_every }},
         "type": int,
         "help": "Store training checkpoint every checkpoint_every iterations",
     },
     "resume_from": {
-        "default": None,
+        "default": {{ resume_from }},
         "type": str,
         "help": "Path to checkpoint to use to resume the training from",
     },
     "log_every_iters": {
-        "default": 15,
+        "default": {{ log_every_iters }},
         "type": int,
         "help": "Argument to log batch loss every log_every_iters iterations. 0 to disable it",
     },
     "with_clearml": {
-        "default": False,
+        "default": {{ with_clearml }},
         "type": bool,
         "help": "Setup experiment ClearML logger",
     },
 }
+
+DEFAULTS.update(UPDATES)
+{% endblock %}
+
+{% block get_default_parser %}{% endblock %}

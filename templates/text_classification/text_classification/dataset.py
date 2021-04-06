@@ -1,10 +1,12 @@
-{% block imports %}
 import torch
-{% endblock %}
+from torch.utils.data import Dataset
+
+from transformers import AutoTokenizer
+from datasets import load_dataset
+import ignite.distributed as idist
 
 
-{% block dataset %}
-class TransformerDataset(torch.utils.data.Dataset):
+class TransformerDataset(Dataset):
     def __init__(self, texts, labels, tokenizer, max_length):
         self.texts = texts
         self.labels = labels
@@ -35,4 +37,43 @@ class TransformerDataset(torch.utils.data.Dataset):
 
     def __len__(self):
         return len(self.labels)
-{% endblock %}
+
+
+def get_tokenizer(tokenizer_name, tokenizer_dir):
+    tokenizer = AutoTokenizer.from_pretrained(tokenizer_name, cache_dir=tokenizer_dir, do_lower_case=True)
+    return tokenizer
+
+
+def get_dataset(cache_dir, tokenizer_name, tokenizer_dir, max_length):
+    train_dataset, test_dataset = load_dataset("imdb", split=["train", "test"], cache_dir=cache_dir)
+    tokenizer = get_tokenizer(tokenizer_name, tokenizer_dir)
+    train_texts, train_labels = train_dataset["text"], train_dataset["label"]
+    test_texts, test_labels = test_dataset["text"], test_dataset["label"]
+    train_dataset = TransformerDataset(train_texts, train_labels, tokenizer, max_length)
+    test_dataset = TransformerDataset(test_texts, test_labels, tokenizer, max_length)
+    return train_dataset, test_dataset
+
+
+def get_dataflow(config):
+    # - Get train/test datasets
+    if idist.get_rank() > 0:
+        # Ensure that only rank 0 download the dataset
+        idist.barrier()
+
+    train_dataset, test_dataset = get_dataset(
+        config.data_dir, config.model, config.tokenizer_dir, config.max_length
+    )
+
+    if idist.get_rank() == 0:
+        # Ensure that only rank 0 download the dataset
+        idist.barrier()
+
+    # Setup data loader also adapted to distributed config: nccl, gloo, xla-tpu
+    train_loader = idist.auto_dataloader(
+        train_dataset, batch_size=config.batch_size, num_workers=config.num_workers, shuffle=True, drop_last=True,
+    )
+
+    test_loader = idist.auto_dataloader(
+        test_dataset, batch_size=2 * config.batch_size, num_workers=config.num_workers, shuffle=False,
+    )
+    return train_loader, test_loader

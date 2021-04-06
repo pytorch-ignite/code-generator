@@ -1,10 +1,7 @@
-{% block imports %}
 import torch.nn as nn
 from transformers import AutoModel
-{% endblock %}
 
 
-{% block model %}
 class TransformerModel(nn.Module):
     def __init__(self, model_name, model_dir, dropout, n_fc, n_classes):
         super(TransformerModel, self).__init__()
@@ -20,4 +17,8 @@ class TransformerModel(nn.Module):
         pooled_output = self.drop(pooled_output)
         output = self.classifier(pooled_output)
         return output
-{% endblock %}
+
+
+def get_model(model_name, model_dir, drop_out, n_fc, num_classes):
+    model = TransformerModel(model_name, model_dir, drop_out, n_fc, num_classes)
+    return model
