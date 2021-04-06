@@ -126,7 +126,8 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
         if st.checkbox("View rendered code ?", value=True):
             for fname, code in content:
                 if len(code):  # don't show files which don't have content in them
-                    self.render_code(fname, code)
+                    if fname.endswith(".md") or fname.startswith(self.template_name):
+                        self.render_code(fname, code)
 
     def add_download(self):
         st.markdown("")
