@@ -14,11 +14,10 @@ def generate():
             sys.path.append(f"./templates/{p.stem}")
             dist_dir = "./tests/dist"
             configs = import_from_file("template_config", f"./templates/{p.stem}/_sidebar.py").get_configs()
+            configs["project_name"] = p.stem
             code_gen = CodeGenerator(dist_dir=dist_dir)
-            [*code_gen.render_templates(p.stem, configs)]
-            code_gen.mk_dist_template_dir(p.stem)
-            code_gen.write_files(p.stem)
-            print(f"Generated files can be found in {dist_dir}/{p.stem}")
+            [*code_gen.render_templates(p.stem, p.stem, configs)]
+            code_gen.make_and_write(p.stem, p.stem)
 
 
 if __name__ == "__main__":

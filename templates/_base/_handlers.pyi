@@ -199,7 +199,7 @@ def get_logger(
         log_every_iters=config.logger_log_every_iters,
         **kwargs,
     )
-    {% elif logger_deps == 'polyaxon' %}
+    {% elif logger_deps == 'polyaxon-client' %}
     logger_handler = common.setup_plx_logging(
         trainer=train_engine,
         optimizers=optimizers,
