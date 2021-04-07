@@ -55,7 +55,7 @@ class TestUtils(unittest.TestCase):
     def test_setup_logging(self):
         with TemporaryDirectory() as tmp:
             tmp = Path(tmp)
-            config = Namespace(verbose=True, filepath=tmp)
+            config = Namespace(verbose=True, output_dir=tmp)
             logger = setup_logging(config)
             self.assertEqual(logger.level, logging.INFO)
             self.assertIsInstance(logger, logging.Logger)

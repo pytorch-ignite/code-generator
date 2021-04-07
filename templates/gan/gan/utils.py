@@ -4,7 +4,6 @@ utility functions which can be used in training
 import hashlib
 import logging
 import shutil
-from datetime import datetime
 from logging import Logger
 from pathlib import Path
 from pprint import pformat
@@ -30,7 +29,7 @@ from {{project_name}}.models import Generator, Discriminator
 # TODO : PLEASE provide your custom model, optimizer, and loss function
 
 
-def initialize(config: Optional[Any]) -> Tuple[Module, Optimizer, Module, Union[_LRScheduler, ParamScheduler]]:
+def initialize(config: Optional[Any], num_channels: int) -> Tuple[Module, Optimizer, Module, Union[_LRScheduler, ParamScheduler]]:
     """Initializing model, optimizer, loss function, and lr scheduler
     with correct settings.
 
@@ -46,7 +45,6 @@ def initialize(config: Optional[Any]) -> Tuple[Module, Optimizer, Module, Union[
     netG = idist.auto_model(Generator(config.z_dim, config.g_filters, num_channels))
     netD = idist.auto_model(Discriminator(num_channels, config.d_filters))
     loss_fn = nn.BCELoss()
-    model = idist.auto_model(model)
     optimizerG = optim.Adam(netG.parameters(), lr=config.lr, betas=(config.beta_1, 0.999))
     optimizerD = optim.Adam(netD.parameters(), lr=config.lr, betas=(config.beta_1, 0.999))
     loss_fn = loss_fn.to(idist.device())
@@ -111,18 +109,17 @@ def setup_logging(config: Any) -> Logger:
     ----------
     config
         config object. config has to contain
-        `verbose` and `filepath` attributes.
+        `verbose` and `output_dir` attributes.
 
     Returns
     -------
     logger
         an instance of `Logger`
     """
-    now = datetime.now().strftime("%Y%m%d-%X")
     logger = setup_logger(
         level=logging.INFO if config.verbose else logging.WARNING,
         format="%(message)s",
-        filepath=config.filepath / f"{now}.log",
+        filepath=config.output_dir / "training-info.log",
     )
     return logger
 

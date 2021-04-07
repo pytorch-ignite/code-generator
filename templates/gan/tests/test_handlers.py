@@ -1,5 +1,6 @@
 import unittest
 from argparse import Namespace
+from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from ignite.contrib.handlers import (
@@ -26,8 +27,9 @@ class TestHandlers(unittest.TestCase):
     def test_get_handlers(self):
         train_engine = Engine(lambda e, b: b)
         with TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
             config = Namespace(
-                output_path=tmp,
+                output_dir=tmp,
                 save_every_iters=1,
                 n_saved=2,
                 log_every_iters=1,
@@ -53,7 +55,7 @@ class TestHandlers(unittest.TestCase):
 
     def test_get_logger(self):
         with TemporaryDirectory() as tmp:
-            config = Namespace(filepath=tmp, logger_log_every_iters=1)
+            config = Namespace(output_dir=tmp, logger_log_every_iters=1)
             train_engine = Engine(lambda e, b: b)
             optimizer = optim.Adam(nn.Linear(1, 1).parameters())
             logger_handler = get_logger(
