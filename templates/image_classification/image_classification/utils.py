@@ -4,7 +4,6 @@ utility functions which can be used in training
 import hashlib
 import logging
 import shutil
-from datetime import datetime
 from logging import Logger
 from pathlib import Path
 from pprint import pformat

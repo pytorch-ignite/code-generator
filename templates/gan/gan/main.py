@@ -162,7 +162,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # for training stats
     # --------------------------------
 
-    train_engine.add_event_handler(Events.ITERATION_COMPLETED(config.log_every_iters), log_metrics, tag="train")
+    train_engine.add_event_handler(Events.ITERATION_COMPLETED(every=config.log_every_iters), log_metrics, tag="train")
 
     # ------------------------------------------
     # setup if done. let's run the training
@@ -195,7 +195,8 @@ def main():
 
     if config.output_dir:
         now = datetime.now().strftime("%Y%m%d-%H%M%S")
-        path = Path(config.output_dir, now)
+        name = f'{config.dataset}-backend-{idist.backend()}-{now}'
+        path = Path(config.output_dir, name)
         path.mkdir(parents=True, exist_ok=True)
         config.output_dir = path
 
