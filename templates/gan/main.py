@@ -14,11 +14,11 @@ from ignite.engine.events import Events
 from ignite.utils import manual_seed
 from torchvision import utils as vutils
 
-from {{project_name}}.datasets import get_datasets
-from {{project_name}}.trainers import create_trainers
-from {{project_name}}.handlers import get_handlers, get_logger
-from {{project_name}}.utils import setup_logging, log_metrics, log_basic_info, initialize, resume_from
-from {{project_name}}.config import get_default_parser
+from datasets import get_datasets
+from trainers import create_trainers
+from handlers import get_handlers, get_logger
+from utils import setup_logging, log_metrics, log_basic_info, initialize, resume_from
+from config import get_default_parser
 
 
 PRINT_FREQ = 100

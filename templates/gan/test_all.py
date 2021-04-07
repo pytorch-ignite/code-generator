@@ -1,13 +1,14 @@
 import logging
 import unittest
 from argparse import ArgumentParser, Namespace
-from numbers import Number
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from unittest.mock import MagicMock
 
 import ignite.distributed as idist
 import torch
+from config import get_default_parser
+from datasets import get_datasets
+from handlers import get_handlers, get_logger
 from ignite.contrib.handlers import (
     ClearMLLogger,
     MLflowLogger,
@@ -18,23 +19,25 @@ from ignite.contrib.handlers import (
     WandBLogger,
 )
 from ignite.contrib.handlers.base_logger import BaseLogger
-from ignite.engine.engine import Engine
+from ignite.engine import Engine
 from ignite.handlers.checkpoint import Checkpoint
 from ignite.handlers.early_stopping import EarlyStopping
 from ignite.handlers.timing import Timer
 from ignite.utils import setup_logger
+from models import Discriminator, Generator
 from torch import nn, optim
-
-from config import get_default_parser
-from handlers import get_handlers, get_logger
-from trainers import (
-    TrainEvents,
-    create_trainers,
-    evaluate_function,
-    train_events_to_attr,
-    train_function,
-)
+from torch.utils.data import Dataset
+from trainers import create_trainers, train_function
 from utils import hash_checkpoint, log_metrics, resume_from, setup_logging
+
+
+class TestDataset(unittest.TestCase):
+    def test_get_datasets(self):
+        with TemporaryDirectory() as tmp:
+            dataset, nc = get_datasets("cifar10", tmp)
+
+            self.assertIsInstance(dataset, Dataset)
+            self.assertEqual(nc, 3)
 
 
 class TestHandlers(unittest.TestCase):
@@ -97,6 +100,15 @@ class TestHandlers(unittest.TestCase):
             )
 
 
+class TestModels(unittest.TestCase):
+    def test_models(self):
+        model_G = Generator(100, 64, 3)
+        model_D = Discriminator(3, 64)
+
+        self.assertIsInstance(model_D, nn.Module)
+        self.assertIsInstance(model_G, nn.Module)
+
+
 class TestEngines(unittest.TestCase):
     """Testing for engines.py"""
 
@@ -108,106 +120,40 @@ class TestEngines(unittest.TestCase):
         self.batch = [torch.tensor([1.0]), torch.tensor([1.0])]
 
     def test_train_fn(self):
+        real_labels = torch.ones(2, device=self.device)
+        fake_labels = torch.zeros(2, device=self.device)
         engine = Engine(lambda e, b: 1)
-        engine.register_events(*TrainEvents, event_to_attr=train_events_to_attr)
-        backward = MagicMock()
-        optim = MagicMock()
-        engine.add_event_handler(TrainEvents.BACKWARD_COMPLETED, backward)
-        engine.add_event_handler(TrainEvents.OPTIM_STEP_COMPLETED, optim)
-        config = Namespace(use_amp=False)
-        output = train_function(config, engine, self.batch, self.model, self.loss_fn, self.optimizer, self.device)
-        self.assertIsInstance(output, Number)
-        self.assertTrue(hasattr(engine.state, "backward_completed"))
-        self.assertTrue(hasattr(engine.state, "optim_step_completed"))
-        self.assertEqual(engine.state.backward_completed, 1)
-        self.assertEqual(engine.state.optim_step_completed, 1)
-        self.assertEqual(backward.call_count, 1)
-        self.assertEqual(optim.call_count, 1)
-        self.assertTrue(backward.called)
-        self.assertTrue(optim.called)
-
-    def test_train_fn_event_filter(self):
-        config = Namespace(use_amp=False)
-        engine = Engine(
-            lambda e, b: train_function(config, e, b, self.model, self.loss_fn, self.optimizer, self.device)
+        config = Namespace(use_amp=False, batch_size=2, z_dim=100)
+        output = train_function(
+            config,
+            engine,
+            self.batch,
+            self.model,
+            self.model,
+            self.loss_fn,
+            self.optimizer,
+            self.optimizer,
+            self.device,
+            real_labels,
+            fake_labels,
         )
-        engine.register_events(*TrainEvents, event_to_attr=train_events_to_attr)
-        backward = MagicMock()
-        optim = MagicMock()
-        engine.add_event_handler(
-            TrainEvents.BACKWARD_COMPLETED(event_filter=lambda _, x: (x % 2 == 0) or x == 3), backward
-        )
-        engine.add_event_handler(
-            TrainEvents.OPTIM_STEP_COMPLETED(event_filter=lambda _, x: (x % 2 == 0) or x == 3), optim
-        )
-        engine.run([self.batch] * 5)
-        self.assertTrue(hasattr(engine.state, "backward_completed"))
-        self.assertTrue(hasattr(engine.state, "optim_step_completed"))
-        self.assertEqual(engine.state.backward_completed, 5)
-        self.assertEqual(engine.state.optim_step_completed, 5)
-        self.assertEqual(backward.call_count, 3)
-        self.assertEqual(optim.call_count, 3)
-        self.assertTrue(backward.called)
-        self.assertTrue(optim.called)
-
-    def test_train_fn_every(self):
-        config = Namespace(use_amp=False)
-        engine = Engine(
-            lambda e, b: train_function(config, e, b, self.model, self.loss_fn, self.optimizer, self.device)
-        )
-        engine.register_events(*TrainEvents, event_to_attr=train_events_to_attr)
-        backward = MagicMock()
-        optim = MagicMock()
-        engine.add_event_handler(TrainEvents.BACKWARD_COMPLETED(every=2), backward)
-        engine.add_event_handler(TrainEvents.OPTIM_STEP_COMPLETED(every=2), optim)
-        engine.run([self.batch] * 5)
-        self.assertTrue(hasattr(engine.state, "backward_completed"))
-        self.assertTrue(hasattr(engine.state, "optim_step_completed"))
-        self.assertEqual(engine.state.backward_completed, 5)
-        self.assertEqual(engine.state.optim_step_completed, 5)
-        self.assertEqual(backward.call_count, 2)
-        self.assertEqual(optim.call_count, 2)
-        self.assertTrue(backward.called)
-        self.assertTrue(optim.called)
-
-    def test_train_fn_once(self):
-        config = Namespace(use_amp=False)
-        engine = Engine(
-            lambda e, b: train_function(config, e, b, self.model, self.loss_fn, self.optimizer, self.device)
-        )
-        engine.register_events(*TrainEvents, event_to_attr=train_events_to_attr)
-        backward = MagicMock()
-        optim = MagicMock()
-        engine.add_event_handler(TrainEvents.BACKWARD_COMPLETED(once=3), backward)
-        engine.add_event_handler(TrainEvents.OPTIM_STEP_COMPLETED(once=3), optim)
-        engine.run([self.batch] * 5)
-        self.assertTrue(hasattr(engine.state, "backward_completed"))
-        self.assertTrue(hasattr(engine.state, "optim_step_completed"))
-        self.assertEqual(engine.state.backward_completed, 5)
-        self.assertEqual(engine.state.optim_step_completed, 5)
-        self.assertEqual(backward.call_count, 1)
-        self.assertEqual(optim.call_count, 1)
-        self.assertTrue(backward.called)
-        self.assertTrue(optim.called)
-
-    def test_evaluate_fn(self):
-        engine = Engine(lambda e, b: 1)
-        config = Namespace(use_amp=False)
-        output = evaluate_function(config, engine, self.batch, self.model, self.loss_fn, self.device)
-        self.assertIsInstance(output, Number)
+        self.assertIsInstance(output, dict)
 
     def test_create_trainers(self):
-        train_engine, eval_engine = create_trainers(
+        real_labels = torch.ones(2, device=self.device)
+        fake_labels = torch.zeros(2, device=self.device)
+        train_engine = create_trainers(
             config=Namespace(use_amp=True),
-            model=self.model,
+            netD=self.model,
+            netG=self.model,
             loss_fn=self.loss_fn,
-            optimizer=self.optimizer,
+            optimizerD=self.optimizer,
+            optimizerG=self.optimizer,
             device=self.device,
+            real_labels=real_labels,
+            fake_labels=fake_labels,
         )
         self.assertIsInstance(train_engine, Engine)
-        self.assertIsInstance(eval_engine, Engine)
-        self.assertTrue(hasattr(train_engine.state, "backward_completed"))
-        self.assertTrue(hasattr(train_engine.state, "optim_step_completed"))
 
 
 class TestUtils(unittest.TestCase):

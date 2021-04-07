@@ -3,7 +3,6 @@
 # Image Classification Template
 
 This template is ported from [PyTorch-Ignite CIFAR10 example](https://github.com/pytorch/ignite/tree/master/examples/contrib/cifar10).
-This template has structured like a python package to imports modules easily.
 
 <details>
 <summary>
@@ -27,34 +26,26 @@ Detailed Directory List
 ```sh
 image_classification
 ├── README.md
+├── config.py
+├── datasets.py
+├── handlers.py
 ├── hubconf.py
-├── image_classification
-│   ├── __init__.py
-│   ├── config.py
-│   ├── datasets.py
-│   ├── handlers.py
-│   ├── main.py
-│   ├── models.py
-│   ├── trainers.py
-│   └── utils.py
+├── main.py
+├── models.py
 ├── requirements.txt
-├── setup.py
-└── tests
-    ├── test_datasets.py
-    ├── test_handlers.py
-    ├── test_trainers.py
-    └── test_utils.py
+├── test_all.py
+├── trainers.py
+└── utils.py
 
-2 directories, 16 files
+0 directories, 11 files
 ```
 
 </details>
 
-- Install the dependencies with `pip` and install the project in `editable` mode:
+- Install the dependencies with `pip`:
 
   ```sh
   pip install -r requirements.txt --progress-bar off -U
-  pip install -e .
   ```
 
 > **💡 TIP**

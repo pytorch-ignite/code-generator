@@ -1,13 +1,15 @@
 import logging
 import unittest
 from argparse import ArgumentParser, Namespace
-from numbers import Number
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest.mock import MagicMock
 
 import ignite.distributed as idist
 import torch
+from config import get_default_parser
+from datasets import get_datasets
+from handlers import get_handlers, get_logger
 from ignite.contrib.handlers import (
     ClearMLLogger,
     MLflowLogger,
@@ -18,15 +20,15 @@ from ignite.contrib.handlers import (
     WandBLogger,
 )
 from ignite.contrib.handlers.base_logger import BaseLogger
-from ignite.engine.engine import Engine
+from ignite.contrib.handlers.param_scheduler import ParamScheduler
+from ignite.engine import Engine
 from ignite.handlers.checkpoint import Checkpoint
 from ignite.handlers.early_stopping import EarlyStopping
 from ignite.handlers.timing import Timer
 from ignite.utils import setup_logger
 from torch import nn, optim
-
-from config import get_default_parser
-from handlers import get_handlers, get_logger
+from torch.optim.lr_scheduler import _LRScheduler
+from torch.utils.data import Dataset
 from trainers import (
     TrainEvents,
     create_trainers,
@@ -34,7 +36,15 @@ from trainers import (
     train_events_to_attr,
     train_function,
 )
-from utils import hash_checkpoint, log_metrics, resume_from, setup_logging
+from utils import hash_checkpoint, initialize, log_metrics, resume_from, setup_logging
+
+
+class TestDataset(unittest.TestCase):
+    def test_get_datasets(self):
+        with TemporaryDirectory() as tmp:
+            train_ds, eval_ds = get_datasets(tmp)
+            assert isinstance(train_ds, Dataset)
+            assert isinstance(eval_ds, Dataset)
 
 
 class TestHandlers(unittest.TestCase):
@@ -116,7 +126,7 @@ class TestEngines(unittest.TestCase):
         engine.add_event_handler(TrainEvents.OPTIM_STEP_COMPLETED, optim)
         config = Namespace(use_amp=False)
         output = train_function(config, engine, self.batch, self.model, self.loss_fn, self.optimizer, self.device)
-        self.assertIsInstance(output, Number)
+        self.assertIsInstance(output, dict)
         self.assertTrue(hasattr(engine.state, "backward_completed"))
         self.assertTrue(hasattr(engine.state, "optim_step_completed"))
         self.assertEqual(engine.state.backward_completed, 1)
@@ -193,8 +203,8 @@ class TestEngines(unittest.TestCase):
     def test_evaluate_fn(self):
         engine = Engine(lambda e, b: 1)
         config = Namespace(use_amp=False)
-        output = evaluate_function(config, engine, self.batch, self.model, self.loss_fn, self.device)
-        self.assertIsInstance(output, Number)
+        output = evaluate_function(config, engine, self.batch, self.model, self.device)
+        self.assertIsInstance(output, tuple)
 
     def test_create_trainers(self):
         train_engine, eval_engine = create_trainers(
@@ -212,6 +222,22 @@ class TestEngines(unittest.TestCase):
 
 class TestUtils(unittest.TestCase):
     """Testing utils.py"""
+
+    def test_initialize(self):
+        config = Namespace(
+            model="squeezenet1_0",
+            lr=1e-3,
+            momentum=0.9,
+            weight_decay=1e-4,
+            num_iters_per_epoch=1,
+            num_warmup_epochs=1,
+            max_epochs=1,
+        )
+        model, optimizer, loss_fn, lr_scheduler = initialize(config)
+        self.assertIsInstance(model, nn.Module)
+        self.assertIsInstance(optimizer, optim.Optimizer)
+        self.assertIsInstance(loss_fn, nn.Module)
+        self.assertIsInstance(lr_scheduler, (_LRScheduler, ParamScheduler))
 
     def test_get_default_parser(self):
         parser = get_default_parser()
