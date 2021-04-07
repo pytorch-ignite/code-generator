@@ -34,7 +34,7 @@ def get_handlers(
         Config object for setting up handlers
 
     `config` has to contain
-    - `output_path`: output path to indicate where to_save objects are stored
+    - `output_dir`: output path to indicate where to_save objects are stored
     - `save_every_iters`: saving iteration interval
     - `n_saved`: number of best models to store
     - `log_every_iters`: logging interval for iteration progress bar and `GpuInfo` if true
@@ -83,7 +83,7 @@ def get_handlers(
         to_save=to_save,
         lr_scheduler=lr_scheduler,
         output_names=output_names,
-        output_path=config.output_path,
+        output_path=config.output_dir / 'checkpoints',
         save_every_iters=config.save_every_iters,
         n_saved=config.n_saved,
         log_every_iters=config.log_every_iters,
@@ -98,7 +98,7 @@ def get_handlers(
 
     # https://pytorch.org/ignite/contrib/engines.html#ignite.contrib.engines.common.save_best_model_by_val_score
     best_model_handler = common.save_best_model_by_val_score(
-        output_path=config.output_path,
+        output_path=config.output_dir / 'checkpoints',
         evaluator=eval_engine,
         model=model,
         metric_name=metric_name,
@@ -209,7 +209,7 @@ def get_logger(
     )
     {% elif logger_deps == 'tensorboard' %}
     logger_handler = common.setup_tb_logging(
-        output_path=config.filepath,
+        output_path=config.output_dir,
         trainer=train_engine,
         optimizers=optimizers,
         evaluators=eval_engine,

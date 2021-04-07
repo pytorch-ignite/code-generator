@@ -2,6 +2,7 @@
 main entrypoint training
 """
 from argparse import ArgumentParser
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 from ignite.contrib.handlers.wandb_logger import WandBLogger
@@ -148,7 +149,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # for training stats
     # --------------------------------
 
-    train_engine.add_event_handler(Events.ITERATION_COMPLETED(config.log_every_iters), log_metrics, tag="train")
+    train_engine.add_event_handler(Events.ITERATION_COMPLETED(every=config.log_every_iters), log_metrics, tag="train")
 
     # ---------------------------------------------
     # run evaluation at every training epoch end
@@ -192,15 +193,12 @@ def main():
     config = parser.parse_args()
     manual_seed(config.seed)
 
-    if config.filepath:
-        path = Path(config.filepath)
+    if config.output_dir:
+        now = datetime.now().strftime("%Y%m%d-%H%M%S")
+        name = f'{config.model}-backend-{idist.backend()}-{now}'
+        path = Path(config.output_dir, name)
         path.mkdir(parents=True, exist_ok=True)
-        config.filepath = path
-
-    if config.output_path:
-        path = Path(config.output_path)
-        path.mkdir(parents=True, exist_ok=True)
-        config.output_path = path
+        config.output_dir = path
 
     with idist.Parallel(
         backend=config.backend,
