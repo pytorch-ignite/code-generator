@@ -14,7 +14,6 @@ def generate():
             sys.path.append(f"./templates/{p.stem}")
             dist_dir = "./tests/dist"
             configs = import_from_file("template_config", f"./templates/{p.stem}/_sidebar.py").get_configs()
-            configs["project_name"] = p.stem
             code_gen = CodeGenerator(dist_dir=dist_dir)
             [*code_gen.render_templates(p.stem, p.stem, configs)]
             code_gen.make_and_write(p.stem, p.stem)
