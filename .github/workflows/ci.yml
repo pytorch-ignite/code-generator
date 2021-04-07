@@ -43,7 +43,7 @@ jobs:
       - run: python -m torch.utils.collect_env
       - run: bash .github/run_test.sh generate
       - run: bash .github/run_test.sh unittest
-      - run: bash .github/run_test.sh integration
+      # - run: bash .github/run_test.sh integration
 
 
   lint:

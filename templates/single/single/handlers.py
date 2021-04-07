@@ -1,1 +1,1 @@
-{% extends "_handlers.pyi" %}
+{% extends "_handlers.py" %}

@@ -5,7 +5,13 @@ set -xeu
 if [ $1 == "generate" ]; then
     python ./tests/generate.py
 elif [ $1 == "unittest" ]; then
-    pytest ./tests/unittest -vvv -ra --color=yes --durations=0
+    for dir in $(find ./tests/dist -type d -mindepth 1 -maxdepth 1)
+    do
+        cd $dir
+        pip install -e .
+        pytest tests/ -vra --color=yes --durations=0
+        cd ../../../
+    done
 elif [ $1 == "integration" ]; then
     for file in $(find ./tests/integration -iname "*.sh")
     do

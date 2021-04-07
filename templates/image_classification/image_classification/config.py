@@ -1,4 +1,4 @@
-{% extends "_argparse.pyi" %}
+{% extends "_argparse.py" %}
 {% block get_default_parser %}
 UPDATES = {
     # dataset options

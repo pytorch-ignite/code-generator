@@ -1,1 +1,1 @@
-{% extends "_hubconf.pyi" %}
+{% extends "_hubconf.py" %}
