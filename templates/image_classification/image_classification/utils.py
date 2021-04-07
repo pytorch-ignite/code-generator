@@ -4,7 +4,6 @@ utility functions which can be used in training
 import hashlib
 import logging
 import shutil
-from datetime import datetime
 from logging import Logger
 from pathlib import Path
 from pprint import pformat
@@ -117,18 +116,17 @@ def setup_logging(config: Any) -> Logger:
     ----------
     config
         config object. config has to contain
-        `verbose` and `filepath` attributes.
+        `verbose` and `output_dir` attributes.
 
     Returns
     -------
     logger
         an instance of `Logger`
     """
-    now = datetime.now().strftime("%Y%m%d-%X")
     logger = setup_logger(
         level=logging.INFO if config.verbose else logging.WARNING,
         format="%(message)s",
-        filepath=config.filepath / f"{now}.log",
+        filepath=config.output_dir / "training-info.log",
     )
     return logger
 

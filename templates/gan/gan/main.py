@@ -3,6 +3,7 @@ main entrypoint training
 """
 import warnings
 from argparse import ArgumentParser
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 from ignite.contrib.handlers.wandb_logger import WandBLogger
@@ -109,7 +110,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     @train_engine.on(Events.EPOCH_COMPLETED)
     def save_fake_example(engine):
         fake = netG(fixed_noise)
-        path = config.filepath / (FAKE_IMG_FNAME.format(engine.state.epoch))
+        path = config.output_dir / (FAKE_IMG_FNAME.format(engine.state.epoch))
         vutils.save_image(fake.detach(), path, normalize=True)
 
     # --------------------------------------------------
@@ -118,7 +119,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     @train_engine.on(Events.EPOCH_COMPLETED)
     def save_real_example(engine):
         img, y = engine.state.batch
-        path = config.filepath / (REAL_IMG_FNAME.format(engine.state.epoch))
+        path = config.output_dir / (REAL_IMG_FNAME.format(engine.state.epoch))
         vutils.save_image(img, path, normalize=True)
 
     # -------------------------------------------------------------
@@ -147,11 +148,11 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
             warnings.warn("Loss plots will not be generated -- pandas or matplotlib not found")
 
         else:
-            df = pd.read_csv(config.filepath / LOGS_FNAME, delimiter="\t", index_col="iteration")
+            df = pd.read_csv(config.output_dir / LOGS_FNAME, delimiter="\t", index_col="iteration")
             _ = df.plot(subplots=True, figsize=(20, 20))
             _ = plt.xlabel("Iteration number")
             fig = plt.gcf()
-            path = config.filepath / PLOT_FNAME
+            path = config.output_dir / PLOT_FNAME
 
             fig.savefig(path)
 
@@ -161,7 +162,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # for training stats
     # --------------------------------
 
-    train_engine.add_event_handler(Events.ITERATION_COMPLETED(config.log_every_iters), log_metrics, tag="train")
+    train_engine.add_event_handler(Events.ITERATION_COMPLETED(every=config.log_every_iters), log_metrics, tag="train")
 
     # ------------------------------------------
     # setup if done. let's run the training
@@ -192,15 +193,12 @@ def main():
     config = parser.parse_args()
     manual_seed(config.seed)
 
-    if config.filepath:
-        path = Path(config.filepath)
+    if config.output_dir:
+        now = datetime.now().strftime("%Y%m%d-%H%M%S")
+        name = f'{config.dataset}-backend-{idist.backend()}-{now}'
+        path = Path(config.output_dir, name)
         path.mkdir(parents=True, exist_ok=True)
-        config.filepath = path
-
-    if config.output_path:
-        path = Path(config.output_path)
-        path.mkdir(parents=True, exist_ok=True)
-        config.output_path = path
+        config.output_dir = path
 
     with idist.Parallel(
         backend=config.backend,

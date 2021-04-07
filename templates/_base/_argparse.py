@@ -58,11 +58,6 @@ DEFAULTS = {
     },
 
     # ignite handlers options
-    "output_path": {
-        "default": "{{output_path}}",
-        "type": str,
-        "help": "output path to indicate where to_save objects are stored ({{output_path}})",
-    },
     "save_every_iters": {
         "default": {{save_every_iters}},
         "type": int,
@@ -115,10 +110,10 @@ DEFAULTS = {
     },
 
     # ignite logger options
-    "filepath": {
-        "default": "{{ filepath }}",
+    "output_dir": {
+        "default": "{{ output_dir }}",
         "type": str,
-        "help": "logging file path ({{ filepath }})",
+        "help": "directory to save all outputs ({{ output_dir }})",
     },
     "logger_log_every_iters": {
         "default": {{logger_log_every_iters}},
