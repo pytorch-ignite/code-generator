@@ -9,9 +9,9 @@ __version__ = "0.1.0"
 
 
 FOLDER_TO_TEMPLATE_NAME = {
-    "Single Model, Single Optimizer": "single",
-    "Generative Adversarial Network": "gan",
     "Image Classification": "image_classification",
+    "Generative Adversarial Network": "gan",
+    "Single Model, Single Optimizer": "single",
 }
 
 TIP = """
@@ -29,16 +29,16 @@ class App:
     page_icon = "https://raw.githubusercontent.com/pytorch/ignite/master/assets/logo/ignite_logomark.svg"
     description = f"""
 <div align='center'>
-<img src="https://raw.githubusercontent.com/pytorch/ignite/master/assets/logo/ignite_logomark.svg"
+<img src="{page_icon}"
 width="100" height="100">
 
 # Code Generator
 
 Application to generate your training scripts with [PyTorch-Ignite](https://github.com/pytorch/ignite).
 
-[Twitter](https://twitter.com/pytorch_ignite) •
-[GitHub](https://github.com/pytorch-ignite/code-generator) •
-[Release: v{__version__}](https://github.com/pytorch-ignite/code-generator/releases)
+[![Twitter](https://badgen.net/badge/icon/Twitter?icon=twitter&label)](https://twitter.com/pytorch_ignite)
+[![GitHub](https://badgen.net/badge/icon/GitHub?icon=github&label)](https://github.com/pytorch-ignite/code-generator)
+[![Release](https://badgen.net/github/tag/pytorch-ignite/code-generator?label=release)](https://github.com/pytorch-ignite/code-generator/releases/latest)
 </div>
 """
 
