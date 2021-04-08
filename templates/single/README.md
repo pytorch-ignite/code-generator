@@ -3,7 +3,6 @@
 # Single Model, Single Optimizer Template
 
 This is a template generated for single model, single optimizer based training.
-This template has structured like a python package to imports modules easily.
 
 <details>
 <summary>
@@ -25,35 +24,28 @@ Detailed Directory List
 </summary>
 
 ```sh
-single
+dist/single
 ├── README.md
+├── config.py
+├── datasets.py
+├── handlers.py
 ├── hubconf.py
+├── main.py
+├── models.py
 ├── requirements.txt
-├── setup.py
-├── single
-│   ├── __init__.py
-│   ├── config.py
-│   ├── datasets.py
-│   ├── handlers.py
-│   ├── main.py
-│   ├── models.py
-│   ├── trainers.py
-│   └── utils.py
-└── tests
-    ├── test_handlers.py
-    ├── test_trainers.py
-    └── test_utils.py
+├── test_all.py
+├── trainers.py
+└── utils.py
 
-2 directories, 15 files
+0 directories, 11 files
 ```
 
 </details>
 
-- Install the dependencies with `pip` and install the project in `editable` mode:
+- Install the dependencies with `pip`:
 
   ```sh
   pip install -r requirements.txt --progress-bar off -U
-  pip install -e .
   ```
 
 > **💡 TIP**

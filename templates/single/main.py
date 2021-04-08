@@ -11,10 +11,10 @@ import ignite.distributed as idist
 from ignite.engine.events import Events
 from ignite.utils import manual_seed
 
-from {{project_name}}.trainers import create_trainers, TrainEvents
-from {{project_name}}.handlers import get_handlers, get_logger
-from {{project_name}}.utils import setup_logging, log_metrics, log_basic_info, initialize, resume_from
-from {{project_name}}.config import get_default_parser
+from trainers import create_trainers, TrainEvents
+from handlers import get_handlers, get_logger
+from utils import setup_logging, log_metrics, log_basic_info, initialize, resume_from
+from config import get_default_parser
 
 
 def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):

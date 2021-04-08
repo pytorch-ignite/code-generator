@@ -12,18 +12,26 @@ from ignite.contrib.handlers.param_scheduler import ParamScheduler
 
 import ignite.distributed as idist
 import torch
+from torch import nn, optim
 from ignite.engine import Engine
 from ignite.handlers.checkpoint import Checkpoint
 from ignite.utils import setup_logger
-from ignite.contrib.handlers import PiecewiseLinear
-from torch.nn import Module, CrossEntropyLoss
+from torch.nn import Module
 from torch.optim.lr_scheduler import _LRScheduler
-from torch.optim import Optimizer, SGD
+from torch.optim.optimizer import Optimizer
 
-from {{project_name}}.models import get_model
+from models import Generator, Discriminator
+
+# we can use `idist.auto_model` to handle distributed configurations
+# for your model : https://pytorch.org/ignite/distributed.html#ignite.distributed.auto.auto_model
+# same also for optimizer, `idist.auto_optim` also handles distributed configurations
+# See : https://pytorch.org/ignite/distributed.html#ignite.distributed.auto.auto_model
+# TODO : PLEASE provide your custom model, optimizer, and loss function
 
 
-def initialize(config: Optional[Any]) -> Tuple[Module, Optimizer, Module, Union[_LRScheduler, ParamScheduler]]:
+def initialize(
+    config: Optional[Any], num_channels: int
+) -> Tuple[Module, Optimizer, Module, Union[_LRScheduler, ParamScheduler]]:
     """Initializing model, optimizer, loss function, and lr scheduler
     with correct settings.
 
@@ -36,27 +44,14 @@ def initialize(config: Optional[Any]) -> Tuple[Module, Optimizer, Module, Union[
     -------
     model, optimizer, loss_fn, lr_scheduler
     """
-    model = get_model(config.model)
-    optimizer = SGD(
-        model.parameters(),
-        lr=config.lr,
-        momentum=config.momentum,
-        weight_decay=config.weight_decay,
-        nesterov=True,
-    )
-    loss_fn = CrossEntropyLoss().to(idist.device())
-    le = config.num_iters_per_epoch
-    milestones_values = [
-        (0, 0.0),
-        (le * config.num_warmup_epochs, config.lr),
-        (le * config.max_epochs, 0.0),
-    ]
-    lr_scheduler = PiecewiseLinear(optimizer, param_name="lr", milestones_values=milestones_values)
-    model = idist.auto_model(model)
-    optimizer = idist.auto_optim(optimizer)
+    netG = idist.auto_model(Generator(config.z_dim, config.g_filters, num_channels))
+    netD = idist.auto_model(Discriminator(num_channels, config.d_filters))
+    loss_fn = nn.BCELoss()
+    optimizerG = optim.Adam(netG.parameters(), lr=config.lr, betas=(config.beta_1, 0.999))
+    optimizerD = optim.Adam(netD.parameters(), lr=config.lr, betas=(config.beta_1, 0.999))
     loss_fn = loss_fn.to(idist.device())
 
-    return model, optimizer, loss_fn, lr_scheduler
+    return netD, netG, optimizerD, optimizerG, loss_fn, None
 
 
 def log_basic_info(logger: Logger, config: Any) -> None:
