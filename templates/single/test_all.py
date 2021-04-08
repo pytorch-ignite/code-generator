@@ -182,8 +182,8 @@ def test_evaluate_fn():
     model, optimizer, device, loss_fn, batch = setUp()
     engine = Engine(lambda e, b: 1)
     config = Namespace(use_amp=False)
-    output = evaluate_function(config, engine, batch, model, device)
-    assert isinstance(output, tuple)
+    output = evaluate_function(config, engine, batch, model, loss_fn, device)
+    assert isinstance(output, Number)
 
 
 def test_create_trainers():
