@@ -87,13 +87,13 @@ def get_configs():
         st.info("Names in the parenthesis are variable names used in the generated code.")
 
         # group by configurations type
-        distributed_options(config)
-        ignite_handlers_options(config)
-        ignite_loggers_options(config)
+        model_options(config)
         dataset_options(config)
         dataloader_options(config)
         optimizer_options(config)
         training_options(config)
-        model_options(config)
+        distributed_options(config)
+        ignite_handlers_options(config)
+        ignite_loggers_options(config)
 
     return config
