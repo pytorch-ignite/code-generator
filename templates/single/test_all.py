@@ -23,7 +23,6 @@ from ignite.engine.engine import Engine
 from ignite.handlers.checkpoint import Checkpoint
 from ignite.handlers.early_stopping import EarlyStopping
 from ignite.handlers.timing import Timer
-from ignite.utils import setup_logger
 from torch import nn, optim
 from trainers import (
     TrainEvents,
@@ -32,7 +31,7 @@ from trainers import (
     train_events_to_attr,
     train_function,
 )
-from utils import hash_checkpoint, log_metrics, resume_from, setup_logging
+from utils import hash_checkpoint, resume_from, setup_logging
 
 
 def setUp():
@@ -206,15 +205,6 @@ def test_get_default_parser():
     parser = get_default_parser()
     assert isinstance(parser, ArgumentParser)
     assert not parser.add_help
-
-
-def test_log_metrics(capsys):
-    engine = Engine(lambda e, b: None)
-    engine.logger = setup_logger(format="%(message)s")
-    engine.run(list(range(100)), max_epochs=2)
-    log_metrics(engine, "train")
-    captured = capsys.readouterr()
-    assert captured.err.split("\n")[-2] == "train [2/200]: {}"
 
 
 def test_setup_logging(tmp_path):
