@@ -21,6 +21,8 @@ from torch.optim.lr_scheduler import _LRScheduler
 from torch.optim.optimizer import Optimizer
 
 from models import Generator, Discriminator
+{% includes "_handlers.py" %}
+
 
 # we can use `idist.auto_model` to handle distributed configurations
 # for your model : https://pytorch.org/ignite/distributed.html#ignite.distributed.auto.auto_model

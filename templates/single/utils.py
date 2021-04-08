@@ -18,6 +18,7 @@ from ignite.utils import setup_logger
 from torch.nn import Module
 from torch.optim.lr_scheduler import _LRScheduler
 from torch.optim.optimizer import Optimizer
+{% includes "_handlers.py" %}
 
 
 # we can use `idist.auto_model` to handle distributed configurations

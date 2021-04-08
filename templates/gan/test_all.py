@@ -8,7 +8,6 @@ import ignite.distributed as idist
 import torch
 from config import get_default_parser
 from datasets import get_datasets
-from handlers import get_handlers, get_logger
 from ignite.contrib.handlers import (
     ClearMLLogger,
     MLflowLogger,
@@ -28,7 +27,7 @@ from models import Discriminator, Generator
 from torch import nn, optim
 from torch.utils.data import Dataset
 from trainers import create_trainers, train_function
-from utils import hash_checkpoint, log_metrics, resume_from, setup_logging
+from utils import hash_checkpoint, log_metrics, resume_from, setup_logging, get_handlers, get_logger
 
 
 class TestDataset(unittest.TestCase):
