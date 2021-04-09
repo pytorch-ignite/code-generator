@@ -1,4 +1,3 @@
-import shutil
 from pathlib import Path
 
 import streamlit as st
@@ -128,23 +127,40 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
 
     def add_download(self):
         st.markdown("")
-        col1, col2 = st.beta_columns(2)
-        with col1:
-            archive_format = st.radio("Archive formats", self.codegen.available_archive_formats)
-            # temporary hack until streamlit has official download option
-            # https://github.com/streamlit/streamlit/issues/400
-            # https://github.com/streamlit/streamlit/issues/400#issuecomment-648580840
-            if st.button("Generate an archive"):
-                archive_fname = self.codegen.make_archive(self.template_name, archive_format)
-                # this is where streamlit serves static files
-                # ~/site-packages/streamlit/static/static/
-                dist_path = Path(st.__path__[0]) / "static/static/dist"
-                if not dist_path.is_dir():
-                    dist_path.mkdir()
-                shutil.copy(archive_fname, dist_path)
-                st.success(f"Download link : [{archive_fname}](./static/{archive_fname})")
-                with col2:
-                    self.render_directory(Path(self.codegen.dist_dir, self.template_name))
+        # col1, col2 = st.beta_columns(2)
+        # temporary hack until streamlit has official download option
+        # https://github.com/streamlit/streamlit/issues/400
+        # https://github.com/streamlit/streamlit/issues/400#issuecomment-648580840
+        archive_format = None
+        _, zip_button, tar_button, _ = st.beta_columns(4)
+        with zip_button:
+            if st.button("📦 Download zip"):
+                archive_format = "zip"
+        with tar_button:
+            if st.button("📦 Download tar"):
+                archive_format = "tar"
+
+        if archive_format is not None:
+            if archive_format == "zip":
+                mimetype = "application/zip"
+            elif archive_format == "tar":
+                mimetype = "application/x-tar"
+            else:
+                mimetype = ""
+
+            archive = self.codegen.writes_archive(self.template_name, archive_format)
+
+            download_link = (
+                f'Download link: <a href="data:{mimetype};base64,{archive}" '
+                f'download="{self.template_name}.{archive_format}">'
+                f"{self.template_name}.{archive_format}</a>"
+            )
+
+            st.markdown(download_link, unsafe_allow_html=True)
+
+        # Temporary turned off since we do not use filesystem anymore
+        # with col2:
+        # self.render_directory(Path("", self.template_name))
 
     def run(self):
         self.add_sidebar()

@@ -1,6 +1,10 @@
 """Code Generator base module.
 """
+import base64
+import io
 import shutil
+import tarfile
+import zipfile
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader
@@ -45,7 +49,7 @@ class CodeGenerator:
         for fname, code in self.rendered_code.items():
             (self.dist_dir / template_name / fname).write_text(code)
 
-    def make_archive(self, template_name, archive_format):
+    def write_archive(self, template_name, archive_format):
         """Creates dist dir with generated code, then makes the archive."""
 
         self.make_and_write(template_name)
@@ -56,3 +60,26 @@ class CodeGenerator:
             base_dir=template_name,
         )
         return shutil.move(archive_fname, self.dist_dir / archive_fname.split("/")[-1])
+
+    def writes_archive(self, template_name, archive_format):
+        """Writes archive as Base64 string."""
+        arch_buffer = io.BytesIO()
+
+        if archive_format == "zip":
+            with zipfile.ZipFile(arch_buffer, "w") as arch:
+                for fname, code in self.rendered_code.items():
+                    arch.writestr(f"{template_name}/{fname}", code)
+
+        elif archive_format == "tar":
+            with tarfile.open(fileobj=arch_buffer, mode="w") as arch:
+                for fname, code in self.rendered_code.items():
+                    tarinfo = tarfile.TarInfo(name=f"{template_name}/{fname}")
+                    code_fileobj = io.BytesIO(code.encode())
+                    tarinfo.size = len(code_fileobj.getvalue())
+                    arch.addfile(tarinfo, code_fileobj)
+        else:
+            raise ValueError(f"Wrong archive format '{archive_format}', use one of available formats: zip, tar")
+
+        arch_str = base64.b64encode(arch_buffer.getvalue()).decode()
+
+        return arch_str
