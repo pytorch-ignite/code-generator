@@ -13,7 +13,7 @@ from torch.utils.data import Dataset
 from trainers import train_function
 
 
-def setUp():
+def set_up():
     model = nn.Linear(1, 1)
     optimizer = optim.Adam(model.parameters())
     device = idist.device()
@@ -47,7 +47,7 @@ def test_models():
 
 
 def test_train_fn():
-    model, optimizer, device, loss_fn, batch = setUp()
+    model, optimizer, device, loss_fn, batch = set_up()
     real_labels = torch.ones(2, device=device)
     fake_labels = torch.zeros(2, device=device)
     engine = Engine(lambda e, b: 1)

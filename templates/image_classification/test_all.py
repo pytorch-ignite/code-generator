@@ -21,7 +21,7 @@ from trainers import (
 from utils import initialize
 
 
-def setUp():
+def set_up():
     model = nn.Linear(1, 1)
     optimizer = optim.Adam(model.parameters())
     device = idist.device()
@@ -46,7 +46,7 @@ def test_get_datasets(tmp_path):
 
 
 def test_train_fn():
-    model, optimizer, device, loss_fn, batch = setUp()
+    model, optimizer, device, loss_fn, batch = set_up()
     engine = Engine(lambda e, b: 1)
     engine.register_events(*TrainEvents, event_to_attr=train_events_to_attr)
     backward = MagicMock()
@@ -67,7 +67,7 @@ def test_train_fn():
 
 
 def test_train_fn_event_filter():
-    model, optimizer, device, loss_fn, batch = setUp()
+    model, optimizer, device, loss_fn, batch = set_up()
     config = Namespace(use_amp=False)
     engine = Engine(lambda e, b: train_function(config, e, b, model, loss_fn, optimizer, device))
     engine.register_events(*TrainEvents, event_to_attr=train_events_to_attr)
@@ -87,7 +87,7 @@ def test_train_fn_event_filter():
 
 
 def test_train_fn_every():
-    model, optimizer, device, loss_fn, batch = setUp()
+    model, optimizer, device, loss_fn, batch = set_up()
 
     config = Namespace(use_amp=False)
     engine = Engine(lambda e, b: train_function(config, e, b, model, loss_fn, optimizer, device))
@@ -108,7 +108,7 @@ def test_train_fn_every():
 
 
 def test_train_fn_once():
-    model, optimizer, device, loss_fn, batch = setUp()
+    model, optimizer, device, loss_fn, batch = set_up()
     config = Namespace(use_amp=False)
     engine = Engine(lambda e, b: train_function(config, e, b, model, loss_fn, optimizer, device))
     engine.register_events(*TrainEvents, event_to_attr=train_events_to_attr)
@@ -128,7 +128,7 @@ def test_train_fn_once():
 
 
 def test_evaluate_fn():
-    model, optimizer, device, loss_fn, batch = setUp()
+    model, optimizer, device, loss_fn, batch = set_up()
     engine = Engine(lambda e, b: 1)
     config = Namespace(use_amp=False)
     output = evaluate_function(config, engine, batch, model, device)
