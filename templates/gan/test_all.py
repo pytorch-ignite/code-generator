@@ -27,7 +27,7 @@ def test_get_datasets(tmp_path):
     dataset, _ = get_datasets("cifar10", tmp_path)
 
     assert isinstance(dataset, Dataset)
-    batch = next(dataset)
+    batch = next(iter(dataset))
     assert isinstance(batch, Iterable)
     assert isinstance(batch[0], Tensor)
     assert isinstance(batch[1], Number)
