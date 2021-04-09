@@ -132,22 +132,17 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
         # https://github.com/streamlit/streamlit/issues/400
         # https://github.com/streamlit/streamlit/issues/400#issuecomment-648580840
         archive_format = None
-        _, zip_button, tar_button, _ = st.beta_columns(4)
-        with zip_button:
-            if st.button("📦 Download zip"):
-                archive_format = "zip"
-        with tar_button:
-            if st.button("📦 Download tar"):
-                archive_format = "tar"
+        mimetype = ""
+
+        _, zip_col, tar_col, _ = st.beta_columns(4)
+        if zip_col.button("📦 Download zip"):
+            archive_format = "zip"
+            mimetype = "application/zip"
+        if tar_col.button("📦 Download tar"):
+            archive_format = "tar"
+            mimetype = "application/x-tar"
 
         if archive_format is not None:
-            if archive_format == "zip":
-                mimetype = "application/zip"
-            elif archive_format == "tar":
-                mimetype = "application/x-tar"
-            else:
-                mimetype = ""
-
             archive = self.codegen.writes_archive(self.template_name, archive_format)
 
             download_link = (
