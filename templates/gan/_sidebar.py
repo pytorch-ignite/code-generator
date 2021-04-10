@@ -43,7 +43,7 @@ def optimizer_options(config):
 
 def training_options(config):
     st.markdown("## Training Options")
-    config["max_epochs"] = st.number_input("Maximum epochs to train (max_epochs)", min_value=1, value=2)
+    config["max_epochs"] = st.number_input("Maximum epochs to train (max_epochs)", min_value=1, value=5)
     st.markdown("---")
 
 
