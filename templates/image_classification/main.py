@@ -125,7 +125,10 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
         lr_scheduler=lr_scheduler,
         output_names=None,
     )
-    logger_handler = get_logger(config=config, train_engine=train_engine, eval_engine=eval_engine, optimizers=optimizer)
+
+    # setup ignite logger only on rank 0
+    if rank == 0:
+        logger_handler = get_logger(config=config, train_engine=train_engine, eval_engine=eval_engine, optimizers=optimizer)
 
     # -----------------------------------
     # resume from the saved checkpoints
@@ -198,12 +201,13 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # close the logger after the training completed / terminated
     # ------------------------------------------------------------
 
-    if isinstance(logger_handler, WandBLogger):
-        # why handle differently for wandb ?
-        # See : https://github.com/pytorch/ignite/issues/1894
-        logger_handler.finish()
-    elif logger_handler:
-        logger_handler.close()
+    if rank == 0:
+        if isinstance(logger_handler, WandBLogger):
+            # why handle differently for wandb ?
+            # See : https://github.com/pytorch/ignite/issues/1894
+            logger_handler.finish()
+        elif logger_handler:
+            logger_handler.close()
 
     # -----------------------------------------
     # where is my best and last checkpoint ?
