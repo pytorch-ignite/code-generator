@@ -26,3 +26,8 @@ exclude = '''
 profile = "black"
 multi_line_output = 3
 supported_extensions = "py"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-vra --color=yes --durations=0 --tb=short"
+python_files = "test_*.py _test_*.py"

@@ -31,6 +31,7 @@ def test_get_datasets(tmp_path):
     assert isinstance(batch, Iterable)
     assert isinstance(batch[0], Tensor)
     assert isinstance(batch[1], Number)
+    assert batch[0].dim == 3
 
 
 def test_models():

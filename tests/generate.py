@@ -1,4 +1,5 @@
 import sys
+import shutil
 from pathlib import Path
 
 
@@ -17,6 +18,7 @@ def generate():
             code_gen = CodeGenerator(dist_dir=dist_dir)
             [*code_gen.render_templates(p.stem, configs)]
             code_gen.make_and_write(p.stem)
+            shutil.copy(p / "_test_internal.py", f"{dist_dir}/{p.stem}")
 
 
 if __name__ == "__main__":

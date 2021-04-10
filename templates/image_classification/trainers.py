@@ -141,6 +141,7 @@ def create_trainers(**kwargs) -> Tuple[Engine, Engine]:
         )
     )
     kwargs.pop('optimizer')
+    kwargs.pop('loss_fn')
     eval_engine = Engine(
         lambda e, b: evaluate_function(
             engine=e,
