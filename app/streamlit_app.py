@@ -63,7 +63,7 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
 
     def render_code(self, fname: str = "", code: str = ""):
         """Main content with the code."""
-        with st.beta_expander(f"View rendered {fname}", expanded=fname.endswith(".md")):
+        with st.beta_expander(fname, expanded=fname.endswith(".md")):
             if fname.endswith(".md"):
                 st.markdown(code, unsafe_allow_html=True)
             else:

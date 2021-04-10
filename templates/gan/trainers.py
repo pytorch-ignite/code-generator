@@ -34,17 +34,28 @@ def train_function(
 
     Parameters
     ----------
-    - config: config object
-    - engine: Engine instance
-    - batch: batch in current iteration
-    - netD: discriminator model
-    - netG: generator model
-    - loss_fn: nn.Module loss
-    - optimizerD: discriminator optimizer
-    - optimizerG: generator optimizer
-    - device: device to use for training
-    - real_labels: real label tensor
-    - fake_labels: fake label tensor
+    config
+        config object
+    engine
+        Engine instance
+    batch
+        batch in current iteration
+    netD
+        discriminator model
+    netG
+        generator model
+    loss_fn
+        nn.Module loss
+    optimizerD
+        discriminator optimizer
+    optimizerG
+        generator optimizer
+    device
+        device to use for training
+    real_labels
+        real label tensor
+    fake_labels
+        fake label tensor
 
     Returns
     -------

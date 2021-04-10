@@ -51,7 +51,7 @@ def optimizer_options(config):
 
 def training_options(config):
     st.markdown("## Training Options")
-    config["max_epochs"] = st.number_input("Maximum epochs to train (max_epochs)", min_value=1, value=2)
+    config["max_epochs"] = st.number_input("Maximum epochs to train (max_epochs)", min_value=1, value=5)
     config["num_warmup_epochs"] = st.number_input(
         "number of warm-up epochs before learning rate decay (num_warmup_epochs)", min_value=1, value=4
     )
@@ -87,13 +87,13 @@ def get_configs():
         st.info("Names in the parenthesis are variable names used in the generated code.")
 
         # group by configurations type
-        distributed_options(config)
-        ignite_handlers_options(config)
-        ignite_loggers_options(config)
+        model_options(config)
         dataset_options(config)
         dataloader_options(config)
         optimizer_options(config)
         training_options(config)
-        model_options(config)
+        distributed_options(config)
+        ignite_handlers_options(config)
+        ignite_loggers_options(config)
 
     return config
