@@ -3,17 +3,17 @@ from torchvision import datasets as dset
 import ignite.distributed as idist
 
 
-def get_datasets(dataset, dataroot, local_rank):
+def get_datasets(dataset, dataroot):
     """
 
     Args:
         dataset (str): Name of the dataset to use. See CLI help for details
         dataroot (str): root directory where the dataset will be stored.
-        local_rank (int): local rank of distributed setttings
 
     Returns:
         dataset, num_channels
     """
+    local_rank = idist.get_local_rank()
 
     if local_rank > 0:
         # Ensure that only rank 0 download the dataset

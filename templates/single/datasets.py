@@ -3,7 +3,9 @@
 import ignite.distributed as idist
 
 
-def get_datasets(local_rank, *args, **kwargs):
+def get_datasets(*args, **kwargs):
+    local_rank = idist.get_local_rank()
+
     if local_rank > 0:
         # Ensure that only rank 0 download the dataset
         idist.barrier()

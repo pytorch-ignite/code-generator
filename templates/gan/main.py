@@ -40,7 +40,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # datasets and dataloaders
     # -----------------------------
 
-    train_dataset, num_channels = get_datasets(config.dataset, config.data_path, local_rank)
+    train_dataset, num_channels = get_datasets(config.dataset, config.data_path)
 
     train_dataloader = idist.auto_dataloader(
         train_dataset,

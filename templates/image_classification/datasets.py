@@ -20,7 +20,8 @@ eval_transform = Compose(
 )
 
 
-def get_datasets(path, local_rank):
+def get_datasets(path):
+    local_rank = idist.get_local_rank()
 
     if local_rank > 0:
         # Ensure that only rank 0 download the dataset

@@ -41,7 +41,7 @@ from utils import hash_checkpoint, initialize, log_metrics, resume_from, setup_l
 class TestDataset(unittest.TestCase):
     def test_get_datasets(self):
         with TemporaryDirectory() as tmp:
-            train_ds, eval_ds = get_datasets(tmp, 0)
+            train_ds, eval_ds = get_datasets(tmp)
             assert isinstance(train_ds, Dataset)
             assert isinstance(eval_ds, Dataset)
 
