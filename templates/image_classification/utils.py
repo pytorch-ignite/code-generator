@@ -21,6 +21,8 @@ from torch.optim.lr_scheduler import _LRScheduler
 from torch.optim import Optimizer, SGD
 
 from models import get_model
+{% include "_handlers.py" %}
+
 
 
 def initialize(config: Optional[Any]) -> Tuple[Module, Optimizer, Module, Union[_LRScheduler, ParamScheduler]]:

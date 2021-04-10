@@ -9,7 +9,6 @@ import ignite.distributed as idist
 import torch
 from config import get_default_parser
 from datasets import get_datasets
-from handlers import get_handlers, get_logger
 from ignite.contrib.handlers import (
     ClearMLLogger,
     MLflowLogger,
@@ -36,7 +35,7 @@ from trainers import (
     train_events_to_attr,
     train_function,
 )
-from utils import hash_checkpoint, initialize, log_metrics, resume_from, setup_logging
+from utils import hash_checkpoint, initialize, log_metrics, resume_from, setup_logging, get_handlers, get_logger
 
 
 class TestDataset(unittest.TestCase):
