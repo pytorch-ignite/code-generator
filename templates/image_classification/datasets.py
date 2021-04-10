@@ -1,5 +1,6 @@
 from torchvision import datasets
 from torchvision.transforms import Compose, Normalize, Pad, RandomCrop, RandomHorizontalFlip, ToTensor
+import ignite.distributed as idist
 
 train_transform = Compose(
     [
@@ -19,8 +20,17 @@ eval_transform = Compose(
 )
 
 
-def get_datasets(path):
+def get_datasets(path, local_rank):
+
+    if local_rank > 0:
+        # Ensure that only rank 0 download the dataset
+        idist.barrier()
+
     train_ds = datasets.CIFAR10(root=path, train=True, download=True, transform=train_transform)
     eval_ds = datasets.CIFAR10(root=path, train=False, download=True, transform=eval_transform)
+
+    if local_rank == 0:
+        # Ensure that only rank 0 download the dataset
+        idist.barrier()
 
     return train_ds, eval_ds

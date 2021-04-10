@@ -1,17 +1,24 @@
 from torchvision import transforms as T
 from torchvision import datasets as dset
+import ignite.distributed as idist
 
 
-def get_datasets(dataset, dataroot):
+def get_datasets(dataset, dataroot, local_rank):
     """
 
     Args:
         dataset (str): Name of the dataset to use. See CLI help for details
         dataroot (str): root directory where the dataset will be stored.
+        local_rank (int): local rank of distributed setttings
 
     Returns:
         dataset, num_channels
     """
+
+    if local_rank > 0:
+        # Ensure that only rank 0 download the dataset
+        idist.barrier()
+
     resize = T.Resize(64)
     crop = T.CenterCrop(64)
     to_tensor = T.ToTensor()
@@ -41,5 +48,9 @@ def get_datasets(dataset, dataroot):
 
     else:
         raise RuntimeError(f"Invalid dataset name: {dataset}")
+
+    if local_rank == 0:
+        # Ensure that only rank 0 download the dataset
+        idist.barrier()
 
     return dataset, nc

@@ -11,6 +11,7 @@ import ignite.distributed as idist
 from ignite.engine.events import Events
 from ignite.utils import manual_seed
 
+from datasets import get_datasets
 from trainers import create_trainers, TrainEvents
 from handlers import get_handlers, get_logger
 from utils import setup_logging, log_metrics, log_basic_info, initialize, resume_from
@@ -34,16 +35,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # TODO : PLEASE replace `kwargs` with your desirable DataLoader arguments
     # See : https://pytorch.org/ignite/distributed.html#ignite.distributed.auto.auto_dataloader
 
-    if rank > 0:
-        # Ensure that only rank 0 download the dataset
-        idist.barrier()
-
-    train_dataset = ...
-    eval_dataset = ...
-
-    if rank == 0:
-        # Ensure that only rank 0 download the dataset
-        idist.barrier()
+    train_dataset, eval_dataset = get_datasets(local_rank)
 
     train_dataloader = idist.auto_dataloader(train_dataset, **kwargs)
     eval_dataloader = idist.auto_dataloader(eval_dataset, **kwargs)
@@ -104,7 +96,9 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
 
     # setup ignite logger only on rank 0
     if rank == 0:
-        logger_handler = get_logger(config=config, train_engine=train_engine, eval_engine=eval_engine, optimizers=optimizer)
+        logger_handler = get_logger(
+            config=config, train_engine=train_engine, eval_engine=eval_engine, optimizers=optimizer
+        )
 
     # -----------------------------------
     # resume from the saved checkpoints

@@ -40,15 +40,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # datasets and dataloaders
     # -----------------------------
 
-    if rank > 0:
-        # Ensure that only rank 0 download the dataset
-        idist.barrier()
-
-    train_dataset, num_channels = get_datasets(config.dataset, config.data_path)
-
-    if rank == 0:
-        # Ensure that only rank 0 download the dataset
-        idist.barrier()
+    train_dataset, num_channels = get_datasets(config.dataset, config.data_path, local_rank)
 
     train_dataloader = idist.auto_dataloader(
         train_dataset,

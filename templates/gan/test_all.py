@@ -33,7 +33,7 @@ from utils import hash_checkpoint, log_metrics, resume_from, setup_logging, get_
 class TestDataset(unittest.TestCase):
     def test_get_datasets(self):
         with TemporaryDirectory() as tmp:
-            dataset, nc = get_datasets("cifar10", tmp)
+            dataset, nc = get_datasets("cifar10", tmp, 0)
 
             self.assertIsInstance(dataset, Dataset)
             self.assertEqual(nc, 3)
