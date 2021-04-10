@@ -26,7 +26,6 @@ from ignite.utils import setup_logger
 from torch import nn, optim
 
 from config import get_default_parser
-from handlers import get_handlers, get_logger
 from trainers import (
     TrainEvents,
     create_trainers,
@@ -34,7 +33,7 @@ from trainers import (
     train_events_to_attr,
     train_function,
 )
-from utils import hash_checkpoint, log_metrics, resume_from, setup_logging
+from utils import hash_checkpoint, log_metrics, resume_from, setup_logging, get_handlers, get_logger
 
 
 class TestHandlers(unittest.TestCase):
