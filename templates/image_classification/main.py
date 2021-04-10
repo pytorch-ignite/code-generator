@@ -22,6 +22,12 @@ from config import get_default_parser
 def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     """function to be run by idist.Parallel context manager."""
 
+    # ----------------------
+    # make a certain seed
+    # ----------------------
+    rank = idist.get_rank()
+    manual_seed(config.seed + rank)
+
     # -----------------------------
     # datasets and dataloaders
     # -----------------------------
@@ -30,7 +36,16 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # TODO : PLEASE replace `kwargs` with your desirable DataLoader arguments
     # See : https://pytorch.org/ignite/distributed.html#ignite.distributed.auto.auto_dataloader
 
+    if rank > 0:
+        # Ensure that only rank 0 download the dataset
+        idist.barrier()
+
     train_dataset, eval_dataset = get_datasets(path=config.data_path)
+
+    if rank == 0:
+        # Ensure that only rank 0 download the dataset
+        idist.barrier()
+
     train_dataloader = idist.auto_dataloader(
         train_dataset,
         batch_size=config.train_batch_size,
@@ -110,7 +125,10 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
         lr_scheduler=lr_scheduler,
         output_names=None,
     )
-    logger_handler = get_logger(config=config, train_engine=train_engine, eval_engine=eval_engine, optimizers=optimizer)
+
+    # setup ignite logger only on rank 0
+    if rank == 0:
+        logger_handler = get_logger(config=config, train_engine=train_engine, eval_engine=eval_engine, optimizers=optimizer)
 
     # -----------------------------------
     # resume from the saved checkpoints
@@ -183,12 +201,13 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # close the logger after the training completed / terminated
     # ------------------------------------------------------------
 
-    if isinstance(logger_handler, WandBLogger):
-        # why handle differently for wandb ?
-        # See : https://github.com/pytorch/ignite/issues/1894
-        logger_handler.finish()
-    elif logger_handler:
-        logger_handler.close()
+    if rank == 0:
+        if isinstance(logger_handler, WandBLogger):
+            # why handle differently for wandb ?
+            # See : https://github.com/pytorch/ignite/issues/1894
+            logger_handler.finish()
+        elif logger_handler:
+            logger_handler.close()
 
     # -----------------------------------------
     # where is my best and last checkpoint ?
@@ -200,7 +219,6 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
 def main():
     parser = ArgumentParser(parents=[get_default_parser()])
     config = parser.parse_args()
-    manual_seed(config.seed)
 
     if config.output_dir:
         now = datetime.now().strftime("%Y%m%d-%H%M%S")
