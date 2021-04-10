@@ -36,7 +36,16 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # TODO : PLEASE replace `kwargs` with your desirable DataLoader arguments
     # See : https://pytorch.org/ignite/distributed.html#ignite.distributed.auto.auto_dataloader
 
+    if rank > 0:
+        # Ensure that only rank 0 download the dataset
+        idist.barrier()
+
     train_dataset, eval_dataset = get_datasets(path=config.data_path)
+
+    if rank == 0:
+        # Ensure that only rank 0 download the dataset
+        idist.barrier()
+
     train_dataloader = idist.auto_dataloader(
         train_dataset,
         batch_size=config.train_batch_size,
