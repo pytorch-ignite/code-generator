@@ -22,6 +22,12 @@ from config import get_default_parser
 def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     """function to be run by idist.Parallel context manager."""
 
+    # ----------------------
+    # make a certain seed
+    # ----------------------
+    rank = idist.get_rank()
+    manual_seed(config.seed + rank)
+
     # -----------------------------
     # datasets and dataloaders
     # -----------------------------
@@ -200,7 +206,6 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
 def main():
     parser = ArgumentParser(parents=[get_default_parser()])
     config = parser.parse_args()
-    manual_seed(config.seed)
 
     if config.output_dir:
         now = datetime.now().strftime("%Y%m%d-%H%M%S")
