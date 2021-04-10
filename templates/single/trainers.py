@@ -31,13 +31,20 @@ def train_function(
 
     Parameters
     ----------
-    - config: config object
-    - engine: Engine instance
-    - batch: batch in current iteration
-    - model: nn.Module model
-    - loss_fn: nn.Module loss
-    - optimizer: torch optimizer
-    - device: device to use for training
+    config
+        config object
+    engine
+        Engine instance
+    batch
+        batch in current iteration
+    model
+        nn.Module model
+    loss_fn
+        nn.Module loss
+    optimizer
+        torch optimizer
+    device
+        device to use for training
 
     Returns
     -------
@@ -87,12 +94,18 @@ def evaluate_function(
 
     Parameters
     ----------
-    - config: config object
-    - engine: Engine instance
-    - batch: batch in current iteration
-    - model: nn.Module model
-    - loss_fn: nn.Module loss
-    - device: device to use for training
+    config
+        config object
+    engine
+        Engine instance
+    batch
+        batch in current iteration
+    model
+        nn.Module model
+    loss_fn
+        nn.Module loss
+    device
+        device to use for training
 
     Returns
     -------
@@ -133,6 +146,7 @@ def create_trainers(**kwargs) -> Tuple[Engine, Engine]:
             **kwargs,
         )
     )
+    kwargs.pop('optimizer')
     eval_engine = Engine(
         lambda e, b: evaluate_function(
             engine=e,

@@ -37,8 +37,10 @@ def initialize(
 
     Parameters
     ----------
-    config:
+    config
         config object
+    num_channels
+        number of channels for Generator
 
     Returns
     -------
