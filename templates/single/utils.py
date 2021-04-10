@@ -64,27 +64,30 @@ def log_basic_info(logger: Logger, config: Any) -> None:
     """
     import ignite
 
-    logger.info("- PyTorch version: %s", torch.__version__)
-    logger.info("- Ignite version: %s", ignite.__version__)
+    logger.info("PyTorch version: %s", torch.__version__)
+    logger.info("Ignite version: %s", ignite.__version__)
     if torch.cuda.is_available():
         # explicitly import cudnn as
         # torch.backends.cudnn can not be pickled with hvd spawning procs
         from torch.backends import cudnn
 
-        logger.info("- GPU device: %s", torch.cuda.get_device_name(idist.get_local_rank()))
-        logger.info("- CUDA version: %s", torch.version.cuda)
-        logger.info("- CUDNN version: %s", cudnn.version())
+        logger.info("GPU device: %s", torch.cuda.get_device_name(idist.get_local_rank()))
+        logger.info("CUDA version: %s", torch.version.cuda)
+        logger.info("CUDNN version: %s", cudnn.version())
 
-    logger.info("\n")
-    logger.info("Configuration:")
-    logger.info("%s", pformat(vars(config)))
-    logger.info("\n")
+    logger.info("Configuration: %s", pformat(vars(config)))
 
     if idist.get_world_size() > 1:
-        logger.info("\nDistributed setting:")
-        logger.info("\tbackend: %s", idist.backend())
-        logger.info("\tworld size: %s", idist.get_world_size())
-        logger.info("\n")
+        logger.info("distributed configuration: %s", idist.model_name())
+        logger.info("backend: %s", idist.backend())
+        logger.info("device: %s", idist.device().type)
+        logger.info("hostname: %s", idist.hostname())
+        logger.info("world size: %s", idist.get_world_size())
+        logger.info("rank: %s", idist.get_rank())
+        logger.info("local rank: %s", idist.get_local_rank())
+        logger.info("num processes per node: %s", idist.get_nproc_per_node())
+        logger.info("num nodes: %s", idist.get_nnodes())
+        logger.info("node rank: %s", idist.get_node_rank())
 
 
 def log_metrics(engine: Engine, tag: str) -> None:
@@ -115,9 +118,12 @@ def setup_logging(config: Any) -> Logger:
     logger
         an instance of `Logger`
     """
+    green = "\033[32m"
+    reset = "\033[0m"
     logger = setup_logger(
+        name=f"{green}[ignite]{reset}",
         level=logging.INFO if config.verbose else logging.WARNING,
-        format="%(message)s",
+        format="%(name)s: %(message)s",
         filepath=config.output_dir / "training-info.log",
     )
     return logger
