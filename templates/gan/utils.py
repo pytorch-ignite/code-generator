@@ -80,8 +80,7 @@ def log_basic_info(logger: Logger, config: Any) -> None:
         logger.info("CUDA version: %s", torch.version.cuda)
         logger.info("CUDNN version: %s", cudnn.version())
 
-    logger.info("Configuration:")
-    logger.info("%s", pformat(vars(config)))
+    logger.info("Configuration: %s", pformat(vars(config)))
 
     if idist.get_world_size() > 1:
         logger.info("distributed configuration: %s", idist.model_name())
