@@ -140,6 +140,15 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
         eval_engine.run(eval_dataloader, max_epochs=1)
         eval_engine.add_event_handler(Events.EPOCH_COMPLETED(every=1), log_metrics, tag="eval")
 
+    # --------------------------------------------------
+    # let's try run evaluation first as a sanity check
+    # --------------------------------------------------
+
+    @train_engine.on(Events.STARTED)
+    def _():
+        eval_engine.run(eval_dataloader, max_epochs=1, epoch_length=2)
+        eval_engine.state.max_epochs = None
+
     # ------------------------------------------
     # setup if done. let's run the training
     # ------------------------------------------
@@ -172,7 +181,7 @@ def main():
 
     if config.output_dir:
         now = datetime.now().strftime("%Y%m%d-%H%M%S")
-        name = f'backend-{idist.backend()}-{now}'
+        name = f"backend-{idist.backend()}-{now}"
         path = Path(config.output_dir, name)
         path.mkdir(parents=True, exist_ok=True)
         config.output_dir = path
