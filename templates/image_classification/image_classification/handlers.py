@@ -1,1 +1,0 @@
-{% extends "_handlers.pyi" %}

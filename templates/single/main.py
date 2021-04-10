@@ -2,6 +2,7 @@
 main entrypoint training
 """
 from argparse import ArgumentParser
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 from ignite.contrib.handlers.wandb_logger import WandBLogger
@@ -9,17 +10,21 @@ from ignite.contrib.handlers.wandb_logger import WandBLogger
 import ignite.distributed as idist
 from ignite.engine.events import Events
 from ignite.utils import manual_seed
-from ignite.metrics import Accuracy, Loss
 
-from {{project_name}}.datasets import get_datasets
-from {{project_name}}.trainers import create_trainers, TrainEvents
-from {{project_name}}.handlers import get_handlers, get_logger
-from {{project_name}}.utils import setup_logging, log_metrics, log_basic_info, initialize, resume_from
-from {{project_name}}.config import get_default_parser
+from trainers import create_trainers, TrainEvents
+from handlers import get_handlers, get_logger
+from utils import setup_logging, log_metrics, log_basic_info, initialize, resume_from
+from config import get_default_parser
 
 
 def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     """function to be run by idist.Parallel context manager."""
+
+    # ----------------------
+    # make a certain seed
+    # ----------------------
+    rank = idist.get_rank()
+    manual_seed(config.seed + rank)
 
     # -----------------------------
     # datasets and dataloaders
@@ -29,27 +34,26 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # TODO : PLEASE replace `kwargs` with your desirable DataLoader arguments
     # See : https://pytorch.org/ignite/distributed.html#ignite.distributed.auto.auto_dataloader
 
-    train_dataset, eval_dataset = get_datasets(path=config.data_path)
-    train_dataloader = idist.auto_dataloader(
-        train_dataset,
-        batch_size=config.train_batch_size,
-        num_workers=config.num_workers,
-        shuffle=True,
-    )
-    eval_dataloader = idist.auto_dataloader(
-        eval_dataset,
-        batch_size=config.eval_batch_size,
-        num_workers=config.num_workers,
-        shuffle=False,
-    )
+    if rank > 0:
+        # Ensure that only rank 0 download the dataset
+        idist.barrier()
+
+    train_dataset = ...
+    eval_dataset = ...
+
+    if rank == 0:
+        # Ensure that only rank 0 download the dataset
+        idist.barrier()
+
+    train_dataloader = idist.auto_dataloader(train_dataset, **kwargs)
+    eval_dataloader = idist.auto_dataloader(eval_dataset, **kwargs)
 
     # ------------------------------------------
     # model, optimizer, loss function, device
     # ------------------------------------------
 
     device = idist.device()
-    config.num_iters_per_epoch = len(train_dataloader)
-    model, optimizer, loss_fn, lr_scheduler = initialize(config=config)
+    model, optimizer, loss_fn, lr_scheduler = initialize()
 
     # -----------------------------
     # train_engine and eval_engine
@@ -62,18 +66,6 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
         loss_fn=loss_fn,
         device=device,
     )
-
-    # ---------------------------------
-    # attach metrics to eval_engine
-    # ---------------------------------
-    accuracy = Accuracy(device=device)
-    metrics = {
-        "eval_accuracy": accuracy,
-        "eval_loss": Loss(loss_fn, device=device),
-        "eval_error": (1.0 - accuracy) * 100,
-    }
-    for name, metric in metrics.items():
-        metric.attach(eval_engine, name)
 
     # -------------------------------------------
     # update config with optimizer parameters
@@ -97,7 +89,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
         model=model,
         train_engine=train_engine,
         eval_engine=eval_engine,
-        metric_name="eval_accuracy",
+        metric_name=None,
         # TODO : replace with the metric name to save the best model
         # if you check `Save the best model by evaluation score` otherwise leave it None
         # metric must be in eval_engine.state.metrics.
@@ -109,7 +101,10 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
         lr_scheduler=lr_scheduler,
         output_names=None,
     )
-    logger_handler = get_logger(config=config, train_engine=train_engine, eval_engine=eval_engine, optimizers=optimizer)
+
+    # setup ignite logger only on rank 0
+    if rank == 0:
+        logger_handler = get_logger(config=config, train_engine=train_engine, eval_engine=eval_engine, optimizers=optimizer)
 
     # -----------------------------------
     # resume from the saved checkpoints
@@ -148,7 +143,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # for training stats
     # --------------------------------
 
-    train_engine.add_event_handler(Events.ITERATION_COMPLETED(config.log_every_iters), log_metrics, tag="train")
+    train_engine.add_event_handler(Events.ITERATION_COMPLETED(every=config.log_every_iters), log_metrics, tag="train")
 
     # ---------------------------------------------
     # run evaluation at every training epoch end
@@ -163,22 +158,33 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
         eval_engine.run(eval_dataloader, max_epochs=1)
         eval_engine.add_event_handler(Events.EPOCH_COMPLETED(every=1), log_metrics, tag="eval")
 
+    # --------------------------------------------------
+    # let's try run evaluation first as a sanity check
+    # --------------------------------------------------
+
+    @train_engine.on(Events.STARTED)
+    def _():
+        eval_engine.run(eval_dataloader, max_epochs=1, epoch_length=2)
+        eval_engine.state.max_epochs = None
+
     # ------------------------------------------
     # setup if done. let's run the training
     # ------------------------------------------
+    # TODO : PLEASE provide `max_epochs` parameters
 
-    train_engine.run(train_dataloader, max_epochs=config.max_epochs)
+    train_engine.run(train_dataloader)
 
     # ------------------------------------------------------------
     # close the logger after the training completed / terminated
     # ------------------------------------------------------------
 
-    if isinstance(logger_handler, WandBLogger):
-        # why handle differently for wandb ?
-        # See : https://github.com/pytorch/ignite/issues/1894
-        logger_handler.finish()
-    elif logger_handler:
-        logger_handler.close()
+    if rank == 0:
+        if isinstance(logger_handler, WandBLogger):
+            # why handle differently for wandb ?
+            # See : https://github.com/pytorch/ignite/issues/1894
+            logger_handler.finish()
+        elif logger_handler:
+            logger_handler.close()
 
     # -----------------------------------------
     # where is my best and last checkpoint ?
@@ -190,17 +196,13 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
 def main():
     parser = ArgumentParser(parents=[get_default_parser()])
     config = parser.parse_args()
-    manual_seed(config.seed)
 
-    if config.filepath:
-        path = Path(config.filepath)
+    if config.output_dir:
+        now = datetime.now().strftime("%Y%m%d-%H%M%S")
+        name = f"backend-{idist.backend()}-{now}"
+        path = Path(config.output_dir, name)
         path.mkdir(parents=True, exist_ok=True)
-        config.filepath = path
-
-    if config.output_path:
-        path = Path(config.output_path)
-        path.mkdir(parents=True, exist_ok=True)
-        config.output_path = path
+        config.output_dir = path
 
     with idist.Parallel(
         backend=config.backend,

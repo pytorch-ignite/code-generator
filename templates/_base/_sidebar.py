@@ -80,14 +80,14 @@ def ignite_handlers_options(config):
 
 def ignite_loggers_options(config):
     st.markdown("## Ignite Loggers Options")
-    config["filepath"] = st.text_input(
-        "Logging file path (filepath)",
+    config["output_dir"] = st.text_input(
+        "Directory to save all outputs (output_dir)",
         "./logs",
-        help="This option will be used by both python logging and ignite loggers if possible",
+        help="This option will be used by python logging, saving checkpoints, and ignite loggers if possible",
     )
     if st.checkbox("Use experiment tracking system ?", value=True):
         config["logger_deps"] = st.selectbox(
-            "Select experiment eracking system",
+            "Select experiment tracking system",
             ["ClearML", "MLflow", "Neptune", "Polyaxon", "TensorBoard", "Visdom", "WandB"],
             index=4,
         ).lower()
@@ -104,10 +104,6 @@ def ignite_loggers_options(config):
 
 
 def _setup_common_training_handlers_options(config):
-    config["output_path"] = st.text_input(
-        "Output path to indicate where to_save objects are stored (output_path)",
-        value="./logs",
-    )
     config["save_every_iters"] = st.number_input(
         "Saving iteration interval (save_every_iters)", min_value=1, value=1000
     )

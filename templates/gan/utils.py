@@ -4,7 +4,6 @@ utility functions which can be used in training
 import hashlib
 import logging
 import shutil
-from datetime import datetime
 from logging import Logger
 from pathlib import Path
 from pprint import pformat
@@ -13,51 +12,50 @@ from ignite.contrib.handlers.param_scheduler import ParamScheduler
 
 import ignite.distributed as idist
 import torch
+from torch import nn, optim
 from ignite.engine import Engine
 from ignite.handlers.checkpoint import Checkpoint
 from ignite.utils import setup_logger
-from ignite.contrib.handlers import PiecewiseLinear
-from torch.nn import Module, CrossEntropyLoss
+from torch.nn import Module
 from torch.optim.lr_scheduler import _LRScheduler
-from torch.optim import Optimizer, SGD
+from torch.optim.optimizer import Optimizer
 
-from {{project_name}}.models import get_model
+from models import Generator, Discriminator
+{% include "_handlers.py" %}
 
 
-def initialize(config: Optional[Any]) -> Tuple[Module, Optimizer, Module, Union[_LRScheduler, ParamScheduler]]:
+# we can use `idist.auto_model` to handle distributed configurations
+# for your model : https://pytorch.org/ignite/distributed.html#ignite.distributed.auto.auto_model
+# same also for optimizer, `idist.auto_optim` also handles distributed configurations
+# See : https://pytorch.org/ignite/distributed.html#ignite.distributed.auto.auto_model
+# TODO : PLEASE provide your custom model, optimizer, and loss function
+
+
+def initialize(
+    config: Optional[Any], num_channels: int
+) -> Tuple[Module, Optimizer, Module, Union[_LRScheduler, ParamScheduler]]:
     """Initializing model, optimizer, loss function, and lr scheduler
     with correct settings.
 
     Parameters
     ----------
-    config:
+    config
         config object
+    num_channels
+        number of channels for Generator
 
     Returns
     -------
     model, optimizer, loss_fn, lr_scheduler
     """
-    model = get_model(config.model)
-    optimizer = SGD(
-        model.parameters(),
-        lr=config.lr,
-        momentum=config.momentum,
-        weight_decay=config.weight_decay,
-        nesterov=True,
-    )
-    loss_fn = CrossEntropyLoss().to(idist.device())
-    le = config.num_iters_per_epoch
-    milestones_values = [
-        (0, 0.0),
-        (le * config.num_warmup_epochs, config.lr),
-        (le * config.max_epochs, 0.0),
-    ]
-    lr_scheduler = PiecewiseLinear(optimizer, param_name="lr", milestones_values=milestones_values)
-    model = idist.auto_model(model)
-    optimizer = idist.auto_optim(optimizer)
+    netG = idist.auto_model(Generator(config.z_dim, config.g_filters, num_channels))
+    netD = idist.auto_model(Discriminator(num_channels, config.d_filters))
+    loss_fn = nn.BCELoss()
+    optimizerG = optim.Adam(netG.parameters(), lr=config.lr, betas=(config.beta_1, 0.999))
+    optimizerD = optim.Adam(netD.parameters(), lr=config.lr, betas=(config.beta_1, 0.999))
     loss_fn = loss_fn.to(idist.device())
 
-    return model, optimizer, loss_fn, lr_scheduler
+    return netD, netG, optimizerD, optimizerG, loss_fn, None
 
 
 def log_basic_info(logger: Logger, config: Any) -> None:
@@ -73,27 +71,30 @@ def log_basic_info(logger: Logger, config: Any) -> None:
     """
     import ignite
 
-    logger.info("- PyTorch version: %s", torch.__version__)
-    logger.info("- Ignite version: %s", ignite.__version__)
+    logger.info("PyTorch version: %s", torch.__version__)
+    logger.info("Ignite version: %s", ignite.__version__)
     if torch.cuda.is_available():
         # explicitly import cudnn as
         # torch.backends.cudnn can not be pickled with hvd spawning procs
         from torch.backends import cudnn
 
-        logger.info("- GPU device: %s", torch.cuda.get_device_name(idist.get_local_rank()))
-        logger.info("- CUDA version: %s", torch.version.cuda)
-        logger.info("- CUDNN version: %s", cudnn.version())
+        logger.info("GPU device: %s", torch.cuda.get_device_name(idist.get_local_rank()))
+        logger.info("CUDA version: %s", torch.version.cuda)
+        logger.info("CUDNN version: %s", cudnn.version())
 
-    logger.info("\n")
-    logger.info("Configuration:")
-    logger.info("%s", pformat(vars(config)))
-    logger.info("\n")
+    logger.info("Configuration: %s", pformat(vars(config)))
 
     if idist.get_world_size() > 1:
-        logger.info("\nDistributed setting:")
-        logger.info("\tbackend: %s", idist.backend())
-        logger.info("\tworld size: %s", idist.get_world_size())
-        logger.info("\n")
+        logger.info("distributed configuration: %s", idist.model_name())
+        logger.info("backend: %s", idist.backend())
+        logger.info("device: %s", idist.device().type)
+        logger.info("hostname: %s", idist.hostname())
+        logger.info("world size: %s", idist.get_world_size())
+        logger.info("rank: %s", idist.get_rank())
+        logger.info("local rank: %s", idist.get_local_rank())
+        logger.info("num processes per node: %s", idist.get_nproc_per_node())
+        logger.info("num nodes: %s", idist.get_nnodes())
+        logger.info("node rank: %s", idist.get_node_rank())
 
 
 def log_metrics(engine: Engine, tag: str) -> None:
@@ -117,18 +118,20 @@ def setup_logging(config: Any) -> Logger:
     ----------
     config
         config object. config has to contain
-        `verbose` and `filepath` attributes.
+        `verbose` and `output_dir` attributes.
 
     Returns
     -------
     logger
         an instance of `Logger`
     """
-    now = datetime.now().strftime("%Y%m%d-%X")
+    green = "\033[32m"
+    reset = "\033[0m"
     logger = setup_logger(
+        name=f"{green}[ignite]{reset}",
         level=logging.INFO if config.verbose else logging.WARNING,
-        format="%(message)s",
-        filepath=config.filepath / f"{now}.log",
+        format="%(name)s: %(message)s",
+        filepath=config.output_dir / "training-info.log",
     )
     return logger
 

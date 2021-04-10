@@ -3,7 +3,6 @@
 # Image Classification Template
 
 This template is ported from [PyTorch-Ignite CIFAR10 example](https://github.com/pytorch/ignite/tree/master/examples/contrib/cifar10).
-This template has structured like a python package to imports modules easily.
 
 <details>
 <summary>
@@ -27,34 +26,26 @@ Detailed Directory List
 ```sh
 image_classification
 ├── README.md
+├── config.py
+├── datasets.py
+├── handlers.py
 ├── hubconf.py
-├── image_classification
-│   ├── __init__.py
-│   ├── config.py
-│   ├── datasets.py
-│   ├── handlers.py
-│   ├── main.py
-│   ├── models.py
-│   ├── trainers.py
-│   └── utils.py
+├── main.py
+├── models.py
 ├── requirements.txt
-├── setup.py
-└── tests
-    ├── test_datasets.py
-    ├── test_handlers.py
-    ├── test_trainers.py
-    └── test_utils.py
+├── test_all.py
+├── trainers.py
+└── utils.py
 
-2 directories, 16 files
+0 directories, 11 files
 ```
 
 </details>
 
-- Install the dependencies with `pip` and install the project in `editable` mode:
+- Install the dependencies with `pip`:
 
   ```sh
   pip install -r requirements.txt --progress-bar off -U
-  pip install -e .
   ```
 
 > **💡 TIP**
@@ -143,14 +134,14 @@ usage: main.py [-h] [--use_amp] [--resume_from RESUME_FROM] [--seed SEED]
                [--verbose] [--backend BACKEND]
                [--nproc_per_node NPROC_PER_NODE] [--nnodes NNODES]
                [--node_rank NODE_RANK] [--master_addr MASTER_ADDR]
-               [--master_port MASTER_PORT] [--output_path OUTPUT_PATH]
+               [--master_port MASTER_PORT]
                [--save_every_iters SAVE_EVERY_ITERS] [--n_saved N_SAVED]
                [--log_every_iters LOG_EVERY_ITERS] [--with_pbars WITH_PBARS]
                [--with_pbar_on_iters WITH_PBAR_ON_ITERS]
                [--stop_on_nan STOP_ON_NAN]
                [--clear_cuda_cache CLEAR_CUDA_CACHE]
                [--with_gpu_stats WITH_GPU_STATS] [--patience PATIENCE]
-               [--limit_sec LIMIT_SEC] [--filepath FILEPATH]
+               [--limit_sec LIMIT_SEC] [--output_dir OUTPUT_DIR]
                [--logger_log_every_iters LOGGER_LOG_EVERY_ITERS]
                [--data_path DATA_PATH] [--train_batch_size TRAIN_BATCH_SIZE]
                [--eval_batch_size EVAL_BATCH_SIZE] [--num_workers NUM_WORKERS]
@@ -181,9 +172,6 @@ optional arguments:
                         (None)
   --master_port MASTER_PORT
                         master node port for torch native backends (None)
-  --output_path OUTPUT_PATH
-                        output path to indicate where to_save objects are
-                        stored (./logs)
   --save_every_iters SAVE_EVERY_ITERS
                         Saving iteration interval (1000)
   --n_saved N_SAVED     number of best models to store (2)
@@ -191,7 +179,7 @@ optional arguments:
                         logging interval for iteration progress bar (100)
   --with_pbars WITH_PBARS
                         show epoch-wise and iteration-wise progress bars
-                        (False)
+                        (True)
   --with_pbar_on_iters WITH_PBAR_ON_ITERS
                         show iteration progress bar or not (True)
   --stop_on_nan STOP_ON_NAN
@@ -206,7 +194,8 @@ optional arguments:
   --limit_sec LIMIT_SEC
                         maximum time before training terminates in seconds
                         (None)
-  --filepath FILEPATH   logging file path (./logs)
+  --output_dir OUTPUT_DIR
+                        directory to save all outputs (./logs)
   --logger_log_every_iters LOGGER_LOG_EVERY_ITERS
                         logging interval for experiment tracking system (None)
   --data_path DATA_PATH

@@ -9,9 +9,9 @@ __version__ = "0.1.0"
 
 
 FOLDER_TO_TEMPLATE_NAME = {
-    "Single Model, Single Optimizer": "single",
-    "Generative Adversarial Network": "gan",
     "Image Classification": "image_classification",
+    "Generative Adversarial Network": "gan",
+    "Single Model, Single Optimizer": "single",
 }
 
 TIP = """
@@ -29,16 +29,16 @@ class App:
     page_icon = "https://raw.githubusercontent.com/pytorch/ignite/master/assets/logo/ignite_logomark.svg"
     description = f"""
 <div align='center'>
-<img src="https://raw.githubusercontent.com/pytorch/ignite/master/assets/logo/ignite_logomark.svg"
+<img src="{page_icon}"
 width="100" height="100">
 
 # Code Generator
 
 Application to generate your training scripts with [PyTorch-Ignite](https://github.com/pytorch/ignite).
 
-[Twitter](https://twitter.com/pytorch_ignite) •
-[GitHub](https://github.com/pytorch-ignite/code-generator) •
-[Release: v{__version__}](https://github.com/pytorch-ignite/code-generator/releases)
+[![Twitter](https://badgen.net/badge/icon/Twitter?icon=twitter&label)](https://twitter.com/pytorch_ignite)
+[![GitHub](https://badgen.net/badge/icon/GitHub?icon=github&label)](https://github.com/pytorch-ignite/code-generator)
+[![Release](https://badgen.net/github/tag/pytorch-ignite/code-generator?label=release)](https://github.com/pytorch-ignite/code-generator/releases/latest)
 </div>
 """
 
@@ -53,19 +53,17 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
         template_list = template_list or []
         st.markdown("### Choose a Template")
         self.template_name = st.selectbox("Available Templates are:", options=template_list)
-        self.project_name = st.text_input("Project Name:", FOLDER_TO_TEMPLATE_NAME[self.template_name])
         self.template_name = FOLDER_TO_TEMPLATE_NAME[self.template_name]
         with st.sidebar:
             if self.template_name:
                 config = config(self.template_name)
                 self.config = config.get_configs()
-                self.config["project_name"] = self.project_name
             else:
                 self.config = {}
 
     def render_code(self, fname: str = "", code: str = ""):
         """Main content with the code."""
-        with st.beta_expander(f"View rendered {fname}", expanded=fname.endswith(".md")):
+        with st.beta_expander(fname, expanded=fname.endswith(".md")):
             if fname.endswith(".md"):
                 st.markdown(code, unsafe_allow_html=True)
             else:
@@ -122,7 +120,7 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
 
     def add_content(self):
         """Get generated/rendered code from the codegen."""
-        content = [*self.codegen.render_templates(self.template_name, self.project_name, self.config)]
+        content = [*self.codegen.render_templates(self.template_name, self.config)]
         if st.checkbox("View rendered code ?", value=True):
             for fname, code in content:
                 if len(code):  # don't show files which don't have content in them
@@ -138,7 +136,7 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
             # https://github.com/streamlit/streamlit/issues/400
             # https://github.com/streamlit/streamlit/issues/400#issuecomment-648580840
             if st.button("Generate an archive"):
-                archive_fname = self.codegen.make_archive(self.template_name, self.project_name, archive_format)
+                archive_fname = self.codegen.make_archive(self.template_name, archive_format)
                 # this is where streamlit serves static files
                 # ~/site-packages/streamlit/static/static/
                 dist_path = Path(st.__path__[0]) / "static/static/dist"
@@ -147,7 +145,7 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
                 shutil.copy(archive_fname, dist_path)
                 st.success(f"Download link : [{archive_fname}](./static/{archive_fname})")
                 with col2:
-                    self.render_directory(Path(self.codegen.dist_dir, self.project_name))
+                    self.render_directory(Path(self.codegen.dist_dir, self.template_name))
 
     def run(self):
         self.add_sidebar()

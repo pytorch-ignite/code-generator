@@ -7,7 +7,7 @@ import torch
 from ignite.engine import Engine
 from torch.cuda.amp import autocast
 from torch.optim.optimizer import Optimizer
-{% include "_events.pyi" %}
+{% include "_events.py" %}
 
 
 # Edit below functions the way how the model will be training
@@ -26,22 +26,29 @@ def train_function(
     loss_fn: torch.nn.Module,
     optimizer: Optimizer,
     device: torch.device,
-):
+) -> dict:
     """Model training step.
 
     Parameters
     ----------
-    - config: config object
-    - engine: Engine instance
-    - batch: batch in current iteration
-    - model: nn.Module model
-    - loss_fn: nn.Module loss
-    - optimizer: torch optimizer
-    - device: device to use for training
+    config
+        config object
+    engine
+        Engine instance
+    batch
+        batch in current iteration
+    model
+        nn.Module model
+    loss_fn
+        nn.Module loss
+    optimizer
+        torch optimizer
+    device
+        device to use for training
 
     Returns
     -------
-    {INSERT HERE}
+    training loss dict
     """
 
     model.train()
@@ -65,7 +72,7 @@ def train_function(
 
     loss_value = loss.item()
     engine.state.metrics = {"epoch": engine.state.epoch, "train_loss": loss_value}
-    return loss_value
+    return {"train_loss": loss_value}
 
 
 # evaluate_function is how the model will be learning with given batch
@@ -80,23 +87,26 @@ def evaluate_function(
     engine: Engine,
     batch: Any,
     model: torch.nn.Module,
-    loss_fn: torch.nn.Module,
     device: torch.device,
-):
+) -> Tuple[torch.Tensor]:
     """Model evaluating step.
 
     Parameters
     ----------
-    - config: config object
-    - engine: Engine instance
-    - batch: batch in current iteration
-    - model: nn.Module model
-    - loss_fn: nn.Module loss
-    - device: device to use for training
+    config
+        config object
+    engine
+        Engine instance
+    batch
+        batch in current iteration
+    model
+        nn.Module model
+    device
+        device to use for training
 
     Returns
     -------
-    {INSERT HERE}
+    outputs, targets
     """
 
     model.eval()
@@ -106,11 +116,8 @@ def evaluate_function(
 
     with autocast(enabled=config.use_amp):
         outputs = model(samples)
-        loss = loss_fn(outputs, targets)
 
-    loss_value = loss.item()
-    engine.state.metrics = {"eval_loss": loss_value}
-    return loss_value
+    return outputs, targets
 
 
 # function for creating engines which will be used in main.py
@@ -133,6 +140,7 @@ def create_trainers(**kwargs) -> Tuple[Engine, Engine]:
             **kwargs,
         )
     )
+    kwargs.pop('optimizer')
     eval_engine = Engine(
         lambda e, b: evaluate_function(
             engine=e,
