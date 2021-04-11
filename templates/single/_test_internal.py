@@ -25,7 +25,7 @@ from ignite.handlers.early_stopping import EarlyStopping
 from ignite.handlers.timing import Timer
 from ignite.utils import setup_logger
 from torch import nn, optim
-from .trainers import (
+from trainers import (
     TrainEvents,
     create_trainers,
     evaluate_function,
