@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -xeu
+set -xu
 
 if [ $1 == "generate" ]; then
     python ./tests/generate.py
