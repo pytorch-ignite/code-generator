@@ -10,6 +10,7 @@ class CodeGenerator:
     def __init__(self, templates_dir: str = "./templates", dist_dir: str = "./dist"):
         self.templates_dir = Path(templates_dir)
         self.dist_dir = Path(dist_dir)
+        self.dist_dir.mkdir(parents=True, exist_ok=True)
         self.rendered_code = {}
         self.available_archive_formats = [x[0] for x in shutil.get_archive_formats()[::-1]]
 
