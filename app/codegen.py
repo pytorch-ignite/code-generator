@@ -10,6 +10,7 @@ class CodeGenerator:
     def __init__(self, templates_dir: str = "./templates", dist_dir: str = "./dist"):
         self.templates_dir = Path(templates_dir)
         self.dist_dir = Path(dist_dir)
+        self.dist_dir.mkdir(parents=True, exist_ok=True)
         self.rendered_code = {}
         self.available_archive_formats = [x[0] for x in shutil.get_archive_formats()[::-1]]
 
@@ -28,7 +29,7 @@ class CodeGenerator:
             self.rendered_code[fname] = code
             yield fname, code
 
-    def make_and_write(self, template_name: str):
+    def make_and_write(self, template_name: str, dest_path: Path):
         """Make the directories first and write to the files"""
         for p in (self.templates_dir / template_name).rglob("*"):
             if not p.stem.startswith("_") and p.is_dir():
@@ -39,20 +40,20 @@ class CodeGenerator:
             else:
                 p = template_name
 
-            if not (self.dist_dir / p).is_dir():
-                (self.dist_dir / p).mkdir(parents=True, exist_ok=True)
+            if not (dest_path / p).is_dir():
+                (dest_path / p).mkdir(parents=True, exist_ok=True)
 
         for fname, code in self.rendered_code.items():
-            (self.dist_dir / template_name / fname).write_text(code)
+            (dest_path / template_name / fname).write_text(code)
 
-    def make_archive(self, template_name, archive_format):
+    def make_archive(self, template_name, archive_format, dest_path):
         """Creates dist dir with generated code, then makes the archive."""
-
-        self.make_and_write(template_name)
+        self.make_and_write(template_name, dest_path)
         archive_fname = shutil.make_archive(
             base_name=template_name,
-            root_dir=self.dist_dir,
+            root_dir=dest_path,
             format=archive_format,
             base_dir=template_name,
         )
-        return shutil.move(archive_fname, self.dist_dir / archive_fname.split("/")[-1])
+        archive_fname = shutil.move(archive_fname, dest_path / archive_fname.split("/")[-1])
+        return archive_fname
