@@ -1,15 +1,6 @@
-[seed]
-label = "Random state seed to set"
-min_value = 0
-value = 543
-
 [data_dir]
 label = "Dataset cache directory"
 value = "/tmp/data"
-
-[output_dir]
-label = "Output path"
-value = "/tmp/output-imdb/"
 
 [model]
 label = "Model name (from transformers) to setup model, tokenize and config to train"
@@ -61,7 +52,7 @@ label = "Number of workers in the data loader"
 min_value = 1
 value = 4
 
-[num_epochs]
+[max_epochs]
 label = "Number of epochs to train the model"
 min_value = 1
 value = 3
@@ -87,27 +78,7 @@ label = "Store training checkpoint every checkpoint_every iterations"
 min_value = 0
 value = 1000
 
-[backend]
-label = "Backend to use for distributed configuration"
-options = ["", "nccl", "xla-tpu","gloo"]
-
-[nproc_per_node]
-label = "Optional argument to setup number of processes per node"
-value = ""
-
-[resume_from]
-label = "Path to checkpoint to use to resume the training from"
-value = ""
-
 [log_every_iters]
 label = "Argument to log batch loss every log_every_iters iterations. 0 to disable it"
 min_value = 0
 value = 15
-
-[with_clearml]
-label = "Setup experiment ClearML logger"
-value = false
-
-[with_amp]
-label = "Enable native automatic mixed precision"
-value = false

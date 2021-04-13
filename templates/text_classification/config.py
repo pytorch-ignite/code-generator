@@ -59,8 +59,8 @@ UPDATES = {
         "type": int,
         "help": "Number of workers in the data loader",
     },
-    "num_epochs": {
-        "default": {{ num_epochs }},
+    "max_epochs": {
+        "default": {{ max_epochs }},
         "type": int,
         "help": "Number of epochs to train the model",
     },
@@ -103,5 +103,4 @@ UPDATES = {
 
 DEFAULTS.update(UPDATES)
 {% endblock %}
-
 {% block get_default_parser %}{% endblock %}
