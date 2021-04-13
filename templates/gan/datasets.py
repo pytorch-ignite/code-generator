@@ -1,5 +1,6 @@
 from torchvision import transforms as T
 from torchvision import datasets as dset
+import ignite.distributed as idist
 
 
 def get_datasets(dataset, dataroot):
@@ -12,6 +13,12 @@ def get_datasets(dataset, dataroot):
     Returns:
         dataset, num_channels
     """
+    local_rank = idist.get_local_rank()
+
+    if local_rank > 0:
+        # Ensure that only rank 0 download the dataset
+        idist.barrier()
+
     resize = T.Resize(64)
     crop = T.CenterCrop(64)
     to_tensor = T.ToTensor()
@@ -41,5 +48,9 @@ def get_datasets(dataset, dataroot):
 
     else:
         raise RuntimeError(f"Invalid dataset name: {dataset}")
+
+    if local_rank == 0:
+        # Ensure that only rank 0 download the dataset
+        idist.barrier()
 
     return dataset, nc
