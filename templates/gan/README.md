@@ -9,10 +9,15 @@ This template is ported from [PyTorch-Ignite DCGAN example](https://github.com/p
 Table of Contents
 </summary>
 
-- [Getting Started](#getting-started)
-- [Training](#training)
-- [PyTorch Hub](#pytorch-hub)
-- [Configurations](#configurations)
+- [GAN Template](#gan-template)
+  - [Getting Started](#getting-started)
+  - [Training](#training)
+    - [Single Node, Single GPU](#single-node-single-gpu)
+    - [Single Node, Multiple GPUs](#single-node-multiple-gpus)
+    - [Multiple Nodes, Multiple GPUs](#multiple-nodes-multiple-gpus)
+    - [Colab 8 TPUs](#colab-8-tpus)
+  - [PyTorch Hub](#pytorch-hub)
+  - [Configurations](#configurations)
 
 </details>
 
@@ -29,7 +34,6 @@ gan
 ├── config.py
 ├── datasets.py
 ├── handlers.py
-├── hubconf.py
 ├── main.py
 ├── models.py
 ├── requirements.txt
@@ -37,7 +41,6 @@ gan
 ├── trainers.py
 └── utils.py
 
-0 directories, 11 files
 ```
 
 </details>

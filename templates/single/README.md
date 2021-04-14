@@ -29,7 +29,6 @@ dist/single
 ├── config.py
 ├── datasets.py
 ├── handlers.py
-├── hubconf.py
 ├── main.py
 ├── models.py
 ├── requirements.txt
@@ -37,7 +36,6 @@ dist/single
 ├── trainers.py
 └── utils.py
 
-0 directories, 11 files
 ```
 
 </details>

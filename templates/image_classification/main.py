@@ -89,7 +89,6 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # print training configurations
     # -------------------------------------------
 
-    config.__dict__.update(**optimizer.defaults)
     logger = setup_logging(config)
     log_basic_info(logger, config)
     train_engine.logger = logger
@@ -223,11 +222,15 @@ def main():
 
     with idist.Parallel(
         backend=config.backend,
+{% if use_distributed_training and not use_distributed_launcher %}
         nproc_per_node=config.nproc_per_node,
+{% if nnodes > 1 and not use_distributed_launcher%}
         nnodes=config.nnodes,
         node_rank=config.node_rank,
         master_addr=config.master_addr,
         master_port=config.master_port,
+{% endif %}
+{% endif %}
     ) as parallel:
         parallel.run(run, config=config)
 
