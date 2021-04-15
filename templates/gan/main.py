@@ -39,11 +39,14 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # create output folder
     # -----------------------
 
-    now = datetime.now().strftime("%Y%m%d-%H%M%S")
-    name = f"{config.dataset}-backend-{idist.backend()}-{now}"
-    config.output_dir = Path(config.output_dir, name)
-    if config.output_dir and rank == 0:
-        config.output_dir.mkdir(parents=True, exist_ok=True)
+    if rank == 0:
+        now = datetime.now().strftime("%Y%m%d-%H%M%S")
+        name = f"{config.dataset}-backend-{idist.backend()}-{now}"
+        path = Path(config.output_dir, name)
+        path.mkdir(parents=True, exist_ok=True)
+        config.output_dir = path.as_posix()
+
+    config.output_dir = Path(idist.broadcast(config.output_dir, src=0))
 
     # -----------------------------
     # datasets and dataloaders
