@@ -101,7 +101,6 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
         metric.attach(eval_engine, name)
 
     # -------------------------------------------
-    # update config with optimizer parameters
     # setup engines logger with python logging
     # print training configurations
     # -------------------------------------------
@@ -236,7 +235,6 @@ def main():
         nproc_per_node=config.nproc_per_node,
 {% if nnodes > 1 and not use_distributed_launcher%}
         nnodes=config.nnodes,
-        node_rank=config.node_rank,
         master_addr=config.master_addr,
         master_port=config.master_port,
 {% endif %}

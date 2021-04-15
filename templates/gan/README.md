@@ -9,15 +9,12 @@ This template is ported from [PyTorch-Ignite DCGAN example](https://github.com/p
 Table of Contents
 </summary>
 
-- [GAN Template](#gan-template)
-  - [Getting Started](#getting-started)
-  - [Training](#training)
-    - [Single Node, Single GPU](#single-node-single-gpu)
-    - [Single Node, Multiple GPUs](#single-node-multiple-gpus)
-    - [Multiple Nodes, Multiple GPUs](#multiple-nodes-multiple-gpus)
-    - [Colab 8 TPUs](#colab-8-tpus)
-  - [PyTorch Hub](#pytorch-hub)
-  - [Configurations](#configurations)
+- [Getting Started](#getting-started)
+- [Training](#training)
+  - [Single Node, Single GPU](#single-node-single-gpu)
+  - [Single Node, Multiple GPUs](#single-node-multiple-gpus)
+  - [Multiple Nodes, Multiple GPUs](#multiple-nodes-multiple-gpus)
+- [Configurations](#configurations)
 
 </details>
 
@@ -40,7 +37,6 @@ gan
 ├── test_all.py
 ├── trainers.py
 └── utils.py
-
 ```
 
 </details>
@@ -60,75 +56,79 @@ gan
 
 ## Training
 
+{% if not use_distributed_training %}
+
 ### Single Node, Single GPU
 
 ```sh
 python main.py --verbose
 ```
 
+{% else %}
+{% if nnodes < 2 %}
+
 ### Single Node, Multiple GPUs
+
+{% if use_distributed_launcher %}
 
 - Using `torch.distributed.launch` (recommended)
 
   ```sh
   python -m torch.distributed.launch \
-    --nproc_per_node=2 \
+    --nproc_per_node={{nproc_per_node}} \
     --use_env main.py \
     --backend="nccl" \
-    --verbose \
+    --verbose
   ```
+
+{% else %}
 
 - Using function spawn inside the code
 
   ```sh
   python main.py \
     --backend="nccl" \
-    --nproc_per_node=2 \
-    --verbose \
+    --nproc_per_node={{nproc_per_node}} \
+    --verbose
   ```
+
+  {% endif %}
+  {% else %}
 
 ### Multiple Nodes, Multiple GPUs
 
-Let's start training on two nodes with 2 gpus each. We assuming that master node can be connected as master, e.g. ping master.
+Let's start training on {{nnodes}} nodes with {{nproc_per_node}} gpus each:
 
 - Execute on master node
 
   ```sh
   python -m torch.distributed.launch \
-    --nnodes=2 \
-    --nproc_per_node=2 \
+    --nnodes={{nnodes}} \
+    --nproc_per_node={{nproc_per_node}} \
     --node_rank=0 \
-    --master_addr=master \
-    --master_port=2222 \
+    --master_addr={{master_addr}} \
+    --master_port={{master_port}} \
     --use_env main.py \
     --backend="nccl" \
-    --verbose \
+    --verbose
   ```
 
 - Execute on worker node
 
   ```sh
   python -m torch.distributed.launch \
-    --nnodes=2 \
-    --nproc_per_node=2 \
-    --node_rank=1 \
-    --master_addr=master \
-    --master_port=2222 \
+    --nnodes={{nnodes}} \
+    --nproc_per_node={{nproc_per_node}} \
+    --node_rank=<node_rank> \
+    --master_addr={{master_addr}} \
+    --master_port={{master_port}} \
     --use_env main.py \
     --backend="nccl" \
-    --verbose \
+    --verbose
   ```
 
-### Colab 8 TPUs
-
-```sh
-python main.py --verbose --backend='xla-tpu' --nproc_per_node=8
-```
-
-## PyTorch Hub
-
-- Edit `hubconf.py` to use the custom model easily via `torch.hub.load()`.
-- Add additional requirements inside `dependencies` list in `hubconf.py`.
+  {% endif %}
+  {% endif %}
 
 ## Configurations
 

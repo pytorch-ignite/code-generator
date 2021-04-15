@@ -11,6 +11,9 @@ Table of Contents
 
 - [Getting Started](#getting-started)
 - [Training](#training)
+  - [Single Node, Single GPU](#single-node-single-gpu)
+  - [Single Node, Multiple GPUs](#single-node-multiple-gpus)
+  - [Multiple Nodes, Multiple GPUs](#multiple-nodes-multiple-gpus)
 - [Configurations](#configurations)
 
 </details>
@@ -34,7 +37,6 @@ image_classification
 ├── test_all.py
 ├── trainers.py
 └── utils.py
-
 ```
 
 </details>
@@ -55,6 +57,7 @@ image_classification
 ## Training
 
 {% if not use_distributed_training %}
+
 ### Single Node, Single GPU
 
 ```sh
@@ -64,9 +67,11 @@ python main.py --verbose
 {% else %}
 
 {% if nnodes < 2 %}
+
 ### Single Node, Multiple GPUs
 
 {% if use_distributed_launcher %}
+
 - Using `torch.distributed.launch` (preferred)
 
   ```sh
@@ -78,6 +83,7 @@ python main.py --verbose
   ```
 
 {% else %}
+
 - Using function spawn inside the code
 
   ```sh
@@ -86,9 +92,11 @@ python main.py --verbose
     --nproc_per_node={{nproc_per_node}} \
     --verbose
   ```
-{% endif %}
+
+  {% endif %}
 
 {% else %}
+
 ### Multiple Nodes, Multiple GPUs
 
 Let's start training on {{nnodes}} nodes with {{nproc_per_node}} gpus each:
@@ -120,9 +128,9 @@ Let's start training on {{nnodes}} nodes with {{nproc_per_node}} gpus each:
     --backend="nccl" \
     --verbose
   ```
-{% endif %}
 
-{% endif %}
+  {% endif %}
+  {% endif %}
 
 ## Configurations
 

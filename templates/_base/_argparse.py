@@ -41,11 +41,6 @@ DEFAULTS = {
         "type": int,
         "help": "number of nodes to use for distributed training ({{ nnodes }})",
     },
-    "node_rank": {
-        "default": {{node_rank}},
-        "type": int,
-        "help": "rank of the node for multi-node distributed training ({{ node_rank }})",
-    },
     "master_addr": {
         "default": {{master_addr}},
         "type": str,

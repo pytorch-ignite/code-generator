@@ -36,6 +36,16 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     rank = idist.get_rank()
     manual_seed(config.seed + rank)
 
+    # -----------------------
+    # create output folder
+    # -----------------------
+
+    if config.output_dir and rank == 0:
+        now = datetime.now().strftime("%Y%m%d-%H%M%S")
+        name = f"{config.model}-backend-{idist.backend()}-{now}"
+        path = Path(config.output_dir, name)
+        path.mkdir(parents=True, exist_ok=True)
+        config.output_dir = path
     # -----------------------------
     # datasets and dataloaders
     # -----------------------------
@@ -45,7 +55,10 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     train_dataloader = idist.auto_dataloader(
         train_dataset,
         batch_size=config.batch_size,
-        num_workers=config.num_workers
+        num_workers=config.num_workers,
+        {% if use_distributed_training and not use_distributed_launcher %}
+        persistent_workers=True,
+        {% endif %}
     )
 
     # ------------------------------------------
@@ -75,7 +88,6 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     )
 
     # -------------------------------------------
-    # update config with optimizer parameters
     # setup engines logger with python logging
     # print training configurations
     # -------------------------------------------
@@ -203,20 +215,16 @@ def main():
     parser = ArgumentParser(parents=[get_default_parser()])
     config = parser.parse_args()
 
-    if config.output_dir:
-        now = datetime.now().strftime("%Y%m%d-%H%M%S")
-        name = f'{config.dataset}-backend-{idist.backend()}-{now}'
-        path = Path(config.output_dir, name)
-        path.mkdir(parents=True, exist_ok=True)
-        config.output_dir = path
-
     with idist.Parallel(
         backend=config.backend,
+{% if use_distributed_training and not use_distributed_launcher %}
         nproc_per_node=config.nproc_per_node,
+{% if nnodes > 1 and not use_distributed_launcher%}
         nnodes=config.nnodes,
-        node_rank=config.node_rank,
         master_addr=config.master_addr,
         master_port=config.master_port,
+{% endif %}
+{% endif %}
     ) as parallel:
         parallel.run(run, config=config)
 

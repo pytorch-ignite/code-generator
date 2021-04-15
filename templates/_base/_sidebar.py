@@ -34,7 +34,9 @@ def distributed_options(config):
         config["use_distributed_launcher"] = executor == "Use torch.distributed.launch"
 
         config["nproc_per_node"] = st.number_input(
-            "Number of processes to launch on each node (nproc_per_node)", min_value=1
+            "Number of processes to launch on each node (nproc_per_node)",
+            min_value=1,
+            value=2,
         )
         config["nnodes"] = st.number_input("Number of nodes to use for distributed training (nnodes)", min_value=1)
         if config["nnodes"] > 1:
@@ -43,12 +45,6 @@ def distributed_options(config):
                 " namely 'gloo' and 'nccl' backends. For other backends,"
                 " please specify spawn_kwargs in main.py"
             )
-            # config["node_rank"] = st.number_input(
-            #     "Rank of the node for multi-node distributed training (node_rank)",
-            #     min_value=0,
-            # )
-            # if config["node_rank"] > (config["nnodes"] - 1):
-            #     st.error(f"node_rank should be between 0 and {config['nnodes'] - 1}")
             config["master_addr"] = st.text_input(
                 "Master node TCP/IP address for torch native backends (master_addr)",
                 value="'127.0.0.1'",
