@@ -36,12 +36,12 @@ def test_get_datasets(tmp_path):
     assert isinstance(train_batch, Iterable)
     assert isinstance(train_batch[0], Tensor)
     assert isinstance(train_batch[1], Number)
-    assert train_batch[0].dim == 3
+    assert train_batch[0].ndim == 3
     eval_batch = next(iter(eval_ds))
     assert isinstance(eval_batch, Iterable)
     assert isinstance(eval_batch[0], Tensor)
     assert isinstance(eval_batch[1], Number)
-    assert eval_batch[0].dim == 3
+    assert eval_batch[0].ndim == 3
 
 
 def test_evaluate_fn():
