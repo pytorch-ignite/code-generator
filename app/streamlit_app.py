@@ -136,22 +136,22 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
             # https://github.com/streamlit/streamlit/issues/400
             # https://github.com/streamlit/streamlit/issues/400#issuecomment-648580840
             if st.button("Generate an archive"):
-                # with tempfile.TemporaryDirectory(prefix="", dir=self.codegen.dist_dir) as tmp_dir:
-                tmp_dir = Path(self.codegen.dist_dir)
+                with tempfile.TemporaryDirectory(prefix="", dir=self.codegen.dist_dir) as tmp_dir:
+                    tmp_dir = Path(tmp_dir)
 
-                archive_fname = self.codegen.make_archive(self.template_name, archive_format, tmp_dir)
-                # this is where streamlit serves static files
-                # ~/site-packages/streamlit/static/static/
-                dist_path = Path(st.__path__[0]) / "static/static" / tmp_dir
+                    archive_fname = self.codegen.make_archive(self.template_name, archive_format, tmp_dir)
+                    # this is where streamlit serves static files
+                    # ~/site-packages/streamlit/static/static/
+                    dist_path = Path(st.__path__[0]) / "static/static" / tmp_dir
 
-                if not dist_path.is_dir():
-                    dist_path.mkdir(parents=True, exist_ok=True)
+                    if not dist_path.is_dir():
+                        dist_path.mkdir(parents=True, exist_ok=True)
 
-                shutil.copy(archive_fname, dist_path)
-                st.success(f"Download link : [{archive_fname}](./static/{archive_fname})")
+                    shutil.copy(archive_fname, dist_path)
+                    st.success(f"Download link : [{archive_fname}](./static/{archive_fname})")
 
-                with col2:
-                    self.render_directory(Path(tmp_dir, self.template_name))
+                    with col2:
+                        self.render_directory(Path(tmp_dir, self.template_name))
 
     def run(self):
         self.add_sidebar()
