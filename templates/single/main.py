@@ -13,8 +13,7 @@ from ignite.utils import manual_seed
 
 from datasets import get_datasets
 from trainers import create_trainers, TrainEvents
-from handlers import get_handlers, get_logger
-from utils import setup_logging, log_metrics, log_basic_info, initialize, resume_from
+from utils import setup_logging, log_metrics, log_basic_info, initialize, resume_from, get_handlers, get_logger
 from config import get_default_parser
 
 
@@ -31,12 +30,11 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # create output folder
     # -----------------------
 
+    now = datetime.now().strftime("%Y%m%d-%H%M%S")
+    name = f"{config.model}-backend-{idist.backend()}-{now}"
+    config.output_dir = Path(config.output_dir, name)
     if config.output_dir and rank == 0:
-        now = datetime.now().strftime("%Y%m%d-%H%M%S")
-        name = f"{config.model}-backend-{idist.backend()}-{now}"
-        path = Path(config.output_dir, name)
-        path.mkdir(parents=True, exist_ok=True)
-        config.output_dir = path
+        config.output_dir.mkdir(parents=True, exist_ok=True)
 
     # -----------------------------
     # datasets and dataloaders
@@ -207,6 +205,7 @@ def main():
 {% if use_distributed_training and not use_distributed_launcher %}
         nproc_per_node=config.nproc_per_node,
 {% if nnodes > 1 and not use_distributed_launcher%}
+        node_rank=config.node_rank,
         nnodes=config.nnodes,
         master_addr=config.master_addr,
         master_port=config.master_port,

@@ -36,6 +36,11 @@ DEFAULTS = {
                 this is recommended to be set to the number of GPUs in your system
                 so that each process can be bound to a single GPU ({{ nproc_per_node }})""",
     },
+    "node_rank": {
+        "default": {{node_rank}},
+        "type": int,
+        "help": "rank of the node for multi-node distributed training ({{ node_rank }})",
+    },
     "nnodes": {
         "default": {{nnodes}},
         "type": int,
