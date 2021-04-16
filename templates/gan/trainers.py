@@ -4,6 +4,7 @@
 from typing import Any
 
 import torch
+import ignite.distributed as idist
 from ignite.engine import Engine
 from torch.cuda.amp import autocast
 from torch.optim.optimizer import Optimizer
@@ -86,7 +87,8 @@ def train_function(
     errD_real.backward()
 
     # get fake image from generator
-    noise = torch.randn(config.batch_size, config.z_dim, 1, 1, device=device)
+    ws = idist.get_world_size()
+    noise = torch.randn(config.batch_size // ws, config.z_dim, 1, 1, device=device)
     fake = netG(noise)
 
     # train with fake
@@ -125,7 +127,7 @@ def create_trainers(**kwargs) -> Engine:
 
     Parameters
     ----------
-    kwargs: keyword arguments passed to both train_function and evaluate_function
+    kwargs: keyword arguments passed to both train_function
 
     Returns
     -------

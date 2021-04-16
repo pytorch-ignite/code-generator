@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -xu
+set -xeuo pipefail
 
 if [ $1 == "generate" ]; then
     python ./tests/generate.py

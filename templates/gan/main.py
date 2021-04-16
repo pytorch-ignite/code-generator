@@ -16,8 +16,7 @@ from torchvision import utils as vutils
 
 from datasets import get_datasets
 from trainers import create_trainers
-from handlers import get_handlers, get_logger
-from utils import setup_logging, log_metrics, log_basic_info, initialize, resume_from
+from utils import setup_logging, log_metrics, log_basic_info, initialize, resume_from, get_handlers, get_logger
 from config import get_default_parser
 
 
@@ -36,6 +35,19 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     rank = idist.get_rank()
     manual_seed(config.seed + rank)
 
+    # -----------------------
+    # create output folder
+    # -----------------------
+
+    if rank == 0:
+        now = datetime.now().strftime("%Y%m%d-%H%M%S")
+        name = f"{config.dataset}-backend-{idist.backend()}-{now}"
+        path = Path(config.output_dir, name)
+        path.mkdir(parents=True, exist_ok=True)
+        config.output_dir = path.as_posix()
+
+    config.output_dir = Path(idist.broadcast(config.output_dir, src=0))
+
     # -----------------------------
     # datasets and dataloaders
     # -----------------------------
@@ -45,7 +57,10 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     train_dataloader = idist.auto_dataloader(
         train_dataset,
         batch_size=config.batch_size,
-        num_workers=config.num_workers
+        num_workers=config.num_workers,
+        {% if use_distributed_training and not use_distributed_launcher %}
+        persistent_workers=True,
+        {% endif %}
     )
 
     # ------------------------------------------
@@ -58,9 +73,10 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # -----------------------------
     # train_engine and eval_engine
     # -----------------------------
-    real_labels = torch.ones(config.batch_size, device=device)
-    fake_labels = torch.zeros(config.batch_size, device=device)
-    fixed_noise = torch.randn(config.batch_size, config.z_dim, 1, 1, device=device)
+    ws = idist.get_world_size()
+    real_labels = torch.ones(config.batch_size // ws, device=device)
+    fake_labels = torch.zeros(config.batch_size // ws, device=device)
+    fixed_noise = torch.randn(config.batch_size // ws, config.z_dim, 1, 1, device=device)
 
     train_engine = create_trainers(
         config=config,
@@ -75,7 +91,6 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     )
 
     # -------------------------------------------
-    # update config with optimizer parameters
     # setup engines logger with python logging
     # print training configurations
     # -------------------------------------------
@@ -203,20 +218,17 @@ def main():
     parser = ArgumentParser(parents=[get_default_parser()])
     config = parser.parse_args()
 
-    if config.output_dir:
-        now = datetime.now().strftime("%Y%m%d-%H%M%S")
-        name = f'{config.dataset}-backend-{idist.backend()}-{now}'
-        path = Path(config.output_dir, name)
-        path.mkdir(parents=True, exist_ok=True)
-        config.output_dir = path
-
     with idist.Parallel(
         backend=config.backend,
+{% if use_distributed_training and not use_distributed_launcher %}
         nproc_per_node=config.nproc_per_node,
-        nnodes=config.nnodes,
+{% if nnodes > 1 and not use_distributed_launcher%}
         node_rank=config.node_rank,
+        nnodes=config.nnodes,
         master_addr=config.master_addr,
         master_port=config.master_port,
+{% endif %}
+{% endif %}
     ) as parallel:
         parallel.run(run, config=config)
 

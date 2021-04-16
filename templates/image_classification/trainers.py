@@ -2,6 +2,7 @@
 `train_engine` and `eval_engine` like trainer and evaluator
 """
 from typing import Any, Tuple
+from ignite.metrics import loss
 
 import torch
 from ignite.engine import Engine
@@ -122,12 +123,21 @@ def evaluate_function(
 
 # function for creating engines which will be used in main.py
 # any necessary arguments can be provided.
-def create_trainers(**kwargs) -> Tuple[Engine, Engine]:
+def create_trainers(config, model, optimizer, loss_fn, device) -> Tuple[Engine, Engine]:
     """Create Engines for training and evaluation.
 
     Parameters
     ----------
-    kwargs: keyword arguments passed to both train_function and evaluate_function
+    config
+        config object
+    model
+        nn.Module model
+    loss_fn
+        nn.Module loss
+    optimizer
+        torch optimizer
+    device
+        device to use for training
 
     Returns
     -------
@@ -135,18 +145,22 @@ def create_trainers(**kwargs) -> Tuple[Engine, Engine]:
     """
     train_engine = Engine(
         lambda e, b: train_function(
+            config=config,
             engine=e,
             batch=b,
-            **kwargs,
+            model=model,
+            loss_fn=loss_fn,
+            optimizer=optimizer,
+            device=device
         )
     )
-    kwargs.pop('optimizer')
-    kwargs.pop('loss_fn')
     eval_engine = Engine(
         lambda e, b: evaluate_function(
+            config=config,
             engine=e,
             batch=b,
-            **kwargs,
+            model=model,
+            device=device
         )
     )
     train_engine.register_events(*TrainEvents, event_to_attr=train_events_to_attr)
