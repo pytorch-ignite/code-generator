@@ -11,9 +11,6 @@ Table of Contents
 
 - [Getting Started](#getting-started)
 - [Training](#training)
-  - [Single Node, Single GPU](#single-node-single-gpu)
-  - [Single Node, Multiple GPUs](#single-node-multiple-gpus)
-  - [Multiple Nodes, Multiple GPUs](#multiple-nodes-multiple-gpus)
 - [Configurations](#configurations)
 
 </details>
