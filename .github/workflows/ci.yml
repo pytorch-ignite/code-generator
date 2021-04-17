@@ -46,6 +46,8 @@ jobs:
       - run: bash .github/run_test.sh default
       - run: bash .github/run_test.sh spawn
       - run: bash .github/run_test.sh launch
+        env:
+          OMP_NUM_THREADS: 1
 
   lint:
     runs-on: ubuntu-latest

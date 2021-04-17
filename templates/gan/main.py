@@ -157,6 +157,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
             timer_handler.reset()
 
     @train_engine.on(Events.ITERATION_COMPLETED(every=config.log_every_iters))
+    @idist.one_rank_only()
     def print_logs(engine):
         fname = config.output_dir / LOGS_FNAME
         columns = ["iteration", ] + list(engine.state.metrics.keys())
