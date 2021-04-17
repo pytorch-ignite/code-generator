@@ -1,3 +1,4 @@
+import os
 import shutil
 import tempfile
 from pathlib import Path
@@ -7,7 +8,7 @@ from codegen import CodeGenerator
 from utils import import_from_file
 
 __version__ = "0.1.0"
-DEV = False
+DEV_MODE = os.getenv("DEV_MODE", 0) == 1
 
 FOLDER_TO_TEMPLATE_NAME = {
     "Image Classification": "image_classification",
@@ -127,7 +128,7 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
                 if len(code):  # don't show files which don't have content in them
                     self.render_code(fname, code)
 
-    def download(self):
+    def download_panel_dev(self):
         st.markdown("")
         col1, col2 = st.beta_columns(2)
         with col1:
@@ -153,7 +154,7 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
                 with col2:
                     self.render_directory(Path(tmp_dir, self.template_name))
 
-    def downloads(self):
+    def download_panel(self):
         st.markdown("")
         archive_format = None
         mimetype = ""
@@ -178,16 +179,16 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
 
             st.markdown(download_link, unsafe_allow_html=True)
 
-    def add_download(self):
-        if DEV:
-            self.download()
+    def add_download_panel(self):
+        if DEV_MODE:
+            self.download_panel_dev()
         else:
-            self.downloads()
+            self.download_panel()
 
     def run(self):
         self.add_sidebar()
         self.add_content()
-        self.add_download()
+        self.add_download_panel()
         st.info(TIP)
 
 
