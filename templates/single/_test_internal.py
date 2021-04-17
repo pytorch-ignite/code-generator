@@ -8,7 +8,6 @@ import ignite.distributed as idist
 import pytest
 import torch
 from config import get_default_parser
-
 from ignite.contrib.handlers import (
     ClearMLLogger,
     MLflowLogger,
@@ -32,7 +31,14 @@ from trainers import (
     train_events_to_attr,
     train_function,
 )
-from utils import hash_checkpoint, log_metrics, resume_from, setup_logging, get_handlers, get_logger
+from utils import (
+    get_handlers,
+    get_logger,
+    hash_checkpoint,
+    log_metrics,
+    resume_from,
+    setup_logging,
+)
 
 
 def set_up():

@@ -7,6 +7,7 @@ import torch
 from ignite.engine import Engine
 from torch.cuda.amp import autocast
 from torch.optim.optimizer import Optimizer
+
 {% include "_events.py" %}
 
 

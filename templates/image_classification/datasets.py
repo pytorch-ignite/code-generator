@@ -1,6 +1,13 @@
-from torchvision import datasets
-from torchvision.transforms import Compose, Normalize, Pad, RandomCrop, RandomHorizontalFlip, ToTensor
 import ignite.distributed as idist
+from torchvision import datasets
+from torchvision.transforms import (
+    Compose,
+    Normalize,
+    Pad,
+    RandomCrop,
+    RandomHorizontalFlip,
+    ToTensor,
+)
 
 train_transform = Compose(
     [

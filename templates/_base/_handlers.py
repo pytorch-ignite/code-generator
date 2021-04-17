@@ -2,12 +2,13 @@
 Ignite handlers
 """
 from typing import Any, Dict, Iterable, Mapping, Optional, Tuple, Union
+
 from ignite.contrib.engines import common
 from ignite.contrib.handlers.base_logger import BaseLogger
 from ignite.contrib.handlers.param_scheduler import LRScheduler
 from ignite.engine.engine import Engine
 from ignite.engine.events import Events
-from ignite.handlers import TimeLimit, Timer, Checkpoint, EarlyStopping
+from ignite.handlers import Checkpoint, EarlyStopping, TimeLimit, Timer
 from torch.nn import Module
 from torch.optim.optimizer import Optimizer
 from torch.utils.data.distributed import DistributedSampler
