@@ -156,6 +156,21 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
             logger.info(f"Epoch {engine.state.epoch} done. Time per batch: {timer_handler.value():.3f}[s]")
             timer_handler.reset()
 
+    @train_engine.on(Events.ITERATION_COMPLETED(every=config.log_every_iters))
+    @idist.one_rank_only()
+    def print_logs(engine):
+        fname = config.output_dir / LOGS_FNAME
+        columns = ["iteration", ] + list(engine.state.metrics.keys())
+        values = [str(engine.state.iteration), ] + [str(round(value, 5)) for value in engine.state.metrics.values()]
+
+        with open(fname, "a") as f:
+            if f.tell() == 0:
+                print("\t".join(columns), file=f)
+            print("\t".join(values), file=f)
+        message = f"[{engine.state.epoch}/{config.max_epochs}][{engine.state.iteration % len(train_dataloader)}/{len(train_dataloader)}]"
+        for name, value in zip(columns, values):
+            message += f" | {name}: {value}"
+
     # -------------------------------------------------------------
     # adding handlers using `trainer.on` decorator API
     # -------------------------------------------------------------
@@ -193,7 +208,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # setup if done. let's run the training
     # ------------------------------------------
 
-    train_engine.run(train_dataloader, max_epochs=config.max_epochs)
+    train_engine.run(train_dataloader, max_epochs=config.max_epochs, epoch_length=config.epoch_length)
 
     # ------------------------------------------------------------
     # close the logger after the training completed / terminated
@@ -211,7 +226,8 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # where is my best and last checkpoint ?
     # -----------------------------------------
 
-    logger.info("Last and best checkpoint: %s", best_model_handler.last_checkpoint)
+    if best_model_handler is not None:
+        logger.info("Last and best checkpoint: %s", best_model_handler.last_checkpoint)
 
 
 def main():

@@ -43,7 +43,11 @@ jobs:
       - run: python -m torch.utils.collect_env
       - run: bash .github/run_test.sh generate
       - run: bash .github/run_test.sh unittest
-      # - run: bash .github/run_test.sh integration
+      - run: bash .github/run_test.sh default
+      - run: bash .github/run_test.sh spawn
+      - run: bash .github/run_test.sh launch
+        env:
+          OMP_NUM_THREADS: 1
 
   lint:
     runs-on: ubuntu-latest
