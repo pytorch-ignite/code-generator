@@ -89,7 +89,7 @@ To develop and test Code-Generator:
 
 For example, typo changes in `CONTRIBUTING.md`, `README.md` are not required to run in the CI. So, please add `[skip ci]` in the PR title to save the resources.
 
-**NOTE : Those skip statements are case sensitive, need open bracket [ and close bracket ].**
+**NOTE : Those skip statement is case sensitive and needs open bracket `[` and close bracket `]`.**
 
 ## Sync up with the upstream
 
