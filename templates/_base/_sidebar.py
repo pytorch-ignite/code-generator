@@ -119,7 +119,7 @@ def _setup_common_training_handlers_options(config):
     )
     config["with_pbars"] = st.checkbox(
         "Show two progress bars (with_pbars)",
-        value=True,
+        value=False,
         help=(
             "This option will enable two progress bars - one for epoch,"
             " one for iteration if `with_pbar_on_iters` is `False`,"

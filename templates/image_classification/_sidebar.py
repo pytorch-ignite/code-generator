@@ -20,8 +20,8 @@ def dataset_options(config):
 
 def dataloader_options(config):
     st.markdown("## DataLoader Options")
-    config["train_batch_size"] = st.number_input("Train batch size (train_batch_size)", min_value=1, value=4)
-    config["eval_batch_size"] = st.number_input("Eval batch size (eval_batch_size)", min_value=1, value=8)
+    config["train_batch_size"] = st.number_input("Train batch size (train_batch_size)", min_value=1, value=16)
+    config["eval_batch_size"] = st.number_input("Eval batch size (eval_batch_size)", min_value=1, value=16)
     config["num_workers"] = st.number_input("Number of workers (num_workers)", min_value=0, value=2)
     st.markdown("---")
 

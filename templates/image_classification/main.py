@@ -205,7 +205,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # setup if done. let's run the training
     # ------------------------------------------
 
-    train_engine.run(train_dataloader, max_epochs=config.max_epochs)
+    train_engine.run(train_dataloader, max_epochs=config.max_epochs, epoch_length=config.epoch_length)
 
     # ------------------------------------------------------------
     # close the logger after the training completed / terminated
@@ -223,7 +223,8 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # where is my best and last checkpoint ?
     # -----------------------------------------
 
-    logger.info("Last and best checkpoint: %s", best_model_handler.last_checkpoint)
+    if best_model_handler is not None:
+        logger.info("Last and best checkpoint: %s", best_model_handler.last_checkpoint)
 
 
 def main():

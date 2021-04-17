@@ -17,9 +17,19 @@ elif [ $1 == "unittest" ]; then
         pytest
         cd ../../../
     done
-elif [ $1 == "integration" ]; then
-    for file in $(find ./tests/integration -iname "*.sh")
+elif [ $1 == "default" ]; then
+    for file in $(find ./tests/dist -iname "main.py" -not -path "./tests/dist/launch/*" -not -path "./tests/dist/spawn/*" -not -path "./tests/dist/single/*")
     do
-        bash $file
+        python $file --verbose --log_every_iters 2 --num_workers 0 --epoch_length 10
+    done
+elif [ $1 == "launch" ]; then
+    for file in $(find ./tests/dist/launch -iname "main.py" -not -path "./tests/dist/*" -not -path "./tests/dist/spawn/*" -not -path "./tests/dist/launch/single/*")
+    do
+        python -m torch.distributed.launch --nproc_per_node 2 $file --verbose --log_every_iters 2 --num_workers 0 --epoch_length 10
+    done
+elif [ $1 == "spawn" ]; then
+    for file in $(find ./tests/dist/spawn -iname "main.py" -not -path "./tests/dist/launch/*" -not -path "./tests/dist/*" -not -path "./tests/dist/spawn/single/*")
+    do
+        python $file --verbose --log_every_iters 2 --num_workers 0 --epoch_length 10 --nproc_per_node 2
     done
 fi
