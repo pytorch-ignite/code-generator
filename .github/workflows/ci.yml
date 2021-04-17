@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
@@ -30,7 +30,8 @@ jobs:
           echo "::set-output name=dir::$(pip cache dir)"
         shell: bash -l {0}
 
-      - uses: actions/cache@v2
+      - name: Setup dependencies cache
+        uses: actions/cache@v2
         with:
           path: |
             ${{ steps.pip-cache.outputs.dir }}
@@ -38,14 +39,25 @@ jobs:
           restore-keys: |
             ${{ steps.get-date.outputs.date }}-${{ runner.os }}-${{ matrix.python-version }}-
 
-      - run: pip install -r requirements.txt --progress-bar off
-      - run: pip install -r requirements-dev.txt -f https://download.pytorch.org/whl/cpu/torch_stable.html --progress-bar off
-      - run: python -m torch.utils.collect_env
-      - run: bash .github/run_test.sh generate
-      - run: bash .github/run_test.sh unittest
-      - run: bash .github/run_test.sh default
-      - run: bash .github/run_test.sh spawn
-      - run: bash .github/run_test.sh launch
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt -f https://download.pytorch.org/whl/cpu/torch_stable.html --progress-bar off
+
+      - name: Generate test files
+        run: bash .github/run_test.sh generate
+
+      - name: Run unittests
+        run: bash .github/run_test.sh unittest
+
+      - name: Run default integration tests
+        run: bash .github/run_test.sh default
+
+      - name: Run spawn integration tests
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: bash .github/run_test.sh spawn
+
+      - name: Run dist launch integration tests
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: bash .github/run_test.sh launch
         env:
           OMP_NUM_THREADS: 1
 
