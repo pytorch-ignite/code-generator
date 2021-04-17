@@ -44,8 +44,8 @@ jobs:
       - run: bash .github/run_test.sh generate
       - run: bash .github/run_test.sh unittest
       - run: bash .github/run_test.sh default
-      - run: bash .github/run_test.sh launch
       - run: bash .github/run_test.sh spawn
+      - run: bash .github/run_test.sh launch
 
   lint:
     runs-on: ubuntu-latest

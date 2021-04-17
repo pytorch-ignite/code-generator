@@ -25,7 +25,7 @@ elif [ $1 == "default" ]; then
 elif [ $1 == "launch" ]; then
     for file in $(find ./tests/dist/launch -iname "main.py" -not -path "./tests/dist/launch/single/*")
     do
-        python -m torch.distributed.launch --nproc_per_node 2 $file --verbose --log_every_iters 2 --num_workers 0 --epoch_length 10
+        python -m torch.distributed.launch --nproc_per_node 2 --use_env $file --verbose --log_every_iters 2 --num_workers 0 --epoch_length 10
     done
 elif [ $1 == "spawn" ]; then
     for file in $(find ./tests/dist/spawn -iname "main.py" -not -path "./tests/dist/spawn/single/*")
