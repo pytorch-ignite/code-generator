@@ -1,6 +1,6 @@
 # Code-Generator Contribution Guide
 
-Hi! Thank for your interest in contributing to Code-Generator.
+Hi! Thanks for your interest in contributing to Code-Generator.
 Before submitting your contribution, please make sure to take a moment and read through the following guide:
 
 ## Repo Setup
