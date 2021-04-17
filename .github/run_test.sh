@@ -5,13 +5,13 @@ set -xeuo pipefail
 if [ $1 == "generate" ]; then
     python ./tests/generate.py
 elif [ $1 == "unittest" ]; then
-    for dir in $(find ./tests/dist -type d -mindepth 1 -maxdepth 1)
+    for dir in $(find ./tests/dist -type d -mindepth 1 -maxdepth 1 -not -path "./tests/dist/launch/*" -not -path "./tests/dist/spawn/*")
     do
         cd $dir
         pip install -r requirements.txt --progress-bar off -q
         cd ../../../
     done
-    for dir in $(find ./tests/dist -type d -mindepth 1 -maxdepth 1)
+    for dir in $(find ./tests/dist -type d -mindepth 1 -maxdepth 1 -not -path "./tests/dist/launch/*" -not -path "./tests/dist/spawn/*")
     do
         cd $dir
         pytest
