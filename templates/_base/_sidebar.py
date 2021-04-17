@@ -152,11 +152,6 @@ def _save_best_model_by_val_score_options(config):
         "Save the best model by evaluation score",
         value=False,
     )
-    if config["save_best_model_by_val_score"]:
-        st.warning(
-            "Please make sure to pass argument to `metric_name` parameter of `get_handlers` in `main.py`."
-            " Otherwise it can result KeyError.",
-        )
     st.markdown("---")
 
 
@@ -170,9 +165,5 @@ def _add_early_stopping_by_val_score_options(config):
             "Number of events to wait if no improvement and then stop the training. (patience)",
             min_value=1,
             value=3,
-        )
-        st.warning(
-            "Please make sure to pass argument to `es_metric_name` parameter of `get_handlers` in `main.py`."
-            " Otherwise it can result KeyError.",
         )
     st.markdown("---")
