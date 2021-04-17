@@ -1,5 +1,5 @@
 """
-`train_engine` and `eval_engine` like trainer and evaluator
+`trainer` and `evaluator` like trainer and evaluator
 """
 from typing import Any
 
@@ -131,13 +131,13 @@ def create_trainers(**kwargs) -> Engine:
 
     Returns
     -------
-    train_engine
+    trainer
     """
-    train_engine = Engine(
+    trainer = Engine(
         lambda e, b: train_function(
             engine=e,
             batch=b,
             **kwargs,
         )
     )
-    return train_engine
+    return trainer
