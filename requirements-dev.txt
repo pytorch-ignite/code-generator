@@ -9,4 +9,3 @@ requests
 
 # test
 pytest
-hypothesis
