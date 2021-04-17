@@ -33,7 +33,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
 
     if rank == 0:
         now = datetime.now().strftime("%Y%m%d-%H%M%S")
-        name = f"{config.dataset}-backend-{idist.backend()}-{now}"
+        name = f"{config.model}-backend-{idist.backend()}-{now}"
         path = Path(config.output_dir, name)
         path.mkdir(parents=True, exist_ok=True)
         config.output_dir = path.as_posix()
