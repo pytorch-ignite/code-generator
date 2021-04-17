@@ -122,13 +122,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
         train_engine=train_engine,
         eval_engine=eval_engine,
         metric_name="eval_accuracy",
-        # TODO : replace with the metric name to save the best model
-        # if you check `Save the best model by evaluation score` otherwise leave it None
-        # metric must be in eval_engine.state.metrics.
-        es_metric_name=None,
-        # TODO : replace with the metric name to early stop
-        # if you check `Early stop the training by evaluation score` otherwise leave it None
-        # metric must be in eval_engine.state.metrics.
+        es_metric_name="eval_accuracy",
         to_save=to_save,
         lr_scheduler=lr_scheduler,
         output_names=None,
