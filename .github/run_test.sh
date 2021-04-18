@@ -21,7 +21,7 @@ elif [ $1 == "default" ]; then
     for file in $(find ./tests/dist -iname "main.py" -not -path "./tests/dist/launch/*" -not -path "./tests/dist/spawn/*" -not -path "./tests/dist/single/*")
     do
         if [ $file == "./tests/dist/text_classification/main.py" ]; then
-            python $file --verbose --log_every_iters 1 --num_workers 1 --epoch_length 5 --batch_size 2
+            python $file --verbose --log_every_iters 1 --num_workers 1 --epoch_length 5 --batch_size 16
         else
             python $file --verbose --log_every_iters 2 --num_workers 1 --epoch_length 10
         fi
@@ -38,7 +38,7 @@ elif [ $1 == "launch" ]; then
                 --num_workers 1 \
                 --epoch_length 5 \
                 --log_every_iters 1
-                --batch_size 2
+                --batch_size 16
         else
             python -m torch.distributed.launch \
                 --nproc_per_node 2 \
@@ -61,7 +61,7 @@ elif [ $1 == "spawn" ]; then
                 --epoch_length 5 \
                 --nproc_per_node 2 \
                 --log_every_iters 1
-                --batch_size 2
+                --batch_size 16
         else
             python $file \
                 --verbose \
