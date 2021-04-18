@@ -7,8 +7,7 @@ import streamlit as st
 from codegen import CodeGenerator
 from utils import import_from_file
 
-__version__ = "0.1.0"
-DEV_MODE = os.getenv("DEV_MODE", 0) == 1
+DEV_MODE = int(os.getenv("DEV_MODE", 0)) == 1
 
 FOLDER_TO_TEMPLATE_NAME = {
     "Image Classification": "image_classification",
