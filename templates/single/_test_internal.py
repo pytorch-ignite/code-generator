@@ -46,7 +46,7 @@ def set_up():
 
 
 def test_get_handlers(tmp_path):
-    train_engine = Engine(lambda e, b: b)
+    trainer = Engine(lambda e, b: b)
     config = Namespace(
         output_dir=tmp_path,
         save_every_iters=1,
@@ -63,8 +63,8 @@ def test_get_handlers(tmp_path):
     bm_handler, es_handler, timer_handler = get_handlers(
         config=config,
         model=nn.Linear(1, 1),
-        train_engine=train_engine,
-        eval_engine=train_engine,
+        trainer=trainer,
+        evaluator=trainer,
         metric_name="eval_loss",
         es_metric_name="eval_loss",
     )
@@ -75,12 +75,12 @@ def test_get_handlers(tmp_path):
 
 def test_get_logger(tmp_path):
     config = Namespace(output_dir=tmp_path, logger_log_every_iters=1)
-    train_engine = Engine(lambda e, b: b)
+    trainer = Engine(lambda e, b: b)
     optimizer = optim.Adam(nn.Linear(1, 1).parameters())
     logger_handler = get_logger(
         config=config,
-        train_engine=train_engine,
-        eval_engine=train_engine,
+        trainer=trainer,
+        evaluator=trainer,
         optimizers=optimizer,
     )
     types = (
@@ -189,17 +189,17 @@ def test_evaluate_fn():
 
 def test_create_trainers():
     model, optimizer, device, loss_fn, batch = set_up()
-    train_engine, eval_engine = create_trainers(
+    trainer, evaluator = create_trainers(
         config=Namespace(use_amp=True),
         model=model,
         loss_fn=loss_fn,
         optimizer=optimizer,
         device=device,
     )
-    assert isinstance(train_engine, Engine)
-    assert isinstance(eval_engine, Engine)
-    assert hasattr(train_engine.state, "backward_completed")
-    assert hasattr(train_engine.state, "optim_step_completed")
+    assert isinstance(trainer, Engine)
+    assert isinstance(evaluator, Engine)
+    assert hasattr(trainer.state, "backward_completed")
+    assert hasattr(trainer.state, "optim_step_completed")
 
 
 def test_get_default_parser():

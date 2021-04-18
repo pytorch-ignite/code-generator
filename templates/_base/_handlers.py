@@ -16,8 +16,8 @@ from torch.utils.data.distributed import DistributedSampler
 def get_handlers(
     config: Any,
     model: Module,
-    train_engine: Engine,
-    eval_engine: Engine,
+    trainer: Engine,
+    evaluator: Engine,
     metric_name: str,
     es_metric_name: str,
     train_sampler: Optional[DistributedSampler] = None,
@@ -48,9 +48,9 @@ def get_handlers(
 
     model
         best model to save
-    train_engine
+    trainer
         the engine used for training
-    eval_engine
+    evaluator
         the engine used for evaluation
     metric_name
         evaluation metric to save the best model
@@ -63,7 +63,7 @@ def get_handlers(
     lr_scheduler
         learning rate scheduler as native torch LRScheduler or ignite’s parameter scheduler
     output_names
-        list of names associated with `train_engine`'s process_function output dictionary
+        list of names associated with `trainer`'s process_function output dictionary
     kwargs
         keyword arguments passed to Checkpoint handler
 
@@ -78,7 +78,7 @@ def get_handlers(
     # kwargs can be passed to save the model based on training stats
     # like score_name, score_function
     common.setup_common_training_handlers(
-        trainer=train_engine,
+        trainer=trainer,
         train_sampler=train_sampler,
         to_save=to_save,
         lr_scheduler=lr_scheduler,
@@ -99,11 +99,11 @@ def get_handlers(
     # https://pytorch.org/ignite/contrib/engines.html#ignite.contrib.engines.common.save_best_model_by_val_score
     best_model_handler = common.save_best_model_by_val_score(
         output_path=config.output_dir / 'checkpoints',
-        evaluator=eval_engine,
+        evaluator=evaluator,
         model=model,
         metric_name=metric_name,
         n_saved=config.n_saved,
-        trainer=train_engine,
+        trainer=trainer,
         tag='eval',
     )
     {% endif %}
@@ -112,8 +112,8 @@ def get_handlers(
     # https://pytorch.org/ignite/contrib/engines.html#ignite.contrib.engines.common.add_early_stopping_by_val_score
     es_handler = common.add_early_stopping_by_val_score(
         patience=config.patience,
-        evaluator=eval_engine,
-        trainer=train_engine,
+        evaluator=evaluator,
+        trainer=trainer,
         metric_name=es_metric_name,
     )
     {% endif %}
@@ -125,7 +125,7 @@ def get_handlers(
     # you can replace with the events you want to measure
     timer_handler = Timer(average=True)
     timer_handler.attach(
-        engine=train_engine,
+        engine=trainer,
         start=Events.EPOCH_STARTED,
         resume=Events.ITERATION_STARTED,
         pause=Events.ITERATION_COMPLETED,
@@ -135,7 +135,7 @@ def get_handlers(
     {% if setup_timelimit %}
 
     # training will terminate if training time exceed `limit_sec`.
-    train_engine.add_event_handler(
+    trainer.add_event_handler(
         Events.ITERATION_COMPLETED, TimeLimit(limit_sec=config.limit_sec)
     )
     {% endif %}
@@ -144,8 +144,8 @@ def get_handlers(
 
 def get_logger(
     config: Any,
-    train_engine: Engine,
-    eval_engine: Optional[Union[Engine, Dict[str, Engine]]] = None,
+    trainer: Engine,
+    evaluator: Optional[Union[Engine, Dict[str, Engine]]] = None,
     optimizers: Optional[Union[Optimizer, Dict[str, Optimizer]]] = None,
     **kwargs: Any,
 ) -> Optional[BaseLogger]:
@@ -160,9 +160,9 @@ def get_logger(
     - `filepath`: logging path to output file
     - `logger_log_every_iters`: logging iteration interval for loggers
 
-    train_engine
+    trainer
         trainer engine
-    eval_engine
+    evaluator
         evaluator engine
     optimizers
         optimizers to log optimizer parameters
@@ -177,58 +177,58 @@ def get_logger(
 
     {% if logger_deps == 'clearml' %}
     logger_handler = common.setup_clearml_logging(
-        trainer=train_engine,
+        trainer=trainer,
         optimizers=optimizers,
-        evaluators=eval_engine,
+        evaluators=evaluator,
         log_every_iters=config.logger_log_every_iters,
         **kwargs,
     )
     {% elif logger_deps == 'mlflow' %}
     logger_handler = common.setup_mlflow_logging(
-        trainer=train_engine,
+        trainer=trainer,
         optimizers=optimizers,
-        evaluators=eval_engine,
+        evaluators=evaluator,
         log_every_iters=config.logger_log_every_iters,
         **kwargs,
     )
     {% elif logger_deps == 'neptune-client' %}
     logger_handler = common.setup_neptune_logging(
-        trainer=train_engine,
+        trainer=trainer,
         optimizers=optimizers,
-        evaluators=eval_engine,
+        evaluators=evaluator,
         log_every_iters=config.logger_log_every_iters,
         **kwargs,
     )
     {% elif logger_deps == 'polyaxon-client' %}
     logger_handler = common.setup_plx_logging(
-        trainer=train_engine,
+        trainer=trainer,
         optimizers=optimizers,
-        evaluators=eval_engine,
+        evaluators=evaluator,
         log_every_iters=config.logger_log_every_iters,
         **kwargs,
     )
     {% elif logger_deps == 'tensorboard' %}
     logger_handler = common.setup_tb_logging(
         output_path=config.output_dir,
-        trainer=train_engine,
+        trainer=trainer,
         optimizers=optimizers,
-        evaluators=eval_engine,
+        evaluators=evaluator,
         log_every_iters=config.logger_log_every_iters,
         **kwargs,
     )
     {% elif logger_deps == 'visdom' %}
     logger_handler = common.setup_visdom_logging(
-        trainer=train_engine,
+        trainer=trainer,
         optimizers=optimizers,
-        evaluators=eval_engine,
+        evaluators=evaluator,
         log_every_iters=config.logger_log_every_iters,
         **kwargs,
     )
     {% elif logger_deps == 'wandb' %}
     logger_handler = common.setup_wandb_logging(
-        trainer=train_engine,
+        trainer=trainer,
         optimizers=optimizers,
-        evaluators=eval_engine,
+        evaluators=evaluator,
         log_every_iters=config.logger_log_every_iters,
         **kwargs,
     )

@@ -1,3 +1,4 @@
+import os
 import shutil
 import tempfile
 from pathlib import Path
@@ -7,7 +8,7 @@ from codegen import CodeGenerator
 from utils import import_from_file
 
 __version__ = "0.1.0"
-
+DEV_MODE = os.getenv("DEV_MODE", 0) == 1
 
 FOLDER_TO_TEMPLATE_NAME = {
     "Image Classification": "image_classification",
@@ -155,7 +156,7 @@ What is it and why to use ?
                 if len(code):  # don't show files which don't have content in them
                     self.render_code(fname, code)
 
-    def add_download(self):
+    def download_panel_dev(self):
         st.markdown("")
         col1, col2 = st.beta_columns(2)
         with col1:
@@ -164,27 +165,58 @@ What is it and why to use ?
             # https://github.com/streamlit/streamlit/issues/400
             # https://github.com/streamlit/streamlit/issues/400#issuecomment-648580840
             if st.button("Generate an archive"):
-                with tempfile.TemporaryDirectory(prefix="", dir=self.codegen.dist_dir) as tmp_dir:
-                    tmp_dir = Path(tmp_dir)
+                tmp_dir = tempfile.TemporaryDirectory(prefix="", dir=self.codegen.dist_dir)
+                tmp_dir = Path(tmp_dir.name)
 
-                    archive_fname = self.codegen.make_archive(self.template_name, archive_format, tmp_dir)
-                    # this is where streamlit serves static files
-                    # ~/site-packages/streamlit/static/static/
-                    dist_path = Path(st.__path__[0]) / "static/static" / tmp_dir
+                archive_fname = self.codegen.write_archive(self.template_name, archive_format, tmp_dir)
+                # this is where streamlit serves static files
+                # ~/site-packages/streamlit/static/static/
+                dist_path = Path(st.__path__[0]) / "static/static" / tmp_dir
 
-                    if not dist_path.is_dir():
-                        dist_path.mkdir(parents=True, exist_ok=True)
+                if not dist_path.is_dir():
+                    dist_path.mkdir(parents=True, exist_ok=True)
 
-                    shutil.copy(archive_fname, dist_path)
-                    st.success(f"Download link : [{archive_fname}](./static/{archive_fname})")
+                shutil.copy(archive_fname, dist_path)
+                st.success(f"Download link : [{archive_fname}](./static/{archive_fname})")
 
-                    with col2:
-                        self.render_directory(Path(tmp_dir, self.template_name))
+                with col2:
+                    self.render_directory(Path(tmp_dir, self.template_name))
+
+    def download_panel(self):
+        st.markdown("")
+        archive_format = None
+        mimetype = ""
+
+        _, zip_col, tar_col, _ = st.beta_columns(4)
+        if zip_col.button("📦 Download zip"):
+            archive_format = "zip"
+            mimetype = "application/zip"
+
+        if tar_col.button("📦 Download tar"):
+            archive_format = "tar.gz"
+            mimetype = "application/x-tar"
+
+        if archive_format is not None:
+            archive = self.codegen.writes_archive(self.template_name, archive_format)
+
+            download_link = (
+                f'Download link: <a href="data:{mimetype};base64,{archive}" '
+                f'download="{self.template_name}.{archive_format}">'
+                f"{self.template_name}.{archive_format}</a>"
+            )
+
+            st.markdown(download_link, unsafe_allow_html=True)
+
+    def add_download_panel(self):
+        if DEV_MODE:
+            self.download_panel_dev()
+        else:
+            self.download_panel()
 
     def run(self):
         self.add_sidebar()
         self.add_content()
-        self.add_download()
+        self.add_download_panel()
         st.info(TIP)
 
 

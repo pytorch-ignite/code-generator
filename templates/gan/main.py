@@ -71,14 +71,14 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     netD, netG, optimizerD, optimizerG, loss_fn, lr_scheduler = initialize(config, num_channels)
 
     # -----------------------------
-    # train_engine and eval_engine
+    # trainer and evaluator
     # -----------------------------
     ws = idist.get_world_size()
     real_labels = torch.ones(config.batch_size // ws, device=device)
     fake_labels = torch.zeros(config.batch_size // ws, device=device)
     fixed_noise = torch.randn(config.batch_size // ws, config.z_dim, 1, 1, device=device)
 
-    train_engine = create_trainers(
+    trainer = create_trainers(
         config=config,
         netD=netD,
         netG=netG,
@@ -97,21 +97,21 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
 
     logger = setup_logging(config)
     log_basic_info(logger, config)
-    train_engine.logger = logger
+    trainer.logger = logger
 
     # -------------------------------------
     # ignite handlers and ignite loggers
     # -------------------------------------
 
-    to_save = {'netD': netD, 'netG': netG, 'optimizerD': optimizerD, 'optimizerG': optimizerG, 'trainer': train_engine}
+    to_save = {'netD': netD, 'netG': netG, 'optimizerD': optimizerD, 'optimizerG': optimizerG, 'trainer': trainer}
     optimizers = {'optimizerD': optimizerD, 'optimizerG': optimizerG}
     best_model_handler, es_handler, timer_handler = get_handlers(
         config=config,
         model={'netD', netD, 'netG', netG},
-        train_engine=train_engine,
-        eval_engine=None,
-        metric_name=None,
-        es_metric_name=None,
+        trainer=trainer,
+        evaluator=trainer,
+        metric_name='errD',
+        es_metric_name='errD',
         to_save=to_save,
         lr_scheduler=lr_scheduler,
         output_names=["errD", "errG", "D_x", "D_G_z1", "D_G_z2"],
@@ -119,7 +119,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
 
     # setup ignite logger only on rank 0
     if rank == 0:
-        logger_handler = get_logger(config=config, train_engine=train_engine, optimizers=optimizers)
+        logger_handler = get_logger(config=config, trainer=trainer, optimizers=optimizers)
 
     # -----------------------------------
     # resume from the saved checkpoints
@@ -132,7 +132,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # adding handlers using `trainer.on` decorator API
     # --------------------------------------------------
 
-    @train_engine.on(Events.EPOCH_COMPLETED)
+    @trainer.on(Events.EPOCH_COMPLETED)
     def save_fake_example(engine):
         fake = netG(fixed_noise)
         path = config.output_dir / (FAKE_IMG_FNAME.format(engine.state.epoch))
@@ -141,7 +141,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # --------------------------------------------------
     # adding handlers using `trainer.on` decorator API
     # --------------------------------------------------
-    @train_engine.on(Events.EPOCH_COMPLETED)
+    @trainer.on(Events.EPOCH_COMPLETED)
     def save_real_example(engine):
         img, y = engine.state.batch
         path = config.output_dir / (REAL_IMG_FNAME.format(engine.state.epoch))
@@ -150,16 +150,31 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # -------------------------------------------------------------
     # adding handlers using `trainer.on` decorator API
     # -------------------------------------------------------------
-    @train_engine.on(Events.EPOCH_COMPLETED)
+    @trainer.on(Events.EPOCH_COMPLETED)
     def print_times(engine):
         if not timer_handler:
             logger.info(f"Epoch {engine.state.epoch} done. Time per batch: {timer_handler.value():.3f}[s]")
             timer_handler.reset()
 
+    @trainer.on(Events.ITERATION_COMPLETED(every=config.log_every_iters))
+    @idist.one_rank_only()
+    def print_logs(engine):
+        fname = config.output_dir / LOGS_FNAME
+        columns = ["iteration", ] + list(engine.state.metrics.keys())
+        values = [str(engine.state.iteration), ] + [str(round(value, 5)) for value in engine.state.metrics.values()]
+
+        with open(fname, "a") as f:
+            if f.tell() == 0:
+                print("\t".join(columns), file=f)
+            print("\t".join(values), file=f)
+        message = f"[{engine.state.epoch}/{config.max_epochs}][{engine.state.iteration % len(train_dataloader)}/{len(train_dataloader)}]"
+        for name, value in zip(columns, values):
+            message += f" | {name}: {value}"
+
     # -------------------------------------------------------------
     # adding handlers using `trainer.on` decorator API
     # -------------------------------------------------------------
-    @train_engine.on(Events.EPOCH_COMPLETED)
+    @trainer.on(Events.EPOCH_COMPLETED)
     def create_plots(engine):
         try:
             import matplotlib as mpl
@@ -187,13 +202,13 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # for training stats
     # --------------------------------
 
-    train_engine.add_event_handler(Events.ITERATION_COMPLETED(every=config.log_every_iters), log_metrics, tag="train")
+    trainer.add_event_handler(Events.ITERATION_COMPLETED(every=config.log_every_iters), log_metrics, tag="train")
 
     # ------------------------------------------
     # setup if done. let's run the training
     # ------------------------------------------
 
-    train_engine.run(train_dataloader, max_epochs=config.max_epochs)
+    trainer.run(train_dataloader, max_epochs=config.max_epochs, epoch_length=config.epoch_length)
 
     # ------------------------------------------------------------
     # close the logger after the training completed / terminated
@@ -211,7 +226,8 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # where is my best and last checkpoint ?
     # -----------------------------------------
 
-    logger.info("Last and best checkpoint: %s", best_model_handler.last_checkpoint)
+    if best_model_handler is not None:
+        logger.info("Last and best checkpoint: %s", best_model_handler.last_checkpoint)
 
 
 def main():
