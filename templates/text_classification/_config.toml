@@ -39,7 +39,7 @@ value = 256
 [batch_size]
 label = "Total batch size"
 min_value = 1
-value = 128
+value = 16
 
 [weight_decay]
 label = "Weight decay"
@@ -50,7 +50,7 @@ format = "%f"
 [num_workers]
 label = "Number of workers in the data loader"
 min_value = 1
-value = 4
+value = 2
 
 [max_epochs]
 label = "Number of epochs to train the model"
