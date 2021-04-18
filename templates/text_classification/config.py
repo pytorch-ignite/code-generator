@@ -89,6 +89,11 @@ UPDATES = {
         "type": int,
         "help": "Argument to log batch loss every log_every_iters iterations. 0 to disable it",
     },
+    "eval_epoch_length": {
+        "default": None,
+        "type": int,
+        "help": "epoch_length of evaluator"
+    },
 }
 
 DEFAULTS.update(UPDATES)

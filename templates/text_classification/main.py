@@ -162,7 +162,7 @@ def run(local_rank, config):
     # ---------------------------------------------
     @trainer.on(Events.EPOCH_COMPLETED(every=1))
     def _():
-        evaluator.run(test_loader, max_epochs=1)
+        evaluator.run(test_loader, max_epochs=1, epoch_length=config.eval_epoch_length)
         evaluator.add_event_handler(Events.EPOCH_COMPLETED(every=1), log_metrics, tag="eval")
 
     # --------------------------------------------------
