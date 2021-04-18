@@ -84,20 +84,10 @@ UPDATES = {
         "type": int,
         "help": "Store training checkpoint every checkpoint_every iterations",
     },
-    "resume_from": {
-        "default": {{ resume_from }},
-        "type": str,
-        "help": "Path to checkpoint to use to resume the training from",
-    },
     "log_every_iters": {
         "default": {{ log_every_iters }},
         "type": int,
         "help": "Argument to log batch loss every log_every_iters iterations. 0 to disable it",
-    },
-    "with_clearml": {
-        "default": {{ with_clearml }},
-        "type": bool,
-        "help": "Setup experiment ClearML logger",
     },
 }
 

@@ -1,8 +1,8 @@
 import sys
 from argparse import Namespace
 
-import toml
 import streamlit as st
+import toml
 
 sys.path.append("./templates")
 

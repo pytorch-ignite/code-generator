@@ -1,6 +1,6 @@
 [data_dir]
 label = "Dataset cache directory"
-value = "/tmp/data"
+value = "./"
 
 [model]
 label = "Model name (from transformers) to setup model, tokenize and config to train"
@@ -8,11 +8,11 @@ options = ["bert-base-uncased"]
 
 [model_dir]
 label = "Cache directory to download the pretrained model"
-value = "/tmp/model"
+value = "./"
 
 [tokenizer_dir]
 label = "Tokenizer cache directory"
-value = "/tmp/tokenizer"
+value = "./"
 
 [num_classes]
 label ="Number of target classes. Default, 1 (binary classification)"

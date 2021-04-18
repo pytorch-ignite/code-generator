@@ -56,7 +56,7 @@ def get_dataset(cache_dir, tokenizer_name, tokenizer_dir, max_length):
 
 def get_dataflow(config):
     # - Get train/test datasets
-    if idist.get_rank() > 0:
+    if idist.get_local_rank() > 0:
         # Ensure that only rank 0 download the dataset
         idist.barrier()
 
@@ -64,16 +64,29 @@ def get_dataflow(config):
         config.data_dir, config.model, config.tokenizer_dir, config.max_length
     )
 
-    if idist.get_rank() == 0:
+    if idist.get_local_rank() == 0:
         # Ensure that only rank 0 download the dataset
         idist.barrier()
 
     # Setup data loader also adapted to distributed config: nccl, gloo, xla-tpu
     train_loader = idist.auto_dataloader(
-        train_dataset, batch_size=config.batch_size, num_workers=config.num_workers, shuffle=True, drop_last=True,
+        train_dataset,
+        batch_size=config.batch_size,
+        num_workers=config.num_workers,
+        shuffle=True,
+        drop_last=True,
+        {% if use_distributed_training and not use_distributed_launcher %}
+    persistent_workers = True,
+        {% endif %}
     )
 
     test_loader = idist.auto_dataloader(
-        test_dataset, batch_size=2 * config.batch_size, num_workers=config.num_workers, shuffle=False,
+        test_dataset,
+        batch_size=2 * config.batch_size,
+        num_workers=config.num_workers,
+        shuffle=False,
+        {% if use_distributed_training and not use_distributed_launcher %}
+    persistent_workers = True,
+        {% endif %}
     )
     return train_loader, test_loader

@@ -64,6 +64,18 @@ def run(local_rank, config):
     manual_seed(config.seed + rank)
     device = idist.device()
 
+    # -----------------------
+    # Create output folder
+    # -----------------------
+    if rank == 0:
+        now = datetime.now().strftime("%Y%m%d-%H%M%S")
+        name = f"{config.model}-backend-{idist.backend()}-{now}"
+        path = Path(config.output_dir, name)
+        path.mkdir(parents=True, exist_ok=True)
+        config.output_dir = path.as_posix()
+
+    config.output_dir = Path(idist.broadcast(config.output_dir, src=0))
+
     # -----------------------------
     # datasets and dataloaders
     # -----------------------------
@@ -76,9 +88,9 @@ def run(local_rank, config):
     model, optimizer, loss_fn, lr_scheduler = initialize(config)
 
     # -----------------------------
-    # train_engine and eval_engine
+    # trainer and evaluator
     # -----------------------------
-    train_engine, eval_engine = create_trainers(
+    trainer, evaluator = create_trainers(
         config=config,
         model=model,
         optimizer=optimizer,
@@ -87,7 +99,7 @@ def run(local_rank, config):
     )
 
     # ---------------------------------
-    # attach metrics to eval_engine
+    # attach metrics to evaluator
     # ---------------------------------
     metrics = {
         "eval_accuracy": Accuracy(output_transform=thresholded_output_transform, device=device),
@@ -95,36 +107,28 @@ def run(local_rank, config):
     }
 
     for name, metric in metrics.items():
-        metric.attach(eval_engine, name)
+        metric.attach(evaluator, name)
 
     # -------------------------------------------
-    # update config with optimizer parameters
     # setup engines logger with python logging
     # print training configurations
     # -------------------------------------------
-    config.__dict__.update(**optimizer.defaults)
     logger = setup_logging(config)
     log_basic_info(logger, config)
-    train_engine.logger = logger
-    eval_engine.logger = logger
+    trainer.logger = logger
+    evaluator.logger = logger
 
     # -------------------------------------
     # ignite handlers and ignite loggers
     # -------------------------------------
-    to_save = {"model": model, "optimizer": optimizer, "train_engine": train_engine, "lr_scheduler": lr_scheduler}
+    to_save = {"model": model, "optimizer": optimizer, "trainer": trainer, "lr_scheduler": lr_scheduler}
     best_model_handler, es_handler, timer_handler = get_handlers(
         config=config,
         model=model,
-        train_engine=train_engine,
-        eval_engine=eval_engine,
+        trainer=trainer,
+        evaluator=evaluator,
         metric_name="eval_accuracy",
-        # TODO : replace with the metric name to save the best model
-        # if you check `Save the best model by evaluation score` otherwise leave it None
-        # metric must be in eval_engine.state.metrics.
-        es_metric_name=None,
-        # TODO : replace with the metric name to early stop
-        # if you check `Early stop the training by evaluation score` otherwise leave it None
-        # metric must be in eval_engine.state.metrics.
+        es_metric_name="eval_accuracy",
         to_save=to_save,
         lr_scheduler=lr_scheduler,
         output_names=None,
@@ -133,7 +137,7 @@ def run(local_rank, config):
     # setup ignite logger only on rank 0
     if rank == 0:
         logger_handler = get_logger(
-            config=config, train_engine=train_engine, eval_engine=eval_engine, optimizers=optimizer
+            config=config, trainer=trainer, evaluator=evaluator, optimizers=optimizer
         )
 
     # -----------------------------------
@@ -147,7 +151,7 @@ def run(local_rank, config):
     # with `add_event_handler` API
     # for training stats
     # --------------------------------
-    train_engine.add_event_handler(Events.ITERATION_COMPLETED(every=config.log_every_iters), log_metrics, tag="train")
+    trainer.add_event_handler(Events.ITERATION_COMPLETED(every=config.log_every_iters), log_metrics, tag="train")
 
     # ---------------------------------------------
     # run evaluation at every training epoch end
@@ -156,23 +160,23 @@ def run(local_rank, config):
     # again with `add_event_handler` API
     # for evaluation stats
     # ---------------------------------------------
-    @train_engine.on(Events.EPOCH_COMPLETED(every=1))
+    @trainer.on(Events.EPOCH_COMPLETED(every=1))
     def _():
-        eval_engine.run(test_loader, max_epochs=1)
-        eval_engine.add_event_handler(Events.EPOCH_COMPLETED(every=1), log_metrics, tag="eval")
+        evaluator.run(test_loader, max_epochs=1)
+        evaluator.add_event_handler(Events.EPOCH_COMPLETED(every=1), log_metrics, tag="eval")
 
     # --------------------------------------------------
     # let's try run evaluation first as a sanity check
     # --------------------------------------------------
-    @train_engine.on(Events.STARTED)
+    @trainer.on(Events.STARTED)
     def _():
-        eval_engine.run(test_loader, max_epochs=1, epoch_length=2)
-        eval_engine.state.max_epochs = None
+        evaluator.run(test_loader, max_epochs=1, epoch_length=2)
+        evaluator.state.max_epochs = None
 
     # ------------------------------------------
     # setup if done. let's run the training
     # ------------------------------------------
-    train_engine.run(train_loader, max_epochs=config.max_epochs)
+    trainer.run(train_loader, max_epochs=config.max_epochs)
 
     # ------------------------------------------------------------
     # close the logger after the training completed / terminated
@@ -188,7 +192,8 @@ def run(local_rank, config):
     # -----------------------------------------
     # where is my best and last checkpoint ?
     # -----------------------------------------
-    logger.info("Last and best checkpoint: %s", best_model_handler.last_checkpoint)
+    if best_model_handler is not None:
+        logger.info("Last and best checkpoint: %s", best_model_handler.last_checkpoint)
 
 
 def main():
@@ -196,20 +201,17 @@ def main():
     config = parser.parse_args()
     manual_seed(config.seed)
 
-    if config.output_dir:
-        now = datetime.now().strftime("%Y%m%d-%H%M%S")
-        name = f"{config.model}-backend-{idist.backend()}-{now}"
-        path = Path(config.output_dir, name)
-        path.mkdir(parents=True, exist_ok=True)
-        config.output_dir = path
-
     with idist.Parallel(
         backend=config.backend,
-        nproc_per_node=config.nproc_per_node,
-        nnodes=config.nnodes,
-        node_rank=config.node_rank,
-        master_addr=config.master_addr,
-        master_port=config.master_port,
+{% if use_distributed_training and not use_distributed_launcher %}
+    nproc_per_node=config.nproc_per_node,
+{% if nnodes > 1 and not use_distributed_launcher %}
+    node_rank=config.node_rank,
+    nnodes=config.nnodes,
+    master_addr=config.master_addr,
+    master_port=config.master_port,
+{% endif %}
+{% endif %}
     ) as parallel:
         parallel.run(run, config)
 

@@ -79,8 +79,8 @@ def create_trainers(config, model, optimizer, loss_fn, device) -> Tuple[Engine, 
     """Create Engines for training and evaluation.
     Returns
     -------
-    train_engine, eval_engine
+    trainer, evaluator
     """
-    train_engine = create_trainer(config, model, optimizer, loss_fn, device)
-    eval_engine = create_evaluator(config, model, loss_fn, device)
-    return train_engine, eval_engine
+    trainer = create_trainer(config, model, optimizer, loss_fn, device)
+    evaluator = create_evaluator(config, model, loss_fn, device)
+    return trainer, evaluator
