@@ -43,24 +43,6 @@ def test_initialize():
     assert isinstance(lr_scheduler, (_LRScheduler, ParamScheduler))
 
 
-def test_get_dataset(cache_dir, tokenizer_name, tokenizer_dir, max_length):
-    train_ds, eval_ds = get_dataset(cache_dir, tokenizer_name, tokenizer_dir, max_length)
-    assert isinstance(train_ds, Dataset)
-    assert isinstance(eval_ds, Dataset)
-
-    train_batch = next(iter(train_ds))
-    assert isinstance(train_batch, Iterable)
-    assert isinstance(train_batch[0], Tensor)
-    assert isinstance(train_batch[1], Number)
-    assert train_batch[0].ndim == 3
-
-    eval_batch = next(iter(eval_ds))
-    assert isinstance(eval_batch, Iterable)
-    assert isinstance(eval_batch[0], Tensor)
-    assert isinstance(eval_batch[1], Number)
-    assert eval_batch[0].ndim == 3
-
-
 def test_get_dataflow():
     config = Namespace(
         data_dir="/tmp/data",
@@ -73,3 +55,26 @@ def test_get_dataflow():
     train_loader, test_loader = get_dataflow(config)
     assert isinstance(train_loader, DataLoader)
     assert isinstance(test_loader, DataLoader)
+
+
+def test_get_dataset():
+    cache_dir = "/tmp"
+    tokenizer_name = "bert-base-uncased"
+    tokenizer_dir = "/tmp"
+    max_length = 256
+    train_ds, eval_ds = get_dataset(cache_dir, tokenizer_name, tokenizer_dir, max_length)
+    assert isinstance(train_ds, Dataset)
+    assert isinstance(eval_ds, Dataset)
+
+    train_batch = next(iter(train_ds))
+    assert isinstance(train_batch, Iterable)
+    assert isinstance(train_batch["input_ids"], Tensor)
+    assert isinstance(train_batch["attention_mask"], Tensor)
+    assert isinstance(train_batch["token_type_ids"], Tensor)
+    assert isinstance(train_batch["label"], Tensor)
+
+    eval_batch = next(iter(eval_ds))
+    assert isinstance(eval_batch["input_ids"], Tensor)
+    assert isinstance(eval_batch["attention_mask"], Tensor)
+    assert isinstance(eval_batch["token_type_ids"], Tensor)
+    assert isinstance(eval_batch["label"], Tensor)

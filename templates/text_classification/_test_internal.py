@@ -104,7 +104,7 @@ def test_create_trainers():
 
 
 def test_get_default_parser():
-    parser = get_default_parser()
+    parser = get_default_parser({})
     assert isinstance(parser, ArgumentParser)
     assert not parser.add_help
 
