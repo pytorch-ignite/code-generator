@@ -47,29 +47,37 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
 <details>
 
 <summary>
-What is it and why to use ?
+<samp>Learn More</samp>
 </summary>
 
 #### Code Generator, what is it ?
 
-- "Code Generator" is a streamlit application to produce quick-start python code for common training tasks in deep learning.
-- Code is using PyTorch framework and PyTorch-Ignite library can be configured using the UI
+- "Code Generator" is a streamlit application to produce quick-start python code
+for common training tasks in deep learning.
+- Code is using PyTorch framework and PyTorch-Ignite library can be configured using the UI.
 
 #### Why to use Code Generator ?
 
 - Start working on a task without rewriting everything from scratch: Kaggle competition, client prototype project, etc.
 
+</details>
+
+<details open="true">
+<summary>
+<samp>Get Started</samp>
+</summary>
+
 #### How to use it ?
 
-- Choose a Template
-- Adjust the configuration using the left sidebar
-  - Inspect the code in the central widget
-- Download the source code
-- Use it for your project
+1. 📃 Choose a Template.
+2. ⚙️ Adjust the configuration in the left sidebar. _(click on > if closed)_
+3. 🔬 Inspect the code in the central widget.
+4. 📦 Download the source code.
+5. 🚀 Use it for your project.
 
 </details>
 
-
+---
 """
 
     def __init__(self):
