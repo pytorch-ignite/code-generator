@@ -11,9 +11,7 @@ from torch import nn, optim
 from torch.functional import Tensor
 from torch.optim.lr_scheduler import _LRScheduler
 from torch.utils.data import Dataset
-from trainers import (
-    evaluate_function,
-)
+from trainers import evaluate_function
 from utils import initialize
 
 

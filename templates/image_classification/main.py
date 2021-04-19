@@ -7,14 +7,22 @@ from pathlib import Path
 from typing import Any
 
 import ignite.distributed as idist
-from ignite.engine.events import Events
-from ignite.utils import manual_seed
-from ignite.metrics import Accuracy, Loss
-
-from datasets import get_datasets
-from trainers import create_trainers
-from utils import setup_logging, log_metrics, log_basic_info, initialize, resume_from, get_handlers, get_logger
 from config import get_default_parser
+from datasets import get_datasets
+from ignite.contrib.handlers.wandb_logger import WandBLogger
+from ignite.engine.events import Events
+from ignite.metrics import Accuracy, Loss
+from ignite.utils import manual_seed
+from trainers import create_trainers
+from utils import (
+    get_handlers,
+    get_logger,
+    initialize,
+    log_basic_info,
+    log_metrics,
+    resume_from,
+    setup_logging,
+)
 
 
 def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):

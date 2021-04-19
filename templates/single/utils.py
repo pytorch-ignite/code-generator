@@ -8,16 +8,17 @@ from logging import Logger
 from pathlib import Path
 from pprint import pformat
 from typing import Any, Mapping, Optional, Tuple, Union
-from ignite.contrib.handlers.param_scheduler import ParamScheduler
 
 import ignite.distributed as idist
 import torch
+from ignite.contrib.handlers.param_scheduler import ParamScheduler
 from ignite.engine import Engine
 from ignite.handlers.checkpoint import Checkpoint
 from ignite.utils import setup_logger
 from torch.nn import Module
 from torch.optim.lr_scheduler import _LRScheduler
 from torch.optim.optimizer import Optimizer
+
 {% include "_handlers.py" %}
 
 

@@ -1,5 +1,6 @@
 {% block imports %}
 from argparse import ArgumentParser
+
 {% endblock %}
 
 {% block defaults %}
