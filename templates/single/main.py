@@ -161,7 +161,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
 
     @trainer.on(Events.EPOCH_COMPLETED(every=1))
     def _():
-        evaluator.run(eval_dataloader, max_epochs=1)
+        evaluator.run(eval_dataloader, max_epochs=1, epoch_length=config.eval_epoch_length)
         evaluator.add_event_handler(Events.EPOCH_COMPLETED(every=1), log_metrics, tag="eval")
 
     # --------------------------------------------------
@@ -178,7 +178,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # ------------------------------------------
     # TODO : PLEASE provide `max_epochs` parameters
 
-    trainer.run(train_dataloader, epoch_length=config.epoch_length)
+    trainer.run(train_dataloader, epoch_length=config.train_epoch_length)
 
     # ------------------------------------------------------------
     # close the logger after the training completed / terminated
