@@ -119,30 +119,6 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     if config.resume_from:
         resume_from(to_load=to_save, checkpoint_fp=config.resume_from)
 
-    # --------------------------------------------
-    # let's trigger custom events we registered
-    # we will use a `event_filter` to trigger that
-    # `event_filter` has to return boolean
-    # whether this event should be executed
-    # here will log the gradients on the 1st iteration
-    # and every 100 iterations
-    # --------------------------------------------
-
-    @trainer.on(TrainEvents.BACKWARD_COMPLETED(lambda _, ev: (ev % 100 == 0) or (ev == 1)))
-    def _():
-        # do something interesting
-        pass
-
-    # ----------------------------------------
-    # here we will use `every` to trigger
-    # every 100 iterations
-    # ----------------------------------------
-
-    @trainer.on(TrainEvents.OPTIM_STEP_COMPLETED(every=100))
-    def _():
-        # do something interesting
-        pass
-
     # --------------------------------
     # print metrics to the stderr
     # with `add_event_handler` API
