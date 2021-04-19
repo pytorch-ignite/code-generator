@@ -5,7 +5,6 @@ from argparse import ArgumentParser
 from datetime import datetime
 from pathlib import Path
 from typing import Any
-from ignite.contrib.handlers.wandb_logger import WandBLogger
 
 import ignite.distributed as idist
 from ignite.engine.events import Events
@@ -206,6 +205,8 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # ------------------------------------------------------------
 
     if rank == 0:
+        from ignite.contrib.handlers.wandb_logger import WandBLogger
+
         if isinstance(logger_handler, WandBLogger):
             # why handle differently for wandb ?
             # See : https://github.com/pytorch/ignite/issues/1894
