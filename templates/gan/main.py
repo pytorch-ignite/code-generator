@@ -207,7 +207,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # setup if done. let's run the training
     # ------------------------------------------
 
-    trainer.run(train_dataloader, max_epochs=config.max_epochs, epoch_length=config.epoch_length)
+    trainer.run(train_dataloader, max_epochs=config.max_epochs, epoch_length=config.train_epoch_length)
 
     # ------------------------------------------------------------
     # close the logger after the training completed / terminated

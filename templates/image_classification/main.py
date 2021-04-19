@@ -12,7 +12,7 @@ from ignite.utils import manual_seed
 from ignite.metrics import Accuracy, Loss
 
 from datasets import get_datasets
-from trainers import create_trainers, TrainEvents
+from trainers import create_trainers
 from utils import setup_logging, log_metrics, log_basic_info, initialize, resume_from, get_handlers, get_logger
 from config import get_default_parser
 
@@ -140,30 +140,6 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     if config.resume_from:
         resume_from(to_load=to_save, checkpoint_fp=config.resume_from)
 
-    # --------------------------------------------
-    # let's trigger custom events we registered
-    # we will use a `event_filter` to trigger that
-    # `event_filter` has to return boolean
-    # whether this event should be executed
-    # here will log the gradients on the 1st iteration
-    # and every 100 iterations
-    # --------------------------------------------
-
-    @trainer.on(TrainEvents.BACKWARD_COMPLETED(lambda _, ev: (ev % 100 == 0) or (ev == 1)))
-    def _():
-        # do something interesting
-        pass
-
-    # ----------------------------------------
-    # here we will use `every` to trigger
-    # every 100 iterations
-    # ----------------------------------------
-
-    @trainer.on(TrainEvents.OPTIM_STEP_COMPLETED(every=100))
-    def _():
-        # do something interesting
-        pass
-
     # --------------------------------
     # print metrics to the stderr
     # with `add_event_handler` API
@@ -182,8 +158,8 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
 
     @trainer.on(Events.EPOCH_COMPLETED(every=1))
     def _():
-        evaluator.run(eval_dataloader, max_epochs=1)
-        evaluator.add_event_handler(Events.EPOCH_COMPLETED(every=1), log_metrics, tag="eval")
+        evaluator.run(eval_dataloader, epoch_length=config.eval_epoch_length)
+        log_metrics(evaluator, "eval")
 
     # --------------------------------------------------
     # let's try run evaluation first as a sanity check
@@ -191,14 +167,13 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
 
     @trainer.on(Events.STARTED)
     def _():
-        evaluator.run(eval_dataloader, max_epochs=1, epoch_length=2)
-        evaluator.state.max_epochs = None
+        evaluator.run(eval_dataloader, epoch_length=config.eval_epoch_length)
 
     # ------------------------------------------
     # setup if done. let's run the training
     # ------------------------------------------
 
-    trainer.run(train_dataloader, max_epochs=config.max_epochs, epoch_length=config.epoch_length)
+    trainer.run(train_dataloader, max_epochs=config.max_epochs, epoch_length=config.train_epoch_length)
 
     # ------------------------------------------------------------
     # close the logger after the training completed / terminated

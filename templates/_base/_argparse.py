@@ -56,10 +56,15 @@ DEFAULTS = {
         "type": int,
         "help": "master node port for torch native backends. Default: %(default)s",
     },
-    "epoch_length": {
+    "train_epoch_length": {
         "default": None,
         "type": int,
-        "help": "epoch_length of Engine.run(). Default: %(default)s"
+        "help": "epoch_length of Engine.run() for training. Default: %(default)s"
+    },
+    "eval_epoch_length": {
+        "default": None,
+        "type": int,
+        "help": "epoch_length of Engine.run() for evaluation. Default: %(default)s"
     },
     # ignite handlers options
     "save_every_iters": {

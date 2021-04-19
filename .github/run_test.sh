@@ -20,7 +20,12 @@ elif [ $1 == "unittest" ]; then
 elif [ $1 == "default" ]; then
     for file in $(find ./tests/dist -iname "main.py" -not -path "./tests/dist/launch/*" -not -path "./tests/dist/spawn/*" -not -path "./tests/dist/single/*")
     do
-        python $file --verbose --log_every_iters 2 --num_workers 1 --epoch_length 10
+        python $file \
+            --verbose \
+            --log_every_iters 2 \
+            --num_workers 1 \
+            --train_epoch_length 10 \
+            --eval_epoch_length 10
     done
 elif [ $1 == "launch" ]; then
     for file in $(find ./tests/dist/launch -iname "main.py" -not -path "./tests/dist/launch/single/*")
@@ -31,7 +36,8 @@ elif [ $1 == "launch" ]; then
             --verbose \
             --backend gloo \
             --num_workers 1 \
-            --epoch_length 10 \
+            --eval_epoch_length 10 \
+            --train_epoch_length 10 \
             --log_every_iters 2
     done
 elif [ $1 == "spawn" ]; then
@@ -41,7 +47,8 @@ elif [ $1 == "spawn" ]; then
             --verbose \
             --backend gloo \
             --num_workers 1 \
-            --epoch_length 10 \
+            --eval_epoch_length 10 \
+            --train_epoch_length 10 \
             --nproc_per_node 2 \
             --log_every_iters 2
     done
