@@ -34,7 +34,7 @@ class App:
 <img src="{page_icon}"
 width="100" height="100">
 
-# Code Generator
+# Code Generator (v{__version__})
 
 Application to generate your training scripts with [PyTorch-Ignite](https://github.com/pytorch/ignite).
 
