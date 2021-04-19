@@ -9,7 +9,6 @@ from typing import Any
 import ignite.distributed as idist
 from config import get_default_parser
 from datasets import get_datasets
-from ignite.contrib.handlers.wandb_logger import WandBLogger
 from ignite.engine.events import Events
 from ignite.utils import manual_seed
 from trainers import TrainEvents, create_trainers
