@@ -160,10 +160,10 @@ def run(local_rank, config):
     # again with `add_event_handler` API
     # for evaluation stats
     # ---------------------------------------------
-    @trainer.on(Events.EPOCH_COMPLETED(every=1))
+    @trainer.on(Events.EPOCH_COMPLETED(every=config.validate_every))
     def _():
-        evaluator.run(test_loader, max_epochs=1, epoch_length=config.eval_epoch_length)
-        evaluator.add_event_handler(Events.EPOCH_COMPLETED(every=1), log_metrics, tag="eval")
+        evaluator.run(test_loader, epoch_length=config.eval_epoch_length)
+        log_metrics(evaluator, tag="eval")
 
     # --------------------------------------------------
     # let's try run evaluation first as a sanity check
