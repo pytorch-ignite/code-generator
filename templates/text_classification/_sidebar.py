@@ -48,7 +48,9 @@ def get_configs() -> dict:
 
         st.subheader("DataLoader Options")
         config["batch_size"] = st.number_input("Total batch size (batch_size)", min_value=1, value=4)
-        config["num_workers"] = st.number_input("Number of workers in the data loader (num_workers)", min_value=1, value=2)
+        config["num_workers"] = st.number_input(
+            "Number of workers in the data loader (num_workers)", min_value=1, value=2
+        )
         st.markdown("---")
 
         st.subheader("Optimizer Options")
