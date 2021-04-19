@@ -3,12 +3,11 @@
 """
 from typing import Any
 
-import torch
 import ignite.distributed as idist
+import torch
 from ignite.engine import Engine
 from torch.cuda.amp import autocast
 from torch.optim.optimizer import Optimizer
-
 
 # Edit below functions the way how the model will be training
 

@@ -8,19 +8,19 @@ from logging import Logger
 from pathlib import Path
 from pprint import pformat
 from typing import Any, Mapping, Optional, Tuple, Union
-from ignite.contrib.handlers.param_scheduler import ParamScheduler
 
 import ignite.distributed as idist
 import torch
+from ignite.contrib.handlers import PiecewiseLinear
+from ignite.contrib.handlers.param_scheduler import ParamScheduler
 from ignite.engine import Engine
 from ignite.handlers.checkpoint import Checkpoint
 from ignite.utils import setup_logger
-from ignite.contrib.handlers import PiecewiseLinear
-from torch.nn import Module, CrossEntropyLoss
-from torch.optim.lr_scheduler import _LRScheduler
-from torch.optim import Optimizer, SGD
-
 from models import get_model
+from torch.nn import CrossEntropyLoss, Module
+from torch.optim import SGD, Optimizer
+from torch.optim.lr_scheduler import _LRScheduler
+
 {% include "_handlers.py" %}
 
 

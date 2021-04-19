@@ -6,19 +6,25 @@ from argparse import ArgumentParser
 from datetime import datetime
 from pathlib import Path
 from typing import Any
-from ignite.contrib.handlers.wandb_logger import WandBLogger
 
-import torch
 import ignite.distributed as idist
+import torch
+from config import get_default_parser
+from datasets import get_datasets
+from ignite.contrib.handlers.wandb_logger import WandBLogger
 from ignite.engine.events import Events
 from ignite.utils import manual_seed
 from torchvision import utils as vutils
-
-from datasets import get_datasets
 from trainers import create_trainers
-from utils import setup_logging, log_metrics, log_basic_info, initialize, resume_from, get_handlers, get_logger
-from config import get_default_parser
-
+from utils import (
+    get_handlers,
+    get_logger,
+    initialize,
+    log_basic_info,
+    log_metrics,
+    resume_from,
+    setup_logging,
+)
 
 FAKE_IMG_FNAME = "fake_sample_epoch_{:04d}.png"
 REAL_IMG_FNAME = "real_sample_epoch_{:04d}.png"
@@ -208,13 +214,15 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # setup if done. let's run the training
     # ------------------------------------------
 
-    trainer.run(train_dataloader, max_epochs=config.max_epochs, epoch_length=config.epoch_length)
+    trainer.run(train_dataloader, max_epochs=config.max_epochs, epoch_length=config.train_epoch_length)
 
     # ------------------------------------------------------------
     # close the logger after the training completed / terminated
     # ------------------------------------------------------------
 
     if rank == 0:
+        from ignite.contrib.handlers.wandb_logger import WandBLogger
+
         if isinstance(logger_handler, WandBLogger):
             # why handle differently for wandb ?
             # See : https://github.com/pytorch/ignite/issues/1894

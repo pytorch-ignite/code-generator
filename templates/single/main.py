@@ -5,16 +5,23 @@ from argparse import ArgumentParser
 from datetime import datetime
 from pathlib import Path
 from typing import Any
-from ignite.contrib.handlers.wandb_logger import WandBLogger
 
 import ignite.distributed as idist
+from config import get_default_parser
+from datasets import get_datasets
+from ignite.contrib.handlers.wandb_logger import WandBLogger
 from ignite.engine.events import Events
 from ignite.utils import manual_seed
-
-from datasets import get_datasets
-from trainers import create_trainers, TrainEvents
-from utils import setup_logging, log_metrics, log_basic_info, initialize, resume_from, get_handlers, get_logger
-from config import get_default_parser
+from trainers import TrainEvents, create_trainers
+from utils import (
+    get_handlers,
+    get_logger,
+    initialize,
+    log_basic_info,
+    log_metrics,
+    resume_from,
+    setup_logging,
+)
 
 
 def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
@@ -161,8 +168,8 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
 
     @trainer.on(Events.EPOCH_COMPLETED(every=1))
     def _():
-        evaluator.run(eval_dataloader, max_epochs=1)
-        evaluator.add_event_handler(Events.EPOCH_COMPLETED(every=1), log_metrics, tag="eval")
+        evaluator.run(eval_dataloader, epoch_length=config.eval_epoch_length)
+        log_metrics(evaluator, "eval")
 
     # --------------------------------------------------
     # let's try run evaluation first as a sanity check
@@ -170,21 +177,22 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
 
     @trainer.on(Events.STARTED)
     def _():
-        evaluator.run(eval_dataloader, max_epochs=1, epoch_length=2)
-        evaluator.state.max_epochs = None
+        evaluator.run(eval_dataloader, epoch_length=config.eval_epoch_length)
 
     # ------------------------------------------
     # setup if done. let's run the training
     # ------------------------------------------
     # TODO : PLEASE provide `max_epochs` parameters
 
-    trainer.run(train_dataloader, epoch_length=config.epoch_length)
+    trainer.run(train_dataloader, max_epochs=config.max_epochs, epoch_length=config.train_epoch_length)
 
     # ------------------------------------------------------------
     # close the logger after the training completed / terminated
     # ------------------------------------------------------------
 
     if rank == 0:
+        from ignite.contrib.handlers.wandb_logger import WandBLogger
+
         if isinstance(logger_handler, WandBLogger):
             # why handle differently for wandb ?
             # See : https://github.com/pytorch/ignite/issues/1894

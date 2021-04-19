@@ -1,6 +1,6 @@
-from torchvision import transforms as T
-from torchvision import datasets as dset
 import ignite.distributed as idist
+from torchvision import datasets as dset
+from torchvision import transforms as T
 
 
 def get_datasets(dataset, dataroot):

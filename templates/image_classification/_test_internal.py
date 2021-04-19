@@ -30,7 +30,14 @@ from trainers import (
     train_events_to_attr,
     train_function,
 )
-from utils import hash_checkpoint, log_metrics, resume_from, setup_logging, get_handlers, get_logger
+from utils import (
+    get_handlers,
+    get_logger,
+    hash_checkpoint,
+    log_metrics,
+    resume_from,
+    setup_logging,
+)
 
 
 def test_get_handlers(tmp_path):
