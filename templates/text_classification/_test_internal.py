@@ -4,16 +4,7 @@ from pathlib import Path
 from unittest.mock import MagicMock
 
 import pytest
-
 import torch
-from torch import nn, optim
-
-from ignite.engine import Engine
-from ignite.handlers.checkpoint import Checkpoint
-from ignite.handlers.early_stopping import EarlyStopping
-from ignite.handlers.timing import Timer
-from ignite.utils import setup_logger
-from ignite.contrib.handlers.base_logger import BaseLogger
 from ignite.contrib.handlers import (
     ClearMLLogger,
     MLflowLogger,
@@ -23,10 +14,23 @@ from ignite.contrib.handlers import (
     VisdomLogger,
     WandBLogger,
 )
-
+from ignite.contrib.handlers.base_logger import BaseLogger
+from ignite.engine import Engine
+from ignite.handlers.checkpoint import Checkpoint
+from ignite.handlers.early_stopping import EarlyStopping
+from ignite.handlers.timing import Timer
+from ignite.utils import setup_logger
 from test_all import set_up
-from trainers import create_trainer, create_evaluator, create_trainers
-from utils import get_default_parser, log_metrics, resume_from, setup_logging, get_handlers, get_logger
+from torch import nn, optim
+from trainers import create_evaluator, create_trainer, create_trainers
+from utils import (
+    get_default_parser,
+    get_handlers,
+    get_logger,
+    log_metrics,
+    resume_from,
+    setup_logging,
+)
 
 
 def test_get_handlers(tmp_path):

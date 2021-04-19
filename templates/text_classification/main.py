@@ -3,30 +3,28 @@ from argparse import ArgumentParser
 from datetime import datetime
 from pathlib import Path
 
+import ignite
+import ignite.distributed as idist
 import torch
 import torch.nn as nn
 import torch.optim as optim
-
-import ignite
-import ignite.distributed as idist
+from config import DEFAULTS
+from dataset import get_dataflow
 from ignite.contrib.handlers import PiecewiseLinear
 from ignite.engine import Events
 from ignite.metrics import Accuracy, Loss
 from ignite.utils import manual_seed
-
-from config import DEFAULTS
-from dataset import get_dataflow
 from models import get_model
 from trainers import create_trainers
 from utils import (
     get_default_parser,
-    thresholded_output_transform,
-    setup_logging,
-    log_basic_info,
-    log_metrics,
     get_handlers,
     get_logger,
+    log_basic_info,
+    log_metrics,
     resume_from,
+    setup_logging,
+    thresholded_output_transform,
 )
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"  # remove tokenizer parallelism warning

@@ -1,9 +1,8 @@
-import torch
-from torch.utils.data import Dataset
-
 import ignite.distributed as idist
-from transformers import AutoTokenizer
+import torch
 from datasets import load_dataset
+from torch.utils.data import Dataset
+from transformers import AutoTokenizer
 
 
 class TransformerDataset(Dataset):

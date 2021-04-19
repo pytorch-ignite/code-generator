@@ -1,16 +1,16 @@
-from typing import Any, Mapping, Optional, Tuple, Union
+import logging
+from argparse import ArgumentParser
 from pathlib import Path
 from pprint import pformat
-from argparse import ArgumentParser
-import logging
-
-import torch
+from typing import Any, Mapping, Optional, Tuple, Union
 
 import ignite
-from ignite.engine import Engine
 import ignite.distributed as idist
+import torch
+from ignite.engine import Engine
 from ignite.handlers.checkpoint import Checkpoint
 from ignite.utils import setup_logger
+
 {% include "_handlers.py" %}
 
 

@@ -1,18 +1,16 @@
-from typing import Iterable
 from argparse import Namespace
 from numbers import Number
+from typing import Iterable
 
+import ignite.distributed as idist
 import torch
+from dataset import get_dataflow, get_dataset
+from ignite.contrib.handlers.param_scheduler import ParamScheduler
+from main import initialize
 from torch import nn, optim
 from torch.functional import Tensor
 from torch.optim.lr_scheduler import _LRScheduler
-from torch.utils.data import Dataset, DataLoader
-
-import ignite.distributed as idist
-from ignite.contrib.handlers.param_scheduler import ParamScheduler
-
-from main import initialize
-from dataset import get_dataset, get_dataflow
+from torch.utils.data import DataLoader, Dataset
 
 
 def set_up():

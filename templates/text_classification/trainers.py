@@ -1,10 +1,9 @@
 from typing import Any, Tuple
 
-import torch
-from torch.cuda.amp import GradScaler, autocast
-
 import ignite.distributed as idist
+import torch
 from ignite.engine import Engine
+from torch.cuda.amp import GradScaler, autocast
 
 
 def create_trainer(config, model, optimizer, loss_fn, device):
