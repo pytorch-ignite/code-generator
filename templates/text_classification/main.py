@@ -203,12 +203,12 @@ def main():
     with idist.Parallel(
         backend=config.backend,
 {% if use_distributed_training and not use_distributed_launcher %}
-    nproc_per_node=config.nproc_per_node,
+        nproc_per_node=config.nproc_per_node,
 {% if nnodes > 1 and not use_distributed_launcher %}
-    node_rank=config.node_rank,
-    nnodes=config.nnodes,
-    master_addr=config.master_addr,
-    master_port=config.master_port,
+        node_rank=config.node_rank,
+        nnodes=config.nnodes,
+        master_addr=config.master_addr,
+        master_port=config.master_port,
 {% endif %}
 {% endif %}
     ) as parallel:
