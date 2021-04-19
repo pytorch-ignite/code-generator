@@ -162,7 +162,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     @trainer.on(Events.EPOCH_COMPLETED(every=1))
     def _():
         evaluator.run(eval_dataloader, epoch_length=config.eval_epoch_length)
-        log_metrics(evaluator, 'eval')
+        log_metrics(evaluator, "eval")
 
     # --------------------------------------------------
     # let's try run evaluation first as a sanity check
