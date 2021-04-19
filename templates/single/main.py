@@ -170,7 +170,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
 
     @trainer.on(Events.STARTED)
     def _():
-        evaluator.run(eval_dataloader, epoch_length=2)
+        evaluator.run(eval_dataloader, epoch_length=config.eval_epoch_length)
 
     # ------------------------------------------
     # setup if done. let's run the training
