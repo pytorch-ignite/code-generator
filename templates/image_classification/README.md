@@ -134,9 +134,9 @@ Let's start training on {{nnodes}} nodes with {{nproc_per_node}} gpus each:
 ```sh
 usage: main.py [-h] [--use_amp] [--resume_from RESUME_FROM] [--seed SEED]
                [--verbose] [--backend BACKEND]
-               [--nproc_per_node NPROC_PER_NODE] [--nnodes NNODES]
-               [--node_rank NODE_RANK] [--master_addr MASTER_ADDR]
-               [--master_port MASTER_PORT]
+               [--nproc_per_node NPROC_PER_NODE] [--node_rank NODE_RANK]
+               [--nnodes NNODES] [--master_addr MASTER_ADDR]
+               [--master_port MASTER_PORT] [--epoch_length EPOCH_LENGTH]
                [--save_every_iters SAVE_EVERY_ITERS] [--n_saved N_SAVED]
                [--log_every_iters LOG_EVERY_ITERS] [--with_pbars WITH_PBARS]
                [--with_pbar_on_iters WITH_PBAR_ON_ITERS]
@@ -153,72 +153,82 @@ usage: main.py [-h] [--use_amp] [--resume_from RESUME_FROM] [--seed SEED]
 
 optional arguments:
   -h, --help            show this help message and exit
-  --use_amp             use torch.cuda.amp for automatic mixed precision
+  --use_amp             use torch.cuda.amp for automatic mixed precision.
+                        Default: False
   --resume_from RESUME_FROM
                         path to the checkpoint file to resume, can also url
-                        starting with https (None)
-  --seed SEED           seed to use in ignite.utils.manual_seed() (666)
-  --verbose             use logging.INFO in ignite.utils.setup_logger
-  --backend BACKEND     backend to use for distributed training (None)
+                        starting with https. Default: None
+  --seed SEED           seed to use in ignite.utils.manual_seed(). Default:
+                        666
+  --verbose             use logging.INFO in ignite.utils.setup_logger.
+                        Default: False
+  --backend BACKEND     backend to use for distributed training. Default: None
   --nproc_per_node NPROC_PER_NODE
                         number of processes to launch on each node, for GPU
                         training this is recommended to be set to the number
                         of GPUs in your system so that each process can be
-                        bound to a single GPU (None)
-  --nnodes NNODES       number of nodes to use for distributed training (None)
+                        bound to a single GPU. Default: None
   --node_rank NODE_RANK
-                        rank of the node for multi-node distributed training
-                        (None)
+                        rank of the node for multi-node distributed training.
+                        Default: None
+  --nnodes NNODES       number of nodes to use for distributed training.
+                        Default: None
   --master_addr MASTER_ADDR
-                        master node TCP/IP address for torch native backends
-                        (None)
+                        master node TCP/IP address for torch native backends.
+                        Default: None
   --master_port MASTER_PORT
-                        master node port for torch native backends (None)
+                        master node port for torch native backends. Default:
+                        None
+  --epoch_length EPOCH_LENGTH
+                        epoch_length of Engine.run(). Default: None
   --save_every_iters SAVE_EVERY_ITERS
-                        Saving iteration interval (1000)
-  --n_saved N_SAVED     number of best models to store (2)
+                        Saving iteration interval. Default: 1000
+  --n_saved N_SAVED     number of best models to store. Default: 2
   --log_every_iters LOG_EVERY_ITERS
-                        logging interval for iteration progress bar (100)
+                        logging interval for iteration progress bar. Default:
+                        100
   --with_pbars WITH_PBARS
-                        show epoch-wise and iteration-wise progress bars
-                        (True)
+                        show epoch-wise and iteration-wise progress bars.
+                        Default: False
   --with_pbar_on_iters WITH_PBAR_ON_ITERS
-                        show iteration progress bar or not (True)
+                        show iteration progress bar or not. Default: True
   --stop_on_nan STOP_ON_NAN
                         stop the training if engine output contains NaN/inf
-                        values (True)
+                        values. Default: True
   --clear_cuda_cache CLEAR_CUDA_CACHE
-                        clear cuda cache every end of epoch (True)
+                        clear cuda cache every end of epoch. Default: True
   --with_gpu_stats WITH_GPU_STATS
-                        show gpu information, requires pynvml (False)
+                        show gpu information, requires pynvml. Default: False
   --patience PATIENCE   number of events to wait if no improvement and then
-                        stop the training (None)
+                        stop the training. Default: None
   --limit_sec LIMIT_SEC
-                        maximum time before training terminates in seconds
-                        (None)
+                        maximum time before training terminates in seconds.
+                        Default: None
   --output_dir OUTPUT_DIR
-                        directory to save all outputs (./logs)
+                        directory to save all outputs. Default: ./logs
   --logger_log_every_iters LOGGER_LOG_EVERY_ITERS
-                        logging interval for experiment tracking system (None)
+                        logging interval for experiment tracking system.
+                        Default: 100
   --data_path DATA_PATH
-                        datasets path (./)
+                        datasets path. Default: ./
   --train_batch_size TRAIN_BATCH_SIZE
                         will be equally divided by number of GPUs if in
-                        distributed (4)
+                        distributed. Default: 16
   --eval_batch_size EVAL_BATCH_SIZE
                         will be equally divided by number of GPUs if in
-                        distributed (8)
+                        distributed. Default: 16
   --num_workers NUM_WORKERS
-                        num_workers for DataLoader (2)
-  --lr LR               learning rate used by torch.optim.* (0.001)
-  --momentum MOMENTUM   momentum used by torch.optim.SGD (0.9)
+                        num_workers for DataLoader. Default: 2
+  --lr LR               learning rate used by torch.optim.*. Default: 0.001
+  --momentum MOMENTUM   momentum used by torch.optim.SGD. Default: 0.9
   --weight_decay WEIGHT_DECAY
-                        weight_decay used by torch.optim.SGD (0.0001)
+                        weight_decay used by torch.optim.SGD. Default: 0.0001
   --max_epochs MAX_EPOCHS
-                        max_epochs of ignite.Engine.run() for training (2)
+                        max_epochs of ignite.Engine.run() for training.
+                        Default: 5
   --num_warmup_epochs NUM_WARMUP_EPOCHS
                         number of warm-up epochs before learning rate decay.
-                        (4)
+                        Default: 4
   --model MODEL         model to use, available all torchvision classification
-                        models
+                        models. Default: resnet18
 ```

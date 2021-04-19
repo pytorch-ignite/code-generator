@@ -34,7 +34,7 @@ from utils import (
 
 
 def test_get_handlers(tmp_path):
-    train_engine = Engine(lambda e, b: b)
+    trainer = Engine(lambda e, b: b)
     config = Namespace(
         output_dir=tmp_path,
         save_every_iters=1,
@@ -51,8 +51,8 @@ def test_get_handlers(tmp_path):
     bm_handler, es_handler, timer_handler = get_handlers(
         config=config,
         model=nn.Linear(1, 1),
-        train_engine=train_engine,
-        eval_engine=train_engine,
+        trainer=trainer,
+        evaluator=trainer,
         metric_name="eval_loss",
         es_metric_name="eval_loss",
     )
@@ -63,12 +63,12 @@ def test_get_handlers(tmp_path):
 
 def test_get_logger(tmp_path):
     config = Namespace(output_dir=tmp_path, logger_log_every_iters=1)
-    train_engine = Engine(lambda e, b: b)
+    trainer = Engine(lambda e, b: b)
     optimizer = optim.Adam(nn.Linear(1, 1).parameters())
     logger_handler = get_logger(
         config=config,
-        train_engine=train_engine,
-        eval_engine=train_engine,
+        trainer=trainer,
+        evaluator=trainer,
         optimizers=optimizer,
     )
     types = (
@@ -89,7 +89,7 @@ def test_create_trainers():
     model, optimizer, device, loss_fn, batch = set_up()
     real_labels = torch.ones(2, device=device)
     fake_labels = torch.zeros(2, device=device)
-    train_engine = create_trainers(
+    trainer = create_trainers(
         config=Namespace(use_amp=True),
         netD=model,
         netG=model,
@@ -100,7 +100,7 @@ def test_create_trainers():
         real_labels=real_labels,
         fake_labels=fake_labels,
     )
-    assert isinstance(train_engine, Engine)
+    assert isinstance(trainer, Engine)
 
 
 def test_get_default_parser():

@@ -13,7 +13,7 @@ from ignite.contrib.handlers.wandb_logger import WandBLogger
 from ignite.engine.events import Events
 from ignite.metrics import Accuracy, Loss
 from ignite.utils import manual_seed
-from trainers import TrainEvents, create_trainers
+from trainers import create_trainers
 from utils import (
     get_handlers,
     get_logger,
@@ -85,10 +85,10 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     model, optimizer, loss_fn, lr_scheduler = initialize(config=config)
 
     # -----------------------------
-    # train_engine and eval_engine
+    # trainer and evaluator
     # -----------------------------
 
-    train_engine, eval_engine = create_trainers(
+    trainer, evaluator = create_trainers(
         config=config,
         model=model,
         optimizer=optimizer,
@@ -97,7 +97,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     )
 
     # ---------------------------------
-    # attach metrics to eval_engine
+    # attach metrics to evaluator
     # ---------------------------------
     accuracy = Accuracy(device=device)
     metrics = {
@@ -106,7 +106,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
         "eval_error": (1.0 - accuracy) * 100,
     }
     for name, metric in metrics.items():
-        metric.attach(eval_engine, name)
+        metric.attach(evaluator, name)
 
     # -------------------------------------------
     # setup engines logger with python logging
@@ -115,19 +115,19 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
 
     logger = setup_logging(config)
     log_basic_info(logger, config)
-    train_engine.logger = logger
-    eval_engine.logger = logger
+    trainer.logger = logger
+    evaluator.logger = logger
 
     # -------------------------------------
     # ignite handlers and ignite loggers
     # -------------------------------------
 
-    to_save = {"model": model, "optimizer": optimizer, "train_engine": train_engine, "lr_scheduler": lr_scheduler}
+    to_save = {"model": model, "optimizer": optimizer, "trainer": trainer, "lr_scheduler": lr_scheduler}
     best_model_handler, es_handler, timer_handler = get_handlers(
         config=config,
         model=model,
-        train_engine=train_engine,
-        eval_engine=eval_engine,
+        trainer=trainer,
+        evaluator=evaluator,
         metric_name="eval_accuracy",
         es_metric_name="eval_accuracy",
         to_save=to_save,
@@ -138,7 +138,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # setup ignite logger only on rank 0
     if rank == 0:
         logger_handler = get_logger(
-            config=config, train_engine=train_engine, eval_engine=eval_engine, optimizers=optimizer
+            config=config, trainer=trainer, evaluator=evaluator, optimizers=optimizer
         )
 
     # -----------------------------------
@@ -148,37 +148,13 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     if config.resume_from:
         resume_from(to_load=to_save, checkpoint_fp=config.resume_from)
 
-    # --------------------------------------------
-    # let's trigger custom events we registered
-    # we will use a `event_filter` to trigger that
-    # `event_filter` has to return boolean
-    # whether this event should be executed
-    # here will log the gradients on the 1st iteration
-    # and every 100 iterations
-    # --------------------------------------------
-
-    @train_engine.on(TrainEvents.BACKWARD_COMPLETED(lambda _, ev: (ev % 100 == 0) or (ev == 1)))
-    def _():
-        # do something interesting
-        pass
-
-    # ----------------------------------------
-    # here we will use `every` to trigger
-    # every 100 iterations
-    # ----------------------------------------
-
-    @train_engine.on(TrainEvents.OPTIM_STEP_COMPLETED(every=100))
-    def _():
-        # do something interesting
-        pass
-
     # --------------------------------
     # print metrics to the stderr
     # with `add_event_handler` API
     # for training stats
     # --------------------------------
 
-    train_engine.add_event_handler(Events.ITERATION_COMPLETED(every=config.log_every_iters), log_metrics, tag="train")
+    trainer.add_event_handler(Events.ITERATION_COMPLETED(every=config.log_every_iters), log_metrics, tag="train")
 
     # ---------------------------------------------
     # run evaluation at every training epoch end
@@ -188,31 +164,32 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # for evaluation stats
     # ---------------------------------------------
 
-    @train_engine.on(Events.EPOCH_COMPLETED(every=1))
+    @trainer.on(Events.EPOCH_COMPLETED(every=1))
     def _():
-        eval_engine.run(eval_dataloader, max_epochs=1)
-        eval_engine.add_event_handler(Events.EPOCH_COMPLETED(every=1), log_metrics, tag="eval")
+        evaluator.run(eval_dataloader, epoch_length=config.eval_epoch_length)
+        log_metrics(evaluator, "eval")
 
     # --------------------------------------------------
     # let's try run evaluation first as a sanity check
     # --------------------------------------------------
 
-    @train_engine.on(Events.STARTED)
+    @trainer.on(Events.STARTED)
     def _():
-        eval_engine.run(eval_dataloader, max_epochs=1, epoch_length=2)
-        eval_engine.state.max_epochs = None
+        evaluator.run(eval_dataloader, epoch_length=config.eval_epoch_length)
 
     # ------------------------------------------
     # setup if done. let's run the training
     # ------------------------------------------
 
-    train_engine.run(train_dataloader, max_epochs=config.max_epochs, epoch_length=config.epoch_length)
+    trainer.run(train_dataloader, max_epochs=config.max_epochs, epoch_length=config.train_epoch_length)
 
     # ------------------------------------------------------------
     # close the logger after the training completed / terminated
     # ------------------------------------------------------------
 
     if rank == 0:
+        from ignite.contrib.handlers.wandb_logger import WandBLogger
+
         if isinstance(logger_handler, WandBLogger):
             # why handle differently for wandb ?
             # See : https://github.com/pytorch/ignite/issues/1894

@@ -67,10 +67,10 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     model, optimizer, loss_fn, lr_scheduler = initialize()
 
     # -----------------------------
-    # train_engine and eval_engine
+    # trainer and evaluator
     # -----------------------------
 
-    train_engine, eval_engine = create_trainers(
+    trainer, evaluator = create_trainers(
         config=config,
         model=model,
         optimizer=optimizer,
@@ -87,27 +87,27 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     config.__dict__.update(**optimizer.defaults)
     logger = setup_logging(config)
     log_basic_info(logger, config)
-    train_engine.logger = logger
-    eval_engine.logger = logger
+    trainer.logger = logger
+    evaluator.logger = logger
 
     # -------------------------------------
     # ignite handlers and ignite loggers
     # -------------------------------------
 
-    to_save = {"model": model, "optimizer": optimizer, "train_engine": train_engine, "lr_scheduler": lr_scheduler}
+    to_save = {"model": model, "optimizer": optimizer, "trainer": trainer, "lr_scheduler": lr_scheduler}
     best_model_handler, es_handler, timer_handler = get_handlers(
         config=config,
         model=model,
-        train_engine=train_engine,
-        eval_engine=eval_engine,
+        trainer=trainer,
+        evaluator=evaluator,
         metric_name=None,
         # TODO : replace with the metric name to save the best model
         # if you check `Save the best model by evaluation score` otherwise leave it None
-        # metric must be in eval_engine.state.metrics.
+        # metric must be in evaluator.state.metrics.
         es_metric_name=None,
         # TODO : replace with the metric name to early stop
         # if you check `Early stop the training by evaluation score` otherwise leave it None
-        # metric must be in eval_engine.state.metrics.
+        # metric must be in evaluator.state.metrics.
         to_save=to_save,
         lr_scheduler=lr_scheduler,
         output_names=None,
@@ -116,7 +116,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # setup ignite logger only on rank 0
     if rank == 0:
         logger_handler = get_logger(
-            config=config, train_engine=train_engine, eval_engine=eval_engine, optimizers=optimizer
+            config=config, trainer=trainer, evaluator=evaluator, optimizers=optimizer
         )
 
     # -----------------------------------
@@ -135,7 +135,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # and every 100 iterations
     # --------------------------------------------
 
-    @train_engine.on(TrainEvents.BACKWARD_COMPLETED(lambda _, ev: (ev % 100 == 0) or (ev == 1)))
+    @trainer.on(TrainEvents.BACKWARD_COMPLETED(lambda _, ev: (ev % 100 == 0) or (ev == 1)))
     def _():
         # do something interesting
         pass
@@ -145,7 +145,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # every 100 iterations
     # ----------------------------------------
 
-    @train_engine.on(TrainEvents.OPTIM_STEP_COMPLETED(every=100))
+    @trainer.on(TrainEvents.OPTIM_STEP_COMPLETED(every=100))
     def _():
         # do something interesting
         pass
@@ -156,7 +156,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # for training stats
     # --------------------------------
 
-    train_engine.add_event_handler(Events.ITERATION_COMPLETED(every=config.log_every_iters), log_metrics, tag="train")
+    trainer.add_event_handler(Events.ITERATION_COMPLETED(every=config.log_every_iters), log_metrics, tag="train")
 
     # ---------------------------------------------
     # run evaluation at every training epoch end
@@ -166,32 +166,33 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # for evaluation stats
     # ---------------------------------------------
 
-    @train_engine.on(Events.EPOCH_COMPLETED(every=1))
+    @trainer.on(Events.EPOCH_COMPLETED(every=1))
     def _():
-        eval_engine.run(eval_dataloader, max_epochs=1)
-        eval_engine.add_event_handler(Events.EPOCH_COMPLETED(every=1), log_metrics, tag="eval")
+        evaluator.run(eval_dataloader, epoch_length=config.eval_epoch_length)
+        log_metrics(evaluator, "eval")
 
     # --------------------------------------------------
     # let's try run evaluation first as a sanity check
     # --------------------------------------------------
 
-    @train_engine.on(Events.STARTED)
+    @trainer.on(Events.STARTED)
     def _():
-        eval_engine.run(eval_dataloader, max_epochs=1, epoch_length=2)
-        eval_engine.state.max_epochs = None
+        evaluator.run(eval_dataloader, epoch_length=config.eval_epoch_length)
 
     # ------------------------------------------
     # setup if done. let's run the training
     # ------------------------------------------
     # TODO : PLEASE provide `max_epochs` parameters
 
-    train_engine.run(train_dataloader, epoch_length=config.epoch_length)
+    trainer.run(train_dataloader, max_epochs=config.max_epochs, epoch_length=config.train_epoch_length)
 
     # ------------------------------------------------------------
     # close the logger after the training completed / terminated
     # ------------------------------------------------------------
 
     if rank == 0:
+        from ignite.contrib.handlers.wandb_logger import WandBLogger
+
         if isinstance(logger_handler, WandBLogger):
             # why handle differently for wandb ?
             # See : https://github.com/pytorch/ignite/issues/1894

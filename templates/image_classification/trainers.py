@@ -1,5 +1,5 @@
 """
-`train_engine` and `eval_engine` like trainer and evaluator
+`trainer` and `evaluator` like trainer and evaluator
 """
 from typing import Any, Tuple
 
@@ -142,9 +142,9 @@ def create_trainers(config, model, optimizer, loss_fn, device) -> Tuple[Engine, 
 
     Returns
     -------
-    train_engine, eval_engine
+    trainer, evaluator
     """
-    train_engine = Engine(
+    trainer = Engine(
         lambda e, b: train_function(
             config=config,
             engine=e,
@@ -155,7 +155,7 @@ def create_trainers(config, model, optimizer, loss_fn, device) -> Tuple[Engine, 
             device=device
         )
     )
-    eval_engine = Engine(
+    evaluator = Engine(
         lambda e, b: evaluate_function(
             config=config,
             engine=e,
@@ -164,5 +164,5 @@ def create_trainers(config, model, optimizer, loss_fn, device) -> Tuple[Engine, 
             device=device
         )
     )
-    train_engine.register_events(*TrainEvents, event_to_attr=train_events_to_attr)
-    return train_engine, eval_engine
+    trainer.register_events(*TrainEvents, event_to_attr=train_events_to_attr)
+    return trainer, evaluator

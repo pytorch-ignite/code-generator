@@ -77,14 +77,14 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     netD, netG, optimizerD, optimizerG, loss_fn, lr_scheduler = initialize(config, num_channels)
 
     # -----------------------------
-    # train_engine and eval_engine
+    # trainer and evaluator
     # -----------------------------
     ws = idist.get_world_size()
     real_labels = torch.ones(config.batch_size // ws, device=device)
     fake_labels = torch.zeros(config.batch_size // ws, device=device)
     fixed_noise = torch.randn(config.batch_size // ws, config.z_dim, 1, 1, device=device)
 
-    train_engine = create_trainers(
+    trainer = create_trainers(
         config=config,
         netD=netD,
         netG=netG,
@@ -103,19 +103,19 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
 
     logger = setup_logging(config)
     log_basic_info(logger, config)
-    train_engine.logger = logger
+    trainer.logger = logger
 
     # -------------------------------------
     # ignite handlers and ignite loggers
     # -------------------------------------
 
-    to_save = {'netD': netD, 'netG': netG, 'optimizerD': optimizerD, 'optimizerG': optimizerG, 'trainer': train_engine}
+    to_save = {'netD': netD, 'netG': netG, 'optimizerD': optimizerD, 'optimizerG': optimizerG, 'trainer': trainer}
     optimizers = {'optimizerD': optimizerD, 'optimizerG': optimizerG}
     best_model_handler, es_handler, timer_handler = get_handlers(
         config=config,
         model={'netD', netD, 'netG', netG},
-        train_engine=train_engine,
-        eval_engine=train_engine,
+        trainer=trainer,
+        evaluator=trainer,
         metric_name='errD',
         es_metric_name='errD',
         to_save=to_save,
@@ -125,7 +125,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
 
     # setup ignite logger only on rank 0
     if rank == 0:
-        logger_handler = get_logger(config=config, train_engine=train_engine, optimizers=optimizers)
+        logger_handler = get_logger(config=config, trainer=trainer, optimizers=optimizers)
 
     # -----------------------------------
     # resume from the saved checkpoints
@@ -138,7 +138,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # adding handlers using `trainer.on` decorator API
     # --------------------------------------------------
 
-    @train_engine.on(Events.EPOCH_COMPLETED)
+    @trainer.on(Events.EPOCH_COMPLETED)
     def save_fake_example(engine):
         fake = netG(fixed_noise)
         path = config.output_dir / (FAKE_IMG_FNAME.format(engine.state.epoch))
@@ -147,7 +147,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # --------------------------------------------------
     # adding handlers using `trainer.on` decorator API
     # --------------------------------------------------
-    @train_engine.on(Events.EPOCH_COMPLETED)
+    @trainer.on(Events.EPOCH_COMPLETED)
     def save_real_example(engine):
         img, y = engine.state.batch
         path = config.output_dir / (REAL_IMG_FNAME.format(engine.state.epoch))
@@ -156,13 +156,13 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # -------------------------------------------------------------
     # adding handlers using `trainer.on` decorator API
     # -------------------------------------------------------------
-    @train_engine.on(Events.EPOCH_COMPLETED)
+    @trainer.on(Events.EPOCH_COMPLETED)
     def print_times(engine):
         if not timer_handler:
             logger.info(f"Epoch {engine.state.epoch} done. Time per batch: {timer_handler.value():.3f}[s]")
             timer_handler.reset()
 
-    @train_engine.on(Events.ITERATION_COMPLETED(every=config.log_every_iters))
+    @trainer.on(Events.ITERATION_COMPLETED(every=config.log_every_iters))
     @idist.one_rank_only()
     def print_logs(engine):
         fname = config.output_dir / LOGS_FNAME
@@ -180,7 +180,7 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # -------------------------------------------------------------
     # adding handlers using `trainer.on` decorator API
     # -------------------------------------------------------------
-    @train_engine.on(Events.EPOCH_COMPLETED)
+    @trainer.on(Events.EPOCH_COMPLETED)
     def create_plots(engine):
         try:
             import matplotlib as mpl
@@ -208,19 +208,21 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     # for training stats
     # --------------------------------
 
-    train_engine.add_event_handler(Events.ITERATION_COMPLETED(every=config.log_every_iters), log_metrics, tag="train")
+    trainer.add_event_handler(Events.ITERATION_COMPLETED(every=config.log_every_iters), log_metrics, tag="train")
 
     # ------------------------------------------
     # setup if done. let's run the training
     # ------------------------------------------
 
-    train_engine.run(train_dataloader, max_epochs=config.max_epochs, epoch_length=config.epoch_length)
+    trainer.run(train_dataloader, max_epochs=config.max_epochs, epoch_length=config.train_epoch_length)
 
     # ------------------------------------------------------------
     # close the logger after the training completed / terminated
     # ------------------------------------------------------------
 
     if rank == 0:
+        from ignite.contrib.handlers.wandb_logger import WandBLogger
+
         if isinstance(logger_handler, WandBLogger):
             # why handle differently for wandb ?
             # See : https://github.com/pytorch/ignite/issues/1894
