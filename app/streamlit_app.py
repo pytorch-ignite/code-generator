@@ -8,7 +8,7 @@ from codegen import CodeGenerator
 from utils import import_from_file
 
 __version__ = "0.1.0"
-DEV_MODE = os.getenv("DEV_MODE", 0) == 1
+DEV_MODE = int(os.getenv("DEV_MODE", 0)) == 1
 
 FOLDER_TO_TEMPLATE_NAME = {
     "Image Classification": "image_classification",
@@ -42,7 +42,43 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
 [![Twitter](https://badgen.net/badge/icon/Twitter?icon=twitter&label)](https://twitter.com/pytorch_ignite)
 [![GitHub](https://badgen.net/badge/icon/GitHub?icon=github&label)](https://github.com/pytorch-ignite/code-generator)
 [![Release](https://badgen.net/github/tag/pytorch-ignite/code-generator?label=release)](https://github.com/pytorch-ignite/code-generator/releases/latest)
+
 </div>
+
+<details>
+
+<summary>
+<samp>Learn More</samp>
+</summary>
+
+#### Code Generator, what is it ?
+
+- "Code Generator" is a streamlit application to produce quick-start python code
+for common training tasks in deep learning.
+- Code is using PyTorch framework and PyTorch-Ignite library can be configured using the UI.
+
+#### Why to use Code Generator ?
+
+- Start working on a task without rewriting everything from scratch: Kaggle competition, client prototype project, etc.
+
+</details>
+
+<details open="true">
+<summary>
+<samp>Get Started</samp>
+</summary>
+
+#### How to use it ?
+
+1. 📃 Choose a Template.
+2. ⚙️ Adjust the configuration in the left sidebar. _(click on > if closed)_
+3. 🔬 Inspect the code in the central widget.
+4. 📦 Download the source code.
+5. 🚀 Use it for your project.
+
+</details>
+
+---
 """
 
     def __init__(self):
@@ -66,7 +102,7 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
 
     def render_code(self, fname: str = "", code: str = ""):
         """Main content with the code."""
-        with st.beta_expander(fname, expanded=fname.endswith(".md")):
+        with st.beta_expander(fname):
             if fname.endswith(".md"):
                 st.markdown(code, unsafe_allow_html=True)
             else:

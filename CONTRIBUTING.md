@@ -55,6 +55,14 @@ To develop and test Code-Generator:
 - [templates](https://github.com/pytorch-ignite/code-generator/tree/master/templates) - Directory containing ML/DL Templates
 - [tests](https://github.com/pytorch-ignite/code-generator/tree/master/tests) - Directory containing test related files
 
+When developing the app and new templates, run the app in dev mode:
+
+```sh
+DEV_MODE=1 streamlit run app/streamlit_app.py
+```
+
+This allows to run and debug the generated templates from the `dist` folder.
+
 > TIP
 >
 > If you are adding a new template, use Single Model, Singe Optimizer Template from
