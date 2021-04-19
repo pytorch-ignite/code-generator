@@ -171,7 +171,6 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
     @trainer.on(Events.STARTED)
     def _():
         evaluator.run(eval_dataloader, epoch_length=2)
-        evaluator.state.max_epochs = None
 
     # ------------------------------------------
     # setup if done. let's run the training

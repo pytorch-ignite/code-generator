@@ -149,6 +149,27 @@ def run(local_rank: int, config: Any, *args: Any, **kwargs: Any):
 
     trainer.add_event_handler(Events.ITERATION_COMPLETED(every=config.log_every_iters), log_metrics, tag="train")
 
+    # ---------------------------------------------
+    # run evaluation at every training epoch end
+    # with shortcut `on` decorator API and
+    # print metrics to the stderr
+    # again with `add_event_handler` API
+    # for evaluation stats
+    # ---------------------------------------------
+
+    @trainer.on(Events.EPOCH_COMPLETED(every=1))
+    def _():
+        evaluator.run(eval_dataloader, epoch_length=config.eval_epoch_length)
+        log_metrics(evaluator, "eval")
+
+    # --------------------------------------------------
+    # let's try run evaluation first as a sanity check
+    # --------------------------------------------------
+
+    @trainer.on(Events.STARTED)
+    def _():
+        evaluator.run(eval_dataloader, epoch_length=2)
+
     # ------------------------------------------
     # setup if done. let's run the training
     # ------------------------------------------
