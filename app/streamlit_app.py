@@ -12,6 +12,7 @@ DEV_MODE = int(os.getenv("DEV_MODE", 0)) == 1
 
 FOLDER_TO_TEMPLATE_NAME = {
     "Image Classification": "image_classification",
+    "Text Classification": "text_classification",
     "Generative Adversarial Network": "gan",
     "Single Model, Single Optimizer": "single",
 }
