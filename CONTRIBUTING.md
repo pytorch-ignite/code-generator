@@ -71,7 +71,7 @@ This allows to run and debug the generated templates from the `dist` folder.
 
 ## Pull Request Guidelines
 
-- Checkout a topic branch from a base branch, e.g. `master`.
+- Checkout a topic branch from a base branch, e.g. `dev`.
 
 - If adding a new template:
 
@@ -120,6 +120,6 @@ Now you can get the latest development into your forked repository with this:
 
 ```sh
 git fetch --all --prune
-git checkout master
-git merge upstream/master
+git checkout dev
+git merge upstream/dev
 ```
