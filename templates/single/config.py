@@ -3,7 +3,7 @@
 UPDATES = {
     # training options
     "max_epochs": {
-        "default": {{max_epochs}},
+        "default": 5,
         "type": int,
         "help": "max_epochs of ignite.Engine.run() for training. Default: %(default)s",
     }
