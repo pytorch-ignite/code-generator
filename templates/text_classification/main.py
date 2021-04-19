@@ -10,7 +10,6 @@ import torch.optim as optim
 import ignite
 import ignite.distributed as idist
 from ignite.contrib.handlers import PiecewiseLinear
-from ignite.contrib.handlers.wandb_logger import WandBLogger
 from ignite.engine import Events
 from ignite.metrics import Accuracy, Loss
 from ignite.utils import manual_seed
@@ -170,18 +169,20 @@ def run(local_rank, config):
     # --------------------------------------------------
     @trainer.on(Events.STARTED)
     def _():
-        evaluator.run(test_loader, max_epochs=1, epoch_length=2)
+        evaluator.run(test_loader, epoch_length=config.eval_epoch_length)
         evaluator.state.max_epochs = None
 
     # ------------------------------------------
     # setup if done. let's run the training
     # ------------------------------------------
-    trainer.run(train_loader, max_epochs=config.max_epochs, epoch_length=config.epoch_length)
+    trainer.run(train_loader, max_epochs=config.max_epochs, epoch_length=config.train_epoch_length)
 
     # ------------------------------------------------------------
     # close the logger after the training completed / terminated
     # ------------------------------------------------------------
     if rank == 0:
+        from ignite.contrib.handlers.wandb_logger import WandBLogger
+
         if isinstance(logger_handler, WandBLogger):
             # why handle differently for wandb ?
             # See : https://github.com/pytorch/ignite/issues/1894

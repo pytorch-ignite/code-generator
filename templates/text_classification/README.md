@@ -166,8 +166,10 @@ optional arguments:
                         master node TCP/IP address for torch native backends. Default: None
   --master_port MASTER_PORT
                         master node port for torch native backends. Default: None
-  --epoch_length EPOCH_LENGTH
-                        epoch_length of Engine.run(). Default: None
+  --train_epoch_length EPOCH_LENGTH
+                        epoch_length of Engine.run() for training. Default: None
+  --eval_epoch_length EVAL_EPOCH_LENGTH
+                        epoch_length of Engine.run() for evaluation. Default: None
   --save_every_iters SAVE_EVERY_ITERS
                         Saving iteration interval. Default: 1000
   --n_saved N_SAVED     number of best models to store. Default: 2
@@ -221,6 +223,4 @@ optional arguments:
                         Run model's validation every validate_every epochs. Default: 1
   --checkpoint_every CHECKPOINT_EVERY
                         Store training checkpoint every checkpoint_every iterations. Default: 1000
-  --eval_epoch_length EVAL_EPOCH_LENGTH
-                        epoch_length of evaluator. Default: None
 ```
