@@ -22,27 +22,32 @@ def get_configs() -> dict:
 
     st.subheader("Model Options")
     config["model"] = st.selectbox(
-        "Model name (from transformers) to setup model, tokenize and config to train", options=["bert-base-uncased"]
+        "Model name (from transformers) to setup model, tokenize and config to train (model)",
+        options=["bert-base-uncased"],
     )
-    config["model_dir"] = st.text_input("Cache directory to download the pretrained model", value="./")
-    config["tokenizer_dir"] = st.text_input("Tokenizer cache directory", value="./tokenizer")
+    config["model_dir"] = st.text_input("Cache directory to download the pretrained model (model_dir)", value="./")
+    config["tokenizer_dir"] = st.text_input("Tokenizer cache directory (tokenizer_dir)", value="./tokenizer")
     config["num_classes"] = st.number_input(
-        "Number of target classes. Default, 1 (binary classification)", min_value=0, value=1
+        "Number of target classes. Default, 1 (binary classification) (num_classes)", min_value=0, value=1
     )
     config["max_length"] = st.number_input(
-        "Maximum number of tokens for the inputs to the transformer model", min_value=1, value=256
+        "Maximum number of tokens for the inputs to the transformer model (max_length)", min_value=1, value=256
     )
-    config["dropout"] = st.number_input("Dropout probability", min_value=0.0, max_value=1.0, value=0.3, format="%f")
-    config["n_fc"] = st.number_input("Number of neurons in the last fully connected layer", min_value=1, value=768)
+    config["dropout"] = st.number_input(
+        "Dropout probability (dropout)", min_value=0.0, max_value=1.0, value=0.3, format="%f"
+    )
+    config["n_fc"] = st.number_input(
+        "Number of neurons in the last fully connected layer (n_fc)", min_value=1, value=768
+    )
     st.markdown("---")
 
     st.subheader("Dataset Options")
-    config["data_dir"] = st.text_input("Dataset cache directory", value="./")
+    config["data_dir"] = st.text_input("Dataset cache directory (data_dir)", value="./")
     st.markdown("---")
 
     st.subheader("DataLoader Options")
-    config["batch_size"] = st.number_input("Total batch size", min_value=1, value=16)
-    config["num_workers"] = st.number_input("Number of workers in the data loader", min_value=1, value=2)
+    config["batch_size"] = st.number_input("Total batch size (batch_size)", min_value=1, value=16)
+    config["num_workers"] = st.number_input("Number of workers in the data loader (num_workers)", min_value=1, value=2)
     st.markdown("---")
 
     st.subheader("Optimizer Options")
