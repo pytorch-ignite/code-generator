@@ -21,11 +21,13 @@ def thresholded_output_transform(output):
 
 def setup_logging(config: Any) -> logging.Logger:
     """Setup logger with `ignite.utils.setup_logger()`.
+
     Parameters
     ----------
     config
         config object. config has to contain
         `verbose` and `output_dir` attributes.
+
     Returns
     -------
     logger
@@ -44,6 +46,7 @@ def setup_logging(config: Any) -> logging.Logger:
 
 def log_metrics(engine: Engine, tag: str) -> None:
     """Log `engine.state.metrics` with given `engine` and `tag`.
+
     Parameters
     ----------
     engine
@@ -58,6 +61,7 @@ def log_metrics(engine: Engine, tag: str) -> None:
 def log_basic_info(logger: logging.Logger, config: Any) -> None:
     """Logging about pytorch, ignite, configurations, gpu system
     distributed settings.
+
     Parameters
     ----------
     logger
@@ -110,6 +114,7 @@ def resume_from(
     model_dir: Optional[str] = None,
 ) -> None:
     """Loads state dict from a checkpoint file to resume the training.
+
     Parameters
     ----------
     to_load

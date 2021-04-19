@@ -199,7 +199,6 @@ def run(local_rank, config):
 def main():
     parser = ArgumentParser(parents=[get_default_parser(DEFAULTS)])
     config = parser.parse_args()
-    manual_seed(config.seed)
 
     with idist.Parallel(
         backend=config.backend,

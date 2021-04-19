@@ -76,7 +76,7 @@ def get_dataflow(config):
         shuffle=True,
         drop_last=True,
         {% if use_distributed_training and not use_distributed_launcher %}
-    persistent_workers = True,
+        persistent_workers = True,
         {% endif %}
     )
 

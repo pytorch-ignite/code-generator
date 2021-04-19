@@ -77,6 +77,7 @@ def create_evaluator(config, model, loss_fn, device):
 # any necessary arguments can be provided.
 def create_trainers(config, model, optimizer, loss_fn, device) -> Tuple[Engine, Engine]:
     """Create Engines for training and evaluation.
+
     Returns
     -------
     trainer, evaluator

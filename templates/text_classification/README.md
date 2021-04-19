@@ -23,7 +23,7 @@ Detailed Directory List
 </summary>
 
 ```bash
-image_classification
+text_classification
 ├── README.md
 ├── config.py
 ├── dataset.py
