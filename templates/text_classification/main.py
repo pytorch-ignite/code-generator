@@ -168,7 +168,6 @@ def run(local_rank, config):
     @trainer.on(Events.STARTED)
     def _():
         evaluator.run(test_loader, epoch_length=config.eval_epoch_length)
-        evaluator.state.max_epochs = None
 
     # ------------------------------------------
     # setup if done. let's run the training
