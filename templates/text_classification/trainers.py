@@ -1,6 +1,5 @@
-from typing import Any, Tuple
+from typing import Tuple
 
-import ignite.distributed as idist
 import torch
 from ignite.engine import Engine
 from torch.cuda.amp import GradScaler, autocast
