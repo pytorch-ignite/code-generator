@@ -106,6 +106,14 @@ def ignite_loggers_options(config):
     st.markdown("---")
 
 
+def test_all_options(config):
+    st.markdown("## Unit Test Options")
+    config["test_all"] = st.checkbox(
+        "Include a test file for the generated codes", help="Tests are implemented with pytest."
+    )
+    st.markdown("---")
+
+
 def _setup_common_training_handlers_options(config):
     config["save_every_iters"] = st.number_input(
         "Saving iteration interval (save_every_iters)", min_value=1, value=1000

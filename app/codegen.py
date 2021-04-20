@@ -28,7 +28,13 @@ class CodeGenerator:
             trim_blocks=True,
             lstrip_blocks=True,
         )
-        for fname in env.list_templates(filter_func=lambda x: not x.startswith("_")):
+
+        def filter_func(x: str):
+            if config["test_all"]:
+                return not x.startswith("_")
+            return not x.startswith("_") ^ (x == "test_all.py")
+
+        for fname in env.list_templates(filter_func=filter_func):
             code = env.get_template(fname).render(**config)
             self.rendered_code[fname] = code
             yield fname, code

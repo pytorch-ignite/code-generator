@@ -9,6 +9,7 @@ from _base._sidebar import (
     distributed_options,
     ignite_handlers_options,
     ignite_loggers_options,
+    test_all_options,
 )
 
 
@@ -25,5 +26,6 @@ def get_configs():
         distributed_options(config)
         ignite_handlers_options(config)
         ignite_loggers_options(config)
+        test_all_options(config)
 
     return config
