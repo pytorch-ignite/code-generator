@@ -4,8 +4,9 @@ import tempfile
 from pathlib import Path
 
 import streamlit as st
-from codegen import CodeGenerator
-from utils import import_from_file
+
+from app.codegen import CodeGenerator
+from app.utils import import_from_file
 
 __version__ = "0.1.0"
 DEV_MODE = int(os.getenv("DEV_MODE", 0)) == 1
