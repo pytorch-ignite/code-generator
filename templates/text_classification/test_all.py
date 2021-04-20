@@ -1,8 +1,10 @@
+import os
 from argparse import Namespace
 from numbers import Number
 from typing import Iterable
 
 import ignite.distributed as idist
+import pytest
 import torch
 from dataset import get_dataflow, get_dataset
 from ignite.contrib.handlers.param_scheduler import ParamScheduler
@@ -41,6 +43,7 @@ def test_initialize():
     assert isinstance(lr_scheduler, (_LRScheduler, ParamScheduler))
 
 
+@pytest.mark.skipif(os.getenv("RUN_SLOW_TESTS", 0) == 0, reason="Skip slow tests")
 def test_get_dataflow():
     config = Namespace(
         data_dir="/tmp/data",
@@ -55,6 +58,7 @@ def test_get_dataflow():
     assert isinstance(test_loader, DataLoader)
 
 
+@pytest.mark.skipif(os.getenv("RUN_SLOW_TESTS", 0) == 0, reason="Skip slow tests")
 def test_get_dataset():
     cache_dir = "/tmp"
     tokenizer_name = "bert-base-uncased"

@@ -1,8 +1,10 @@
+import os
 from argparse import Namespace
 from numbers import Number
 from typing import Iterable
 
 import ignite.distributed as idist
+import pytest
 import torch
 from datasets import get_datasets
 from ignite.contrib.handlers.param_scheduler import ParamScheduler
@@ -25,6 +27,7 @@ def set_up():
     return model, optimizer, device, loss_fn, batch
 
 
+@pytest.mark.skipif(os.getenv("RUN_SLOW_TESTS", 0) == 0, reason="Skip slow tests")
 def test_get_datasets(tmp_path):
     train_ds, eval_ds = get_datasets(tmp_path)
 

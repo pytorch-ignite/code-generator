@@ -1,8 +1,10 @@
+import os
 from argparse import Namespace
 from numbers import Number
 from typing import Iterable
 
 import ignite.distributed as idist
+import pytest
 import torch
 from datasets import get_datasets
 from ignite.engine import Engine
@@ -23,6 +25,7 @@ def set_up():
     return model, optimizer, device, loss_fn, batch
 
 
+@pytest.mark.skipif(os.getenv("RUN_SLOW_TESTS", 0) == 0, reason="Skip slow tests")
 def test_get_datasets(tmp_path):
     dataset, _ = get_datasets("cifar10", tmp_path)
 
