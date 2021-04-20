@@ -42,7 +42,7 @@ Application to generate your training scripts with [PyTorch-Ignite](https://gith
 
 [![Twitter](https://badgen.net/badge/icon/Twitter?icon=twitter&label)](https://twitter.com/pytorch_ignite)
 [![GitHub](https://badgen.net/badge/icon/GitHub?icon=github&label)](https://github.com/pytorch-ignite/code-generator)
-[![Release](https://badgen.net/github/tag/pytorch-ignite/code-generator?label=release)](https://github.com/pytorch-ignite/code-generator/releases/latest)
+[![Release](https://badgen.net/github/tag/pytorch-ignite/code-generator/?label=release)](https://github.com/pytorch-ignite/code-generator/releases/latest)
 
 </div>
 
