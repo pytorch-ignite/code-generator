@@ -58,7 +58,7 @@ To develop and test Code-Generator:
 When developing the app and new templates, run the app in dev mode:
 
 ```sh
-DEV_MODE=1 streamlit run app/streamlit_app.py
+DEV_MODE=1 streamlit run streamlit_app.py
 ```
 
 This allows to run and debug the generated templates from the `dist` folder.
