@@ -9,8 +9,6 @@ from ignite.metrics import loss
 from torch.cuda.amp import autocast
 from torch.optim.optimizer import Optimizer
 
-{% include "_events.py" %}
-
 
 # Edit below functions the way how the model will be training
 
@@ -63,13 +61,7 @@ def train_function(
         loss = loss_fn(outputs, targets)
 
     loss.backward()
-    engine.state.backward_completed += 1
-    engine.fire_event(TrainEvents.BACKWARD_COMPLETED)
-
     optimizer.step()
-    engine.state.optim_step_completed += 1
-    engine.fire_event(TrainEvents.OPTIM_STEP_COMPLETED)
-
     optimizer.zero_grad()
 
     loss_value = loss.item()
@@ -164,5 +156,4 @@ def create_trainers(config, model, optimizer, loss_fn, device) -> Tuple[Engine, 
             device=device
         )
     )
-    trainer.register_events(*TrainEvents, event_to_attr=train_events_to_attr)
     return trainer, evaluator
