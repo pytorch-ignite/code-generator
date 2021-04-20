@@ -16,6 +16,7 @@ def generate():
             dist_dir = "./tests/dist"
             configs = import_from_file("template_config", f"./templates/{p.stem}/_sidebar.py").get_configs()
             configs["setup_timer"] = True
+            configs["test_all"] = True
             code_gen = CodeGenerator(dist_dir=dist_dir)
             [*code_gen.render_templates(p.stem, configs)]
             code_gen.make_and_write(p.stem, Path(dist_dir))
@@ -36,6 +37,7 @@ def generate_for_dist_launch():
             configs["use_distributed_training"] = True
             configs["use_distributed_launcher"] = True
             configs["setup_timer"] = True
+            configs["test_all"] = True
             configs["nnodes"] = 1
             code_gen = CodeGenerator(dist_dir=dist_dir)
             [*code_gen.render_templates(p.stem, configs)]
@@ -57,6 +59,7 @@ def generate_for_dist_spawn():
             configs["use_distributed_training"] = True
             configs["use_distributed_launcher"] = False
             configs["setup_timer"] = True
+            configs["test_all"] = True
             configs["nnodes"] = 1
             code_gen = CodeGenerator(dist_dir=dist_dir)
             [*code_gen.render_templates(p.stem, configs)]

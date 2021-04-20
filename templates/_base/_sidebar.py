@@ -111,6 +111,8 @@ def test_all_options(config):
     config["test_all"] = st.checkbox(
         "Include a test file for the generated codes", help="Tests are implemented with pytest."
     )
+    if config["test_all"]:
+        config["test_deps"] = "pytest"
     st.markdown("---")
 
 
