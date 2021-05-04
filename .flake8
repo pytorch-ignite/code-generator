@@ -1,7 +1,0 @@
-[flake8]
-max-line-length=120
-ignore=
-    E402  # module level import not at top of file
-exclude =
-    __pycache__,
-    dist
