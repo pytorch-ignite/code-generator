@@ -1,5 +1,0 @@
-[[redirects]]
-  from = "*"
-  to = "https://share.streamlit.io/pytorch-ignite/code-generator"
-  status = 301
-  force = true
