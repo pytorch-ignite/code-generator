@@ -1,0 +1,30 @@
+{
+  "deterministic": {
+    "name": "deterministic",
+    "type": "checkbox",
+    "description": "Should the training be deterministic?"
+  },
+  "nproc_per_node": {
+    "name": "nproc_per_node",
+    "type": "number",
+    "description": "Number of processes to launch on each node",
+    "min": 1
+  },
+  "nnodes": {
+    "name": "nnodes",
+    "type": "number",
+    "description": "Number of nodes to use for distributed training",
+    "min": 1
+  },
+  "master_addr": {
+    "name": "master_addr",
+    "type": "text",
+    "description": "Master node TCP/IP address for torch native backends"
+  },
+  "master_port": {
+    "name": "master_port",
+    "type": "number",
+    "description": "Master node port for torch native backends",
+    "min": 0
+  }
+}
