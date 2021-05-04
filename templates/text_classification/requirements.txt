@@ -1,7 +1,0 @@
-torch>=1.7.0
-pytorch-ignite>=0.4.4
-transformers
-datasets
-{{ test_deps }}
-{{ handler_deps }}
-{{ logger_deps }}
