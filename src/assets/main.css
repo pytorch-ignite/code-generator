@@ -1,5 +1,0 @@
-/* margin for left pane tabs */
-.tab {
-  --left-pane-margin-x: 1.5rem;
-  margin: 0 var(--left-pane-margin-x);
-}

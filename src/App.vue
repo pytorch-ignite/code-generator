@@ -76,6 +76,11 @@ body {
     outline: 2px solid var(--c-brand-yellow);
   }
 }
+/* margin for left pane tabs */
+.tab {
+  --left-pane-margin-x: 1.5rem;
+  margin: 0 var(--left-pane-margin-x);
+}
 /* overriding prismjs defaults */
 pre,
 code {

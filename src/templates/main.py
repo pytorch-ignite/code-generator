@@ -11,8 +11,13 @@ from ignite.engine.events import Events
 from ignite.metrics import Accuracy, Loss
 from ignite.utils import manual_seed
 from trainers import create_trainers
-from utils import (get_default_parser, initialize, log_metrics, resume_from,
-                   setup_logging)
+from utils import (
+    get_default_parser,
+    initialize,
+    log_metrics,
+    resume_from,
+    setup_logging,
+)
 
 
 ### run ###

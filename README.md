@@ -1,5 +1,6 @@
 [![Streamlit App][streamlit-img]][streamlit-url]
 [![ci][gha-img]][gha-url]
+
 <!-- [![Preview App][aws-img]][aws-url] -->
 
 # Code Generator
@@ -26,6 +27,7 @@ Development of this project is supported by NumFOCUS Small Development Grant. We
 
 <!-- [aws-img]: https://badgen.net/badge/%20/Deployed%20master%20version/ee4c2c?label= -->
 <!-- [aws-url]: http://pytorch-ignite-code-generator-dev.eu-west-3.elasticbeanstalk.com/ -->
+
 [gha-img]: https://github.com/pytorch-ignite/code-generator/actions/workflows/ci.yml/badge.svg
 [gha-url]: https://github.com/pytorch-ignite/code-generator/actions/workflows/ci.yml
 [streamlit-img]: https://static.streamlit.io/badges/streamlit_badge_black_white.svg

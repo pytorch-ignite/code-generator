@@ -101,8 +101,6 @@ export default {
 </script>
 
 <style scoped>
-@import url('../assets/main.css');
-
 .domain h2 {
   margin-bottom: 0;
 }

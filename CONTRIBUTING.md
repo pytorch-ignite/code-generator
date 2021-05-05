@@ -3,123 +3,30 @@
 Hi! Thanks for your interest in contributing to Code-Generator.
 Before submitting your contribution, please make sure to take a moment and read through the following guide:
 
-## Repo Setup
+## Development Setup
 
-**Quickstart guide for first-time contributors**
+You will need Nodejs LTS v14.16.x, VSCode, Vetur, and pnpm package manager.
 
-<details>
+- Install [VSCode](https://code.visualstudio.com/) as per your OS.
 
-- Install [miniconda](https://docs.conda.io/projects/continuumio-conda/en/latest/user-guide/install/index.html) for your system.
+- Install [Vetur extension](https://marketplace.visualstudio.com/items?itemName=octref.vetur) to get syntax highlighting for `.vue` files. You can search `Vetur` in VSCode Extensions Tab to install.
 
-- Create an isolated conda environment for Code-Generator:
+- Install Nodejs LTS v14.16.x from https://nodejs.org for macOS and Windows. For Linux distributions, please follow the steps from [Node.js Website](https://nodejs.org/en/download/package-manager/) and [NodeSource GitHub](https://github.com/nodesource/distributions/blob/master/README.md#installation-instructions).
 
-  ```sh
-  conda create -n code-generator-dev python=3.8
-  ```
+- Install pnpm from https://pnpm.io/installation. Use standalone script if there is a root issue with installing with npm.
 
-- Activate the newly created environment:
+- Install the dependencies with `pnpm install` in the project root directory. This might take a while to install.
 
-  ```sh
-  conda activate code-generator-dev
-  ```
+- Run `pnpm run dev` to start local development server and starts editing the codes in the `src` directory. Changes will be updated on the app.
 
-- When developing please take care of preserving `.gitignore` file and make use of `.git/info/exclude` to exclude custom files like: `.idea`, `.vscode` etc.
+- If you want to test building the app locally, run `pnpm run build`. This will generate the `dist` directory which contains all the codes for the app to run from CDN or web server. You can test the built codes in the `dist` with `pnpm run serve`. However, changes won't be updated on the app with this command.
 
-- Please refer to [github first contributions guidelines](https://github.com/firstcontributions/first-contributions) and don't hesitate to ask the pytorch-ignite community in case of any doubt.
+## Dependencies Explanation
 
-</details>
+Code-Generator mainly depends on
 
-To develop and test Code-Generator:
-
-- Fork this repository.
-
-- Clone the repo and install dependencies.
-
-  ```sh
-  git clone https://github.com/<your-github-username>/code-generator.git
-  cd code-generator
-  pip install -r requirements-dev.txt
-  ```
-
-- Generate and run the tests.
-  ```sh
-  bash .github/run_test.sh generate
-  bash .github/run_test.sh unittest
-  ```
-
-## Code development
-
-### Codebase structure
-
-- [app](https://github.com/pytorch-ignite/code-generator/tree/master/app) - Directory containing files about Streamlit App and code generation
-- [templates](https://github.com/pytorch-ignite/code-generator/tree/master/templates) - Directory containing ML/DL Templates
-- [tests](https://github.com/pytorch-ignite/code-generator/tree/master/tests) - Directory containing test related files
-
-When developing the app and new templates, run the app in dev mode:
-
-```sh
-DEV_MODE=1 streamlit run streamlit_app.py
-```
-
-This allows to run and debug the generated templates from the `dist` folder.
-
-> TIP
->
-> If you are adding a new template, use Single Model, Singe Optimizer Template from
-> [Code-Generator](https://share.streamlit.io/pytorch-ignite/code-generator) itself
-> to generate a base template and extend according to the new template you want to add.
-
-## Pull Request Guidelines
-
-- Checkout a topic branch from a base branch, e.g. `dev`.
-
-- If adding a new template:
-
-  - Please open a suggestion issue first and have it approved before working on it.
-  - Add accompanying test cases – internal tests should live in `_test_internal.py` and the rest in `test_all.py`.
-
-- It's OK to have multiple small commits as you work on the PR - GitHub can automatically squash them before merging.
-
-- Make sure tests pass!
-
-- To ensure the codebase complies with a style guide, we use flake8, black and isort tools to format and check codebase for compliance with PEP8. Install and run with:
-
-  ```sh
-  # install code formatting dependencies
-  bash .github/run_code_style.sh install
-  # format the codes
-  bash .github/run_code_style.sh fmt
-  # lint the codes
-  bash .github/run_code_style.sh lint
-  ```
-
-**NOTE : When sending a PR, please kindly check if the changes are required to run in the CI.**
-
-For example, typo changes in `CONTRIBUTING.md`, `README.md` are not required to run in the CI. So, please add `[skip ci]` in the PR title to save the resources.
-
-**NOTE : Those skip statement is case sensitive and needs open bracket `[` and close bracket `]`.**
-
-## Sync up with the upstream
-
-First, make sure you have set [upstream](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/configuring-a-remote-for-a-fork) by running:
-
-```sh
-git remote add upstream https://github.com/pytorch-ignite/code-generator
-```
-
-Then you can see if you have set up multiple remote correctly by running git remote -v:
-
-```sh
-origin  https://github.com/<your-github-username>/code-generator (fetch)
-origin  https://github.com/<your-github-username>/code-generator (push)
-upstream        https://github.com/pytorch-ignite/code-generator (fetch)
-upstream        https://github.com/pytorch-ignite/code-generator (push)
-```
-
-Now you can get the latest development into your forked repository with this:
-
-```sh
-git fetch --all --prune
-git checkout dev
-git merge upstream/dev
-```
+- Vue 3 – JavaScript framework to make the app reactive and maintain the state.
+- Vite 2 – Front end build tool to bundle the app codes.
+- Prismjs – For syntax highlighting.
+- JSZip – For zipping the files in JS.
+- FileSaver – For saving the zip files generated by JSZip with desired filename.
