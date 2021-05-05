@@ -6,48 +6,48 @@ on:
   pull_request:
 
 jobs:
-  tests:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest]
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-          python-version: 3.6
+  # tests:
+  #   runs-on: ${{ matrix.os }}
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       os: [ubuntu-latest]
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: actions/setup-python@v2
+  #       with:
+  #         python-version: 3.6
 
-      - name: Get year & week number
-        id: get-date
-        run: |
-          echo "::set-output name=date::$(/bin/date "+%Y-%U")"
-        shell: bash -l {0}
+  #     - name: Get year & week number
+  #       id: get-date
+  #       run: |
+  #         echo "::set-output name=date::$(/bin/date "+%Y-%U")"
+  #       shell: bash -l {0}
 
-      - name: Get pip cache dir
-        id: pip-cache
-        run: |
-          echo "::set-output name=dir::$(pip cache dir)"
-        shell: bash -l {0}
+  #     - name: Get pip cache dir
+  #       id: pip-cache
+  #       run: |
+  #         echo "::set-output name=dir::$(pip cache dir)"
+  #       shell: bash -l {0}
 
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ${{ steps.pip-cache.outputs.dir }}
-          key: ${{ steps.get-date.outputs.date }}-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('requirements-dev.txt') }}
-          restore-keys: |
-            ${{ steps.get-date.outputs.date }}-${{ runner.os }}-${{ matrix.python-version }}-
+  #     - uses: actions/cache@v2
+  #       with:
+  #         path: |
+  #           ${{ steps.pip-cache.outputs.dir }}
+  #         key: ${{ steps.get-date.outputs.date }}-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('requirements-dev.txt') }}
+  #         restore-keys: |
+  #           ${{ steps.get-date.outputs.date }}-${{ runner.os }}-${{ matrix.python-version }}-
 
-      - run: pip install -r requirements.txt --progress-bar off
-      - run: pip install -r requirements-dev.txt -f https://download.pytorch.org/whl/cpu/torch_stable.html --progress-bar off
-      - run: python -m torch.utils.collect_env
-      - run: bash .github/run_test.sh unittest
-      - run: bash .github/run_test.sh default
-      - run: bash .github/run_test.sh spawn
-      - run: bash .github/run_test.sh launch
-        env:
-          RUN_SLOW_TESTS: 1
-          OMP_NUM_THREADS: 1
+  #     - run: pip install -r requirements.txt --progress-bar off
+  #     - run: pip install -r requirements-dev.txt -f https://download.pytorch.org/whl/cpu/torch_stable.html --progress-bar off
+  #     - run: python -m torch.utils.collect_env
+  #     - run: bash .github/run_test.sh unittest
+  #     - run: bash .github/run_test.sh default
+  #     - run: bash .github/run_test.sh spawn
+  #     - run: bash .github/run_test.sh launch
+  #       env:
+  #         RUN_SLOW_TESTS: 1
+  #         OMP_NUM_THREADS: 1
 
   lint:
     runs-on: ubuntu-latest
@@ -57,6 +57,20 @@ jobs:
         with:
           python-version: 3.8
 
-      - run: pip install wheel pip setuptools -U --progress-bar off
-      - run: bash .github/run_code_style.sh install
-      - run: bash .github/run_code_style.sh lint
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.pnpm-store
+            ~/.cache/pip
+          key: pnpm-and-pip-cache-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-and-pip-cache-
+
+      - run: pip install "black==20.8b1" "isort==5.7.0"
+      - run: npm i -g pnpm
+      - run: pnpm i --frozen-lockfile
+      - run: pnpm lint

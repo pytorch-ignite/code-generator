@@ -5,9 +5,12 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "black": "black src/templates -l 80",
-    "isort": "isort src/templates --profile black",
-    "fmt": "prettier --write . && pnpm run black && pnpm run isort"
+    "black:fmt": "black src/templates -l 80",
+    "black:lint": "black src/templates -l 80 --check",
+    "isort:fmt": "isort src/templates --profile black",
+    "isort:lint": "isort src/templates --profile black --check",
+    "fmt": "prettier --write . && pnpm run black:fmt && pnpm run isort:fmt",
+    "lint": "prettier --check . && pnpm run black:lint && pnpm run isort:lint"
   },
   "devDependencies": {
     "jszip": "^3.6.0",
