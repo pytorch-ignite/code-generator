@@ -1,6 +1,7 @@
 <template>
   <div class="code-block-wrapper">
     <div :class="className">
+      <button ref="copyBtn" class="copy" @click="copyCode">Copy</button>
       <pre
         :class="className"
       ><code :class="className" v-html="highlightCode"></code></pre>
@@ -20,7 +21,7 @@ import 'prismjs/components/prism-json'
 import 'prismjs/components/prism-python'
 import 'prismjs/components/prism-markdown'
 import 'prismjs/themes/prism-tomorrow.css'
-import { computed, toRefs } from 'vue'
+import { computed, ref, toRefs } from 'vue'
 
 export default {
   props: {
@@ -35,6 +36,7 @@ export default {
   },
   setup(props) {
     const { lang, code } = toRefs(props)
+    const copyBtn = ref()
 
     // computed properties
     const className = computed(() => {
@@ -52,8 +54,14 @@ export default {
     const getLineNumbers = computed(() => {
       return code.value.split('\n').length
     })
+    const copyCode = () => {
+      navigator.clipboard.writeText(code.value)
+      copyBtn.value.textContent = 'Copied'
+      setTimeout(() => copyBtn.value.textContent = 'Copy', 3000)
+      // alert('Code has been copied to clipboard.')
+    }
 
-    return { className, highlightCode, getLineNumbers }
+    return { className, highlightCode, getLineNumbers, copyCode, copyBtn }
   }
 }
 </script>
@@ -67,7 +75,16 @@ div[class*='language-'] {
   position: relative;
 }
 
-div[class*='language-']::before {
+.copy {
+  right: 3em !important;
+  background: transparent;
+  padding-top: 0;
+  padding-bottom: 0;
+  line-height: inherit;
+  cursor: pointer;
+}
+
+div[class*='language-']::before, .copy {
   position: absolute;
   color: var(--c-white-dark);
   font-size: 0.75rem;
