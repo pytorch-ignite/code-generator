@@ -21,6 +21,8 @@ You will need Nodejs LTS v14.16.x, VSCode, Vetur, and pnpm package manager.
 
 - If you want to test building the app locally, run `pnpm run build`. This will generate the `dist` directory which contains all the codes for the app to run from CDN or web server. You can test the built codes in the `dist` with `pnpm run serve`. However, changes won't be updated on the app with this command.
 
+Please see `README.md` in the respective directories of `src` to see what the respective directory contains.
+
 ## Dependencies Explanation
 
 Code-Generator mainly depends on
