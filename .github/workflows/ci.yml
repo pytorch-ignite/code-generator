@@ -53,17 +53,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
       - uses: actions/setup-node@v2
         with:
           node-version: 14
 
       - uses: actions/cache@v2
         with:
-          path: ~/.pnpm-store
-          key: pnpm-cache-${{ hashFiles('pnpm-lock.yaml') }}
+          path: |
+            ~/.pnpm-store
+            ~/.cache/pip
+          key: pnpm-and-pip-cache-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
-            pnpm-cache-
+            pnpm-and-pip-cache-
 
+      - run: pip install "black==20.8b1" "isort==5.7.0"
       - run: npm i -g pnpm
       - run: pnpm i --frozen-lockfile
       - run: pnpm lint
