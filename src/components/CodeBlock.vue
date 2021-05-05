@@ -1,7 +1,7 @@
 <template>
   <div class="code-block-wrapper">
     <div :class="className">
-      <button ref="copyBtn" class="copy" @click="copyCode">Copy</button>
+      <button class="copy" @click="copyCode">{{ copyText }}</button>
       <pre
         :class="className"
       ><code :class="className" v-html="highlightCode"></code></pre>
@@ -36,7 +36,7 @@ export default {
   },
   setup(props) {
     const { lang, code } = toRefs(props)
-    const copyBtn = ref()
+    const copyText = ref('Copy')
 
     // computed properties
     const className = computed(() => {
@@ -56,12 +56,12 @@ export default {
     })
     const copyCode = () => {
       navigator.clipboard.writeText(code.value)
-      copyBtn.value.textContent = 'Copied'
-      setTimeout(() => (copyBtn.value.textContent = 'Copy'), 3000)
+      copyText.value = 'Copied'
+      setTimeout(() => (copyText.value = 'Copy'), 3000)
       // alert('Code has been copied to clipboard.')
     }
 
-    return { className, highlightCode, getLineNumbers, copyCode, copyBtn }
+    return { className, highlightCode, getLineNumbers, copyCode, copyText }
   }
 }
 </script>
