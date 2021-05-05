@@ -93,7 +93,7 @@ h1 img {
   top: -5px;
 }
 .external-links {
-  margin: 0 .5rem;
+  margin: 0 0.5rem;
   font-size: var(--font-size);
 }
 .nav-bar {

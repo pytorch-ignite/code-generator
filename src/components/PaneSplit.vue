@@ -89,7 +89,8 @@ export default {
   .split-pane {
     flex-wrap: wrap;
   }
-  .left, .right {
+  .left,
+  .right {
     width: 100% !important;
   }
   .split-line {
