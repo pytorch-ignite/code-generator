@@ -84,4 +84,16 @@ export default {
   width: 10px;
   cursor: ew-resize;
 }
+/* media queries */
+@media (max-width: 768px) {
+  .split-pane {
+    flex-wrap: wrap;
+  }
+  .left, .right {
+    width: 100% !important;
+  }
+  .split-line {
+    display: none;
+  }
+}
 </style>
