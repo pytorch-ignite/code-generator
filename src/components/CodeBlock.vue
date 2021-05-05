@@ -57,7 +57,7 @@ export default {
     const copyCode = () => {
       navigator.clipboard.writeText(code.value)
       copyBtn.value.textContent = 'Copied'
-      setTimeout(() => copyBtn.value.textContent = 'Copy', 3000)
+      setTimeout(() => (copyBtn.value.textContent = 'Copy'), 3000)
       // alert('Code has been copied to clipboard.')
     }
 
@@ -84,7 +84,8 @@ div[class*='language-'] {
   cursor: pointer;
 }
 
-div[class*='language-']::before, .copy {
+div[class*='language-']::before,
+.copy {
   position: absolute;
   color: var(--c-white-dark);
   font-size: 0.75rem;
