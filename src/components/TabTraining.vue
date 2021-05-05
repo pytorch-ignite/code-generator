@@ -58,8 +58,6 @@ function saveDistributed(key, value) {
 </script>
 
 <style scoped>
-@import url('../assets/main.css');
-
 .training {
   margin-bottom: 0;
 }

@@ -38,7 +38,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-@import url('../assets/main.css');
-</style>

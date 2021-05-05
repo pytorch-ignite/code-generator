@@ -1,3 +1,4 @@
+// central store for user input configs and generated codes
 import { reactive, watchEffect } from 'vue'
 import datasets from './templates/datasets.py?raw'
 import main from './templates/main.py?raw'
@@ -96,7 +97,10 @@ function generateMain() {
     }
   }
   if (save.every((value) => value === true) && save.length > 0) {
-    tempCode.checkpointing = tempCode.checkpointing.replaceAll('{}', `{ ${toSaveTrain} }`)
+    tempCode.checkpointing = tempCode.checkpointing.replaceAll(
+      '{}',
+      `{ ${toSaveTrain} }`
+    )
   } else {
     delete tempCode.checkpointing
   }
@@ -113,7 +117,10 @@ function generateModels() {
 
   if (domain === 'vision') {
     if (subdomain && subdomain !== 'classification') {
-      tempCode.get_model = tempCode.get_model.replaceAll('models.__dict__', `models.${subdomain.toString()}.__dict__`)
+      tempCode.get_model = tempCode.get_model.replaceAll(
+        'models.__dict__',
+        `models.${subdomain.toString()}.__dict__`
+      )
     }
   }
   store.code['models.py'] = Object.values(tempCode).join('#').trim()
