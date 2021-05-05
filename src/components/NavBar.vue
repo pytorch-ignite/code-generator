@@ -8,7 +8,7 @@
           width="50"
           height="50"
         />
-        <span>Code Generator</span>
+        <span class="pname">Code Generator</span>
         <small class="version">v{{ version }}</small>
       </a>
     </h1>
@@ -19,30 +19,7 @@
         title="Download the generated code as a zip file"
       >
         Download
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-          aria-hidden="true"
-          role="img"
-          class="iconify download iconify--system-uicons"
-          width="20"
-          height="20"
-          preserveAspectRatio="xMidYMid meet"
-          viewBox="0 0 21 21"
-        >
-          <g
-            fill="none"
-            fill-rule="evenodd"
-            stroke="currentColor"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M6.5 10.5l4 4.232l4-4.191"></path>
-            <path d="M10.5 3.5v11"></path>
-            <path d="M4.5 17.5h12"></path>
-          </g>
-        </svg>
+        <IconDownload />
       </button>
       <a
         class="external-links"
@@ -50,33 +27,7 @@
         target="_blank"
         rel="noopener noreferrer"
       >
-        GitHub
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-          aria-hidden="true"
-          role="img"
-          class="iconify iconify--system-uicons"
-          width="15"
-          height="15"
-          preserveAspectRatio="xMidYMid meet"
-          viewBox="0 0 21 21"
-        >
-          <g
-            fill="none"
-            fill-rule="evenodd"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M18.5 8.5v-5h-5"></path>
-            <path d="M18.5 3.5l-7 7"></path>
-            <path
-              d="M10.5 3.5h-5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-4"
-            ></path>
-          </g>
-        </svg>
+        <IconGitHub />
       </a>
       <a
         class="external-links"
@@ -84,33 +35,7 @@
         target="_blank"
         rel="noopener noreferrer"
       >
-        Twitter
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-          aria-hidden="true"
-          role="img"
-          class="iconify iconify--system-uicons"
-          width="15"
-          height="15"
-          preserveAspectRatio="xMidYMid meet"
-          viewBox="0 0 21 21"
-        >
-          <g
-            fill="none"
-            fill-rule="evenodd"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M18.5 8.5v-5h-5"></path>
-            <path d="M18.5 3.5l-7 7"></path>
-            <path
-              d="M10.5 3.5h-5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-4"
-            ></path>
-          </g>
-        </svg>
+        <IconTwitter />
       </a>
       <a
         class="external-links"
@@ -118,33 +43,7 @@
         target="_blank"
         rel="noopener noreferrer"
       >
-        Discord
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-          aria-hidden="true"
-          role="img"
-          class="iconify iconify--system-uicons"
-          width="15"
-          height="15"
-          preserveAspectRatio="xMidYMid meet"
-          viewBox="0 0 21 21"
-        >
-          <g
-            fill="none"
-            fill-rule="evenodd"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M18.5 8.5v-5h-5"></path>
-            <path d="M18.5 3.5l-7 7"></path>
-            <path
-              d="M10.5 3.5h-5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-4"
-            ></path>
-          </g>
-        </svg>
+        <IconDiscord />
       </a>
     </div>
   </nav>
@@ -155,8 +54,13 @@ import { version } from '../../package.json'
 import { store } from '../store'
 import { saveAs } from 'file-saver'
 import JSZip from 'jszip'
+import IconDiscord from './IconDiscord.vue'
+import IconDownload from './IconDownload.vue'
+import IconGitHub from './IconGitHub.vue'
+import IconTwitter from './IconTwitter.vue'
 
 export default {
+  components: { IconDiscord, IconDownload, IconGitHub, IconTwitter },
   setup() {
     let zip = new JSZip()
 
@@ -189,12 +93,8 @@ h1 img {
   top: -5px;
 }
 .external-links {
-  margin: 0.25rem;
+  margin: 0 0.5rem;
   font-size: var(--font-size);
-  border-bottom: 2px solid transparent;
-}
-.external-links:hover {
-  border-bottom: 2px solid var(--c-brand-red);
 }
 .nav-bar {
   display: flex;
@@ -227,9 +127,13 @@ h1 img {
 .iconify {
   vertical-align: middle;
   position: relative;
-  top: -2px;
-}
-.iconify.download {
   top: -3px;
+}
+/* media queries */
+@media (max-width: 768px) {
+  .pname,
+  .version {
+    display: none;
+  }
 }
 </style>
