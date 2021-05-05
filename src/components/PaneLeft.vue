@@ -42,6 +42,11 @@ export default {
 
 <style scoped>
 .left-pane-tabs {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
   border-bottom: 1px solid var(--c-white-dark);
 }
 .left-pane-tabs,
@@ -49,7 +54,6 @@ export default {
   padding-left: 1.5rem;
 }
 .left-pane-tab {
-  display: inline-block;
   background-color: var(--c-white);
   cursor: pointer;
   color: var(--c-text);
@@ -67,5 +71,13 @@ export default {
 .left-pane-contexts {
   height: 100vh;
   overflow: auto;
+}
+/* media queries */
+@media (max-width: 768px) {
+  .left-pane-contexts {
+    height: 100%;
+    padding: 0;
+    margin-bottom: 1rem;
+  }
 }
 </style>

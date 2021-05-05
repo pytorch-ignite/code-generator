@@ -41,6 +41,11 @@ export default {
 
 <style scoped>
 .right-pane-tabs {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
   border-bottom: 1px solid var(--c-white-dark);
 }
 .right-pane-tabs,
@@ -48,7 +53,6 @@ export default {
   padding-right: 1.5rem;
 }
 .right-pane-tab {
-  display: inline-block;
   background-color: var(--c-white);
   cursor: pointer;
   color: var(--c-text);
@@ -62,5 +66,12 @@ export default {
 .active {
   color: var(--c-brand-red);
   border-bottom-color: var(--c-brand-red);
+}
+/* media queries */
+@media (max-width: 768px) {
+  .right-pane-contexts {
+    height: 100%;
+    padding: 0;
+  }
 }
 </style>
