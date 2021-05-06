@@ -58,7 +58,6 @@ export default {
       navigator.clipboard.writeText(code.value)
       copyText.value = 'Copied'
       setTimeout(() => (copyText.value = 'Copy'), 3000)
-      // alert('Code has been copied to clipboard.')
     }
 
     return { className, highlightCode, getLineNumbers, copyCode, copyText }
