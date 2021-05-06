@@ -80,6 +80,7 @@ body {
 .tab {
   --left-pane-margin-x: 1.5rem;
   margin: 0 var(--left-pane-margin-x);
+  padding-bottom: 2rem;
 }
 /* overriding prismjs defaults */
 pre,
