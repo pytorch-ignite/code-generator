@@ -144,6 +144,7 @@ export default {
     bottom: 1rem;
     color: var(--c-brand-red);
     background-color: var(--c-white-light);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
     border-radius: 2px;
     width: 2rem;
     height: 2rem;
