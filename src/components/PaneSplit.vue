@@ -148,13 +148,13 @@ export default {
     border-radius: 2px;
     width: 2rem;
     height: 2rem;
-    z-index: 99999;
+    z-index: 6;
   }
   .left {
     position: fixed;
     transform: translateX(-100%);
     transition: transform 0.25s ease-in;
-    z-index: 10;
+    z-index: 5;
     background-color: var(--c-white);
     top: 0;
     bottom: 0;

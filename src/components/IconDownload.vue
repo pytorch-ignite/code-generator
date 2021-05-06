@@ -1,26 +1,18 @@
 <template>
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    xmlns:xlink="http://www.w3.org/1999/xlink"
-    aria-hidden="true"
-    role="img"
-    class="iconify download iconify--system-uicons"
-    width="20"
-    height="20"
-    preserveAspectRatio="xMidYMid meet"
-    viewBox="0 0 21 21"
+    width="1.4em"
+    height="1.4em"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    class="icons feather feather-download"
   >
-    <g
-      fill="none"
-      fill-rule="evenodd"
-      stroke="currentColor"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    >
-      <path d="M6.5 10.5l4 4.232l4-4.191"></path>
-      <path d="M10.5 3.5v11"></path>
-      <path d="M4.5 17.5h12"></path>
-    </g>
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+    <polyline points="7 10 12 15 17 10"></polyline>
+    <line x1="12" y1="15" x2="12" y2="3"></line>
   </svg>
 </template>
