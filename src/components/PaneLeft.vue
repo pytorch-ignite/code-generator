@@ -77,7 +77,7 @@ export default {
   .left-pane-contexts {
     height: 100%;
     padding: 0;
-    margin-bottom: 1rem;
+    margin-bottom: 2.5rem;
   }
 }
 </style>
