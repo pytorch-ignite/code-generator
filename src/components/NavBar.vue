@@ -135,5 +135,11 @@ h1 img {
   .version {
     display: none;
   }
+  .nav-bar {
+    position: fixed;
+    z-index: 11;
+    width: 100%;
+    background-color: var(--c-white);
+  }
 }
 </style>
