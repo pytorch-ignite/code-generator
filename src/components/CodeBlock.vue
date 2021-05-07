@@ -54,8 +54,12 @@ export default {
     const getLineNumbers = computed(() => {
       return code.value.split('\n').length
     })
-    const copyCode = () => {
-      navigator.clipboard.writeText(code.value)
+    const copyCode = async () => {
+      try {
+        await navigator.clipboard.writeText(code.value)
+      } catch (e) {
+        console.error(e)
+      }
       copyText.value = 'Copied'
       setTimeout(() => (copyText.value = 'Copy'), 3000)
     }
