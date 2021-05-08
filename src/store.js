@@ -10,6 +10,12 @@ import utilsPy from './templates/utils.py?raw'
 import utilsJSON from './metadata/utils.json'
 import configJSON from './templates/config.json'
 
+import handlebars, { compile } from 'handlebars'
+
+handlebars.registerHelper('loggerEqual', function (value1, value2) {
+  return value1 === value2
+})
+
 export const store = reactive({
   code: {},
   config: configJSON,
@@ -194,6 +200,8 @@ function generateUtils() {
   }
 
   store.code['utils.py'] = Object.values(tempCode).join('#').trim()
+  const template = compile(store.code['utils.py'])
+  store.code['utils.py'] = template(store.config)
   return store.code['utils.py']
 }
 

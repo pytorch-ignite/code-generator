@@ -7,6 +7,7 @@ specifiers:
   '@vue/compiler-sfc': ^3.0.11
   conventional-changelog-cli: ^2.1.1
   file-saver: ^2.0.5
+  handlebars: ^4.7.7
   jszip: ^3.6.0
   prettier: ^2.2.1
   prismjs: ^1.23.0
@@ -20,6 +21,7 @@ devDependencies:
   '@vue/compiler-sfc': 3.0.11_vue@3.0.11
   conventional-changelog-cli: 2.1.1
   file-saver: 2.0.5
+  handlebars: 4.7.7
   jszip: 3.6.0
   prettier: 2.2.1
   prismjs: 1.23.0
