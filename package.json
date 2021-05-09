@@ -13,17 +13,18 @@
     "lint": "prettier --check . && pnpm run black:lint && pnpm run isort:lint"
   },
   "devDependencies": {
-    "jszip": "^3.6.0",
-    "file-saver": "^2.0.5",
-    "prismjs": "^1.23.0",
-    "vue": "^3.0.11",
+    "@iconify/iconify": "^2.0.0",
     "@types/file-saver": "^2.0.2",
     "@types/prismjs": "^1.16.5",
     "@vitejs/plugin-vue": "^1.2.2",
     "@vue/compiler-sfc": "^3.0.11",
     "conventional-changelog-cli": "^2.1.1",
+    "file-saver": "^2.0.5",
+    "jszip": "^3.6.0",
     "prettier": "^2.2.1",
-    "vite": "^2.2.3"
+    "prismjs": "^1.23.0",
+    "vite": "^2.2.3",
+    "vue": "^3.0.11"
   },
   "prettier": {
     "semi": false,

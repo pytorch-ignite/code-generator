@@ -1,6 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
+  '@iconify/iconify': ^2.0.0
   '@types/file-saver': ^2.0.2
   '@types/prismjs': ^1.16.5
   '@vitejs/plugin-vue': ^1.2.2
@@ -14,6 +15,7 @@ specifiers:
   vue: ^3.0.11
 
 devDependencies:
+  '@iconify/iconify': 2.0.0
   '@types/file-saver': 2.0.2
   '@types/prismjs': 1.16.5
   '@vitejs/plugin-vue': 1.2.2_@vue+compiler-sfc@3.0.11
@@ -71,6 +73,15 @@ packages:
     dependencies:
       '@babel/helper-validator-identifier': 7.12.11
       to-fast-properties: 2.0.0
+    dev: true
+
+  /@iconify/iconify/2.0.0:
+    resolution:
+      {
+        integrity: sha512-9D+LKG9lC8Wqc6m1u1HMzHO13VWoHy7pqJEJXQW94WPn22nRGCjvs62xfj3VTSIlxucn+XHQpNH9GsrugGuKDw==
+      }
+    dependencies:
+      cross-fetch: 3.1.4
     dev: true
 
   /@types/file-saver/2.0.2:
@@ -592,6 +603,15 @@ packages:
 
   /core-util-is/1.0.2:
     resolution: { integrity: sha1-tf1UIgqivFq1eqtxQMlAdUUDwac= }
+    dev: true
+
+  /cross-fetch/3.1.4:
+    resolution:
+      {
+        integrity: sha512-1eAtFWdIubi6T4XPy6ei9iUFoKpUkIF971QLN8lIvvvwueI65+Nw5haMNKUwfJxabqlIIDODJKGrQ66gxC0PbQ==
+      }
+    dependencies:
+      node-fetch: 2.6.1
     dev: true
 
   /cssesc/3.0.0:
@@ -1316,6 +1336,14 @@ packages:
       {
         integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
       }
+    dev: true
+
+  /node-fetch/2.6.1:
+    resolution:
+      {
+        integrity: sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==
+      }
+    engines: { node: 4.x || >=6.0.0 }
     dev: true
 
   /normalize-package-data/2.5.0:

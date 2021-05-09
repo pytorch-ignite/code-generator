@@ -7,6 +7,7 @@
       :class="{ active: currentTab === tab }"
       @click="currentTab = tab"
     >
+      <span class="iconify" :data-icon="getFileType(tab)"></span>
       {{ tab }}
     </div>
   </div>
@@ -21,20 +22,33 @@
 import CodeBlock from './CodeBlock.vue'
 import { getTemplateFileNames, store } from '../store'
 import { computed, ref } from 'vue'
+import '@iconify/iconify'
 
 export default {
   components: { CodeBlock },
   setup() {
     const currentTab = ref('README.md')
     const tabs = ref(getTemplateFileNames())
+    // search more file types mapping on
+    // https://icones.js.org/collection/vscode-icons
+    const fileTypes = {
+      py: 'python',
+      md: 'markdown',
+      json: 'json',
+      txt: 'text'
+    }
 
     const getLang = computed(() => {
       return currentTab.value.split('.')[1]
     })
+    const getFileType = (tab) => {
+      const fileType = tab.split('.')[1]
+      return `vscode-icons:file-type-${fileTypes[fileType]}`
+    }
     const formattedCode = () => {
       return store.code[currentTab.value]
     }
-    return { currentTab, tabs, getLang, formattedCode }
+    return { currentTab, tabs, getLang, getFileType, formattedCode }
   }
 }
 </script>
@@ -53,6 +67,8 @@ export default {
   padding-right: 1.5rem;
 }
 .right-pane-tab {
+  display: flex;
+  place-items: center;
   background-color: var(--c-white);
   cursor: pointer;
   color: var(--c-text);
@@ -66,6 +82,9 @@ export default {
 .active {
   color: var(--c-brand-red);
   border-bottom-color: var(--c-brand-red);
+}
+.iconify {
+  margin-right: 6px;
 }
 /* media queries */
 @media (max-width: 768px) {
