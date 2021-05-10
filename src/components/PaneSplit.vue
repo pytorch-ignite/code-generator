@@ -27,8 +27,8 @@
         aria-hidden="true"
         role="img"
         class="iconify iconify--mdi"
-        width="2rem"
-        height="2rem"
+        width="2em"
+        height="2em"
         preserveAspectRatio="xMidYMid meet"
         viewBox="0 0 24 24"
       >
