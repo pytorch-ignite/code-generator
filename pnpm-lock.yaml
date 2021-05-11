@@ -8,12 +8,11 @@ specifiers:
   '@vue/compiler-sfc': ^3.0.11
   conventional-changelog-cli: ^2.1.1
   ejs: ^3.1.6
-  eta: ^1.12.1
   file-saver: ^2.0.5
   jszip: ^3.6.0
   prettier: ^2.3.0
   prismjs: ^1.23.0
-  vite: 2.3.0
+  vite: ^2.3.0
   vue: ^3.0.11
 
 devDependencies:
@@ -24,7 +23,6 @@ devDependencies:
   '@vue/compiler-sfc': 3.0.11_vue@3.0.11
   conventional-changelog-cli: 2.1.1
   ejs: 3.1.6
-  eta: 1.12.1
   file-saver: 2.0.5
   jszip: 3.6.0
   prettier: 2.3.0
@@ -132,7 +130,7 @@ packages:
       merge-source-map: 1.1.0
       postcss: 8.2.15
       postcss-modules: 4.0.0_postcss@8.2.15
-      postcss-selector-parser: 6.0.5
+      postcss-selector-parser: 6.0.6
       source-map: 0.6.1
       vue: 3.0.11
     dev: true
@@ -556,11 +554,6 @@ packages:
 
   /estree-walker/2.0.2:
     resolution: {integrity: sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==}
-    dev: true
-
-  /eta/1.12.1:
-    resolution: {integrity: sha512-H8npoci2J/7XiPnVcCVulBSPsTNGvGaINyMjQDU8AFqp9LGsEYS88g2CiU+d01Sg44WtX7o4nb8wUJ9vnI+tiA==}
-    engines: {node: '>=6.0.0'}
     dev: true
 
   /file-saver/2.0.5:
@@ -1245,7 +1238,7 @@ packages:
     dependencies:
       icss-utils: 5.1.0_postcss@8.2.15
       postcss: 8.2.15
-      postcss-selector-parser: 6.0.5
+      postcss-selector-parser: 6.0.6
       postcss-value-parser: 4.1.0
     dev: true
 
@@ -1256,7 +1249,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       postcss: 8.2.15
-      postcss-selector-parser: 6.0.5
+      postcss-selector-parser: 6.0.6
     dev: true
 
   /postcss-modules-values/4.0.0_postcss@8.2.15:
@@ -1285,8 +1278,8 @@ packages:
       string-hash: 1.1.3
     dev: true
 
-  /postcss-selector-parser/6.0.5:
-    resolution: {integrity: sha512-aFYPoYmXbZ1V6HZaSvat08M97A8HqO6Pjz+PiNpw/DhuRrC72XWAdp3hL6wusDCN31sSmcZyMGa2hZEuX+Xfhg==}
+  /postcss-selector-parser/6.0.6:
+    resolution: {integrity: sha512-9LXrvaaX3+mcv5xkg5kFwqSzSH1JIObIx51PrndZwlmznwXRfxMddDvo9gve3gVR8ZTKgoFDdWkbRFmEhT4PMg==}
     engines: {node: '>=4'}
     dependencies:
       cssesc: 3.0.0

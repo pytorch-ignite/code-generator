@@ -4,4 +4,3 @@ dist
 dist-ssr
 *.local
 __pycache__
-*.log

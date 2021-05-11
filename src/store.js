@@ -60,10 +60,9 @@ export function genCode() {
 
   // render all files from template
   for (const path in currentTemplate) {
-    store.code[path] = ejs.render(currentTemplate[path], store.config).replaceAll(
-      /(\s+)\#(\s)/gi,
-      '\n'
-    )
+    store.code[path] = ejs
+      .render(currentTemplate[path], store.config)
+      .replaceAll(/(\s+)\#(\s)/gi, '\n')
   }
   store.code['main.py'] = genMain()
   store.code['trainers.py'] = genTrainers()
