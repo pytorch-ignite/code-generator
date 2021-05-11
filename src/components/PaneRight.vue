@@ -1,7 +1,7 @@
 <template>
   <div class="right-pane-tabs">
     <div
-      v-for="tab in tabs"
+      v-for="tab in tabs()"
       :key="tab"
       class="right-pane-tab"
       :class="{ active: currentTab === tab }"
@@ -28,7 +28,6 @@ export default {
   components: { CodeBlock },
   setup() {
     const currentTab = ref('README.md')
-    const tabs = ref(getTemplateFileNames())
     // search more file types mapping on
     // https://icones.js.org/collection/vscode-icons
     const fileTypes = {
@@ -45,9 +44,8 @@ export default {
       const fileType = tab.split('.')[1]
       return `vscode-icons:file-type-${fileTypes[fileType]}`
     }
-    const formattedCode = () => {
-      return store.code[currentTab.value]
-    }
+    const tabs = () => getTemplateFileNames()
+    const formattedCode = () => store.code[currentTab.value].trim()
     return { currentTab, tabs, getLang, getFileType, formattedCode }
   }
 }

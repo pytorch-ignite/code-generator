@@ -9,9 +9,9 @@ specifiers:
   conventional-changelog-cli: ^2.1.1
   file-saver: ^2.0.5
   jszip: ^3.6.0
-  nunjucks: ^3.2.3
   prettier: ^2.2.1
   prismjs: ^1.23.0
+  squirrelly: ^8.0.8
   vite: ^2.2.3
   vue: ^3.0.11
 
@@ -24,9 +24,9 @@ devDependencies:
   conventional-changelog-cli: 2.1.1
   file-saver: 2.0.5
   jszip: 3.6.0
-  nunjucks: 3.2.3
   prettier: 2.2.1
   prismjs: 1.23.0
+  squirrelly: 8.0.8
   vite: 2.2.3
   vue: 3.0.11
 
@@ -175,10 +175,6 @@ packages:
       through: 2.3.8
     dev: true
 
-  /a-sync-waterfall/1.0.1:
-    resolution: {integrity: sha512-RYTOHHdWipFUliRFMCS4X2Yn2X8M87V/OpSqWzKKOGhzqyUxzyVmhHDH9sAvG+ZuQf/TAOFsLCpMw09I1ufUnA==}
-    dev: true
-
   /add-stream/1.0.0:
     resolution: {integrity: sha1-anmQQ3ynNtXhKI25K9MmbV9csqo=}
     dev: true
@@ -202,10 +198,6 @@ packages:
   /arrify/1.0.1:
     resolution: {integrity: sha1-iYUI2iIm84DfkEcoRWhJwVAaSw0=}
     engines: {node: '>=0.10.0'}
-    dev: true
-
-  /asap/2.0.6:
-    resolution: {integrity: sha1-5QNHYR1+aQlDIIu9r+vLwvuGbUY=}
     dev: true
 
   /balanced-match/1.0.2:
@@ -284,11 +276,6 @@ packages:
 
   /colorette/1.2.2:
     resolution: {integrity: sha512-MKGMzyfeuutC/ZJ1cba9NqcNpfeqMUcYmyF1ZFY6/Cn7CNSAKx6a+s48sqLqyAiZuaP2TcqMhoo+dlwFnVxT9w==}
-    dev: true
-
-  /commander/5.1.0:
-    resolution: {integrity: sha512-P0CysNDQ7rtVw4QIQtm+MRxV66vKFSvlsQvGYXZWR3qFU0jlMKHZZZgw8e+8DSah4UDKMqnknRDQz+xuQXQ/Zg==}
-    engines: {node: '>= 6'}
     dev: true
 
   /compare-func/2.0.0:
@@ -1060,21 +1047,6 @@ packages:
       validate-npm-package-license: 3.0.4
     dev: true
 
-  /nunjucks/3.2.3:
-    resolution: {integrity: sha512-psb6xjLj47+fE76JdZwskvwG4MYsQKXUtMsPh6U0YMvmyjRtKRFcxnlXGWglNybtNTNVmGdp94K62/+NjF5FDQ==}
-    engines: {node: '>= 6.9.0'}
-    hasBin: true
-    peerDependencies:
-      chokidar: ^3.3.0
-    peerDependenciesMeta:
-      chokidar:
-        optional: true
-    dependencies:
-      a-sync-waterfall: 1.0.1
-      asap: 2.0.6
-      commander: 5.1.0
-    dev: true
-
   /object-assign/4.1.1:
     resolution: {integrity: sha1-IQmtx5ZYh8/AXLvUQsrIv7s2CGM=}
     engines: {node: '>=0.10.0'}
@@ -1535,6 +1507,11 @@ packages:
     resolution: {integrity: sha512-9NThjpgZnifTkJpzTZ7Eue85S49QwpNhZTq6GRJwObb6jnLFNGB7Qm73V5HewTROPyxD0C29xqmaI68bQtV+hg==}
     dependencies:
       readable-stream: 3.6.0
+    dev: true
+
+  /squirrelly/8.0.8:
+    resolution: {integrity: sha512-7dyZJ9Gw86MmH0dYLiESsjGOTj6KG8IWToTaqBuB6LwPI+hyNb6mbQaZwrfnAQ4cMDnSWMUvX/zAYDLTSWLk/w==}
+    engines: {node: '>=6.0.0'}
     dev: true
 
   /string-hash/1.1.3:

@@ -3,18 +3,15 @@ from pprint import pformat
 from typing import Any
 
 import ignite.distributed as idist
+from data import setup_data
 from ignite.engine import Events
 from ignite.metrics import Accuracy, Loss
 from ignite.utils import manual_seed
+from model import Net
 from torch import nn, optim
 from torch.utils.data.distributed import DistributedSampler
-
-from templates.utils import setup_exp_logging
-
-from .data import setup_data
-from .model import Net
-from .trainers import setup_evaluator, setup_trainer
-from .utils import *
+from trainers import setup_evaluator, setup_trainer
+from utils import *
 
 
 def run(local_rank: int, config: Any):
@@ -62,9 +59,11 @@ def run(local_rank: int, config: Any):
         dataloader_train.sampler.set_epoch(trainer.state.epoch - 1)
 
     ### setup ignite handlers
-    to_save_train = {}
+    # {{ @if (it.save_model || it.save_optimizer || it.save_lr_scheduler || it.save_trainer || it.save_evaluator || it.patience || it.terminate_on_nan || it.timer || it.limit_sec) }}
+    to_save_train = None
     to_save_eval = {"model": model}
     setup_handlers(trainer, evaluator, config, to_save_train, to_save_eval)
+    # {{ /if }}
 
     ### experiment tracking
     if rank == 0:
@@ -105,8 +104,8 @@ def run(local_rank: int, config: Any):
         from ignite.contrib.handlers.wandb_logger import WandBLogger
 
         if isinstance(exp_logger, WandBLogger):
-            # why handle differently for wandb?
-            # See: https://github.com/pytorch/ignite/issues/1894
+            ### why handle differently for wandb?
+            ### See: https://github.com/pytorch/ignite/issues/1894
             exp_logger.finish()
         elif exp_logger:
             exp_logger.close()

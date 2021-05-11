@@ -21,9 +21,9 @@
     "conventional-changelog-cli": "^2.1.1",
     "file-saver": "^2.0.5",
     "jszip": "^3.6.0",
-    "nunjucks": "^3.2.3",
     "prettier": "^2.2.1",
     "prismjs": "^1.23.0",
+    "squirrelly": "^8.0.8",
     "vite": "^2.2.3",
     "vue": "^3.0.11"
   },

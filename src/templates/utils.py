@@ -1,4 +1,3 @@
-### imports ###
 import logging
 from datetime import datetime
 from logging import Logger
@@ -18,7 +17,6 @@ from ignite.handlers.timing import Timer
 from ignite.utils import setup_logger
 
 
-### get_default_parser ###
 def get_default_parser():
     import json
     from argparse import ArgumentParser
@@ -33,7 +31,6 @@ def get_default_parser():
     return parser
 
 
-### log_metrics ###
 def log_metrics(engine: Engine, tag: str) -> None:
     """Log `engine.state.metrics` with given `engine` and `tag`.
 
@@ -50,7 +47,6 @@ def log_metrics(engine: Engine, tag: str) -> None:
     engine.logger.info(metrics_format)
 
 
-### resume_from ###
 def resume_from(
     to_load: Mapping,
     checkpoint_fp: Union[str, Path],
@@ -97,6 +93,9 @@ def resume_from(
     logger.info("Successfully resumed from a checkpoint: %s", checkpoint_fp)
 
 
+# {{ @if (it.save_model || it.save_optimizer || it.save_lr_scheduler || it.save_trainer || it.save_evaluator || it.patience || it.terminate_on_nan || it.timer || it.limit_sec) }}
+
+
 def setup_handlers(
     trainer: Engine,
     evaluator: Engine,
@@ -104,7 +103,9 @@ def setup_handlers(
     to_save_train: Optional[dict] = None,
     to_save_eval: Optional[dict] = None,
 ):
-    # {{#if checkpointing}}
+    """Setup Ignite handlers."""
+
+    # {{ @if (it.save_model || it.save_optimizer || it.save_lr_scheduler || it.save_trainer || it.save_evaluator) }}
     ### checkpointing
     saver = DiskSaver(config.output_dir / "checkpoints", require_empty=False)
     ckpt_handler_train = Checkpoint(
@@ -132,23 +133,23 @@ def setup_handlers(
     evaluator.add_event_handler(
         Events.EPOCH_COMPLETED(every=1), ckpt_handler_eval
     )
-    # {{/if}}
+    # {{ /if }}
 
-    # {{#if patience}}
+    # {{ @if (it.patience) }}
     ### early stopping
     def score_fn(engine: Engine):
         return -engine.state.metrics["eval_loss"]
 
     es = EarlyStopping(config.patience, score_fn, trainer)
     evaluator.add_event_handler(Events.EPOCH_COMPLETED, es)
-    # {{/if}}
+    # {{ /if }}
 
-    # {{#if terminate_on_nan}}
+    # {{ @if (it.terminate_on_nan) }}
     ### terminate on nan
     trainer.add_event_handler(Events.ITERATION_COMPLETED, TerminateOnNan())
-    # {{/if}}
+    # {{ /if }}
 
-    # {{#if timer}}
+    # {{ @if (it.timer) }}
     ### timer
     timer = Timer(average=True)
     timer.attach(
@@ -158,34 +159,41 @@ def setup_handlers(
         pause=Events.ITERATION_COMPLETED,
         step=Events.ITERATION_COMPLETED,
     )
-    # {{/if}}
+    # {{ /if }}
 
-    # {{#if limit_sec}}
+    # {{ @if (it.limit_sec) }}
     ### time limit
     trainer.add_event_handler(
         Events.ITERATION_COMPLETED, TimeLimit(config.limit_sec)
     )
-    # {{/if}}
+    # {{ /if }}
+
+
+# {{ /if }}
+
+# {{ @if (it.logger) }}
 
 
 def setup_exp_logging(config, trainer, optimizers, evaluators):
-    # {{#if (loggerEqual logger "clearml")}}
+    """Setup Experiment Tracking logger from Ignite."""
+
+    # {{ @if (it.logger === 'clearml') }}
     logger = common.setup_clearml_logging(
         trainer, optimizers, evaluators, config.log_every_iters
     )
-    # {{else if (loggerEqual logger "mlflow")}}
+    # {{ #elif (it.logger === 'mlflow') }}
     logger = common.setup_mlflow_logging(
         trainer, optimizers, evaluators, config.log_every_iters
     )
-    # {{else if (loggerEqual logger "neptune")}}
+    # {{ #elif (it.logger === 'neptune') }}
     logger = common.setup_neptune_logging(
         trainer, optimizers, evaluators, config.log_every_iters
     )
-    # {{else if (loggerEqual logger "polyaxon")}}
+    # {{ #elif (it.logger === 'polyaxon') }}
     logger = common.setup_plx_logging(
         trainer, optimizers, evaluators, config.log_every_iters
     )
-    # {{else if (loggerEqual logger "tensorboard")}}
+    # {{ #elif (it.logger === 'tensorboard') }}
     logger = common.setup_tb_logging(
         config.output_dir,
         trainer,
@@ -193,16 +201,19 @@ def setup_exp_logging(config, trainer, optimizers, evaluators):
         evaluators,
         config.log_every_iters,
     )
-    # {{else if (loggerEqual logger "visdom")}}
+    # {{ #elif (it.logger === 'visdom') }}
     logger = common.setup_visdom_logging(
         trainer, optimizers, evaluators, config.log_every_iters
     )
-    # {{else if (loggerEqual logger "wandb")}}
+    # {{ #elif (it.logger === 'wandb') }}
     logger = common.setup_wandb_logging(
         trainer, optimizers, evaluators, config.log_every_iters
     )
-    # {{/if}}
+    # {{ /if }}
     return logger
+
+
+# {{ /if }}
 
 
 def setup_output_dir(config: Any, rank: int):
@@ -217,7 +228,6 @@ def setup_output_dir(config: Any, rank: int):
     return Path(idist.broadcast(config.output_dir, src=0))
 
 
-### setup_logging ###
 def setup_logging(config: Any) -> Logger:
     """Setup logger with `ignite.utils.setup_logger()`.
 
