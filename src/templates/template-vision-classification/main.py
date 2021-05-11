@@ -59,11 +59,11 @@ def run(local_rank: int, config: Any):
         dataloader_train.sampler.set_epoch(trainer.state.epoch - 1)
 
     ### setup ignite handlers
-    # {{ @if (it.save_model || it.save_optimizer || it.save_lr_scheduler || it.save_trainer || it.save_evaluator || it.patience || it.terminate_on_nan || it.timer || it.limit_sec) }}
+    # <% if (it.save_model || it.save_optimizer || it.save_lr_scheduler || it.save_trainer || it.save_evaluator || it.patience || it.terminate_on_nan || it.timer || it.limit_sec) { %>
     to_save_train = None
     to_save_eval = {"model": model}
     setup_handlers(trainer, evaluator, config, to_save_train, to_save_eval)
-    # {{ /if }}
+    # <% } %>
 
     ### experiment tracking
     if rank == 0:

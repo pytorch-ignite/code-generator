@@ -1,6 +1,6 @@
 // central store for user input configs and generated codes
 import { reactive, watchEffect } from 'vue'
-import { render } from 'squirrelly'
+import ejs from 'ejs'
 
 import readme from './templates/README.md?raw'
 import requirements from './templates/requirements.txt?raw'
@@ -13,6 +13,9 @@ import vClassData from './templates/template-vision-classification/data.py?raw'
 import vClassMain from './templates/template-vision-classification/main.py?raw'
 import vClassModel from './templates/template-vision-classification/model.py?raw'
 import vClassTrainers from './templates/template-vision-classification/trainers.py?raw'
+
+// ejs options
+ejs.localsName = 'it'
 
 const visionClassiModules = {
   'data.py': vClassData,
@@ -57,14 +60,14 @@ export function genCode() {
 
   // render all files from template
   for (const path in currentTemplate) {
-    store.code[path] = render(currentTemplate[path], store.config).replaceAll(
+    store.code[path] = ejs.render(currentTemplate[path], store.config).replaceAll(
       /(\s+)\#(\s)/gi,
       '\n'
     )
   }
   store.code['main.py'] = genMain()
   store.code['trainers.py'] = genTrainers()
-  store.code['README.md'] = render(readme, store.config)
+  store.code['README.md'] = ejs.render(readme, store.config)
   store.code['config.json'] = JSON.stringify(store.config, null, 2)
   store.code['requirements.txt'] = requirements
 }
