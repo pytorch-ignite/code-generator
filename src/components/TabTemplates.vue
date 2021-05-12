@@ -16,8 +16,8 @@
 
 <script>
 import FormSelect from './FormSelect.vue'
-import templates from "../templates/templates.json"
-import { store, fetchTemplates } from "../store.js"
+import templates from '../templates/templates.json'
+import { store, fetchTemplates } from '../store.js'
 
 export default {
   components: { FormSelect },
