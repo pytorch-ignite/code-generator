@@ -11,7 +11,7 @@
       {{ tab }}
     </div>
   </div>
-  <div class="right-pane-contexts">
+  <div class="right-pane-contexts" v-if="store.code[currentTab]">
     <KeepAlive>
       <CodeBlock :lang="getLang" :code="formattedCode()" />
     </KeepAlive>
@@ -46,7 +46,7 @@ export default {
     }
     const tabs = () => getTemplateFileNames()
     const formattedCode = () => store.code[currentTab.value].trim()
-    return { currentTab, tabs, getLang, getFileType, formattedCode }
+    return { store, currentTab, tabs, getLang, getFileType, formattedCode }
   }
 }
 </script>

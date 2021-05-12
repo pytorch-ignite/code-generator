@@ -72,6 +72,7 @@ export default {
     const stopDragging = () => {
       isDragging.value = false
     }
+    console.log('pane split')
     return {
       width,
       clicked,

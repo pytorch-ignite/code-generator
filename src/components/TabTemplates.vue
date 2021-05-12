@@ -7,6 +7,8 @@
         saveKey="template"
         :label="templateLabel"
         :options="templateOptions"
+        :preSelect="1"
+        @change="downloadTemplates"
       />
     </div>
   </div>
@@ -14,14 +16,20 @@
 
 <script>
 import FormSelect from './FormSelect.vue'
+import templates from "../templates/templates.json"
+import { store, fetchTemplates } from "../store.js"
 
 export default {
   components: { FormSelect },
   setup() {
     const templateLabel = 'Choose Template'
-    const templateOptions = ['Vision Classification', 'Vision Detection']
+    const templateOptions = Object.keys(templates)
+    fetchTemplates(store.config.template)
+    console.log(store.code)
 
-    return { templateLabel, templateOptions }
+    const downloadTemplates = () => fetchTemplates(store.config.template)
+
+    return { templateLabel, templateOptions, downloadTemplates }
   }
 }
 </script>
