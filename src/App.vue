@@ -49,8 +49,8 @@ export default {
   --c-brand-yellow: #eaa700;
   --c-text: #475569;
   --font-size: 1rem;
-  --font-family-base: Avenir, -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans',
+  --font-family-base: 'Inter', Avenir, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans',
     'Helvetica Neue', sans-serif;
   --code-font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
   --code-font-size: 0.85em;
@@ -67,6 +67,16 @@ body {
   color: var(--c-text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+h1 {
+  font-weight: 600;
+}
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 500;
 }
 @media (prefers-reduced-motion) {
   :focus {

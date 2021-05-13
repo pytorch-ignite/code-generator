@@ -11,14 +11,14 @@ const isProd = import.meta.env.PROD
 // @ts-ignore
 const isDev = import.meta.env.DEV
 // @ts-ignore
-const gitCommit = import.meta.env.VITE_GIT_COMMIT
+const commit = import.meta.env.VITE_COMMIT
 
 // set url for template fetching
 // this only works in production and local mode
 // not in network mode
 const urlTemplates = 'src/templates'
 const urlDev = `${location.href}/${urlTemplates}`
-const urlProd = `https://raw.githubusercontent.com/pytorch-ignite/code-generator/${gitCommit}/${urlTemplates}`
+const urlProd = `https://raw.githubusercontent.com/pytorch-ignite/code-generator/${commit}/${urlTemplates}`
 const url = isDev ? urlDev : isProd ? urlProd : null
 
 // ejs options
