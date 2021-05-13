@@ -9,10 +9,17 @@
           height="50"
         />
         <span class="pname">Code Generator</span>
-        <small class="version">v{{ version }}</small>
       </a>
     </h1>
     <div class="left-side-badges">
+      <a
+        :href="`https://github.com/pytorch-ignite/code-generator/commit/${currentCommit}`"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="version external-links"
+      >
+        v{{ version }}@{{ currentCommit.slice(0, 7) }}
+      </a>
       <button
         @click="downloadProject"
         class="download-button"
@@ -90,6 +97,7 @@ export default {
   setup() {
     let zip = new JSZip()
     const showDownloadMsg = ref(false)
+    const currentCommit = import.meta.env.VITE_COMMIT
 
     const downloadProject = () => {
       for (const filename in store.code) {
@@ -100,7 +108,7 @@ export default {
       })
       showDownloadMsg.value = true
     }
-    return { version, downloadProject, showDownloadMsg }
+    return { version, downloadProject, showDownloadMsg, currentCommit }
   }
 }
 </script>
@@ -121,7 +129,6 @@ h1 img {
 }
 .external-links {
   margin: 0 0.5rem;
-  font-size: var(--font-size);
   border-bottom: 2px solid transparent;
 }
 .external-links:hover {
@@ -134,26 +141,17 @@ h1 img {
   justify-content: space-between;
   border-bottom: 1px solid var(--c-white-dark);
 }
-.version {
-  padding: 0.25rem 0.5rem;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  margin-left: 0.25rem;
-  background-color: #007bff;
-  border-radius: 8px 2px 8px 2px;
-  color: var(--c-white-light);
-  font-weight: bolder;
-}
 .left-side-badges {
   display: flex;
   align-items: center;
+  font-size: 0.9em;
 }
 .download-button {
   background: none;
   color: var(--c-text);
   cursor: pointer;
   font-family: var(--font-family-base);
-  font-size: var(--font-size);
+  font-size: 1em;
   padding-top: 0;
   padding-bottom: 0;
 }
@@ -190,19 +188,22 @@ h1 img {
   color: var(--c-brand-red);
 }
 .icon-text {
-  margin-left: 0.5rem;
+  margin-left: 0.25rem;
 }
 /* media queries */
 @media (max-width: 768px) {
-  .pname,
-  .version {
+  .pname {
     display: none;
   }
   .nav-bar {
     position: fixed;
     z-index: 6;
     width: 100%;
+    padding: 0.5rem 0.5rem 0;
     background-color: var(--c-white);
+  }
+  .external-links {
+    margin: 0 0.25rem;
   }
   .icon-text {
     display: none;
