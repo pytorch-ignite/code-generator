@@ -5,9 +5,6 @@ on:
     branches: [master]
   pull_request:
 
-env:
-  TERM: xterm-256color
-
 jobs:
   # tests:
   #   runs-on: ${{ matrix.os }}
@@ -75,6 +72,6 @@ jobs:
 
       - run: pip install "black==20.8b1" "isort==5.7.0"
       - run: npm i -g pnpm
-      - run: pnpm i --frozen-lockfile
+      - run: pnpm i --frozen-lockfile --color
       - run: pnpm lint
       - run: python scripts/check_copies.py
