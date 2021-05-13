@@ -18,7 +18,6 @@
 </template>
 
 <script>
-import TabModel from './TabModel.vue'
 import TabTemplates from './TabTemplates.vue'
 import TabTraining from './TabTraining.vue'
 import TabHandlers from './TabHandlers.vue'

@@ -93,7 +93,7 @@ def resume_from(
     logger.info("Successfully resumed from a checkpoint: %s", checkpoint_fp)
 
 
-# <% if (it.save_model || it.save_optimizer || it.save_lr_scheduler || it.save_trainer || it.save_evaluator || it.patience || it.terminate_on_nan || it.timer || it.limit_sec) { %>
+#::: if (it.save_model || it.save_optimizer || it.save_lr_scheduler || it.save_trainer || it.save_evaluator || it.patience || it.terminate_on_nan || it.timer || it.limit_sec) { :::#
 
 
 def setup_handlers(
@@ -105,7 +105,7 @@ def setup_handlers(
 ):
     """Setup Ignite handlers."""
 
-    # <% if (it.save_model || it.save_optimizer || it.save_lr_scheduler || it.save_trainer || it.save_evaluator) { %>
+    #::: if (it.save_model || it.save_optimizer || it.save_lr_scheduler || it.save_trainer || it.save_evaluator) { :::#
     ### checkpointing
     saver = DiskSaver(config.output_dir / "checkpoints", require_empty=False)
     ckpt_handler_train = Checkpoint(
@@ -133,23 +133,23 @@ def setup_handlers(
     evaluator.add_event_handler(
         Events.EPOCH_COMPLETED(every=1), ckpt_handler_eval
     )
-    # <% } %>
+    #::: } :::#
 
-    # <% if (it.patience) { %>
+    #::: if (it.patience) { :::#
     ### early stopping
     def score_fn(engine: Engine):
         return -engine.state.metrics["eval_loss"]
 
     es = EarlyStopping(config.patience, score_fn, trainer)
     evaluator.add_event_handler(Events.EPOCH_COMPLETED, es)
-    # <% } %>
+    #::: } :::#
 
-    # <% if (it.terminate_on_nan) { %>
+    #::: if (it.terminate_on_nan) { :::#
     ### terminate on nan
     trainer.add_event_handler(Events.ITERATION_COMPLETED, TerminateOnNan())
-    # <% } %>
+    #::: } :::#
 
-    # <% if (it.timer) { %>
+    #::: if (it.timer) { :::#
     ### timer
     timer = Timer(average=True)
     timer.attach(
@@ -159,41 +159,41 @@ def setup_handlers(
         pause=Events.ITERATION_COMPLETED,
         step=Events.ITERATION_COMPLETED,
     )
-    # <% } %>
+    #::: } :::#
 
-    # <% if (it.limit_sec) { %>
+    #::: if (it.limit_sec) { :::#
     ### time limit
     trainer.add_event_handler(
         Events.ITERATION_COMPLETED, TimeLimit(config.limit_sec)
     )
-    # <% } %>
+    #::: } :::#
 
 
-# <% } %>
+#::: } :::#
 
-# <% if (it.logger) { %>
+#::: if (it.logger) { :::#
 
 
 def setup_exp_logging(config, trainer, optimizers, evaluators):
     """Setup Experiment Tracking logger from Ignite."""
 
-    # <% if (it.logger === 'clearml') { %>
+    #::: if (it.logger === 'clearml') { :::#
     logger = common.setup_clearml_logging(
         trainer, optimizers, evaluators, config.log_every_iters
     )
-    # <% } else if (it.logger === 'mlflow') { %>
+    #::: } else if (it.logger === 'mlflow') { :::#
     logger = common.setup_mlflow_logging(
         trainer, optimizers, evaluators, config.log_every_iters
     )
-    # <% } else if (it.logger === 'neptune') { %>
+    #::: } else if (it.logger === 'neptune') { :::#
     logger = common.setup_neptune_logging(
         trainer, optimizers, evaluators, config.log_every_iters
     )
-    # <% } else if (it.logger === 'polyaxon') { %>
+    #::: } else if (it.logger === 'polyaxon') { :::#
     logger = common.setup_plx_logging(
         trainer, optimizers, evaluators, config.log_every_iters
     )
-    # <% } else if (it.logger === 'tensorboard') { %>
+    #::: } else if (it.logger === 'tensorboard') { :::#
     logger = common.setup_tb_logging(
         config.output_dir,
         trainer,
@@ -201,19 +201,19 @@ def setup_exp_logging(config, trainer, optimizers, evaluators):
         evaluators,
         config.log_every_iters,
     )
-    # <% } else if (it.logger === 'visdom') { %>
+    #::: } else if (it.logger === 'visdom') { :::#
     logger = common.setup_visdom_logging(
         trainer, optimizers, evaluators, config.log_every_iters
     )
-    # <% } else if (it.logger === 'wandb') { %>
+    #::: } else if (it.logger === 'wandb') { :::#
     logger = common.setup_wandb_logging(
         trainer, optimizers, evaluators, config.log_every_iters
     )
-    # <% } %>
+    #::: } :::#
     return logger
 
 
-# <% } %>
+#::: } :::#
 
 
 def setup_output_dir(config: Any, rank: int):

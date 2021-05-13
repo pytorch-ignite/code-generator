@@ -8,14 +8,5 @@
     "trainers.py": "trainers.py",
     "utils.py": "utils.py",
     "requirements.txt": "requirements.txt"
-  },
-  "template-vision-detection": {
-    "README.md": "README.md",
-    "data.py": "data.py",
-    "transforms.py": "transforms.py",
-    "main.py": "main.py",
-    "model.py": "model.py",
-    "trainers.py": "trainers.py",
-    "utils.py": "utils.py"
   }
 }
