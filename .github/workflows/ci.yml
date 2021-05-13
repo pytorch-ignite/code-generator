@@ -74,3 +74,4 @@ jobs:
       - run: npm i -g pnpm
       - run: pnpm i --frozen-lockfile
       - run: pnpm lint
+      - run: python scripts/check_copies.py
