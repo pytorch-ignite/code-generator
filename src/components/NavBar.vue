@@ -100,7 +100,6 @@ export default {
       })
       showDownloadMsg.value = true
     }
-
     return { version, downloadProject, showDownloadMsg }
   }
 }

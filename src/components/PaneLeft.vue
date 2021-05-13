@@ -18,17 +18,17 @@
 </template>
 
 <script>
-import TabModel from './TabModel.vue'
+import TabTemplates from './TabTemplates.vue'
 import TabTraining from './TabTraining.vue'
 import TabHandlers from './TabHandlers.vue'
 import TabLoggers from './TabLoggers.vue'
 import { computed, ref } from 'vue'
 
 export default {
-  components: { TabModel, TabTraining, TabLoggers, TabHandlers },
+  components: { TabTemplates, TabTraining, TabLoggers, TabHandlers },
   setup() {
-    const currentTab = ref('Model')
-    const tabs = ref(['Model', 'Training', 'Handlers', 'Loggers'])
+    const currentTab = ref('Templates')
+    const tabs = ref(['Templates', 'Training', 'Handlers', 'Loggers'])
 
     // computed properties
     const currentTabComponent = computed(() => {

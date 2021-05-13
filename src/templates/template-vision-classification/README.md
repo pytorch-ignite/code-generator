@@ -21,6 +21,31 @@ pip install -r requirements.txt --progress-bar off -U
 
 Run the training with:
 
+#::: if (it.nproc_per_node) { :::#
+#::: if (it.nnodes && it.master_addr && it.master_port) { :::#
+
+```sh
+python -m torch.distributed.launch \
+  --nproc-per-node #:::= nproc_per_node :::# \
+  --nnodes #:::= it.nnodes :::# \
+  --master-addr #:::= it.master_addr :::# \
+  --master-port #:::= it.master_port :::#
+  main.py --backend nccl
+```
+
+#::: } else { :::#
+
+```sh
+python -m torch.distributed.launch \
+  --nproc-per-node #:::= it.nproc_per_node :::# \
+  main.py --backend nccl
+```
+
+#::: } :::#
+#::: } else { :::#
+
 ```sh
 python main.py
 ```
+
+#::: } :::#
