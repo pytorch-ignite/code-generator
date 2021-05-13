@@ -14,6 +14,7 @@
   },
   "devDependencies": {
     "@iconify/iconify": "^2.0.1",
+    "@types/ejs": "^3.0.6",
     "@types/file-saver": "^2.0.2",
     "@types/prismjs": "^1.16.5",
     "@vitejs/plugin-vue": "^1.2.2",
