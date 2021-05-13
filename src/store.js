@@ -16,10 +16,10 @@ const gitCommit = import.meta.env.VITE_GIT_COMMIT
 // set url for template fetching
 // this only works in production and local mode
 // not in network mode
-const templatesURL = 'src/templates'
-const localhostURL = `http://localhost:3000/${templatesURL}`
-const rawGitURL = `https://raw.githubusercontent.com/pytorch-ignite/code-generator/${gitCommit}/${templatesURL}`
-const url = isDev ? localhostURL : isProd ? rawGitURL : null
+const urlTemplates = 'src/templates'
+const urlDev = `${location.href}/${urlTemplates}`
+const urlProd = `https://raw.githubusercontent.com/pytorch-ignite/code-generator/${gitCommit}/${urlTemplates}`
+const url = isDev ? urlDev : isProd ? urlProd : null
 
 // ejs options
 ejs.localsName = 'it'
@@ -28,7 +28,7 @@ ejs.openDelimiter = '#'
 ejs.closeDelimiter = '#'
 
 // to store all fetch template files
-let files = {}
+const files = {}
 
 // main reactive object
 // store.code - the final rendered code to be included in archive
@@ -52,13 +52,13 @@ export function saveConfig(key, value) {
   }
 }
 
-// render the code
+// render the code if there are fetched files for current selected template
 export async function genCode() {
   console.log('watch effect')
   const currentFiles = files[store.config.template]
   if (currentFiles && Object.keys(currentFiles).length) {
     for (const file in currentFiles) {
-      store.code[file] = ejs.render(files[file], store.config)
+      store.code[file] = ejs.render(currentFiles[file], store.config)
     }
   }
 }
@@ -71,6 +71,7 @@ export async function genCode() {
 export async function fetchTemplates(template) {
   // fetch the template if there is no fetch of template before
   if (files[template] === undefined) {
+    files[template] = {}
     for (const filename in templates[template]) {
       const response = await fetch(`${url}/${template}/${filename}`)
       files[template][filename] = await response.text()
