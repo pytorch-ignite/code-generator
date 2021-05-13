@@ -141,10 +141,6 @@ h1 img {
   justify-content: space-between;
   border-bottom: 1px solid var(--c-white-dark);
 }
-.version {
-  margin: 0 0.5rem;
-  color: var(--c-text);
-}
 .left-side-badges {
   display: flex;
   align-items: center;
@@ -192,7 +188,7 @@ h1 img {
   color: var(--c-brand-red);
 }
 .icon-text {
-  margin-left: 0.5rem;
+  margin-left: 0.25rem;
 }
 /* media queries */
 @media (max-width: 768px) {
@@ -203,7 +199,11 @@ h1 img {
     position: fixed;
     z-index: 6;
     width: 100%;
+    padding: 0.5rem 0.5rem 0;
     background-color: var(--c-white);
+  }
+  .external-links {
+    margin: 0 0.25rem;
   }
   .icon-text {
     display: none;
