@@ -5,6 +5,9 @@ on:
     branches: [master]
   pull_request:
 
+env:
+  TERM: xterm-256color
+
 jobs:
   # tests:
   #   runs-on: ${{ matrix.os }}
