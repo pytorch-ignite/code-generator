@@ -8,5 +8,5 @@ exec('git rev-parse HEAD', (err, stdout, stderr) => {
     console.error(err)
   }
   console.log(stdout, process.env.COMMIT_REF)
-  fs.writeFileSync('./.env', `VITE_GIT_COMMIT=${stdout}`)
+  fs.writeFileSync('./.env', `VITE_COMMIT=${stdout}`)
 })
