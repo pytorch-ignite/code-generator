@@ -106,7 +106,7 @@ def setup_handlers(
     """Setup Ignite handlers."""
 
     #::: if (it.save_model || it.save_optimizer || it.save_lr_scheduler || it.save_trainer || it.save_evaluator) { :::#
-    ### checkpointing
+    # checkpointing
     saver = DiskSaver(config.output_dir / "checkpoints", require_empty=False)
     ckpt_handler_train = Checkpoint(
         to_save_train,
@@ -136,7 +136,7 @@ def setup_handlers(
     #::: } :::#
 
     #::: if (it.patience) { :::#
-    ### early stopping
+    # early stopping
     def score_fn(engine: Engine):
         return -engine.state.metrics["eval_loss"]
 
@@ -145,12 +145,12 @@ def setup_handlers(
     #::: } :::#
 
     #::: if (it.terminate_on_nan) { :::#
-    ### terminate on nan
+    # terminate on nan
     trainer.add_event_handler(Events.ITERATION_COMPLETED, TerminateOnNan())
     #::: } :::#
 
     #::: if (it.timer) { :::#
-    ### timer
+    # timer
     timer = Timer(average=True)
     timer.attach(
         trainer,
@@ -162,7 +162,7 @@ def setup_handlers(
     #::: } :::#
 
     #::: if (it.limit_sec) { :::#
-    ### time limit
+    # time limit
     trainer.add_event_handler(
         Events.ITERATION_COMPLETED, TimeLimit(config.limit_sec)
     )
