@@ -100,7 +100,6 @@ export default {
       })
       showDownloadMsg.value = true
     }
-    console.log('navbar')
     return { version, downloadProject, showDownloadMsg }
   }
 }

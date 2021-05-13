@@ -13,7 +13,7 @@
   </div>
   <div class="right-pane-contexts" v-if="store.code[currentTab]">
     <KeepAlive>
-      <CodeBlock :lang="getLang" :code="formattedCode" />
+      <CodeBlock :lang="getLang" :code="formattedCode()" />
     </KeepAlive>
   </div>
 </template>
@@ -43,14 +43,12 @@ export default {
       txt: 'text'
     }
 
-    const getLang = computed(() => {
-      return currentTab.value.split('.')[1]
-    })
     const getFileType = (tab) => {
       const fileType = tab.split('.')[1]
       return `vscode-icons:file-type-${fileTypes[fileType]}`
     }
-    const formattedCode = computed(() => store.code[currentTab.value].trim())
+    const getLang = computed(() => currentTab.value.split('.')[1])
+    const formattedCode = () => store.code[currentTab.value].trim()
     return { store, currentTab, tabs, getLang, getFileType, formattedCode }
   }
 }

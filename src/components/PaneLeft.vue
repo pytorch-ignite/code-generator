@@ -35,7 +35,6 @@ export default {
       return 'tab-' + currentTab.value.toLowerCase()
     })
 
-    console.log('left pane')
     return { currentTab, tabs, currentTabComponent }
   }
 }

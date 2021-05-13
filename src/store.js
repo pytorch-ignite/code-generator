@@ -54,7 +54,6 @@ export function saveConfig(key, value) {
 
 // render the code if there are fetched files for current selected template
 export async function genCode() {
-  console.log('watch effect')
   const currentFiles = files[store.config.template]
   if (currentFiles && Object.keys(currentFiles).length) {
     for (const file in currentFiles) {
