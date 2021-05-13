@@ -10,6 +10,7 @@
     "requirements.txt": "requirements.txt"
   },
   "template-vision-detection": {
+    "README.md": "README.md",
     "data.py": "data.py",
     "transforms.py": "transforms.py",
     "main.py": "main.py",

@@ -1,7 +1,7 @@
 <template>
-  <div class="right-pane-tabs">
+  <div class="right-pane-tabs" v-if="tabs">
     <div
-      v-for="tab in tabs()"
+      v-for="tab in tabs"
       :key="tab"
       class="right-pane-tab"
       :class="{ active: currentTab === tab }"
@@ -13,21 +13,27 @@
   </div>
   <div class="right-pane-contexts" v-if="store.code[currentTab]">
     <KeepAlive>
-      <CodeBlock :lang="getLang" :code="formattedCode()" />
+      <CodeBlock :lang="getLang" :code="formattedCode" />
     </KeepAlive>
   </div>
 </template>
 
 <script>
 import CodeBlock from './CodeBlock.vue'
-import { getTemplateFileNames, store } from '../store'
+import { store } from '../store'
 import { computed, ref } from 'vue'
+import templates from '../templates/templates.json'
 import '@iconify/iconify'
 
 export default {
   components: { CodeBlock },
   setup() {
     const currentTab = ref('README.md')
+    const tabs = computed(() => {
+      if (store.config.template) {
+        return Object.keys(templates[store.config.template])
+      }
+    })
     // search more file types mapping on
     // https://icones.js.org/collection/vscode-icons
     const fileTypes = {
@@ -44,8 +50,7 @@ export default {
       const fileType = tab.split('.')[1]
       return `vscode-icons:file-type-${fileTypes[fileType]}`
     }
-    const tabs = () => getTemplateFileNames()
-    const formattedCode = () => store.code[currentTab.value].trim()
+    const formattedCode = computed(() => store.code[currentTab.value].trim())
     return { store, currentTab, tabs, getLang, getFileType, formattedCode }
   }
 }

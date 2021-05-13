@@ -7,8 +7,7 @@
         saveKey="template"
         :label="templateLabel"
         :options="templateOptions"
-        :preSelect="1"
-        @change="downloadTemplates"
+        @change.prevent="downloadTemplates"
       />
     </div>
   </div>
@@ -22,10 +21,8 @@ import { store, fetchTemplates } from '../store.js'
 export default {
   components: { FormSelect },
   setup() {
-    const templateLabel = 'Choose Template'
+    const templateLabel = 'Choose A Template'
     const templateOptions = Object.keys(templates)
-    fetchTemplates(store.config.template)
-    console.log(store.code)
 
     const downloadTemplates = () => fetchTemplates(store.config.template)
 

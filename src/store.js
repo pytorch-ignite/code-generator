@@ -1,12 +1,16 @@
+// @ts-check
 // central store for user input configs and generated codes
-import { reactive, watchEffect } from 'vue'
+import { reactive, watch } from 'vue'
 import ejs from 'ejs'
 
 import templates from './templates/templates.json'
 
 // get env variables for template fetching
+// @ts-ignore
 const isProd = import.meta.env.PROD
+// @ts-ignore
 const isDev = import.meta.env.DEV
+// @ts-ignore
 const gitCommit = import.meta.env.VITE_GIT_COMMIT
 
 // set url for template fetching
@@ -19,38 +23,40 @@ const url = isDev ? localhostURL : isProd ? rawGitURL : null
 
 // ejs options
 ejs.localsName = 'it'
-ejs.delimiter = '@'
+ejs.delimiter = ':::'
 ejs.openDelimiter = '#'
 ejs.closeDelimiter = '#'
 
+export let files = {}
 export const store = reactive({
   code: {},
-  config: {
-    template: 'template-vision-classification'
-  }
+  config: {}
 })
 
 export function saveConfig(key, value) {
   if (store.config[key] === undefined || store.config[key] !== value) {
     store.config[key] = value
   }
-  store.config[key] = value
 }
 
-export function getTemplateFileNames() {
-  const files = []
-  files.push(...Object.keys(templates[store.config.template]))
-  // files.push('requirements.txt')
-  return files
+export async function genCode() {
+  console.log('watch effect')
+  if (files && Object.keys(files).length) {
+    for (const file in files) {
+      // console.log(file)
+      store.code[file] = ejs.render(files[file], store.config)
+    }
+  }
 }
-
-export function genCode() {}
 
 export async function fetchTemplates(template) {
   for (const filename in templates[template]) {
     const res = await fetch(`${url}/${template}/${filename}`)
-    store.code[filename] = await res.text()
+    const text = await res.text()
+    files[filename] = text
   }
+  console.log('after fetch')
+  genCode()
 }
 
-watchEffect(() => genCode())
+watch(store.config, () => genCode())

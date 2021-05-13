@@ -11,7 +11,7 @@
       v-model.trim="selected"
       @change.prevent="saveSelected"
     >
-      <option disabled value="" v-show="!preSelect">
+      <option disabled value="">
         --- Choose {{ toTitleCase(saveKey) }} ---
       </option>
       <option :value="o" v-for="(o, index) in options" :key="index">
@@ -41,24 +41,16 @@ export default {
     saveKey: {
       type: String,
       required: true
-    },
-    preSelect: {
-      type: Number,
-      required: false
     }
   },
   setup(props) {
-    const { label, options, required, saveKey, preSelect } = toRefs(props)
+    const { label, options, required, saveKey } = toRefs(props)
     const selected = ref('')
-    if (preSelect) {
-      selected.value = options.value[preSelect.value - 1]
-    }
 
     const saveSelected = () => saveConfig(saveKey.value, selected.value)
     const selectId = computed(() => label.value + '-select')
     const isRequired = computed(() => (required.value ? '*' : ''))
     return {
-      preSelect,
       saveKey,
       label,
       options,
