@@ -11,5 +11,6 @@
   "log_every_iters": 2,
   "lr": 1e-3,
   "resume_from": null,
-  "use_amp": false
+  "use_amp": false,
+  "verbose": false
 }
