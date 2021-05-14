@@ -6,7 +6,8 @@
       :label="deterministic.description"
       :saveKey="deterministic.name"
     />
-    <h2 class="training">Distributed Training</h2>
+    <h2 class="training">Distributed Training (NCCL backend)</h2>
+    <FormRadio :options="[launch, spawn]" saveKey="dist" />
     <template v-for="(d, index) in distributedConfigs" :key="index">
       <FormInput :label="d.description" :type="d.type" :saveKey="d.name" />
     </template>
@@ -15,33 +16,25 @@
 
 <script>
 import { computed, ref } from 'vue'
-import {
-  deterministic,
-  nproc_per_node,
-  nnodes,
-  master_addr,
-  master_port
-} from '../metadata/training.json'
+import { training } from '../metadata/metadata.json'
 import FormCheckbox from './FormCheckbox.vue'
 import FormInput from './FormInput.vue'
+import FormRadio from './FormRadio.vue'
 
 export default {
-  components: { FormCheckbox, FormInput },
+  components: { FormCheckbox, FormInput, FormRadio },
   setup() {
+    const { deterministic, launch, spawn, ...distributedConfigs } = training
     const isDeterministic = ref(false)
     const distributedValue = ref({})
-    const distributedConfigs = [
-      nproc_per_node,
-      nnodes,
-      master_addr,
-      master_port
-    ]
 
     // computed properties
     const saveDeterministic = computed(() => {
       saveConfig(deterministic.name, isDeterministic.value)
     })
     return {
+      launch,
+      spawn,
       deterministic,
       isDeterministic,
       saveDeterministic,

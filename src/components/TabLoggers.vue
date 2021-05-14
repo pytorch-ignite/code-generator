@@ -17,7 +17,7 @@
 
 <script>
 import { ref } from 'vue'
-import { logger, output_dir } from '../metadata/utils.json'
+import { loggers } from '../metadata/metadata.json'
 import { saveConfig } from '../store'
 import FormSelect from './FormSelect.vue'
 import FormInput from './FormInput.vue'
@@ -28,13 +28,7 @@ export default {
     const outputDirValue = ref('')
     const loggerValue = ref('')
 
-    return {
-      logger,
-      output_dir,
-      saveConfig,
-      outputDirValue,
-      loggerValue
-    }
+    return { ...loggers, saveConfig, outputDirValue, loggerValue }
   }
 }
 </script>

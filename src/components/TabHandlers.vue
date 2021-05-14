@@ -2,44 +2,55 @@
   <div class="tab handlers">
     <h1>Ignite Handlers Options</h1>
     <h2>Checkpointing</h2>
-    <p>{{ to_save.description }}</p>
-    <template v-for="(o, index) in to_save.options" :key="index">
-      <FormCheckbox :label="o.description" :saveKey="o.name" />
-    </template>
+    <FormCheckbox
+      :label="save_training.description"
+      :saveKey="save_training.name"
+    />
+    <FormCheckbox
+      :label="save_evaluation.description"
+      :saveKey="save_evaluation.name"
+    />
+    <FormInput
+      :label="filename_prefix.description"
+      :saveKey="filename_prefix.name"
+      :type="filename_prefix.type"
+    />
+    <FormInput
+      :label="n_saved.description"
+      :saveKey="n_saved.name"
+      :type="n_saved.type"
+    />
+    <h2>Training Termination</h2>
     <FormCheckbox
       :label="terminate_on_nan.description"
       :saveKey="terminate_on_nan.name"
     />
-    <template
-      v-for="(o, index) in [filename_prefix, n_saved, limit_sec]"
-      :key="index"
-    >
-      <FormInput :label="o.description" :saveKey="o.name" :type="o.type" />
-    </template>
+    <h2>Events Timer</h2>
+    <FormCheckbox :label="timer.description" :saveKey="timer.name" />
+    <h2>Early Stopping</h2>
+    <FormInput
+      :label="patience.description"
+      :saveKey="patience.name"
+      :type="patience.type"
+    />
+    <h2>Limit Training Time</h2>
+    <FormInput
+      :label="limit_sec.description"
+      :saveKey="limit_sec.name"
+      :type="limit_sec.type"
+    />
   </div>
 </template>
 
 <script>
-import {
-  to_save,
-  filename_prefix,
-  n_saved,
-  terminate_on_nan,
-  limit_sec
-} from '../metadata/utils.json'
+import { handlers } from '../metadata/metadata.json'
 import FormInput from './FormInput.vue'
 import FormCheckbox from './FormCheckbox.vue'
 
 export default {
   components: { FormInput, FormCheckbox },
   setup() {
-    return {
-      to_save,
-      filename_prefix,
-      n_saved,
-      terminate_on_nan,
-      limit_sec
-    }
+    return { ...handlers }
   }
 }
 </script>

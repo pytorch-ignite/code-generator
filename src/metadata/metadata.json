@@ -1,0 +1,107 @@
+{
+  "training": {
+    "deterministic": {
+      "name": "deterministic",
+      "type": "checkbox",
+      "description": "Should the training be deterministic?"
+    },
+    "launch": {
+      "name": "launch",
+      "type": "radio",
+      "description": "Run the training with torch.distributed.launch"
+    },
+    "spawn": {
+      "name": "spawn",
+      "type": "radio",
+      "description": "Run the training with torch.multiprocessing.spawn"
+    },
+    "nproc_per_node": {
+      "name": "nproc_per_node",
+      "type": "number",
+      "description": "Number of processes to launch on each node",
+      "min": 1
+    },
+    "nnodes": {
+      "name": "nnodes",
+      "type": "number",
+      "description": "Number of nodes to use for distributed training",
+      "min": 1
+    },
+    "master_addr": {
+      "name": "master_addr",
+      "type": "text",
+      "description": "Master node TCP/IP address for torch native backends (mandatory if you have filled number of nodes)"
+    },
+    "master_port": {
+      "name": "master_port",
+      "type": "number",
+      "description": "Master node port for torch native backends (mandatory if you have filled number of nodes)",
+      "min": 0
+    }
+  },
+  "handlers": {
+    "save_training": {
+      "name": "save_training",
+      "type": "checkbox",
+      "description": "Save the training state by every save_every_iters."
+    },
+    "save_evaluation": {
+      "name": "save_evaluation",
+      "type": "checkbox",
+      "description": "Save model by best evaluation metric score."
+    },
+    "terminate_on_nan": {
+      "name": "terminate_on_nan",
+      "type": "checkbox",
+      "description": "Stop the training if there is Inf/NaN tensor found."
+    },
+    "timer": {
+      "name": "timer",
+      "type": "checkbox",
+      "description": "Measure (average) time between events using Timer handler."
+    },
+    "patience": {
+      "name": "patience",
+      "type": "number",
+      "description": "Number of events to wait if no improvement and then stop the training."
+    },
+    "filename_prefix": {
+      "name": "filename_prefix",
+      "type": "text",
+      "value": "checkpointing",
+      "description": "What prefix would you like to put in front of saved checkpoint file?"
+    },
+    "n_saved": {
+      "name": "n_saved",
+      "type": "number",
+      "value": "checkpointing",
+      "description": "How many checkpoint file would you like to keep on disk?"
+    },
+    "limit_sec": {
+      "name": "limit_sec",
+      "type": "number",
+      "description": "How long do you want to run for the training and then terminate?"
+    }
+  },
+  "loggers": {
+    "output_dir": {
+      "name": "output_dir",
+      "type": "text",
+      "description": "Directory to save all outputs"
+    },
+    "logger": {
+      "name": "logger",
+      "type": "array",
+      "description": "Select experiment tracking system",
+      "options": [
+        "clearml",
+        "mlflow",
+        "neptune",
+        "polyaxon",
+        "tensorboard",
+        "visdom",
+        "wandb"
+      ]
+    }
+  }
+}

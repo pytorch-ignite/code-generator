@@ -21,14 +21,11 @@ const urlDev = `${location.href}/${urlTemplates}`
 const urlProd = `https://raw.githubusercontent.com/pytorch-ignite/code-generator/${commit}/${urlTemplates}`
 const url = isDev ? urlDev : isProd ? urlProd : null
 
-// ejs options
-ejs.localsName = 'it'
-ejs.delimiter = ':::'
-ejs.openDelimiter = '#'
-ejs.closeDelimiter = '#'
-
 // to store all fetch template files
 const files = {}
+
+// filename to store user input config during development
+export const __DEV_CONFIG_FILE__ = '__DEV_CONFIG__.json'
 
 // main reactive object
 // store.code - the final rendered code to be included in archive
@@ -60,6 +57,9 @@ export async function genCode() {
       store.code[file] = ejs.render(currentFiles[file], store.config)
     }
   }
+  if (isDev) {
+    store.code[__DEV_CONFIG_FILE__] = JSON.stringify(store.config, null, 2)
+  }
 }
 
 /**
@@ -87,3 +87,9 @@ export async function fetchTemplates(template) {
 // watch the store.config
 // if that changed, call the genCode function
 watch(store.config, () => genCode())
+
+// ejs options
+ejs.localsName = 'it'
+ejs.delimiter = ':::'
+ejs.openDelimiter = '#'
+ejs.closeDelimiter = '#'
