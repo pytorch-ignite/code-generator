@@ -61,7 +61,7 @@ export default {
         console.error(e)
       }
       copyText.value = 'Copied'
-      setTimeout(() => (copyText.value = 'Copy'), 3000)
+      setTimeout(() => (copyText.value = 'Copy'), 1500)
     }
 
     return { className, highlightCode, getLineNumbers, copyCode, copyText }

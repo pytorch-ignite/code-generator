@@ -43,7 +43,7 @@
     "save_training": {
       "name": "save_training",
       "type": "checkbox",
-      "description": "Save the training stats by every save_every_iters."
+      "description": "Save the training state by every save_every_iters."
     },
     "save_evaluation": {
       "name": "save_evaluation",
@@ -53,7 +53,17 @@
     "terminate_on_nan": {
       "name": "terminate_on_nan",
       "type": "checkbox",
-      "description": "Would you like to stop the training if there is Inf/NaN tensor found?"
+      "description": "Stop the training if there is Inf/NaN tensor found."
+    },
+    "timer": {
+      "name": "timer",
+      "type": "checkbox",
+      "description": "Measure (average) time between events using Timer handler."
+    },
+    "patience": {
+      "name": "patience",
+      "type": "number",
+      "description": "Number of events to wait if no improvement and then stop the training."
     },
     "filename_prefix": {
       "name": "filename_prefix",

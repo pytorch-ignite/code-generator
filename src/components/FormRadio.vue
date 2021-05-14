@@ -1,20 +1,21 @@
 <template>
-  <form class="inputs-wrapper" @submit.prevent="saveInput">
+  <div class="inputs-wrapper">
     <p v-for="(o, index) in options" :key="index">
       <input
         type="radio"
-        v-model="inputted"
+        v-model="picked"
         :name="saveKey"
         :id="o.description"
         :required="required"
         :value="o.name"
+        @change.prevent="saveInput"
       />
       <label :for="o.description">
         {{ o.description }}
       </label>
       {{ isRequired }}
     </p>
-  </form>
+  </div>
 </template>
 
 <script>
@@ -32,20 +33,20 @@ export default {
     },
     options: {
       type: Array,
-      required: false
+      required: true
     }
   },
   setup(props) {
     const { options, saveKey, required } = toRefs(props)
-    const inputted = ref('')
+    const picked = ref('')
 
-    const saveInput = () => saveConfig(saveKey.value, inputted.value)
+    const saveInput = () => saveConfig(saveKey.value, picked.value)
     const isRequired = computed(() => (required.value ? '*' : ''))
     return {
       options,
       saveKey,
       required,
-      inputted,
+      picked,
       saveInput,
       isRequired
     }

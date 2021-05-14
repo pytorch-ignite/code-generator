@@ -6,7 +6,7 @@
       :label="deterministic.description"
       :saveKey="deterministic.name"
     />
-    <h2 class="training">Distributed Training</h2>
+    <h2 class="training">Distributed Training (NCCL backend)</h2>
     <FormRadio :options="[launch, spawn]" saveKey="dist" />
     <template v-for="(d, index) in distributedConfigs" :key="index">
       <FormInput :label="d.description" :type="d.type" :saveKey="d.name" />

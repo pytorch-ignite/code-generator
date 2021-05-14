@@ -40,7 +40,11 @@ export default {
     const currentTab = ref('README.md')
     const tabs = computed(() => {
       if (store.config.template) {
-        return Object.keys(templates[store.config.template])
+        const tabsArr = Object.keys(templates[store.config.template])
+        if (import.meta.env.DEV) {
+          tabsArr.push('dev_config.json')
+        }
+        return tabsArr
       }
     })
     // search more file types mapping on

@@ -60,6 +60,9 @@ export async function genCode() {
       store.code[file] = ejs.render(currentFiles[file], store.config)
     }
   }
+  if (isDev) {
+    store.code['dev_config.json'] = JSON.stringify(store.config, null, 2)
+  }
 }
 
 /**
