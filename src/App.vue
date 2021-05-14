@@ -8,10 +8,7 @@
       <PaneRight />
     </template>
   </SplitPane>
-  <footer class="footer-and-badge">
-    BSD-3-Clause License | Copyright &copy; 2021-present PyTorch-Ignite Team &
-    Code-Generator Contributors
-  </footer>
+  <Footer />
 </template>
 
 <script>
@@ -19,13 +16,15 @@ import NavBar from './components/NavBar.vue'
 import SplitPane from './components/PaneSplit.vue'
 import PaneRight from './components/PaneRight.vue'
 import PaneLeft from './components/PaneLeft.vue'
+import Footer from './components/Footer.vue'
 
 export default {
   components: {
     NavBar,
     SplitPane,
     PaneRight,
-    PaneLeft
+    PaneLeft,
+    Footer
   }
 }
 </script>
@@ -105,12 +104,5 @@ code {
   padding: 0.25rem 0.5rem;
   color: var(--code-text-light);
   background-color: var(--code-inline-bg-color);
-}
-.footer-and-badge {
-  border-top: 1px solid var(--c-white-dark);
-  text-align: center;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  padding: 3rem 1.5rem;
 }
 </style>
