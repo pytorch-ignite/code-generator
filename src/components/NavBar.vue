@@ -97,7 +97,7 @@ export default {
   setup() {
     let zip = new JSZip()
     const showDownloadMsg = ref(false)
-    const currentCommit = import.meta.env.VITE_COMMIT
+    const currentCommit = __COMMIT__ /* from vite.config.js */
 
     const downloadProject = () => {
       if (store.code && Object.keys(store.code).length) {

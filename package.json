@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/getCommit.js && vite build",
+    "build": "vite build",
     "serve": "vite preview",
     "black:fmt": "black . -l 80",
     "black:lint": "black . -l 80 --check",

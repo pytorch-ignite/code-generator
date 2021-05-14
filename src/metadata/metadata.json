@@ -48,7 +48,7 @@
     "save_evaluation": {
       "name": "save_evaluation",
       "type": "checkbox",
-      "description": "Save model by best evaluation metric score."
+      "description": "Save the model(s) by best evaluation metric score."
     },
     "terminate_on_nan": {
       "name": "terminate_on_nan",
