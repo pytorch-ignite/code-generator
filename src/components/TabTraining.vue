@@ -15,27 +15,16 @@
 
 <script>
 import { computed, ref } from 'vue'
-import {
-  deterministic,
-  nproc_per_node,
-  nnodes,
-  master_addr,
-  master_port
-} from '../metadata/training.json'
+import { training } from '../metadata/metadata.json'
 import FormCheckbox from './FormCheckbox.vue'
 import FormInput from './FormInput.vue'
 
 export default {
   components: { FormCheckbox, FormInput },
   setup() {
+    const { deterministic, ...distributedConfigs } = training
     const isDeterministic = ref(false)
     const distributedValue = ref({})
-    const distributedConfigs = [
-      nproc_per_node,
-      nnodes,
-      master_addr,
-      master_port
-    ]
 
     // computed properties
     const saveDeterministic = computed(() => {

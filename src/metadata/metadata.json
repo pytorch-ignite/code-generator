@@ -1,0 +1,109 @@
+{
+  "training": {
+    "deterministic": {
+      "name": "deterministic",
+      "type": "checkbox",
+      "description": "Should the training be deterministic?"
+    },
+    "nproc_per_node": {
+      "name": "nproc_per_node",
+      "type": "number",
+      "description": "Number of processes to launch on each node",
+      "min": 1
+    },
+    "nnodes": {
+      "name": "nnodes",
+      "type": "number",
+      "description": "Number of nodes to use for distributed training",
+      "min": 1
+    },
+    "master_addr": {
+      "name": "master_addr",
+      "type": "text",
+      "description": "Master node TCP/IP address for torch native backends (mandatory if you have filled number of nodes)"
+    },
+    "master_port": {
+      "name": "master_port",
+      "type": "number",
+      "description": "Master node port for torch native backends (mandatory if you have filled number of nodes)",
+      "min": 0
+    }
+  },
+  "handlers": {
+    "to_save": {
+      "name": "to_save",
+      "description": "What do you want to save?",
+      "value": "checkpointing",
+      "options": {
+        "model": {
+          "name": "save_model",
+          "type": "checkbox",
+          "description": "This will save all the models."
+        },
+        "optimizer": {
+          "name": "save_optimizer",
+          "type": "checkbox",
+          "description": "This will save all the optimizers."
+        },
+        "lr_scheduler": {
+          "name": "save_lr_scheduler",
+          "type": "checkbox",
+          "description": "This will save all the LR schedulers."
+        },
+        "trainer": {
+          "name": "save_trainer",
+          "type": "checkbox",
+          "description": "This will save trainer."
+        },
+        "evaluator": {
+          "name": "save_evaluator",
+          "type": "checkbox",
+          "description": "This will save evaluator."
+        }
+      }
+    },
+    "filename_prefix": {
+      "name": "filename_prefix",
+      "type": "text",
+      "value": "checkpointing",
+      "description": "What prefix would you like to put in front of saved checkpoint file?"
+    },
+    "n_saved": {
+      "name": "n_saved",
+      "type": "number",
+      "value": "checkpointing",
+      "description": "How many checkpoint file would you like to keep on disk?"
+    },
+    "limit_sec": {
+      "name": "limit_sec",
+      "type": "number",
+      "description": "How long do you want to run for the training and then terminate?"
+    },
+    "terminate_on_nan": {
+      "name": "terminate_on_nan",
+      "type": "checkbox",
+      "description": "Would you like to stop the training if there is Inf/NaN tensor found?"
+    }
+  },
+  "loggers": {
+    "output_dir": {
+      "name": "output_dir",
+      "type": "text",
+      "description": "Directory to save all outputs"
+    },
+    "logger": {
+      "name": "logger",
+      "type": "array",
+      "description": "Select experiment tracking system",
+      "options": [
+        "clearml",
+        "mlflow",
+        "neptune",
+        "polyaxon",
+        "tensorboard",
+        "visdom",
+        "wandb"
+      ]
+    }
+  }
+}

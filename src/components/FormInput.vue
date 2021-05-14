@@ -2,8 +2,9 @@
   <form class="inputs-wrapper" @submit.prevent="saveInput">
     <p class="label-wrapper">
       <label :for="inputId">
-        {{ label }} – <code>{{ saveKey }}</code> {{ isRequired }}
+        {{ label }}
       </label>
+      {{ isRequired }}
     </p>
     <input
       minlength="1"

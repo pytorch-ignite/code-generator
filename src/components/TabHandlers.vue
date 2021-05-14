@@ -20,26 +20,14 @@
 </template>
 
 <script>
-import {
-  to_save,
-  filename_prefix,
-  n_saved,
-  terminate_on_nan,
-  limit_sec
-} from '../metadata/utils.json'
+import { handlers } from '../metadata/metadata.json'
 import FormInput from './FormInput.vue'
 import FormCheckbox from './FormCheckbox.vue'
 
 export default {
   components: { FormInput, FormCheckbox },
   setup() {
-    return {
-      to_save,
-      filename_prefix,
-      n_saved,
-      terminate_on_nan,
-      limit_sec
-    }
+    return { ...handlers }
   }
 }
 </script>
