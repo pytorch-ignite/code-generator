@@ -10,7 +10,7 @@
   </footer>
 </template>
 
-<style>
+<style scoped>
 .footer-and-badge {
   border-top: 1px solid var(--c-white-dark);
   text-align: center;

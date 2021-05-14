@@ -1,32 +1,41 @@
 <template>
-  <div class="right-pane-tabs" v-if="tabs">
-    <div
-      v-for="tab in tabs"
-      :key="tab"
-      class="right-pane-tab"
-      :class="{ active: currentTab === tab }"
-      @click="currentTab = tab"
-    >
-      <span class="iconify" :data-icon="getFileType(tab)"></span>
-      {{ tab }}
+  <div v-if="tabs">
+    <div class="right-pane-tabs">
+      <div
+        v-for="tab in tabs"
+        :key="tab"
+        class="right-pane-tab"
+        :class="{ active: currentTab === tab }"
+        @click="currentTab = tab"
+      >
+        <span class="iconify" :data-icon="getFileType(tab)"></span>
+        {{ tab }}
+      </div>
+    </div>
+    <div class="right-pane-contexts" v-if="store.code[currentTab]">
+      <KeepAlive>
+        <CodeBlock :lang="getLang" :code="formattedCode()" />
+      </KeepAlive>
+    </div>
+    <div v-else class="loading-code">
+      <h2>Loading Code...</h2>
     </div>
   </div>
-  <div class="right-pane-contexts" v-if="store.code[currentTab]">
-    <KeepAlive>
-      <CodeBlock :lang="getLang" :code="formattedCode()" />
-    </KeepAlive>
+  <div v-else>
+    <Instruction />
   </div>
 </template>
 
 <script>
 import CodeBlock from './CodeBlock.vue'
+import Instruction from './Instruction.vue'
 import { store } from '../store'
 import { computed, ref } from 'vue'
 import templates from '../templates/templates.json'
 import '@iconify/iconify'
 
 export default {
-  components: { CodeBlock },
+  components: { CodeBlock, Instruction },
   setup() {
     const currentTab = ref('README.md')
     const tabs = computed(() => {
@@ -93,5 +102,11 @@ export default {
     height: 100%;
     padding: 0;
   }
+}
+.loading-code {
+  max-width: 75%;
+  margin: 25% auto;
+  text-align: center;
+  color: #a1a1aa;
 }
 </style>
