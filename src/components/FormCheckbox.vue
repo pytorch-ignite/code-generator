@@ -9,8 +9,9 @@
           v-model="checked"
           @change="saveChecked"
         />
-        {{ label }} – <code>{{ saveKey }}</code> {{ isRequired }}
+        {{ label }}
       </label>
+      {{ isRequired }}
     </p>
   </form>
 </template>

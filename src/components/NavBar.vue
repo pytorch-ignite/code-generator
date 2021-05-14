@@ -100,13 +100,15 @@ export default {
     const currentCommit = import.meta.env.VITE_COMMIT
 
     const downloadProject = () => {
-      for (const filename in store.code) {
-        zip.file(filename, store.code[filename])
+      if (store.code && Object.keys(store.code).length) {
+        for (const filename in store.code) {
+          zip.file(filename, store.code[filename])
+        }
+        zip.generateAsync({ type: 'blob' }).then((content) => {
+          saveAs(content, `ignite-${store.config.template}.zip`)
+        })
+        showDownloadMsg.value = true
       }
-      zip.generateAsync({ type: 'blob' }).then((content) => {
-        saveAs(content, 'ignite-project.zip')
-      })
-      showDownloadMsg.value = true
     }
     return { version, downloadProject, showDownloadMsg, currentCommit }
   }

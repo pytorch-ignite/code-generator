@@ -29,7 +29,7 @@
 <script>
 import CodeBlock from './CodeBlock.vue'
 import Instruction from './Instruction.vue'
-import { store } from '../store'
+import { store, __DEV_CONFIG_FILE__ } from '../store'
 import { computed, ref } from 'vue'
 import templates from '../templates/templates.json'
 import '@iconify/iconify'
@@ -40,7 +40,11 @@ export default {
     const currentTab = ref('README.md')
     const tabs = computed(() => {
       if (store.config.template) {
-        return Object.keys(templates[store.config.template])
+        const tabsArr = Object.keys(templates[store.config.template])
+        if (import.meta.env.DEV) {
+          tabsArr.push(__DEV_CONFIG_FILE__)
+        }
+        return tabsArr
       }
     })
     // search more file types mapping on

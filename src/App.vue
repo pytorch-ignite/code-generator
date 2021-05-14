@@ -46,7 +46,7 @@ export default {
   --c-white-dark: #e4e4e7;
   --c-brand-red: #ee4c2c;
   --c-brand-yellow: #eaa700;
-  --c-text: #475569;
+  --c-text: #334155;
   --font-size: 1rem;
   --font-family-base: 'Inter', Avenir, -apple-system, BlinkMacSystemFont,
     'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans',
@@ -64,6 +64,7 @@ body {
   margin: 0;
   height: 100%;
   color: var(--c-text);
+  background-color: var(--c-white);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

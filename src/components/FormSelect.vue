@@ -2,8 +2,9 @@
   <form class="selector">
     <p>
       <label :for="selectId">
-        {{ label }} – <code>{{ saveKey }}</code> {{ isRequired }}
+        {{ label }}
       </label>
+      {{ isRequired }}
     </p>
     <select
       :id="selectId"
