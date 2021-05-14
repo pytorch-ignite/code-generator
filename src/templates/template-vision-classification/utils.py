@@ -1,4 +1,5 @@
 import logging
+from argparse import ArgumentParser
 from datetime import datetime
 from logging import Logger
 from pathlib import Path
@@ -17,13 +18,7 @@ from ignite.handlers.timing import Timer
 from ignite.utils import setup_logger
 
 
-def get_default_parser():
-    import json
-    from argparse import ArgumentParser
-
-    with open("config.json", "r") as f:
-        config = json.load(f)
-
+def get_default_parser(config):
     parser = ArgumentParser(add_help=False)
     for key, value in config.items():
         parser.add_argument(f"--{key}", default=value)
@@ -93,7 +88,43 @@ def resume_from(
     logger.info("Successfully resumed from a checkpoint: %s", checkpoint_fp)
 
 
-#::: if (it.save_model || it.save_optimizer || it.save_lr_scheduler || it.save_trainer || it.save_evaluator || it.patience || it.terminate_on_nan || it.timer || it.limit_sec) { :::#
+def setup_output_dir(config: Any, rank: int):
+    """Create output folder."""
+    if rank == 0:
+        now = datetime.now().strftime("%Y%m%d-%H%M%S")
+        name = f"{now}-backend-{config.backend}-lr-{config.lr}"
+        path = Path(config.output_dir, name)
+        path.mkdir(parents=True, exist_ok=True)
+        config.output_dir = path.as_posix()
+
+    return Path(idist.broadcast(config.output_dir, src=0))
+
+
+def setup_logging(config: Any) -> Logger:
+    """Setup logger with `ignite.utils.setup_logger()`.
+
+    Parameters
+    ----------
+    config
+        config object. config has to contain `verbose` and `output_dir` attribute.
+
+    Returns
+    -------
+    logger
+        an instance of `Logger`
+    """
+    green = "\033[32m"
+    reset = "\033[0m"
+    logger = setup_logger(
+        name=f"{green}[ignite]{reset}",
+        level=logging.DEBUG if config.verbose else logging.INFO,
+        format="%(name)s: %(message)s",
+        filepath=config.output_dir / "training-info.log",
+    )
+    return logger
+
+
+#::: if (it.save_training || it.save_evaluation || it.patience || it.terminate_on_nan || it.timer || it.limit_sec) { :::#
 
 
 def setup_handlers(
@@ -105,15 +136,22 @@ def setup_handlers(
 ):
     """Setup Ignite handlers."""
 
-    #::: if (it.save_model || it.save_optimizer || it.save_lr_scheduler || it.save_trainer || it.save_evaluator) { :::#
+    #::: if (it.save_training || it.save_evaluation) { :::#
     # checkpointing
     saver = DiskSaver(config.output_dir / "checkpoints", require_empty=False)
+    #::: if (it.save_training) { :::#
     ckpt_handler_train = Checkpoint(
         to_save_train,
         saver,
         filename_pattern=config.filename_prefix,
         n_saved=config.n_saved,
     )
+    trainer.add_event_handler(
+        Events.ITERATION_COMPLETED(every=config.save_every_iters),
+        ckpt_handler_train,
+    )
+    #::: } :::#
+    #::: if (it.save_evaluation) { :::#
     global_step_transform = None
     if to_save_train.get("trainer", None) is not None:
         global_step_transform = global_step_from_engine(
@@ -126,13 +164,10 @@ def setup_handlers(
         n_saved=config.n_saved,
         global_step_transform=global_step_transform,
     )
-    trainer.add_event_handler(
-        Events.ITERATION_COMPLETED(every=config.save_every_iters),
-        ckpt_handler_train,
-    )
     evaluator.add_event_handler(
         Events.EPOCH_COMPLETED(every=1), ckpt_handler_eval
     )
+    #::: } :::#
     #::: } :::#
 
     #::: if (it.patience) { :::#
@@ -214,39 +249,3 @@ def setup_exp_logging(config, trainer, optimizers, evaluators):
 
 
 #::: } :::#
-
-
-def setup_output_dir(config: Any, rank: int):
-    """Create output folder."""
-    if rank == 0:
-        now = datetime.now().strftime("%Y%m%d-%H%M%S")
-        name = f"{now}-backend-{config.backend}-lr-{config.lr}"
-        path = Path(config.output_dir, name)
-        path.mkdir(parents=True, exist_ok=True)
-        config.output_dir = path.as_posix()
-
-    return Path(idist.broadcast(config.output_dir, src=0))
-
-
-def setup_logging(config: Any) -> Logger:
-    """Setup logger with `ignite.utils.setup_logger()`.
-
-    Parameters
-    ----------
-    config
-        config object. config has to contain `verbose` and `output_dir` attribute.
-
-    Returns
-    -------
-    logger
-        an instance of `Logger`
-    """
-    green = "\033[32m"
-    reset = "\033[0m"
-    logger = setup_logger(
-        name=f"{green}[ignite]{reset}",
-        level=logging.DEBUG if config.verbose else logging.INFO,
-        format="%(name)s: %(message)s",
-        filepath=config.output_dir / "training-info.log",
-    )
-    return logger

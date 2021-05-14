@@ -53,7 +53,9 @@ export default {
       py: 'python',
       md: 'markdown',
       json: 'json',
-      txt: 'text'
+      txt: 'text',
+      yml: 'yaml',
+      yaml: 'yaml'
     }
 
     const getFileType = (tab) => {

@@ -18,6 +18,7 @@
 <script>
 import { highlight, languages } from 'prismjs'
 import 'prismjs/components/prism-json'
+import 'prismjs/components/prism-yaml'
 import 'prismjs/components/prism-python'
 import 'prismjs/components/prism-markdown'
 import 'prismjs/themes/prism-tomorrow.css'
@@ -158,6 +159,7 @@ div[class~='language-bash']::before {
   content: 'sh';
 }
 
+div[class~='language-yml']::before,
 div[class~='language-yaml']::before {
   content: 'yaml';
 }
