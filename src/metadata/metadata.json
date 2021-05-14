@@ -95,6 +95,11 @@
       "type": "text",
       "description": "Directory to save all outputs"
     },
+    "log_every_iters": {
+      "name": "log_every_iters",
+      "type": "number",
+      "description": "Logging interval for training statistics"
+    },
     "logger": {
       "name": "logger",
       "type": "array",

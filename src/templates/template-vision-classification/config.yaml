@@ -7,9 +7,7 @@ num_workers: 2
 max_epochs: 2
 train_epoch_length: 4
 eval_epoch_length: 4
-log_every_iters: 2
 lr: 0.0001
-resume_from: null
 use_amp: false
 verbose: false
 
@@ -46,4 +44,8 @@ limit_sec: #:::= it.limit_sec :::#
 
 #::: if (it.output_dir) { :::#
 output_dir: #:::= it.output_dir :::#
+#::: } :::#
+
+#::: if (it.log_every_iters) { :::#
+log_every_iters: #:::= it.log_every_iters :::#
 #::: } :::#
