@@ -29,7 +29,7 @@
 <script>
 import CodeBlock from './CodeBlock.vue'
 import Instruction from './Instruction.vue'
-import { store } from '../store'
+import { store, __DEV_CONFIG_FILE__ } from '../store'
 import { computed, ref } from 'vue'
 import templates from '../templates/templates.json'
 import '@iconify/iconify'
@@ -42,7 +42,7 @@ export default {
       if (store.config.template) {
         const tabsArr = Object.keys(templates[store.config.template])
         if (import.meta.env.DEV) {
-          tabsArr.push('dev_config.json')
+          tabsArr.push(__DEV_CONFIG_FILE__)
         }
         return tabsArr
       }
