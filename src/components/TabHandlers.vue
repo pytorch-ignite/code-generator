@@ -2,19 +2,13 @@
   <div class="tab handlers">
     <h1>Ignite Handlers Options</h1>
     <h2>Checkpointing</h2>
-    <p>{{ to_save.description }}</p>
-    <template v-for="(o, index) in to_save.options" :key="index">
-      <FormCheckbox :label="o.description" :saveKey="o.name" />
-    </template>
-    <FormCheckbox
-      :label="terminate_on_nan.description"
-      :saveKey="terminate_on_nan.name"
-    />
-    <template
-      v-for="(o, index) in [filename_prefix, n_saved, limit_sec]"
-      :key="index"
-    >
-      <FormInput :label="o.description" :saveKey="o.name" :type="o.type" />
+    <template v-for="(h, index) in handlers" :key="index">
+      <template v-if="h.type === 'checkbox'">
+        <FormCheckbox :label="h.description" :saveKey="h.name" />
+      </template>
+      <template v-else>
+        <FormInput :label="h.description" :saveKey="h.name" :type="h.type" />
+      </template>
     </template>
   </div>
 </template>
@@ -27,7 +21,7 @@ import FormCheckbox from './FormCheckbox.vue'
 export default {
   components: { FormInput, FormCheckbox },
   setup() {
-    return { ...handlers }
+    return { handlers }
   }
 }
 </script>

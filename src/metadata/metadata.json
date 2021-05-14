@@ -5,6 +5,16 @@
       "type": "checkbox",
       "description": "Should the training be deterministic?"
     },
+    "launch": {
+      "name": "launch",
+      "type": "radio",
+      "description": "Run the training with torch.distributed.launch"
+    },
+    "spawn": {
+      "name": "spawn",
+      "type": "radio",
+      "description": "Run the training with torch.multiprocessing.spawn"
+    },
     "nproc_per_node": {
       "name": "nproc_per_node",
       "type": "number",
@@ -30,37 +40,20 @@
     }
   },
   "handlers": {
-    "to_save": {
-      "name": "to_save",
-      "description": "What do you want to save?",
-      "value": "checkpointing",
-      "options": {
-        "model": {
-          "name": "save_model",
-          "type": "checkbox",
-          "description": "This will save all the models."
-        },
-        "optimizer": {
-          "name": "save_optimizer",
-          "type": "checkbox",
-          "description": "This will save all the optimizers."
-        },
-        "lr_scheduler": {
-          "name": "save_lr_scheduler",
-          "type": "checkbox",
-          "description": "This will save all the LR schedulers."
-        },
-        "trainer": {
-          "name": "save_trainer",
-          "type": "checkbox",
-          "description": "This will save trainer."
-        },
-        "evaluator": {
-          "name": "save_evaluator",
-          "type": "checkbox",
-          "description": "This will save evaluator."
-        }
-      }
+    "save_training": {
+      "name": "save_training",
+      "type": "checkbox",
+      "description": "Save the training stats by every save_every_iters."
+    },
+    "save_evaluation": {
+      "name": "save_evaluation",
+      "type": "checkbox",
+      "description": "Save model by best evaluation metric score."
+    },
+    "terminate_on_nan": {
+      "name": "terminate_on_nan",
+      "type": "checkbox",
+      "description": "Would you like to stop the training if there is Inf/NaN tensor found?"
     },
     "filename_prefix": {
       "name": "filename_prefix",
@@ -78,11 +71,6 @@
       "name": "limit_sec",
       "type": "number",
       "description": "How long do you want to run for the training and then terminate?"
-    },
-    "terminate_on_nan": {
-      "name": "terminate_on_nan",
-      "type": "checkbox",
-      "description": "Would you like to stop the training if there is Inf/NaN tensor found?"
     }
   },
   "loggers": {
