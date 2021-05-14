@@ -4,7 +4,6 @@ from typing import Any
 
 import ignite.distributed as idist
 from data import setup_data
-from ignite.distributed.launcher import Parallel
 from ignite.engine import Events
 from ignite.metrics import Accuracy, Loss
 from ignite.utils import manual_seed
@@ -137,20 +136,20 @@ def main():
 
     #::: if (it.dist === 'spawn') { :::#
     #::: if (it.nproc_per_node && it.nnodes && it.master_addr && it.master_port) { :::#
-    spawn_kwargs = {
+    kwargs = {
         "nproc_per_node": config.nproc_per_node,
         "nnodes": config.nnodes,
         "master_addr": config.master_addr,
         "master_port": config.master_port,
     }
     #::: } else if (it.nproc_per_node) { :::#
-    spawn_kwargs = {"nproc_per_node": config.nproc_per_node}
+    kwargs = {"nproc_per_node": config.nproc_per_node}
     #::: } :::#
-    with Parallel(config.backend, **spawn_kwargs) as parallel:
-        parallel.run(run, config=config)
+    with idist.Parallel(config.backend, **kwargs) as p:
+        p.run(run, config=config)
     #::: } else { :::#
-    with Parallel(config.backend) as parallel:
-        parallel.run(run, config=config)
+    with idist.Parallel(config.backend) as p:
+        p.run(run, config=config)
     #::: } :::#
 
 
