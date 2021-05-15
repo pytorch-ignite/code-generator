@@ -62,17 +62,19 @@ export function genCode() {
   const currentFiles = files[store.config.template]
   if (currentFiles && Object.keys(currentFiles).length) {
     for (const file in currentFiles) {
+      store.code[file] = ejs.render(currentFiles[file], store.config)
+      if (file === 'config.json') {
+        const json = JSON.parse(currentFiles[file])
+        store.code[file] = JSON.stringify({ ...json, ...store.config }, null, 2)
+      }
       if (store.config.config_lib === 'hydra' && file === 'config.json') {
         delete store.code[file]
-        continue
       } else if (
         store.config.config_lib === 'argparse' &&
         (file === 'config.yaml' || file === 'config.yml')
       ) {
         delete store.code[file]
-        continue
       }
-      store.code[file] = ejs.render(currentFiles[file], store.config)
     }
     if (isDev) {
       store.code[__DEV_CONFIG_FILE__] = JSON.stringify(store.config, null, 2)

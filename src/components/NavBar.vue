@@ -101,9 +101,15 @@ export default {
     const downloadProject = () => {
       const zip = new JSZip()
       if (store.code && Object.keys(store.code).length) {
-        if (!store.config.output_dir) {
+        if (!store.config.config_lib) {
+          msg.showMsg = true
+          msg.content = `Configuration Library Type is required. Please choose in Templates tab.`
+        } else if (!store.config.output_dir) {
           msg.showMsg = true
           msg.content = `Output directory is required. Please input in Loggers tab.`
+        } else if (!store.config.log_every_iters) {
+          msg.showMsg = true
+          msg.content = `Logging interval is required. Please input in Loggers tab.`
         } else {
           for (const filename in store.code) {
             zip.file(filename, store.code[filename])
