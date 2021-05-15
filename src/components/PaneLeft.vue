@@ -15,6 +15,7 @@
       <component :is="currentTabComponent"></component>
     </KeepAlive>
   </div>
+  <Message :message="msg.content" :color="msg.color" />
 </template>
 
 <script>
@@ -22,10 +23,12 @@ import TabTemplates from './TabTemplates.vue'
 import TabTraining from './TabTraining.vue'
 import TabHandlers from './TabHandlers.vue'
 import TabLoggers from './TabLoggers.vue'
+import Message from './Message.vue'
 import { computed, ref } from 'vue'
+import { msg } from '../store.js'
 
 export default {
-  components: { TabTemplates, TabTraining, TabLoggers, TabHandlers },
+  components: { TabTemplates, TabTraining, TabLoggers, TabHandlers, Message },
   setup() {
     const currentTab = ref('Templates')
     const tabs = ref(['Templates', 'Training', 'Handlers', 'Loggers'])
@@ -35,7 +38,7 @@ export default {
       return 'tab-' + currentTab.value.toLowerCase()
     })
 
-    return { currentTab, tabs, currentTabComponent }
+    return { currentTab, tabs, currentTabComponent, msg }
   }
 }
 </script>

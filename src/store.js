@@ -27,6 +27,13 @@ const files = {}
 // filename to store user input config during development
 export const __DEV_CONFIG_FILE__ = '__DEV_CONFIG__.json'
 
+// to track message box
+export const msg = reactive({
+  showMsg: false,
+  content: '',
+  color: '#ff0000'
+})
+
 // main reactive object
 // store.code - the final rendered code to be included in archive
 // store.config - the internal config to track user input
