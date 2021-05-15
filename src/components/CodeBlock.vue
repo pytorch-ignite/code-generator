@@ -23,6 +23,7 @@ import 'prismjs/components/prism-python'
 import 'prismjs/components/prism-markdown'
 import 'prismjs/themes/prism-tomorrow.css'
 import { computed, ref, toRefs } from 'vue'
+import { msg } from '../store.js'
 
 export default {
   props: {
@@ -58,6 +59,9 @@ export default {
     const copyCode = async () => {
       try {
         await navigator.clipboard.writeText(code.value)
+        msg.color = '#0000ff'
+        msg.showMsg = true
+        msg.content = 'Code has been copied to Clipboard.'
       } catch (e) {
         console.error(e)
       }
