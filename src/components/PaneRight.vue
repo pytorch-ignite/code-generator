@@ -78,6 +78,9 @@ export default {
   scrollbar-width: none;
   border-bottom: 1px solid var(--c-white-dark);
 }
+.right-pane-tabs::-webkit-scrollbar {
+  display: none;
+}
 .right-pane-tabs,
 .right-pane-contexts {
   padding-right: 1.5rem;
