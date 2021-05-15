@@ -1,4 +1,16 @@
 {
+  "templates_config_lib": {
+    "argparse": {
+      "name": "argparse",
+      "type": "radio",
+      "description": "Use Argparse/JSON configurations"
+    },
+    "hydra": {
+      "name": "hydra",
+      "type": "radio",
+      "description": "Use Hydra/YAML configurations"
+    }
+  },
   "training": {
     "deterministic": {
       "name": "deterministic",

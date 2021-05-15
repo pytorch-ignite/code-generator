@@ -1,6 +1,7 @@
 {
   "template-vision-classification": {
     "README.md": "README.md",
+    "config.json": "config.json",
     "config.yaml": "config.yaml",
     "data.py": "data.py",
     "main.py": "main.py",

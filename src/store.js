@@ -33,7 +33,8 @@ export const __DEV_CONFIG_FILE__ = '__DEV_CONFIG__.json'
 export const store = reactive({
   code: {},
   config: {
-    template: ''
+    template: '',
+    config_lib: ''
   }
 })
 
@@ -50,15 +51,25 @@ export function saveConfig(key, value) {
 }
 
 // render the code if there are fetched files for current selected template
-export async function genCode() {
+export function genCode() {
   const currentFiles = files[store.config.template]
   if (currentFiles && Object.keys(currentFiles).length) {
     for (const file in currentFiles) {
+      if (store.config.config_lib === 'hydra' && file === 'config.json') {
+        delete store.code[file]
+        continue
+      } else if (
+        store.config.config_lib === 'argparse' &&
+        (file === 'config.yaml' || file === 'config.yml')
+      ) {
+        delete store.code[file]
+        continue
+      }
       store.code[file] = ejs.render(currentFiles[file], store.config)
     }
-  }
-  if (isDev) {
-    store.code[__DEV_CONFIG_FILE__] = JSON.stringify(store.config, null, 2)
+    if (isDev) {
+      store.code[__DEV_CONFIG_FILE__] = JSON.stringify(store.config, null, 2)
+    }
   }
 }
 

@@ -2,13 +2,16 @@ from argparse import ArgumentParser
 from pprint import pformat
 from typing import Any
 
+#::: if (it.config_lib) { :::#
+import hydra
+
+#::: } :::#
 import ignite.distributed as idist
 from data import setup_data
 from ignite.engine import Events
 from ignite.metrics import Accuracy, Loss
 from ignite.utils import manual_seed
 from model import Net
-from omegaconf import OmegaConf
 from torch import nn, optim
 from torch.utils.data.distributed import DistributedSampler
 from trainers import setup_evaluator, setup_trainer
@@ -51,7 +54,6 @@ def run(local_rank: int, config: Any):
     # print training configurations
     logger = setup_logging(config)
     logger.info("Configuration: %s", pformat(vars(config)))
-    OmegaConf.save(config, config.output_dir / "dumped-config.yaml")
     trainer.logger = evaluator.logger = logger
 
     # set epoch for distributed sampler
@@ -129,11 +131,34 @@ def run(local_rank: int, config: Any):
 
 
 # main
-def main():
-    config = OmegaConf.load("./config.yaml")
-    parser = ArgumentParser(parents=[get_default_parser(config)])
-    config = parser.parse_args()
+#::: if (it.config_lib === 'hydra') { :::#
+@hydra.main(config_name="config")
+def main(config):
+    #::: } :::#
+    #::: if (it.dist === 'spawn') { :::#
+    #::: if (it.nproc_per_node && it.nnodes && it.master_addr && it.master_port) { :::#
+    kwargs = {
+        "nproc_per_node": config.nproc_per_node,
+        "nnodes": config.nnodes,
+        "master_addr": config.master_addr,
+        "master_port": config.master_port,
+    }
+    #::: } else if (it.nproc_per_node) { :::#
+    kwargs = {"nproc_per_node": config.nproc_per_node}
+    #::: } :::#
+    with idist.Parallel(config.backend, **kwargs) as p:
+        p.run(run, config=config)
+    #::: } else { :::#
+    with idist.Parallel(config.backend) as p:
+        p.run(run, config=config)
+    #::: } :::#
 
+
+#::: if (it.config_lib === 'argparse') { :::#
+def main():
+    #::: } :::#
+    parser = ArgumentParser(parents=[get_default_parser()])
+    config = parser.parse_args()
     #::: if (it.dist === 'spawn') { :::#
     #::: if (it.nproc_per_node && it.nnodes && it.master_addr && it.master_port) { :::#
     kwargs = {

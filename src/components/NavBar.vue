@@ -95,11 +95,11 @@ import { ref } from 'vue'
 export default {
   components: { IconDiscord, IconDownload, IconGitHub, IconTwitter },
   setup() {
-    let zip = new JSZip()
     const showDownloadMsg = ref(false)
     const currentCommit = __COMMIT__ /* from vite.config.js */
 
     const downloadProject = () => {
+      const zip = new JSZip()
       if (store.code && Object.keys(store.code).length) {
         for (const filename in store.code) {
           zip.file(filename, store.code[filename])

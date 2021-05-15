@@ -1,8 +1,8 @@
 <template>
-  <div v-if="tabs">
+  <div v-if="tabs()">
     <div class="right-pane-tabs">
       <div
-        v-for="tab in tabs"
+        v-for="tab in tabs()"
         :key="tab"
         class="right-pane-tab"
         :class="{ active: currentTab === tab }"
@@ -38,15 +38,11 @@ export default {
   components: { CodeBlock, Instruction },
   setup() {
     const currentTab = ref('README.md')
-    const tabs = computed(() => {
+    const tabs = () => {
       if (store.config.template) {
-        const tabsArr = Object.keys(templates[store.config.template])
-        if (import.meta.env.DEV) {
-          tabsArr.push(__DEV_CONFIG_FILE__)
-        }
-        return tabsArr
+        return Object.keys(store.code)
       }
-    })
+    }
     // search more file types mapping on
     // https://icones.js.org/collection/vscode-icons
     const fileTypes = {

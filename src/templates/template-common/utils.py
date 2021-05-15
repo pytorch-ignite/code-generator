@@ -1,5 +1,4 @@
 import logging
-from argparse import ArgumentParser
 from datetime import datetime
 from logging import Logger
 from pathlib import Path
@@ -16,14 +15,6 @@ from ignite.handlers.terminate_on_nan import TerminateOnNan
 from ignite.handlers.time_limit import TimeLimit
 from ignite.handlers.timing import Timer
 from ignite.utils import setup_logger
-
-
-def get_default_parser(config):
-    parser = ArgumentParser(add_help=False)
-    for key, value in config.items():
-        parser.add_argument(f"--{key}", default=value)
-
-    return parser
 
 
 def log_metrics(engine: Engine, tag: str) -> None:
@@ -97,7 +88,7 @@ def setup_output_dir(config: Any, rank: int):
         path.mkdir(parents=True, exist_ok=True)
         config.output_dir = path.as_posix()
 
-    return Path(idist.broadcast(config.output_dir, src=0))
+    return idist.broadcast(config.output_dir, src=0)
 
 
 def setup_logging(config: Any) -> Logger:
@@ -138,7 +129,9 @@ def setup_handlers(
 
     #::: if (it.save_training || it.save_evaluation) { :::#
     # checkpointing
-    saver = DiskSaver(config.output_dir / "checkpoints", require_empty=False)
+    saver = DiskSaver(
+        Path(config.output_dir) / "checkpoints", require_empty=False
+    )
     #::: if (it.save_training) { :::#
     ckpt_handler_train = Checkpoint(
         to_save_train,
@@ -246,6 +239,23 @@ def setup_exp_logging(config, trainer, optimizers, evaluators):
     )
     #::: } :::#
     return logger
+
+
+#::: } :::#
+
+#::: if (it.config_lib === 'argparse') { :::#
+def get_default_parser():
+    import json
+    from argparse import ArgumentParser
+
+    with open("config.json", "r") as f:
+        config = json.load(f)
+
+    parser = ArgumentParser(add_help=False)
+    for key, value in config.items():
+        parser.add_argument(f"--{key}", default=value)
+
+    return parser
 
 
 #::: } :::#
