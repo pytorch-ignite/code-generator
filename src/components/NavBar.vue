@@ -103,7 +103,7 @@ export default {
       if (store.code && Object.keys(store.code).length) {
         if (!store.config.output_dir) {
           msg.showMsg = true
-          msg.content = `Output directory is required to have. Please choose in Loggers tab.`
+          msg.content = `Output directory is required. Please input in Loggers tab.`
         } else {
           for (const filename in store.code) {
             zip.file(filename, store.code[filename])

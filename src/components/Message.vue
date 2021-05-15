@@ -9,6 +9,8 @@
 </template>
 
 <script>
+// referenced on
+// https://github.com/vuejs/vue-next/blob/master/packages/sfc-playground/src/Message.vue
 import { computed, toRefs } from 'vue'
 import { msg } from '../store.js'
 
