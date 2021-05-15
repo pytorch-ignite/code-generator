@@ -76,6 +76,8 @@ function toTitleCase(v) {
   position: relative;
 }
 .selector select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
   appearance: none;
   background: var(--c-white-light);
   border-radius: 3px;
@@ -85,13 +87,14 @@ function toTitleCase(v) {
   font-size: var(--font-size);
   padding: 0.5rem 1rem;
   text-align: center;
+  text-align-last: center;
   width: 100%;
 }
 .selector::after {
   content: '';
   position: absolute;
   right: 1rem;
-  bottom: 16px;
+  bottom: 15px;
   border-top: 6px solid var(--c-brand-red);
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;

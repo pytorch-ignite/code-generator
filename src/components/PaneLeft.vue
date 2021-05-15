@@ -49,6 +49,9 @@ export default {
   scrollbar-width: none;
   border-bottom: 1px solid var(--c-white-dark);
 }
+.left-pane-tabs::-webkit-scrollbar {
+  display: none;
+}
 .left-pane-tabs,
 .left-pane-contexts {
   padding-left: 1.5rem;
