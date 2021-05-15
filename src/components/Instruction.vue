@@ -26,6 +26,7 @@
   margin: 25% auto;
   text-align: center;
   color: #a1a1aa;
+  text-transform: capitalize;
 }
 .iconify {
   vertical-align: middle;

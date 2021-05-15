@@ -5,3 +5,4 @@ dist-ssr
 *.local
 __pycache__
 *.log
+.vscode
