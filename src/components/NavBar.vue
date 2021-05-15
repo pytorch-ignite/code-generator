@@ -63,7 +63,7 @@
     >
       <div class="msg-wrapper">
         <div class="msg">
-          <h2>🎉 Your Training Script Generated! 🎉</h2>
+          <h2>🎉 Your Training Script Has Been Generated! 🎉</h2>
           <p>
             Thanks for using Code-Generator! Feel free to reach out to us on
             <a
@@ -83,7 +83,7 @@
 
 <script>
 import { version } from '../../package.json'
-import { store } from '../store'
+import { store, msg } from '../store'
 import { saveAs } from 'file-saver'
 import JSZip from 'jszip'
 import IconDiscord from './IconDiscord.vue'
@@ -101,13 +101,21 @@ export default {
 
     const downloadProject = () => {
       if (store.code && Object.keys(store.code).length) {
-        for (const filename in store.code) {
-          zip.file(filename, store.code[filename])
+        if (!store.config.output_dir) {
+          msg.showMsg = true
+          msg.content = `Output directory is required. Please input in Loggers tab.`
+        } else {
+          for (const filename in store.code) {
+            zip.file(filename, store.code[filename])
+          }
+          zip.generateAsync({ type: 'blob' }).then((content) => {
+            saveAs(content, `ignite-${store.config.template}.zip`)
+          })
+          showDownloadMsg.value = true
         }
-        zip.generateAsync({ type: 'blob' }).then((content) => {
-          saveAs(content, `ignite-${store.config.template}.zip`)
-        })
-        showDownloadMsg.value = true
+      } else {
+        msg.showMsg = true
+        msg.content = 'Choose a template to download.'
       }
     }
     return { version, downloadProject, showDownloadMsg, currentCommit }
