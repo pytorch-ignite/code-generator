@@ -57,6 +57,12 @@ export async function genCode() {
       store.code[file] = ejs.render(currentFiles[file], store.config)
     }
   }
+  const config = JSON.parse(store.code['config.json'])
+  store.code['config.json'] = JSON.stringify(
+    { ...config, ...store.config },
+    null,
+    2
+  )
   if (isDev) {
     store.code[__DEV_CONFIG_FILE__] = JSON.stringify(store.config, null, 2)
   }

@@ -8,5 +8,15 @@
     "trainers.py": "trainers.py",
     "utils.py": "utils.py",
     "requirements.txt": "requirements.txt"
+  },
+  "template-vision-dcgan": {
+    "README.md": "README.md",
+    "config.json": "config.json",
+    "data.py": "data.py",
+    "main.py": "main.py",
+    "model.py": "model.py",
+    "trainers.py": "trainers.py",
+    "utils.py": "utils.py",
+    "requirements.txt": "requirements.txt"
   }
 }
