@@ -1,16 +1,4 @@
 {
-  "templates_config_lib": {
-    "argparse": {
-      "name": "argparse",
-      "type": "radio",
-      "description": "Use Argparse/JSON configurations"
-    },
-    "hydra": {
-      "name": "hydra",
-      "type": "radio",
-      "description": "Use Hydra/YAML configurations"
-    }
-  },
   "training": {
     "deterministic": {
       "name": "deterministic",
@@ -87,7 +75,7 @@
       "name": "save_every_iters",
       "type": "number",
       "value": "checkpointing",
-      "description": "Saving interval for saving training states (mandatory for saving training states)"
+      "description": "Iteration interval for saving training states (mandatory for saving training states)"
     },
     "n_saved": {
       "name": "n_saved",
@@ -98,7 +86,7 @@
     "limit_sec": {
       "name": "limit_sec",
       "type": "number",
-      "description": "How long do you want to run for the training and then terminate?"
+      "description": "How long do you want to run for the training and then terminate? (in seconds)"
     }
   },
   "loggers": {

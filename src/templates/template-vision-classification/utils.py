@@ -110,7 +110,7 @@ def setup_logging(config: Any) -> Logger:
         name=f"{green}[ignite]{reset}",
         level=logging.DEBUG if config.verbose else logging.INFO,
         format="%(name)s: %(message)s",
-        filepath=config.output_dir / "training-info.log",
+        filepath=Path(config.output_dir) / "training-info.log",
     )
     return logger
 
@@ -127,6 +127,7 @@ def setup_handlers(
 ):
     """Setup Ignite handlers."""
 
+    ckpt_handler_train = ckpt_handler_eval = timer = None
     #::: if (it.save_training || it.save_evaluation) { :::#
     # checkpointing
     saver = DiskSaver(
@@ -136,7 +137,7 @@ def setup_handlers(
     ckpt_handler_train = Checkpoint(
         to_save_train,
         saver,
-        filename_pattern=config.filename_prefix,
+        filename_prefix=config.filename_prefix,
         n_saved=config.n_saved,
     )
     trainer.add_event_handler(
@@ -195,6 +196,7 @@ def setup_handlers(
         Events.ITERATION_COMPLETED, TimeLimit(config.limit_sec)
     )
     #::: } :::#
+    return ckpt_handler_train, ckpt_handler_eval, timer
 
 
 #::: } :::#
@@ -239,23 +241,6 @@ def setup_exp_logging(config, trainer, optimizers, evaluators):
     )
     #::: } :::#
     return logger
-
-
-#::: } :::#
-
-#::: if (it.config_lib === 'argparse') { :::#
-def get_default_parser():
-    import json
-    from argparse import ArgumentParser
-
-    with open("config.json", "r") as f:
-        config = json.load(f)
-
-    parser = ArgumentParser(add_help=False)
-    for key, value in config.items():
-        parser.add_argument(f"--{key}", default=value)
-
-    return parser
 
 
 #::: } :::#
