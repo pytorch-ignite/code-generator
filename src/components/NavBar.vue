@@ -101,6 +101,7 @@ export default {
 
     const downloadProject = () => {
       if (store.code && Object.keys(store.code).length) {
+        msg.color = '#ff0000'
         if (!store.config.output_dir) {
           msg.showMsg = true
           msg.content = `Output directory is required. Please input in Loggers tab.`
