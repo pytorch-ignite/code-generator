@@ -11,7 +11,7 @@
 <script>
 // referenced on
 // https://github.com/vuejs/vue-next/blob/master/packages/sfc-playground/src/Message.vue
-import { computed, toRefs } from 'vue'
+import { computed, toRefs, watch } from 'vue'
 import { msg } from '../store.js'
 
 export default {
@@ -34,6 +34,14 @@ export default {
         background: color.value + '33'
       }
     })
+    watch(
+      () => msg.showMsg,
+      () => {
+        if (msg.showMsg) {
+          setTimeout(() => (msg.showMsg = false), 5000)
+        }
+      }
+    )
 
     return { message, color, style, msg }
   }

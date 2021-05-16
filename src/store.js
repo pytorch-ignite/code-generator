@@ -93,6 +93,7 @@ export async function fetchTemplates(template) {
 
 // watch the store.config
 // if that changed, call the genCode function
+// same as watch(() => store.config, () => genCode(), { deep: true })
 watch(store.config, () => genCode())
 
 // ejs options
