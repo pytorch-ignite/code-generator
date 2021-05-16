@@ -101,6 +101,7 @@ export default {
     const downloadProject = () => {
       const zip = new JSZip()
       if (store.code && Object.keys(store.code).length) {
+        msg.color = '#ff0000'
         if (!store.config.config_lib) {
           msg.showMsg = true
           msg.content = `Configuration Library Type is required. Please choose in Templates tab.`
