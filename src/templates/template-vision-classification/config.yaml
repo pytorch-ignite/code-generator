@@ -17,6 +17,7 @@ nproc_per_node: #:::= it.nproc_per_node :::#
 #::: if (it.nnodes) { :::#
 # distributed multi node spawn
 nnodes: #:::= it.nnodes :::#
+node_rank: 0
 master_addr: #:::= it.master_addr :::#
 master_port: #:::= it.master_port :::#
 #::: } :::#

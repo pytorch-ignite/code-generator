@@ -156,6 +156,7 @@ def main(config):
     kwargs = {
         "nproc_per_node": config.nproc_per_node,
         "nnodes": config.nnodes,
+        "node_rank": config.node_rank,
         "master_addr": config.master_addr,
         "master_port": config.master_port,
     }
