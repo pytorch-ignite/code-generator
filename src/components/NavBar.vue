@@ -95,16 +95,19 @@ import { ref } from 'vue'
 export default {
   components: { IconDiscord, IconDownload, IconGitHub, IconTwitter },
   setup() {
-    let zip = new JSZip()
     const showDownloadMsg = ref(false)
     const currentCommit = __COMMIT__ /* from vite.config.js */
 
     const downloadProject = () => {
+      const zip = new JSZip()
       if (store.code && Object.keys(store.code).length) {
         msg.color = '#ff0000'
         if (!store.config.output_dir) {
           msg.showMsg = true
           msg.content = `Output directory is required. Please input in Loggers tab.`
+        } else if (!store.config.log_every_iters) {
+          msg.showMsg = true
+          msg.content = `Logging interval is required. Please input in Loggers tab.`
         } else {
           for (const filename in store.code) {
             zip.file(filename, store.code[filename])

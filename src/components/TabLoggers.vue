@@ -7,6 +7,12 @@
       :saveKey="output_dir.name"
       required
     />
+    <FormInput
+      type="number"
+      :label="log_every_iters.description"
+      :saveKey="log_every_iters.name"
+      required
+    />
     <FormSelect
       :label="logger.description"
       :options="logger.options"

@@ -1,15 +1,3 @@
-# Template by Code-Generator
-
-## Getting Started
-
-Install the dependencies with `pip`:
-
-```sh
-pip install -r requirements.txt --progress-bar off -U
-```
-
-## Training
-
 #::: if (it.dist === 'launch') { :::#
 #::: if (it.nproc_per_node) { :::#
 #::: if (it.nnodes && it.master_addr && it.master_port) { :::#

@@ -1,13 +1,13 @@
-from argparse import ArgumentParser
-from pprint import pformat
 from typing import Any
 
+import hydra
 import ignite.distributed as idist
 from data import setup_data
 from ignite.engine import Events
 from ignite.metrics import Accuracy, Loss
 from ignite.utils import manual_seed
 from model import Net
+from omegaconf import OmegaConf
 from torch import nn, optim
 from torch.utils.data.distributed import DistributedSampler
 from trainers import setup_evaluator, setup_trainer
@@ -34,7 +34,7 @@ def run(local_rank: int, config: Any):
 
     # trainer and evaluator
     trainer = setup_trainer(config, model, optimizer, loss_fn, device)
-    evaluator = setup_evaluator(config, model, loss_fn, device)
+    evaluator = setup_evaluator(config, model, device)
 
     # attach metrics to evaluator
     accuracy = Accuracy(device=device)
@@ -49,7 +49,7 @@ def run(local_rank: int, config: Any):
     # setup engines logger with python logging
     # print training configurations
     logger = setup_logging(config)
-    logger.info("Configuration: %s", pformat(vars(config)))
+    logger.info("Configuration: \n%s", OmegaConf.to_yaml(config))
     trainer.logger = evaluator.logger = logger
 
     # set epoch for distributed sampler
@@ -59,15 +59,30 @@ def run(local_rank: int, config: Any):
         dataloader_train.sampler.set_epoch(trainer.state.epoch - 1)
 
     # setup ignite handlers
-    #::: if (it.save_model || it.save_optimizer || it.save_lr_scheduler || it.save_trainer || it.save_evaluator || it.patience || it.terminate_on_nan || it.timer || it.limit_sec) { :::#
+    #::: if (it.save_training || it.save_evaluation || it.patience || it.terminate_on_nan || it.timer || it.limit_sec) { :::#
+
+    #::: if (it.save_training) { :::#
+    to_save_train = {"model": model, "optimizer": optimizer, "trainer": trainer}
+    #::: } else { :::#
     to_save_train = None
+    #::: } :::#
+
+    #::: if (it.save_evaluation) { :::#
     to_save_eval = {"model": model}
-    setup_handlers(trainer, evaluator, config, to_save_train, to_save_eval)
+    #::: } else { :::#
+    to_save_eval = None
+    #::: } :::#
+
+    ckpt_handler_train, ckpt_handler_eval, timer = setup_handlers(
+        trainer, evaluator, config, to_save_train, to_save_eval
+    )
     #::: } :::#
 
     # experiment tracking
+    #::: if (it.logger) { :::#
     if rank == 0:
         exp_logger = setup_exp_logging(config, trainer, optimizer, evaluator)
+    #::: } :::#
 
     # print metrics to the stderr
     # with `add_event_handler` API
@@ -85,6 +100,12 @@ def run(local_rank: int, config: Any):
     # for evaluation stats
     @trainer.on(Events.EPOCH_COMPLETED(every=1))
     def _():
+        #::: if (it.save_training || it.save_evaluation || it.patience || it.terminate_on_nan || it.timer || it.limit_sec) { :::#
+        if timer is not None:
+            logger.info("Time per batch: %.4f seconds", timer.value())
+            timer.reset()
+        #::: } :::#
+
         evaluator.run(dataloader_eval, epoch_length=config.eval_epoch_length)
         log_metrics(evaluator, "eval")
 
@@ -100,6 +121,7 @@ def run(local_rank: int, config: Any):
         epoch_length=config.train_epoch_length,
     )
 
+    #::: if (it.logger) { :::#
     if rank == 0:
         from ignite.contrib.handlers.wandb_logger import WandBLogger
 
@@ -109,15 +131,44 @@ def run(local_rank: int, config: Any):
             exp_logger.finish()
         elif exp_logger:
             exp_logger.close()
+    #::: } :::#
+
+    #::: if (it.save_training || it.save_evaluation || it.patience || it.terminate_on_nan || it.timer || it.limit_sec) { :::#
+    if ckpt_handler_train is not None:
+        logger.info(
+            "Last training checkpoint name - %s",
+            ckpt_handler_train.last_checkpoint,
+        )
+
+    if ckpt_handler_eval is not None:
+        logger.info(
+            "Last evaluation checkpoint name - %s",
+            ckpt_handler_eval.last_checkpoint,
+        )
+    #::: } :::#
 
 
-# main #
-def main():
-    parser = ArgumentParser(parents=[get_default_parser()])
-    config = parser.parse_args()
-
-    with idist.Parallel(backend=config.backend) as parallel:
-        parallel.run(run, config=config)
+# main
+@hydra.main(config_name="config")
+def main(config):
+    #::: if (it.dist === 'spawn') { :::#
+    #::: if (it.nproc_per_node && it.nnodes && it.master_addr && it.master_port) { :::#
+    kwargs = {
+        "nproc_per_node": config.nproc_per_node,
+        "nnodes": config.nnodes,
+        "node_rank": config.node_rank,
+        "master_addr": config.master_addr,
+        "master_port": config.master_port,
+    }
+    #::: } else if (it.nproc_per_node) { :::#
+    kwargs = {"nproc_per_node": config.nproc_per_node}
+    #::: } :::#
+    with idist.Parallel(config.backend, **kwargs) as p:
+        p.run(run, config=config)
+    #::: } else { :::#
+    with idist.Parallel(config.backend) as p:
+        p.run(run, config=config)
+    #::: } :::#
 
 
 if __name__ == "__main__":
