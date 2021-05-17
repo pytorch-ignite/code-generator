@@ -26,7 +26,7 @@
     </div>
     <div class="preview-image">
       <img
-        src="../assets/code-generator-preview.png"
+        src="/code-generator-preview.png"
         alt="Code Generator Preview"
         width="500"
         height="160"
