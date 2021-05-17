@@ -11,7 +11,7 @@
   },
   "template-vision-dcgan": {
     "README.md": "README.md",
-    "config.json": "config.json",
+    "config.yaml": "config.yaml",
     "data.py": "data.py",
     "main.py": "main.py",
     "model.py": "model.py",

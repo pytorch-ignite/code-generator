@@ -7,8 +7,6 @@ from torch.cuda.amp import autocast
 from torch.nn import Module
 from torch.optim import Optimizer
 
-ws = idist.get_world_size()
-
 
 def setup_trainer(
     config: Any,
@@ -19,6 +17,8 @@ def setup_trainer(
     loss_fn: Module,
     device: Union[str, torch.device],
 ) -> Union[Engine, DeterministicEngine]:
+
+    ws = idist.get_world_size()
 
     real_labels = torch.ones(config.train_batch_size // ws, device=device)
     fake_labels = torch.zeros(config.train_batch_size // ws, device=device)
@@ -101,10 +101,12 @@ def setup_evaluator(
     device: Union[str, torch.device],
 ) -> Engine:
 
-    real_labels = torch.ones(config.train_batch_size // ws, device=device)
-    fake_labels = torch.zeros(config.train_batch_size // ws, device=device)
+    ws = idist.get_world_size()
+
+    real_labels = torch.ones(config.eval_batch_size // ws, device=device)
+    fake_labels = torch.zeros(config.eval_batch_size // ws, device=device)
     noise = torch.randn(
-        config.train_batch_size // ws, config.z_dim, 1, 1, device=device
+        config.eval_batch_size // ws, config.z_dim, 1, 1, device=device
     )
 
     @torch.no_grad()
