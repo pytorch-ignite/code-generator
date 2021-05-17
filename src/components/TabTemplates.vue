@@ -26,7 +26,11 @@ export default {
 
     const downloadTemplates = () => fetchTemplates(store.config.template)
 
-    return { templateLabel, templateOptions, downloadTemplates }
+    return {
+      templateLabel,
+      templateOptions,
+      downloadTemplates
+    }
   }
 }
 </script>

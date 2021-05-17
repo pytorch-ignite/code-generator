@@ -21,5 +21,26 @@ def check_utils():
             print(red, "Unmatched", file, reset)
 
 
+def check_readme():
+    red = "\033[31m"
+    green = "\033[32m"
+    reset = "\033[0m"
+
+    with open("./src/templates/template-common/README.md", "r") as f:
+        common_utils = f.read()
+
+    path = Path("./src/templates/")
+
+    for file in path.rglob("**/README.md"):
+        utils = file.read_text("utf-8")
+        if utils.find(common_utils) > -1:
+            print(green, "Matched", file, reset)
+        else:
+            print(red, "Unmatched", file, reset)
+
+
 if __name__ == "__main__":
     check_utils()
+    print()
+    check_readme()
+    print()
