@@ -45,7 +45,7 @@ Code-Generator is a web app built with Vue 3. Source code is mainly in the files
 Training codes are generated from templates with [`ejs`](https://ejs.co). Templates live in `src/templates` directory.
 To add a new template,
 
-1. Create a folder whose name starts with `template` followed by template name in the `src/templates` directory.
+1. Create a folder whose name should start with `template` followed by template name in the `src/templates` directory.
 
 2. Put the template code files in that directory.
 
