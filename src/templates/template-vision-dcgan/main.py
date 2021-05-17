@@ -81,6 +81,7 @@ def run(local_rank: int, config: Any):
     # print training configurations
     logger = setup_logging(config)
     logger.info("Configuration: \n%s", OmegaConf.to_yaml(config))
+    OmegaConf.save(config, os.path.join(config.output_dir, "config-lock.yaml"))
     trainer.logger = evaluator.logger = logger
 
     # set epoch for distributed sampler
