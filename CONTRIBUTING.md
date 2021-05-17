@@ -25,7 +25,7 @@ To contribute to Code-Generator App, you will need Nodejs LTS v14.16.x, VSCode, 
 
 - Install pnpm from https://pnpm.io/installation. Use standalone script if there is a root issue with installing with npm.
 
-- Install the dependencies with `pnpm install` in the project root directory. This might take a while to install.
+- Install the dependencies with `pnpm install` and `bash .github/run_code_style.sh install` in the project root directory. This might take a while to install.
 
 - Run `pnpm run dev` to start local development server and starts editing the codes in the `src` directory. Changes will be updated on the app.
 
@@ -67,6 +67,8 @@ To add a new template,
 7. For the `requirements.txt`, copy from the `src/template-common/requirements.txt`.
 
 8. For the `utils.py`, copy the starter code from the `src/template-common/utils.py`.
+
+9. You can check if the copied codes needed are up-to-date with the base codes with: `python scripts/check_copies.py`
 
 ## Pull Request Guidelines
 

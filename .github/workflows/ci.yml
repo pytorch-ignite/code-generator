@@ -70,7 +70,7 @@ jobs:
           restore-keys: |
             pnpm-and-pip-cache-
 
-      - run: pip install "black==20.8b1" "isort==5.7.0"
+      - run: pip install -Uq pip wheel && pip install -Uq "black==20.8b1" "isort==5.7.0"
       - run: npm i -g pnpm
       - run: pnpm i --frozen-lockfile --color
       - run: pnpm lint

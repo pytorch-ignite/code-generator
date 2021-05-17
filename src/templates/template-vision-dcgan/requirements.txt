@@ -1,0 +1,14 @@
+torch>=1.8.0
+torchvision>=0.9.0
+pytorch-ignite>=0.4.4
+hydra-core>=1.0.0
+
+#::: if (['neptune', 'polyaxon'].includes(it.logger)) { :::#
+
+#:::= it.logger + '-client' :::#
+
+#::: } else { :::#
+
+#:::= it.logger :::#
+
+#::: } :::#
