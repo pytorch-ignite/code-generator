@@ -25,7 +25,11 @@ python -m torch.distributed.launch \
   --node_rank 0 \
   --master_addr #:::= it.master_addr :::# \
   --master_port #:::= it.master_port :::# \
-  --use_env main.py backend=nccl
+  --use_env main.py backend=nccl \
+  hydra.run.dir=. \
+  hydra.output_subdir=null \
+  hydra/job_logging=disabled \
+  hydra/hydra_logging=disabled
 ```
 
 - Execute on worker nodes
@@ -37,7 +41,11 @@ python -m torch.distributed.launch \
   --node_rank <node_rank> \
   --master_addr #:::= it.master_addr :::# \
   --master_port #:::= it.master_port :::# \
-  --use_env main.py backend=nccl
+  --use_env main.py backend=nccl \
+  hydra.run.dir=. \
+  hydra.output_subdir=null \
+  hydra/job_logging=disabled \
+  hydra/hydra_logging=disabled
 ```
 
 #::: } else { :::#
@@ -47,7 +55,11 @@ python -m torch.distributed.launch \
 ```sh
 python -m torch.distributed.launch \
   --nproc_per_node #:::= it.nproc_per_node :::# \
-  --use_env main.py backend=nccl
+  --use_env main.py backend=nccl \
+  hydra.run.dir=. \
+  hydra.output_subdir=null \
+  hydra/job_logging=disabled \
+  hydra/hydra_logging=disabled
 ```
 
 #::: } :::#
@@ -69,7 +81,11 @@ python main.py  \
   node_rank=0 \
   master_addr=#:::= it.master_addr :::# \
   master_port=#:::= it.master_port :::# \
-  backend=nccl
+  backend=nccl \
+  hydra.run.dir=. \
+  hydra.output_subdir=null \
+  hydra/job_logging=disabled \
+  hydra/hydra_logging=disabled
 ```
 
 - Execute on worker nodes
@@ -81,7 +97,11 @@ python main.py  \
   node_rank=<node_rank> \
   master_addr=#:::= it.master_addr :::# \
   master_port=#:::= it.master_port :::# \
-  backend=nccl
+  backend=nccl \
+  hydra.run.dir=. \
+  hydra.output_subdir=null \
+  hydra/job_logging=disabled \
+  hydra/hydra_logging=disabled
 ```
 
 #::: } else { :::#
@@ -91,7 +111,11 @@ python main.py  \
 ```sh
 python main.py  \
   nproc_per_node=#:::= it.nproc_per_node :::# \
-  backend=nccl
+  backend=nccl \
+  hydra.run.dir=. \
+  hydra.output_subdir=null \
+  hydra/job_logging=disabled \
+  hydra/hydra_logging=disabled
 ```
 
 #::: } :::#
@@ -103,7 +127,11 @@ python main.py  \
 ### 1 GPU Training
 
 ```sh
-python main.py
+python main.py \
+  hydra.run.dir=. \
+  hydra.output_subdir=null \
+  hydra/job_logging=disabled \
+  hydra/hydra_logging=disabled
 ```
 
 #::: } :::#
