@@ -27,14 +27,16 @@ def check(fname):
                 print(green, "Matched", file, reset)
             else:
                 print(red, "Unmatched", file, reset)
+                exit(1)
 
 
 if __name__ == "__main__":
-    check("utils.py")
+    check("config.yaml")
+    print()
+    check("main.py")
     print()
     check("README.md")
     print()
     check("requirements.txt")
     print()
-    check("main.py")
-    print()
+    check("utils.py")

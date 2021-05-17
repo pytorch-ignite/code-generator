@@ -208,7 +208,7 @@ def run(local_rank: int, config: Any):
     #::: } :::#
 
 
-# main
+# main entrypoint
 @hydra.main(config_name="config")
 def main(config):
     #::: if (it.dist === 'spawn') { :::#

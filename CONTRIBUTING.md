@@ -68,6 +68,8 @@ To add a new template,
 
 8. For the `utils.py`, copy the starter code from the `src/template-common/utils.py`.
 
+9. You can check if the copied codes needed are up-to-date with the base codes with: `python scripts/check_copies.py`
+
 ## Pull Request Guidelines
 
 - Checkout a topic branch from a base branch, e.g. `v1` (currently).

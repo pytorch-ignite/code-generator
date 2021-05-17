@@ -34,7 +34,7 @@ if ckpt_handler_eval is not None:
     )
 #::: } :::#
 
-# main
+# main entrypoint
 @hydra.main(config_name="config")
 def main(config):
     #::: if (it.dist === 'spawn') { :::#
