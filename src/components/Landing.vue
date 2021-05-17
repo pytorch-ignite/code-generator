@@ -55,17 +55,18 @@ import Footer from './Footer.vue'
 export default {
   components: { Footer },
   setup() {
+    const len = 'PyTorch-Ignite'.length
     const learnMore = {
-      'border-bottom-left-radius': Math.floor(Math.random() * 23) + 'px',
-      'border-bottom-right-radius': Math.floor(Math.random() * 23) + 'px',
-      'border-top-left-radius': Math.floor(Math.random() * 21) + 'px',
-      'border-top-right-radius': Math.floor(Math.random() * 20) + 'px'
+      'border-bottom-left-radius': Math.floor(Math.random() * len) + 'px',
+      'border-bottom-right-radius': Math.floor(Math.random() * len) + 'px',
+      'border-top-left-radius': Math.floor(Math.random() * len) + 'px',
+      'border-top-right-radius': Math.floor(Math.random() * len) + 'px'
     }
     const getStarted = {
-      'border-bottom-left-radius': Math.floor(Math.random() * 20) + 'px',
-      'border-bottom-right-radius': Math.floor(Math.random() * 21) + 'px',
-      'border-top-left-radius': Math.floor(Math.random() * 22) + 'px',
-      'border-top-right-radius': Math.floor(Math.random() * 23) + 'px'
+      'border-bottom-left-radius': Math.floor(Math.random() * len) + 'px',
+      'border-bottom-right-radius': Math.floor(Math.random() * len) + 'px',
+      'border-top-left-radius': Math.floor(Math.random() * len) + 'px',
+      'border-top-right-radius': Math.floor(Math.random() * len) + 'px'
     }
     return { getStarted, learnMore }
   }
