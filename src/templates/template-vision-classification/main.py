@@ -100,6 +100,7 @@ def run(local_rank: int, config: Any):
     # for evaluation stats
     @trainer.on(Events.EPOCH_COMPLETED(every=1))
     def _():
+        # show timer
         #::: if (it.save_training || it.save_evaluation || it.patience || it.terminate_on_nan || it.timer || it.limit_sec) { :::#
         if timer is not None:
             logger.info("Time per batch: %.4f seconds", timer.value())
@@ -121,6 +122,7 @@ def run(local_rank: int, config: Any):
         epoch_length=config.train_epoch_length,
     )
 
+    # close logger
     #::: if (it.logger) { :::#
     if rank == 0:
         from ignite.contrib.handlers.wandb_logger import WandBLogger
@@ -133,6 +135,7 @@ def run(local_rank: int, config: Any):
             exp_logger.close()
     #::: } :::#
 
+    # show the last checkpoint filename
     #::: if (it.save_training || it.save_evaluation || it.patience || it.terminate_on_nan || it.timer || it.limit_sec) { :::#
     if ckpt_handler_train is not None:
         logger.info(
@@ -148,7 +151,7 @@ def run(local_rank: int, config: Any):
     #::: } :::#
 
 
-# main
+# main entrypoint
 @hydra.main(config_name="config")
 def main(config):
     #::: if (it.dist === 'spawn') { :::#

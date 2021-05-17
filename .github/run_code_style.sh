@@ -3,12 +3,11 @@
 set -xeu
 
 if [ $1 == "lint" ]; then
-    flake8 app templates/*/_sidebar.py tests --config .flake8
-    isort app templates/*/_sidebar.py tests --check --settings pyproject.toml
-    black app templates/*/_sidebar.py tests --check --config pyproject.toml
+    black . -l 80 --check
+    isort . --profile black --check
 elif [ $1 == "fmt" ]; then
-    isort app templates/*/_sidebar.py templates/*/test_all.py tests --color --settings pyproject.toml
-    black app templates/*/_sidebar.py templates/*/test_all.py tests --config pyproject.toml
+    isort . --profile black
+    black . -l 80
 elif [ $1 == "install" ]; then
-    pip install flake8 "black==20.8b1" "isort==5.7.0"
+    pip install "black==20.8b1" "isort==5.7.0"
 fi

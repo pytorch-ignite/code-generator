@@ -5,12 +5,8 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "black:fmt": "black . -l 80",
-    "black:lint": "black . -l 80 --check",
-    "isort:fmt": "isort . --profile black",
-    "isort:lint": "isort . --profile black --check",
-    "fmt": "prettier --write . && pnpm run black:fmt && pnpm run isort:fmt",
-    "lint": "prettier --check . && pnpm run black:lint && pnpm run isort:lint"
+    "fmt": "prettier --write . && bash .github/run_code_style.sh fmt",
+    "lint": "prettier --check . && bash .github/run_code_style.sh lint"
   },
   "devDependencies": {
     "@iconify/iconify": "^2.0.1",
