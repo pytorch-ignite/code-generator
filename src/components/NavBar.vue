@@ -1,7 +1,7 @@
 <template>
   <nav class="nav-bar">
     <h1>
-      <a href="/">
+      <RouterLink to="/">
         <img
           src="../assets/ignite_logomark.svg"
           alt="PyTorch-Ignite logo"
@@ -9,7 +9,7 @@
           height="50"
         />
         <span class="pname">Code Generator</span>
-      </a>
+      </RouterLink>
     </h1>
     <div class="left-side-badges">
       <a
@@ -131,10 +131,6 @@ export default {
 h1 {
   margin: 0;
   font-weight: normal;
-}
-a {
-  text-decoration: none;
-  color: var(--c-text);
 }
 h1 img {
   vertical-align: middle;

@@ -1,33 +1,6 @@
 <template>
-  <NavBar />
-  <SplitPane>
-    <template #left>
-      <PaneLeft />
-    </template>
-    <template #right>
-      <PaneRight />
-    </template>
-  </SplitPane>
-  <Footer />
+  <router-view></router-view>
 </template>
-
-<script>
-import NavBar from './components/NavBar.vue'
-import SplitPane from './components/PaneSplit.vue'
-import PaneRight from './components/PaneRight.vue'
-import PaneLeft from './components/PaneLeft.vue'
-import Footer from './components/Footer.vue'
-
-export default {
-  components: {
-    NavBar,
-    SplitPane,
-    PaneRight,
-    PaneLeft,
-    Footer
-  }
-}
-</script>
 
 <style>
 *,
@@ -77,6 +50,10 @@ h4,
 h5,
 h6 {
   font-weight: 500;
+}
+a {
+  text-decoration: none;
+  color: var(--c-text);
 }
 @media (prefers-reduced-motion) {
   :focus {
