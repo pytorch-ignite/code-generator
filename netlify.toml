@@ -5,3 +5,9 @@
 [build]
   publish = "./dist"
   command = "npx pnpm i --frozen-lockfile --store=node_modules/.pnpm-store && npx pnpm run build"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = true
