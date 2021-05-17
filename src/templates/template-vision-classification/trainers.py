@@ -1,7 +1,7 @@
 from typing import Any, Union
 
 import torch
-from ignite.engine import Engine
+from ignite.engine import DeterministicEngine, Engine
 from torch.cuda.amp import autocast
 from torch.nn import Module
 from torch.optim import Optimizer
@@ -13,8 +13,8 @@ def setup_trainer(
     optimizer: Optimizer,
     loss_fn: Module,
     device: Union[str, torch.device],
-) -> Engine:
-    def train_function(engine: Engine, batch: Any):
+) -> Union[Engine, DeterministicEngine]:
+    def train_function(engine: Union[Engine, DeterministicEngine], batch: Any):
         model.train()
 
         samples = batch[0].to(device, non_blocking=True)
@@ -35,7 +35,11 @@ def setup_trainer(
         }
         return {"train_loss": train_loss}
 
+    #::: if(it.deterministic) { :::#
+    return DeterministicEngine(train_function)
+    #::: } else { :::#
     return Engine(train_function)
+    #::: } :::#
 
 
 def setup_evaluator(

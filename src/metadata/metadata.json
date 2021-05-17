@@ -8,7 +8,7 @@
     "launch": {
       "name": "launch",
       "type": "radio",
-      "description": "Run the training with torch.distributed.launch"
+      "description": "Run the training with torch.distributed.launch (recommended)"
     },
     "spawn": {
       "name": "spawn",
@@ -18,13 +18,13 @@
     "nproc_per_node": {
       "name": "nproc_per_node",
       "type": "number",
-      "description": "Number of processes to launch on each node",
+      "description": "Number of processes to launch on each node (mandatory for single node, multi gpus distributed training)",
       "min": 1
     },
     "nnodes": {
       "name": "nnodes",
       "type": "number",
-      "description": "Number of nodes to use for distributed training",
+      "description": "Number of nodes to use for distributed training (mandatory for multi nodes, multi gpus distributed training)",
       "min": 1
     },
     "master_addr": {
@@ -43,7 +43,7 @@
     "save_training": {
       "name": "save_training",
       "type": "checkbox",
-      "description": "Save the training state by every save_every_iters."
+      "description": "Save the training state (models, optimizers, trainers, ...) by every save_every_iters."
     },
     "save_evaluation": {
       "name": "save_evaluation",
@@ -69,18 +69,24 @@
       "name": "filename_prefix",
       "type": "text",
       "value": "checkpointing",
-      "description": "What prefix would you like to put in front of saved checkpoint file?"
+      "description": "What prefix would you like to put in front of saved checkpoint file? (mandatory for saving training states)"
+    },
+    "save_every_iters": {
+      "name": "save_every_iters",
+      "type": "number",
+      "value": "checkpointing",
+      "description": "Iteration interval for saving training states (mandatory for saving training states)"
     },
     "n_saved": {
       "name": "n_saved",
       "type": "number",
       "value": "checkpointing",
-      "description": "How many checkpoint file would you like to keep on disk?"
+      "description": "How many checkpoint file would you like to keep on disk? (mandatory for saving both training and evaluation)"
     },
     "limit_sec": {
       "name": "limit_sec",
       "type": "number",
-      "description": "How long do you want to run for the training and then terminate?"
+      "description": "How long do you want to run for the training and then terminate? (in seconds)"
     }
   },
   "loggers": {
@@ -88,6 +94,11 @@
       "name": "output_dir",
       "type": "text",
       "description": "Directory to save all outputs"
+    },
+    "log_every_iters": {
+      "name": "log_every_iters",
+      "type": "number",
+      "description": "Logging interval for training statistics"
     },
     "logger": {
       "name": "logger",

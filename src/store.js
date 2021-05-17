@@ -57,15 +57,17 @@ export function saveConfig(key, value) {
 }
 
 // render the code if there are fetched files for current selected template
-export async function genCode() {
+export function genCode() {
   const currentFiles = files[store.config.template]
   if (currentFiles && Object.keys(currentFiles).length) {
     for (const file in currentFiles) {
-      store.code[file] = ejs.render(currentFiles[file], store.config)
+      store.code[file] = ejs
+        .render(currentFiles[file], store.config)
+        .replaceAll(/(\n\n\n\n)+/gi, '\n')
     }
-  }
-  if (isDev) {
-    store.code[__DEV_CONFIG_FILE__] = JSON.stringify(store.config, null, 2)
+    if (isDev) {
+      store.code[__DEV_CONFIG_FILE__] = JSON.stringify(store.config, null, 2)
+    }
   }
 }
 

@@ -6,3 +6,4 @@ dist-ssr
 __pycache__
 *.log
 .vscode
+*.tar.gz

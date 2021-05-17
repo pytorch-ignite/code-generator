@@ -16,6 +16,11 @@
       :type="filename_prefix.type"
     />
     <FormInput
+      :label="save_every_iters.description"
+      :saveKey="save_every_iters.name"
+      :type="save_every_iters.type"
+    />
+    <FormInput
       :label="n_saved.description"
       :saveKey="n_saved.name"
       :type="n_saved.type"
