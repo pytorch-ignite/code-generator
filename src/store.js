@@ -80,7 +80,7 @@ export async function fetchTemplates(template) {
   // fetch the template if there is no fetch of template before
   if (files[template] === undefined) {
     files[template] = {}
-    for (const filename in templates[template]) {
+    for (const filename of templates[template]) {
       const response = await fetch(`${url}/${template}/${filename}`)
       files[template][filename] = await response.text()
     }
