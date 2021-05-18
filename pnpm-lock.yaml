@@ -15,6 +15,7 @@ specifiers:
   prismjs: ^1.23.0
   vite: ^2.3.2
   vue: ^3.0.11
+  vue-router: ^4.0.8
 
 devDependencies:
   '@iconify/iconify': 2.0.1
@@ -31,6 +32,7 @@ devDependencies:
   prismjs: 1.23.0
   vite: 2.3.2
   vue: 3.0.11
+  vue-router: 4.0.8_vue@3.0.11
 
 packages:
   /@babel/code-frame/7.12.13:
@@ -193,6 +195,13 @@ packages:
     dependencies:
       '@vue/compiler-dom': 3.0.11
       '@vue/shared': 3.0.11
+    dev: true
+
+  /@vue/devtools-api/6.0.0-beta.10:
+    resolution:
+      {
+        integrity: sha512-nktQYRnIFrh4DdXiCBjHnsHOMZXDIVcP9qlm/DMfxmjJMtpMGrSZCOKP8j7kDhObNHyqlicwoGLd+a4hf4x9ww==
+      }
     dev: true
 
   /@vue/reactivity/3.0.11:
@@ -2223,6 +2232,18 @@ packages:
       rollup: 2.47.0
     optionalDependencies:
       fsevents: 2.3.2
+    dev: true
+
+  /vue-router/4.0.8_vue@3.0.11:
+    resolution:
+      {
+        integrity: sha512-42mWSQaH7CCBQDspQTHv63f34VEnZC20g9QNK4WJ/zW8SdIUeT6TQ2i/78fjF/pVBUPLBWrGhvB7uDnaz7O/pA==
+      }
+    peerDependencies:
+      vue: ^3.0.0
+    dependencies:
+      '@vue/devtools-api': 6.0.0-beta.10
+      vue: 3.0.11
     dev: true
 
   /vue/3.0.11:

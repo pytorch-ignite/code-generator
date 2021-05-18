@@ -1,33 +1,10 @@
 <template>
-  <NavBar />
-  <SplitPane>
-    <template #left>
-      <PaneLeft />
-    </template>
-    <template #right>
-      <PaneRight />
-    </template>
-  </SplitPane>
-  <Footer />
+  <RouterView v-slot="{ Component }">
+    <transition name="slide-fade" mode="out-in">
+      <component :is="Component" />
+    </transition>
+  </RouterView>
 </template>
-
-<script>
-import NavBar from './components/NavBar.vue'
-import SplitPane from './components/PaneSplit.vue'
-import PaneRight from './components/PaneRight.vue'
-import PaneLeft from './components/PaneLeft.vue'
-import Footer from './components/Footer.vue'
-
-export default {
-  components: {
-    NavBar,
-    SplitPane,
-    PaneRight,
-    PaneLeft,
-    Footer
-  }
-}
-</script>
 
 <style>
 *,
@@ -78,6 +55,10 @@ h5,
 h6 {
   font-weight: 500;
 }
+a {
+  text-decoration: none;
+  color: var(--c-text);
+}
 @media (prefers-reduced-motion) {
   :focus {
     border-radius: 3px;
@@ -105,5 +86,14 @@ code {
   padding: 0.25rem 0.5rem;
   color: var(--code-text-light);
   background-color: var(--code-inline-bg-color);
+}
+.slide-fade-leave-active,
+.slide-fade-enter-active {
+  transition: all 0.25s ease-out;
+}
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateY(10px);
+  opacity: 0;
 }
 </style>

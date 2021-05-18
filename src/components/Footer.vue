@@ -5,7 +5,6 @@
     </a>
     <p>
       BSD-3-Clause Licensed | Copyright &copy; 2021-present PyTorch-Ignite Team
-      & Code-Generator Contributors
     </p>
   </footer>
 </template>

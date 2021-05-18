@@ -12,7 +12,7 @@
   </div>
   <div class="left-pane-contexts">
     <KeepAlive>
-      <component :is="currentTabComponent"></component>
+      <component :is="currentTabComponent" />
     </KeepAlive>
   </div>
   <Message :message="msg.content" :color="msg.color" />
