@@ -31,7 +31,7 @@ export default {
       return {
         borderColor: color.value,
         color: color.value,
-        background: color.value + '33'
+        background: color.value === 'blue' ? '#dbeafe' : '#fee2e2'
       }
     })
     watch(

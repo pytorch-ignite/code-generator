@@ -101,7 +101,7 @@ export default {
     const downloadProject = () => {
       const zip = new JSZip()
       if (store.code && Object.keys(store.code).length) {
-        msg.color = '#ff0000'
+        msg.color = 'red'
         if (!store.config.output_dir) {
           msg.showMsg = true
           msg.content = `Output directory is required. Please input in Loggers tab.`
