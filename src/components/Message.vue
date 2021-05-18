@@ -2,7 +2,7 @@
   <Transition name="fade">
     <div class="msg-wrapper" v-if="msg.showMsg" @click="msg.showMsg = false">
       <div class="msg" :style="style">
-        <span>{{ message }}</span>
+        {{ message }}
       </div>
     </div>
   </Transition>
