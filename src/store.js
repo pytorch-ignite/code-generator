@@ -17,7 +17,7 @@ const commit = __COMMIT__ /* from vite.config.js */
 // this only works in production and local mode
 // not in network mode
 const urlTemplates = 'src/templates'
-const urlDev = `${location.href}/${urlTemplates}`
+const urlDev = `${location.origin}/${urlTemplates}`
 const urlProd = `https://raw.githubusercontent.com/pytorch-ignite/code-generator/${commit}/${urlTemplates}`
 const url = isDev ? urlDev : isProd ? urlProd : null
 
@@ -31,7 +31,7 @@ export const __DEV_CONFIG_FILE__ = '__DEV_CONFIG__.json'
 export const msg = reactive({
   showMsg: false,
   content: '',
-  color: '#ff0000'
+  color: 'red'
 })
 
 // main reactive object

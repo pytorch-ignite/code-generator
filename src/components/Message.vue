@@ -2,7 +2,7 @@
   <Transition name="fade">
     <div class="msg-wrapper" v-if="msg.showMsg" @click="msg.showMsg = false">
       <div class="msg" :style="style">
-        {{ message }}
+        <span>{{ message }}</span>
       </div>
     </div>
   </Transition>
@@ -31,7 +31,7 @@ export default {
       return {
         borderColor: color.value,
         color: color.value,
-        background: color.value + '33'
+        background: color.value === 'blue' ? '#dbeafe' : '#fee2e2'
       }
     })
     watch(
