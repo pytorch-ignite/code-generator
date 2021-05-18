@@ -1,6 +1,6 @@
 <template>
-  <RouterView v-slot="{ Component, route }">
-    <transition :name="route.meta.transition" mode="out-in">
+  <RouterView v-slot="{ Component }">
+    <transition name="slide-fade" mode="out-in">
       <component :is="Component" />
     </transition>
   </RouterView>
@@ -87,18 +87,13 @@ code {
   color: var(--code-text-light);
   background-color: var(--code-inline-bg-color);
 }
-.slide-left-enter-active,
-.slide-left-leave-active,
-.slide-right-enter-active,
-.slide-right-leave-active {
+.slide-fade-leave-active,
+.slide-fade-enter-active {
   transition: all 0.25s ease-out;
 }
-.slide-left-enter-from,
-.slide-left-leave-to {
-  opacity: 0;
-}
-.slide-right-enter-from,
-.slide-right-leave-to {
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateY(10px);
   opacity: 0;
 }
 </style>

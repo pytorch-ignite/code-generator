@@ -2,21 +2,19 @@
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import App from './App.vue'
-import Home from './components/Home.vue'
-import Create from './components/Create.vue'
+import Home from './views/Home.vue'
+import Create from './views/Create.vue'
 
 const routes = [
   {
     name: 'home',
     path: '/',
-    component: Home,
-    meta: { transition: 'slide-left' }
+    component: Home
   },
   {
     name: 'create',
     path: '/create',
-    component: Create,
-    meta: { transition: 'slide-right' }
+    component: Create
   }
 ]
 
