@@ -2,17 +2,35 @@
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import App from './App.vue'
-import Landing from './components/Landing.vue'
+import Home from './components/Home.vue'
 import Create from './components/Create.vue'
 
 const routes = [
-  { path: '/', component: Landing },
-  { path: '/create', component: Create }
+  {
+    name: 'home',
+    path: '/',
+    component: Home,
+    meta: { transition: 'slide-left' }
+  },
+  {
+    name: 'create',
+    path: '/create',
+    component: Create,
+    meta: { transition: 'slide-right' }
+  }
 ]
 
 const router = createRouter({
   history: createWebHistory(),
-  routes: routes
+  routes: routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (to.hash) {
+      return {
+        el: to.hash,
+        behavior: 'smooth'
+      }
+    }
+  }
 })
 
 createApp(App).use(router).mount('#app')

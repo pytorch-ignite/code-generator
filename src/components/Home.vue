@@ -19,14 +19,14 @@
         >
       </div>
       <div>
-        <a href="/#learn-more" class="link alt" :style="learnMore"
-          >Learn More</a
+        <RouterLink to="/#learn-more" class="link alt" :style="learnMore"
+          >Learn More</RouterLink
         >
       </div>
     </div>
     <div class="preview-image">
       <img
-        src="/code-generator-preview.png"
+        src="../assets/code-generator-preview.png"
         alt="Code Generator Preview"
         width="500"
         height="160"

@@ -1,5 +1,9 @@
 <template>
-  <router-view></router-view>
+  <RouterView v-slot="{ Component, route }">
+    <transition :name="route.meta.transition" mode="out-in">
+      <component :is="Component" />
+    </transition>
+  </RouterView>
 </template>
 
 <style>
@@ -82,5 +86,19 @@ code {
   padding: 0.25rem 0.5rem;
   color: var(--code-text-light);
   background-color: var(--code-inline-bg-color);
+}
+.slide-left-enter-active,
+.slide-left-leave-active,
+.slide-right-enter-active,
+.slide-right-leave-active {
+  transition: all 0.25s ease-out;
+}
+.slide-left-enter-from,
+.slide-left-leave-to {
+  opacity: 0;
+}
+.slide-right-enter-from,
+.slide-right-leave-to {
+  opacity: 0;
 }
 </style>

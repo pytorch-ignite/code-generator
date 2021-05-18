@@ -1,14 +1,16 @@
 <template>
-  <NavBar />
-  <SplitPane>
-    <template #left>
-      <PaneLeft />
-    </template>
-    <template #right>
-      <PaneRight />
-    </template>
-  </SplitPane>
-  <Footer />
+  <main>
+    <NavBar />
+    <SplitPane>
+      <template #left>
+        <PaneLeft />
+      </template>
+      <template #right>
+        <PaneRight />
+      </template>
+    </SplitPane>
+    <Footer />
+  </main>
 </template>
 
 <script>
