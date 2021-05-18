@@ -59,7 +59,7 @@ export default {
     const copyCode = async () => {
       try {
         await navigator.clipboard.writeText(code.value)
-        msg.color = '#0000ff'
+        msg.color = 'blue'
         msg.showMsg = true
         msg.content = 'Code has been copied to Clipboard.'
       } catch (e) {
@@ -106,7 +106,7 @@ div[class*='language-']::before,
   position: relative;
   margin: 0;
   padding: 1.25rem 1.5rem;
-  padding-left: 4.5rem;
+  margin-left: 3.5rem;
   vertical-align: middle;
   overflow: auto;
   border-radius: 0 3px 3px 0;
