@@ -75,7 +75,7 @@ export default {
 
 <style scoped>
 .landing {
-  max-width: 80vw;
+  max-width: 75vw;
   margin: auto;
   text-align: center;
 }
