@@ -72,7 +72,7 @@ To add a new template,
 
 ## Pull Request Guidelines
 
-- Checkout a topic branch from a base branch, e.g. `v1` (currently).
+- Checkout a topic branch from a base branch, e.g. `main` (currently).
 
 - If adding a new template:
 
