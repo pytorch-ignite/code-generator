@@ -34,11 +34,19 @@ export default {
     options: {
       type: Array,
       required: true
+    },
+    defaultV: {
+      type: String,
+      default: ''
     }
   },
   setup(props) {
-    const { options, saveKey, required } = toRefs(props)
+    const { options, saveKey, required, defaultV } = toRefs(props)
     const picked = ref('')
+    if (defaultV.value.length > 0) {
+      picked.value = defaultV.value
+      saveConfig(saveKey.value, picked.value)
+    }
 
     const saveInput = () => saveConfig(saveKey.value, picked.value)
     const isRequired = computed(() => (required.value ? '*' : ''))

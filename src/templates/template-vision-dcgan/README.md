@@ -10,9 +10,10 @@ pip install -r requirements.txt --progress-bar off -U
 
 ## Training
 
+#::: if (it.use_dist) { :::#
 #::: if (it.dist === 'launch') { :::#
 #::: if (it.nproc_per_node) { :::#
-#::: if (it.nnodes && it.master_addr && it.master_port) { :::#
+#::: if (it.nnodes > 1 && it.master_addr && it.master_port) { :::#
 
 ### Multi Node, Multi GPU Training (`torch.distributed.launch`) (recommended)
 
@@ -68,7 +69,7 @@ python -m torch.distributed.launch \
 
 #::: if (it.dist === 'spawn') { :::#
 #::: if (it.nproc_per_node) { :::#
-#::: if (it.nnodes && it.master_addr && it.master_port) { :::#
+#::: if (it.nnodes > 1 && it.master_addr && it.master_port) { :::#
 
 ### Multi Node, Multi GPU Training (`torch.multiprocessing.spawn`)
 
@@ -122,7 +123,7 @@ python main.py  \
 #::: } :::#
 #::: } :::#
 
-#::: if (!it.nproc_per_node) { :::#
+#::: } else { :::#
 
 ### 1 GPU Training
 

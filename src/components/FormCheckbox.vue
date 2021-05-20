@@ -7,7 +7,7 @@
           :id="checkboxId"
           :required="required"
           v-model="checked"
-          @change="saveChecked"
+          @change.prevent="saveChecked"
         />
         {{ label }}
       </label>
