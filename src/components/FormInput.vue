@@ -1,5 +1,5 @@
 <template>
-  <form class="inputs-wrapper" @submit.prevent="saveInput">
+  <div class="inputs-wrapper">
     <p class="label-wrapper">
       <label :for="inputId">
         {{ label }}
@@ -13,14 +13,16 @@
       :type="type"
       :id="inputId"
       :required="required"
+      @change.prevent="saveInput"
     />
     <input
-      min="0"
+      min="1"
       v-else-if="type === 'number'"
       v-model.number="inputted"
       :type="type"
       :id="inputId"
       :required="required"
+      @change.prevent="saveInput"
     />
     <input
       v-else
@@ -28,9 +30,10 @@
       :type="type"
       :id="inputId"
       :required="required"
+      @change.prevent="saveInput"
     />
     <span class="expand"></span>
-  </form>
+  </div>
 </template>
 
 <script>
@@ -53,11 +56,19 @@ export default {
     saveKey: {
       type: String,
       required: true
+    },
+    defaultV: {
+      type: [String, Number],
+      default: ''
     }
   },
   setup(props) {
-    const { label, type, saveKey, required } = toRefs(props)
+    const { label, type, saveKey, required, defaultV } = toRefs(props)
     const inputted = ref('')
+    if (defaultV.value.length > 0 || defaultV.value) {
+      inputted.value = defaultV.value
+      saveConfig(saveKey.value, inputted.value)
+    }
 
     const saveInput = () => saveConfig(saveKey.value, inputted.value)
     const inputId = computed(() => label.value + '-input-' + type.value)
