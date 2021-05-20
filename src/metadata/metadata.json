@@ -19,24 +19,28 @@
       "name": "nproc_per_node",
       "type": "number",
       "description": "Number of processes to launch on each node (mandatory for single node, multi gpus distributed training)",
-      "min": 1
+      "min": 1,
+      "default": 2
     },
     "nnodes": {
       "name": "nnodes",
       "type": "number",
       "description": "Number of nodes to use for distributed training (mandatory for multi nodes, multi gpus distributed training)",
-      "min": 1
+      "min": 1,
+      "default": 1
     },
     "master_addr": {
       "name": "master_addr",
       "type": "text",
-      "description": "Master node TCP/IP address for torch native backends (mandatory if you have filled number of nodes)"
+      "description": "Master node TCP/IP address for torch native backends (mandatory if you have filled number of nodes)",
+      "default": "127.0.0.1"
     },
     "master_port": {
       "name": "master_port",
       "type": "number",
       "description": "Master node port for torch native backends (mandatory if you have filled number of nodes)",
-      "min": 0
+      "min": 0,
+      "default": 8080
     }
   },
   "handlers": {
@@ -93,12 +97,14 @@
     "output_dir": {
       "name": "output_dir",
       "type": "text",
-      "description": "Directory to save all outputs"
+      "description": "Directory to save all outputs",
+      "default": "./logs"
     },
     "log_every_iters": {
       "name": "log_every_iters",
       "type": "number",
-      "description": "Logging interval for training statistics"
+      "description": "Logging interval for training statistics",
+      "default": 2
     },
     "logger": {
       "name": "logger",
