@@ -2,7 +2,7 @@
 
 ### Bug Fixes
 
-- add / in release badge [skip ci] ([#100](https://github.com/pytorch-ignite/code-generator/issues/100)) ([#101](https://github.com/pytorch-ignite/code-generator/issues/101)) ([873655c](https://github.com/pytorch-ignite/code-generator/commit/873655c2cc6d759ca50b7ea3b2d29c7dd55317f4))
+- add `/` in release badge [skip ci] ([#100](https://github.com/pytorch-ignite/code-generator/issues/100)) ([#101](https://github.com/pytorch-ignite/code-generator/issues/101)) ([873655c](https://github.com/pytorch-ignite/code-generator/commit/873655c2cc6d759ca50b7ea3b2d29c7dd55317f4))
 - add test options in text classification ([#99](https://github.com/pytorch-ignite/code-generator/issues/99)) ([0b1b535](https://github.com/pytorch-ignite/code-generator/commit/0b1b5350db231a1b42cb694c8b014e5d5c02f15e))
 - bump max_epochs to 5, get_handlers arguments ([#58](https://github.com/pytorch-ignite/code-generator/issues/58)) ([818585e](https://github.com/pytorch-ignite/code-generator/commit/818585e724b6dd2c05f6750a0ba9ffa4bded765c))
 - convert `DEV_MODE` to int, mention in contributing.md ([#82](https://github.com/pytorch-ignite/code-generator/issues/82)) ([2342c52](https://github.com/pytorch-ignite/code-generator/commit/2342c52d6508f115bb6865a77ae322e2bfa5d1fd))
