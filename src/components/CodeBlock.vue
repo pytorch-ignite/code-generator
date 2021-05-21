@@ -105,7 +105,7 @@ div[class*='language-']::before,
 [class*='language-'] pre {
   position: relative;
   margin: 0;
-  padding: 1.25rem 1.5rem;
+  padding: 1.25rem 1.5rem 1.25rem 1rem;
   margin-left: 3.5rem;
   vertical-align: middle;
   overflow: auto;

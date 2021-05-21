@@ -1,4 +1,5 @@
 import logging
+from argparse import ArgumentParser
 from datetime import datetime
 from logging import Logger
 from pathlib import Path
@@ -6,6 +7,7 @@ from typing import Any, Mapping, Optional, Union
 
 import ignite.distributed as idist
 import torch
+import yaml
 from ignite.contrib.engines import common
 from ignite.engine import Engine
 from ignite.engine.events import Events
@@ -15,6 +17,21 @@ from ignite.handlers.terminate_on_nan import TerminateOnNan
 from ignite.handlers.time_limit import TimeLimit
 from ignite.handlers.timing import Timer
 from ignite.utils import setup_logger
+
+
+def setup_parser():
+    with open("config.yaml", "r") as f:
+        config = yaml.safe_load(f.read())
+
+    parser = ArgumentParser()
+    parser.add_argument("--backend", default=None, type=str)
+    for k, v in config.items():
+        if isinstance(v, bool):
+            parser.add_argument(f"--{k}", action="store_true")
+        else:
+            parser.add_argument(f"--{k}", default=v, type=type(v))
+
+    return parser
 
 
 def log_metrics(engine: Engine, tag: str) -> None:
@@ -79,7 +96,7 @@ def resume_from(
     logger.info("Successfully resumed from a checkpoint: %s", checkpoint_fp)
 
 
-def setup_output_dir(config: Any, rank: int):
+def setup_output_dir(config: Any, rank: int) -> Path:
     """Create output folder."""
     if rank == 0:
         now = datetime.now().strftime("%Y%m%d-%H%M%S")
@@ -88,7 +105,7 @@ def setup_output_dir(config: Any, rank: int):
         path.mkdir(parents=True, exist_ok=True)
         config.output_dir = path.as_posix()
 
-    return idist.broadcast(config.output_dir, src=0)
+    return Path(idist.broadcast(config.output_dir, src=0))
 
 
 def setup_logging(config: Any) -> Logger:
@@ -108,9 +125,9 @@ def setup_logging(config: Any) -> Logger:
     reset = "\033[0m"
     logger = setup_logger(
         name=f"{green}[ignite]{reset}",
-        level=logging.DEBUG if config.verbose else logging.INFO,
+        level=logging.DEBUG if config.debug else logging.INFO,
         format="%(name)s: %(message)s",
-        filepath=Path(config.output_dir) / "training-info.log",
+        filepath=config.output_dir / "training-info.log",
     )
     return logger
 
@@ -130,9 +147,7 @@ def setup_handlers(
     ckpt_handler_train = ckpt_handler_eval = timer = None
     #::: if (it.save_training || it.save_evaluation) { :::#
     # checkpointing
-    saver = DiskSaver(
-        Path(config.output_dir) / "checkpoints", require_empty=False
-    )
+    saver = DiskSaver(config.output_dir / "checkpoints", require_empty=False)
     #::: if (it.save_training) { :::#
     ckpt_handler_train = Checkpoint(
         to_save_train,

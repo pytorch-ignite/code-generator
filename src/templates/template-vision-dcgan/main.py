@@ -1,15 +1,14 @@
-import os
+from pprint import pformat
 from typing import Any
 
-import hydra
 import ignite.distributed as idist
 import torch
 import torchvision.utils as vutils
+import yaml
 from data import setup_data
 from ignite.engine import Events
 from ignite.utils import manual_seed
 from model import Discriminator, Generator
-from omegaconf import OmegaConf
 from torch import nn, optim
 from torch.utils.data.distributed import DistributedSampler
 from trainers import setup_evaluator, setup_trainer
@@ -80,8 +79,8 @@ def run(local_rank: int, config: Any):
     # setup engines logger with python logging
     # print training configurations
     logger = setup_logging(config)
-    logger.info("Configuration: \n%s", OmegaConf.to_yaml(config))
-    OmegaConf.save(config, os.path.join(config.output_dir, "config-lock.yaml"))
+    logger.info("Configuration: \n%s", pformat(vars(config)))
+    (config.output_dir / "config-lock.yaml").write_text(yaml.dump(config))
     trainer.logger = evaluator.logger = logger
 
     # set epoch for distributed sampler
@@ -140,18 +139,14 @@ def run(local_rank: int, config: Any):
     @trainer.on(Events.EPOCH_COMPLETED)
     def save_fake_example(engine):
         fake = model_g(fixed_noise)
-        path = os.path.join(
-            config.output_dir, FAKE_IMG_FNAME.format(engine.state.epoch)
-        )
+        path = config.output_dir / FAKE_IMG_FNAME.format(engine.state.epoch)
         vutils.save_image(fake.detach(), path, normalize=True)
 
     # adding handlers using `trainer.on` decorator API
     @trainer.on(Events.EPOCH_COMPLETED)
     def save_real_example(engine):
         img, y = engine.state.batch
-        path = os.path.join(
-            config.output_dir, REAL_IMG_FNAME.format(engine.state.epoch)
-        )
+        path = config.output_dir / REAL_IMG_FNAME.format(engine.state.epoch)
         vutils.save_image(img, path, normalize=True)
 
     # run evaluation at every training epoch end
@@ -210,10 +205,10 @@ def run(local_rank: int, config: Any):
 
 
 # main entrypoint
-@hydra.main(config_name="config")
-def main(config):
+def main():
+    config = setup_parser().parse_args()
     #::: if (it.dist === 'spawn') { :::#
-    #::: if (it.nproc_per_node && it.nnodes && it.master_addr && it.master_port) { :::#
+    #::: if (it.nproc_per_node && it.nnodes > 1 && it.master_addr && it.master_port) { :::#
     kwargs = {
         "nproc_per_node": config.nproc_per_node,
         "nnodes": config.nnodes,

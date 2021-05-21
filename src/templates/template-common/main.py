@@ -35,10 +35,10 @@ if ckpt_handler_eval is not None:
 #::: } :::#
 
 # main entrypoint
-@hydra.main(config_name="config")
-def main(config):
+def main():
+    config = setup_parser().parse_args()
     #::: if (it.dist === 'spawn') { :::#
-    #::: if (it.nproc_per_node && it.nnodes && it.master_addr && it.master_port) { :::#
+    #::: if (it.nproc_per_node && it.nnodes > 1 && it.master_addr && it.master_port) { :::#
     kwargs = {
         "nproc_per_node": config.nproc_per_node,
         "nnodes": config.nnodes,
