@@ -18,5 +18,15 @@
     "trainers.py",
     "utils.py",
     "requirements.txt"
+  ],
+  "template-vision-segmentation": [
+    "README.md",
+    "config.yaml",
+    "data.py",
+    "main.py",
+    "trainers.py",
+    "utils.py",
+    "vis.py",
+    "requirements.txt"
   ]
 }

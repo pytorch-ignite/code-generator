@@ -166,12 +166,15 @@ def setup_handlers(
         global_step_transform = global_step_from_engine(
             to_save_train["trainer"]
         )
+    metric_name = "mIoU_bg"
     ckpt_handler_eval = Checkpoint(
         to_save_eval,
         saver,
         filename_prefix="best",
         n_saved=config.n_saved,
         global_step_transform=global_step_transform,
+        score_function=Checkpoint.get_default_score_fn(metric_name),
+        score_name=f"eval_{metric_name}",
     )
     evaluator.add_event_handler(
         Events.EPOCH_COMPLETED(every=1), ckpt_handler_eval
@@ -181,6 +184,8 @@ def setup_handlers(
 
     #::: if (it.patience) { :::#
     # early stopping
+    def score_fn(engine: Engine):
+        return engine.state.metrics["mIoU_bg"]
 
     es = EarlyStopping(config.patience, score_fn, trainer)
     evaluator.add_event_handler(Events.EPOCH_COMPLETED, es)
@@ -257,3 +262,11 @@ def setup_exp_logging(config, trainer, optimizers, evaluators):
 
 
 #::: } :::#
+
+
+def lambda_lr_scheduler(iteration, lr0, n, a):
+    return lr0 * pow((1.0 - 1.0 * iteration / n), a)
+
+
+def model_output_transform(output):
+    return output["out"]
