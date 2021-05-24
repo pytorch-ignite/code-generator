@@ -49,7 +49,7 @@ export default {
     const selected = ref('')
 
     const saveSelected = () => saveConfig(saveKey.value, selected.value)
-    const selectId = computed(() => label.value + '-select')
+    const selectId = computed(() => saveKey.value + '-select')
     const isRequired = computed(() => (required.value ? '*' : ''))
     return {
       saveKey,
