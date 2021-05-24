@@ -10,7 +10,7 @@ def unzip():
     for zip in dist_tests.rglob("*.zip"):
         with zipfile.ZipFile(zip, "r") as f:
             f.extractall(f"./dist-tests/{zip.stem}")
-            zip.unlink(True)
+            zip.unlink()
 
 
 def run_simple():
