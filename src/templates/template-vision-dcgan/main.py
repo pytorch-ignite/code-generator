@@ -84,10 +84,12 @@ def run(local_rank: int, config: Any):
     trainer.logger = evaluator.logger = logger
 
     # set epoch for distributed sampler
-    if idist.get_world_size() > 1 and isinstance(
-        dataloader_train.sampler, DistributedSampler
-    ):
-        dataloader_train.sampler.set_epoch(trainer.state.epoch - 1)
+    @trainer.on(Events.EPOCH_STARTED)
+    def set_epoch():
+        if idist.get_world_size() > 1 and isinstance(
+            dataloader_train.sampler, DistributedSampler
+        ):
+            dataloader_train.sampler.set_epoch(trainer.state.epoch - 1)
 
     # setup ignite handlers
     #::: if (it.save_training || it.save_evaluation || it.patience || it.terminate_on_nan || it.timer || it.limit_sec) { :::#
