@@ -1,6 +1,8 @@
 #!/usr/bin/env sh
 
-set -euo pipefail
+set -eu
+
+CWD=$(pwd)
 
 unzip_all() {
   for dir in $(find ./dist-tests -type f -iname \*.zip)
@@ -17,6 +19,7 @@ run_simple() {
   do
     cd $dir
     python main.py --data_path ~/data
+    cd $CWD
   done
 }
 
