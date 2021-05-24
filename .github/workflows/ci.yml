@@ -55,7 +55,7 @@ jobs:
 
       - run: pnpm build
       - run: pnpm test:ci
-      - run: python ./scripts/run_tests.py
+      - run: sh ./scripts/run_tests.sh
 
   lint:
     runs-on: ubuntu-latest
