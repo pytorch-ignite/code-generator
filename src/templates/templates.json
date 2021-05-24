@@ -28,5 +28,15 @@
     "utils.py",
     "vis.py",
     "requirements.txt"
+  ],
+  "template-text-classification": [
+    "README.md",
+    "config.yaml",
+    "main.py",
+    "dataset.py",
+    "models.py",
+    "trainers.py",
+    "utils.py",
+    "requirements.txt"
   ]
 }
