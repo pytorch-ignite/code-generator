@@ -39,6 +39,7 @@ jobs:
           npm i -g pnpm
           pnpm i --frozen-lockfile --color
 
+      - run: pnpm build
       - run: pnpm test:ci
       - run: python ./scripts/run_tests.py
 
