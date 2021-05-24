@@ -1,8 +1,9 @@
-from typing import Any, Union
+from typing import Any, Dict, Union
 
 import torch
 from data import prepare_image_mask
 from ignite.engine import DeterministicEngine, Engine
+from ignite.metrics import Metric
 from torch.cuda.amp import GradScaler, autocast
 from torch.nn import Module
 from torch.optim import Optimizer
@@ -47,7 +48,10 @@ def setup_trainer(
 
 
 def setup_evaluator(
-    config: Any, model: Module, metrics: dict, device: Union[str, torch.device]
+    config: Any,
+    model: Module,
+    metrics: Dict[str, Metric],
+    device: Union[str, torch.device],
 ):
     prepare_batch = prepare_image_mask
 

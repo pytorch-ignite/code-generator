@@ -2,8 +2,10 @@ name: ci
 
 on:
   push:
-    branches: [master]
+    branches: [master, main]
   pull_request:
+  schedule:
+    - cron: '0 0 * * *'
 
 jobs:
   tests:
@@ -55,7 +57,23 @@ jobs:
 
       - run: pnpm build
       - run: pnpm test:ci
-      - run: sh ./scripts/run_tests.sh
+      - run: sh ./scripts/run_tests.sh unzip
+
+      - name: Run simple
+        run: sh ./scripts/run_tests.sh simple
+        if: github.event_name != 'schedule'
+
+      - name: Run all
+        run: sh ./scripts/run_tests.sh all
+        if: github.event_name != 'schedule'
+
+      - name: Run launch
+        run: sh ./scripts/run_tests.sh launch
+        if: github.event_name == 'schedule'
+
+      - name: Run spawn
+        run: sh ./scripts/run_tests.sh spawn
+        if: github.event_name == 'schedule'
 
   lint:
     runs-on: ubuntu-latest
