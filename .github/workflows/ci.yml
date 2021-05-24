@@ -39,6 +39,11 @@ jobs:
           npm i -g pnpm
           pnpm i --frozen-lockfile --color
 
+      - name: Download datasets
+        run: |
+          python ./scripts/download_datasets.py
+          pip install tqdm
+
       - run: pnpm build
       - run: pnpm test:ci
       - run: python ./scripts/run_tests.py
