@@ -31,6 +31,15 @@ jobs:
           restore-keys: |
             pnpm-and-pip-cache-
 
+      - name: Cache datasets
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/data
+          key: datasets
+          restore-keys: |
+            datasets
+
       - name: Install dependencies
         run: |
           pip install wheel setuptools pip -Uqq
