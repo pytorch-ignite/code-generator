@@ -55,10 +55,10 @@ def test_setup_evaluator():
         eval_batch_size=1,
         num_workers=0,
     )
-    dataloader_train, _ = setup_data(config)
+    _, dataloader_eval = setup_data(config)
     cm_metric = ConfusionMatrix(num_classes=21)
     metrics = {"IoU": IoU(cm_metric)}
 
     evaluator = setup_evaluator(config, model, metrics, device)
-    evaluator.run(dataloader_train)
+    evaluator.run(dataloader_eval)
     assert isinstance(evaluator.state.output, tuple)
