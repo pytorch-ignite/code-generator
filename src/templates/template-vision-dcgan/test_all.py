@@ -45,7 +45,7 @@ def test_setup_data():
     assert isinstance(eval_batch[0], Tensor)
     assert isinstance(eval_batch[1], Tensor)
     assert eval_batch[0].ndim == 4
-    assert eval_batch[1].ndim == 4
+    assert eval_batch[1].ndim == 1
 
 
 def test_models():
