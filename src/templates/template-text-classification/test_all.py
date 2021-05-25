@@ -7,7 +7,7 @@ import pytest
 from data import setup_data
 from torch import nn, optim
 from torch.functional import Tensor
-from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import DataLoader
 
 
 def set_up():
