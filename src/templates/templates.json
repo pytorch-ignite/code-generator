@@ -36,8 +36,8 @@
     "README.md",
     "config.yaml",
     "main.py",
-    "dataset.py",
-    "models.py",
+    "data.py",
+    "model.py",
     "trainers.py",
     "utils.py",
     "requirements.txt"

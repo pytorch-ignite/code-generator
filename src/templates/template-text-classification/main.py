@@ -1,0 +1,225 @@
+import os
+from pprint import pformat
+from typing import Any, cast
+
+import ignite.distributed as idist
+import yaml
+from data import setup_data
+from ignite.contrib.handlers import LRScheduler, PiecewiseLinear
+from ignite.engine import Events
+from ignite.metrics import Accuracy, Loss
+from ignite.utils import manual_seed
+from model import TransformerModel
+from torch import nn, optim
+from torch.optim.lr_scheduler import _LRScheduler
+from torch.utils.data.distributed import DistributedSampler
+from trainers import setup_evaluator, setup_trainer
+from utils import *
+
+os.environ[
+    "TOKENIZERS_PARALLELISM"
+] = "false"  # remove tokenizer paralleism warning
+
+
+def run(local_rank: int, config: Any):
+
+    # make a certain seed
+    rank = idist.get_rank()
+    manual_seed(config.seed + rank)
+
+    # create output folder
+    config.output_dir = setup_output_dir(config, rank)
+
+    # donwload datasets and create dataloaders
+    dataloader_train, dataloader_eval = setup_data(config)
+
+    config.num_iters_per_epoch = len(dataloader_train)
+
+    # model, optimizer, loss function, device
+    device = idist.device()
+    model = idist.auto_model(
+        TransformerModel(
+            config.model,
+            config.model_dir,
+            config.drop_out,
+            config.n_fc,
+            config.num_classes,
+        )
+    )
+
+    config.lr *= idist.get_world_size()
+    optimizer = idist.auto_optim(
+        optim.AdamW(
+            model.parameters(), lr=config.lr, weight_decay=config.weight_decay
+        )
+    )
+    loss_fn = nn.BCEWithLogitsLoss().to(device=device)
+
+    le = config.num_iters_per_epoch
+    milestones_values = [
+        (0, 0.0),
+        (le * config.num_warmup_epochs, config.lr),
+        (le * config.max_epochs, 0.0),
+    ]
+    lr_scheduler = PiecewiseLinear(
+        optimizer, param_name="lr", milestones_values=milestones_values
+    )
+
+    # setup metrics to attach to evaluator
+    metrics = {
+        "Accuracy": Accuracy(output_transform=thresholded_output_transform),
+        "Loss": Loss(loss_fn),
+    }
+
+    # trainer and evaluator
+    trainer = setup_trainer(config, model, optimizer, loss_fn, device)
+    evaluator = setup_evaluator(config, model, metrics, device)
+
+    # setup engines logger with python logging
+    # print training configurations
+    logger = setup_logging(config)
+    logger.info("Configuration: \n%s", pformat(vars(config)))
+    (config.output_dir / "config-lock.yaml").write_text(yaml.dump(config))
+    trainer.logger = evaluator.logger = logger
+
+    # set epoch for distributed sampler
+    @trainer.on(Events.EPOCH_STARTED)
+    def set_epoch():
+        if idist.get_world_size() > 1 and isinstance(
+            dataloader_train.sampler, DistributedSampler
+        ):
+            dataloader_train.sampler.set_epoch(trainer.state.epoch - 1)
+
+    if isinstance(lr_scheduler, _LRScheduler):
+        trainer.add_event_handler(
+            Events.ITERATION_COMPLETED,
+            lambda engine: cast(_LRScheduler, lr_scheduler).step(),
+        )
+    elif isinstance(lr_scheduler, LRScheduler):
+        trainer.add_event_handler(Events.ITERATION_COMPLETED, lr_scheduler)
+    else:
+        trainer.add_event_handler(Events.ITERATION_STARTED, lr_scheduler)
+
+    # setup ignite handlers
+    #::: if (it.save_training || it.save_evaluation || it.patience || it.terminate_on_nan || it.timer || it.limit_sec) { :::#
+
+    #::: if (it.save_training) { :::#
+    to_save_train = {
+        "model": model,
+        "optimizer": optimizer,
+        "trainer": trainer,
+        "lr_scheduler": lr_scheduler,
+    }
+    #::: } else { :::#
+    to_save_train = None
+    #::: } :::#
+
+    #::: if (it.save_evaluation) { :::#
+    to_save_eval = {"model": model}
+    #::: } else { :::#
+    to_save_eval = None
+    #::: } :::#
+
+    ckpt_handler_train, ckpt_handler_eval, timer = setup_handlers(
+        trainer, evaluator, config, to_save_train, to_save_eval
+    )
+    #::: } :::#
+
+    # experiment tracking
+    #::: if (it.logger) { :::#
+    if rank == 0:
+        exp_logger = setup_exp_logging(config, trainer, optimizer, evaluator)
+    #::: } :::#
+
+    # print metrics to the stderr
+    # with `add_event_handler` API
+    # for training stats
+    trainer.add_event_handler(
+        Events.ITERATION_COMPLETED(every=config.log_every_iters),
+        log_metrics,
+        tag="train",
+    )
+
+    # run evaluation at every training epoch end
+    # with shortcut `on` decorator API and
+    # print metrics to the stderr
+    # again with `add_event_handler` API
+    # for evaluation stats
+    @trainer.on(Events.EPOCH_COMPLETED(every=1))
+    def _():
+        # show timer
+        #::: if (it.save_training || it.save_evaluation || it.patience || it.terminate_on_nan || it.timer || it.limit_sec) { :::#
+        if timer is not None:
+            logger.info("Time per batch: %.4f seconds", timer.value())
+            timer.reset()
+        #::: } :::#
+
+        evaluator.run(dataloader_eval, epoch_length=config.eval_epoch_length)
+        log_metrics(evaluator, "eval")
+
+    # let's try run evaluation first as a sanity check
+    @trainer.on(Events.STARTED)
+    def _():
+        evaluator.run(dataloader_eval, epoch_length=config.eval_epoch_length)
+
+    # setup if done. let's run the training
+    trainer.run(
+        dataloader_train,
+        max_epochs=config.max_epochs,
+        epoch_length=config.train_epoch_length,
+    )
+
+    # close logger
+    #::: if (it.logger) { :::#
+    if rank == 0:
+        from ignite.contrib.handlers.wandb_logger import WandBLogger
+
+        if isinstance(exp_logger, WandBLogger):
+            # why handle differently for wandb?
+            # See: https://github.com/pytorch/ignite/issues/1894
+            exp_logger.finish()
+        elif exp_logger:
+            exp_logger.close()
+    #::: } :::#
+
+    # show the last checkpoint filename
+    #::: if (it.save_training || it.save_evaluation || it.patience || it.terminate_on_nan || it.timer || it.limit_sec) { :::#
+    if ckpt_handler_train is not None:
+        logger.info(
+            "Last training checkpoint name - %s",
+            ckpt_handler_train.last_checkpoint,
+        )
+
+    if ckpt_handler_eval is not None:
+        logger.info(
+            "Last evaluation checkpoint name - %s",
+            ckpt_handler_eval.last_checkpoint,
+        )
+    #::: } :::#
+
+
+# main entrypoint
+def main():
+    config = setup_parser().parse_args()
+    #::: if (it.dist === 'spawn') { :::#
+    #::: if (it.nproc_per_node && it.nnodes > 1 && it.master_addr && it.master_port) { :::#
+    kwargs = {
+        "nproc_per_node": config.nproc_per_node,
+        "nnodes": config.nnodes,
+        "node_rank": config.node_rank,
+        "master_addr": config.master_addr,
+        "master_port": config.master_port,
+    }
+    #::: } else if (it.nproc_per_node) { :::#
+    kwargs = {"nproc_per_node": config.nproc_per_node}
+    #::: } :::#
+    with idist.Parallel(config.backend, **kwargs) as p:
+        p.run(run, config=config)
+    #::: } else { :::#
+    with idist.Parallel(config.backend) as p:
+        p.run(run, config=config)
+    #::: } :::#
+
+
+if __name__ == "__main__":
+    main()
