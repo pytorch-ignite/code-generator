@@ -40,7 +40,8 @@ export const msg = reactive({
 export const store = reactive({
   code: {},
   config: {
-    template: ''
+    template: '',
+    include_test: false
   }
 })
 
@@ -61,6 +62,9 @@ export function genCode() {
   const currentFiles = files[store.config.template]
   if (currentFiles && Object.keys(currentFiles).length) {
     for (const file in currentFiles) {
+      if (!store.config.include_test && file === 'test_all.py') {
+        continue
+      }
       store.code[file] = ejs
         .render(currentFiles[file], store.config)
         .replaceAll(/(\n\n\n\n)+/gi, '\n')

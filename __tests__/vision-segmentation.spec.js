@@ -43,6 +43,9 @@ test('vision segmentation simple', async () => {
 test('vision segmentation all', async () => {
   await page.selectOption('select', 'template-vision-segmentation')
 
+  await page.check('#include_test-checkbox')
+  expect(await page.isChecked('#include_test-checkbox')).toBeTruthy()
+
   await page.waitForSelector('text=README.md')
   await page.click(':nth-match(:text("Training"), 2)')
 

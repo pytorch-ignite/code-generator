@@ -6,13 +6,11 @@ from typing import Iterable
 import ignite.distributed as idist
 import pytest
 import torch
-from datasets import get_datasets
-from ignite.engine import Engine
+from data import setup_data
 from models import Discriminator, Generator
-from torch import nn, optim
-from torch.functional import Tensor
-from torch.utils.data import Dataset
-from trainers import train_function
+from torch import Tensor, nn, optim
+from torch.utils.data.dataloader import DataLoader
+from trainers import setup_trainer
 
 
 def set_up():
@@ -25,16 +23,27 @@ def set_up():
     return model, optimizer, device, loss_fn, batch
 
 
-@pytest.mark.skipif(os.getenv("RUN_SLOW_TESTS", 0) == 0, reason="Skip slow tests")
-def test_get_datasets(tmp_path):
-    dataset, _ = get_datasets("cifar10", tmp_path)
+@pytest.mark.skipif(
+    os.getenv("RUN_SLOW_TESTS", 0) == 0, reason="Skip slow tests"
+)
+def test_setup_data():
+    config = Namespace(
+        data_path="~/data", train_batch_size=1, eval_batch_size=1, num_workers=0
+    )
+    dataloader_train, dataloader_eval = setup_data(config)
 
-    assert isinstance(dataset, Dataset)
-    batch = next(iter(dataset))
-    assert isinstance(batch, Iterable)
-    assert isinstance(batch[0], Tensor)
-    assert isinstance(batch[1], Number)
-    assert batch[0].ndim == 3
+    assert isinstance(dataloader_train, DataLoader)
+    assert isinstance(dataloader_eval, DataLoader)
+    train_batch = next(dataloader_train)
+    assert isinstance(train_batch, Iterable)
+    assert isinstance(train_batch[0], Tensor)
+    assert isinstance(train_batch[1], Number)
+    assert train_batch[0].ndim == 4
+    eval_batch = next(dataloader_eval)
+    assert isinstance(eval_batch, Iterable)
+    assert isinstance(eval_batch[0], Tensor)
+    assert isinstance(eval_batch[1], Number)
+    assert eval_batch[0].ndim == 4
 
 
 def test_models():
@@ -50,23 +59,11 @@ def test_models():
     assert isinstance(model_G, nn.Module)
 
 
-def test_train_fn():
+def test_setup_trainer():
     model, optimizer, device, loss_fn, batch = set_up()
-    real_labels = torch.ones(2, device=device)
-    fake_labels = torch.zeros(2, device=device)
-    engine = Engine(lambda e, b: 1)
-    config = Namespace(use_amp=False, batch_size=2, z_dim=100)
-    output = train_function(
-        config,
-        engine,
-        batch,
-        model,
-        model,
-        loss_fn,
-        optimizer,
-        optimizer,
-        device,
-        real_labels,
-        fake_labels,
+    config = Namespace(use_amp=False, train_batch_size=2, z_dim=100)
+    trainer = setup_trainer(
+        config, model, model, optimizer, optimizer, loss_fn, device
     )
-    assert isinstance(output, dict)
+    trainer.run(batch)
+    assert isinstance(trainer.state.output, dict)
