@@ -40,7 +40,7 @@ export default {
     const checked = ref(false)
 
     const saveChecked = () => saveConfig(saveKey.value, checked.value)
-    const checkboxId = computed(() => label.value + '-checkbox')
+    const checkboxId = computed(() => saveKey.value + '-checkbox')
     const isRequired = computed(() => (required.value ? '*' : ''))
 
     return {
