@@ -5,6 +5,7 @@ import ignite.distributed as idist
 import pytest
 import torch
 from data import setup_data
+from ignite.metrics import ConfusionMatrix, IoU
 from torch import Tensor, nn, optim
 from torch.utils.data.dataloader import DataLoader
 from trainers import setup_evaluator
@@ -48,6 +49,9 @@ def test_setup_data():
 def test_setup_evaluator():
     model, _, device, _, batch = set_up()
     config = Namespace(use_amp=False)
-    evaluator = setup_evaluator(config, model, device)
+    cm_metric = ConfusionMatrix(num_classes=21)
+    metrics = {"IoU": IoU(cm_metric)}
+
+    evaluator = setup_evaluator(config, model, metrics, device)
     evaluator.run([batch, batch])
     assert isinstance(evaluator.state.output, tuple)
