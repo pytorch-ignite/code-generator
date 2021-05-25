@@ -1,6 +1,5 @@
 import os
 from argparse import Namespace
-from numbers import Number
 from typing import Iterable
 
 import ignite.distributed as idist
@@ -36,13 +35,15 @@ def test_setup_data():
     train_batch = next(iter(dataloader_train))
     assert isinstance(train_batch, Iterable)
     assert isinstance(train_batch[0], Tensor)
-    assert isinstance(train_batch[1], Number)
+    assert isinstance(train_batch[1], Tensor)
     assert train_batch[0].ndim == 4
+    assert train_batch[1].ndim == 1
     eval_batch = next(iter(dataloader_eval))
     assert isinstance(eval_batch, Iterable)
     assert isinstance(eval_batch[0], Tensor)
-    assert isinstance(eval_batch[1], Number)
+    assert isinstance(eval_batch[1], Tensor)
     assert eval_batch[0].ndim == 4
+    assert eval_batch[1].ndim == 1
 
 
 def test_setup_evaluator():

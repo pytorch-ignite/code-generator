@@ -1,7 +1,5 @@
 import os
 from argparse import Namespace
-from numbers import Number
-from typing import Iterable
 
 import ignite.distributed as idist
 import pytest
@@ -34,15 +32,17 @@ def test_setup_data():
     assert isinstance(dataloader_train, DataLoader)
     assert isinstance(dataloader_eval, DataLoader)
     train_batch = next(iter(dataloader_train))
-    assert isinstance(train_batch, Iterable)
-    assert isinstance(train_batch[0], Tensor)
-    assert isinstance(train_batch[1], Number)
-    assert train_batch[0].ndim == 4
+    assert isinstance(train_batch, dict)
+    assert isinstance(train_batch["image"], Tensor)
+    assert isinstance(train_batch["mask"], Tensor)
+    assert train_batch["image"].ndim == 4
+    assert train_batch["mask"].ndim == 3
     eval_batch = next(iter(dataloader_eval))
-    assert isinstance(eval_batch, Iterable)
-    assert isinstance(eval_batch[0], Tensor)
-    assert isinstance(eval_batch[1], Number)
-    assert eval_batch[0].ndim == 4
+    assert isinstance(eval_batch, dict)
+    assert isinstance(eval_batch["image"], Tensor)
+    assert isinstance(eval_batch["mask"], Tensor)
+    assert eval_batch["image"].ndim == 4
+    assert eval_batch["mask"].ndim == 3
 
 
 def test_setup_evaluator():
