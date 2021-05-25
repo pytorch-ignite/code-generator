@@ -23,7 +23,7 @@ def set_up():
 )
 def test_setup_data():
     config = Namespace(
-        data_dir="/tmp/data",
+        data_path="/tmp/data",
         model="bert-base-uncased",
         tokenizer_dir="/tmp/tokenizer",
         max_length=1,
