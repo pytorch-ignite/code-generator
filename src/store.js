@@ -63,6 +63,7 @@ export function genCode() {
   if (currentFiles && Object.keys(currentFiles).length) {
     for (const file in currentFiles) {
       if (!store.config.include_test && file === 'test_all.py') {
+        delete store.code['test_all.py']
         continue
       }
       store.code[file] = ejs
