@@ -10,16 +10,23 @@
         @change.prevent="downloadTemplates"
       />
     </div>
+    <div class="include-test">
+      <FormCheckbox
+        label="Include a test file for the generated code"
+        saveKey="include_test"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 import FormSelect from './FormSelect.vue'
+import FormCheckbox from './FormCheckbox.vue'
 import templates from '../templates/templates.json'
 import { store, fetchTemplates } from '../store.js'
 
 export default {
-  components: { FormSelect },
+  components: { FormSelect, FormCheckbox },
   setup() {
     const templateLabel = 'Choose A Template'
     const templateOptions = Object.keys(templates)

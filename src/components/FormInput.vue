@@ -71,7 +71,7 @@ export default {
     }
 
     const saveInput = () => saveConfig(saveKey.value, inputted.value)
-    const inputId = computed(() => label.value + '-input-' + type.value)
+    const inputId = computed(() => saveKey.value + '-input-' + type.value)
     const isRequired = computed(() => (required.value ? '*' : ''))
     return {
       label,

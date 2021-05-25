@@ -5,12 +5,12 @@
         type="radio"
         v-model="picked"
         :name="saveKey"
-        :id="o.description"
+        :id="saveKey + '-' + o.name + '-radio'"
         :required="required"
         :value="o.name"
         @change.prevent="saveInput"
       />
-      <label :for="o.description">
+      <label :for="saveKey + '-' + o.name + '-radio'">
         {{ o.description }}
       </label>
       {{ isRequired }}

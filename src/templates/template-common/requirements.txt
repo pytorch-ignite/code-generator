@@ -12,3 +12,7 @@ pyyaml
 #:::= it.logger :::#
 
 #::: } :::#
+
+#::: if (it.include_tests) { :::#
+pytest
+#::: } :::#
