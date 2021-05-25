@@ -47,11 +47,18 @@ def test_setup_data():
 
 
 def test_setup_evaluator():
-    model, _, device, _, batch = set_up()
-    config = Namespace(use_amp=False)
+    model, _, device, _, _ = set_up()
+    config = Namespace(
+        use_amp=False,
+        data_path="~/data",
+        train_batch_size=1,
+        eval_batch_size=1,
+        num_workers=0,
+    )
+    dataloader_train, _ = setup_data(config)
     cm_metric = ConfusionMatrix(num_classes=21)
     metrics = {"IoU": IoU(cm_metric)}
 
     evaluator = setup_evaluator(config, model, metrics, device)
-    evaluator.run([batch, batch])
+    evaluator.run(dataloader_train)
     assert isinstance(evaluator.state.output, tuple)
