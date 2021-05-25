@@ -37,7 +37,7 @@ test('vision dcgan simple', async () => {
     page.click('button:has-text("Download")')
   ])
 
-  await download.saveAs('./dist-tests/dcgan-simple.zip')
+  await download.saveAs('./dist-tests/vision-dcgan-simple.zip')
 })
 
 test('vision dcgan all', async () => {
@@ -93,7 +93,7 @@ test('vision dcgan all', async () => {
     page.click('button:has-text("Download")')
   ])
 
-  await download.saveAs('./dist-tests/dcgan-all.zip')
+  await download.saveAs('./dist-tests/vision-dcgan-all.zip')
 })
 
 test('vision dcgan launch', async () => {
@@ -115,7 +115,7 @@ test('vision dcgan launch', async () => {
     page.click('button:has-text("Download")')
   ])
 
-  await download.saveAs('./dist-tests/dcgan-launch.zip')
+  await download.saveAs('./dist-tests/vision-dcgan-launch.zip')
 })
 
 test('vision dcgan spawn', async () => {
@@ -138,5 +138,5 @@ test('vision dcgan spawn', async () => {
     page.click('button:has-text("Download")')
   ])
 
-  await download.saveAs('./dist-tests/dcgan-spawn.zip')
+  await download.saveAs('./dist-tests/vision-dcgan-spawn.zip')
 })

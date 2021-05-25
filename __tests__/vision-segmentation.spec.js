@@ -37,7 +37,7 @@ test('vision segmentation simple', async () => {
     page.click('button:has-text("Download")')
   ])
 
-  await download.saveAs('./dist-tests/segmentation-simple.zip')
+  await download.saveAs('./dist-tests/vision-segmentation-simple.zip')
 })
 
 test('vision segmentation all', async () => {
@@ -93,7 +93,7 @@ test('vision segmentation all', async () => {
     page.click('button:has-text("Download")')
   ])
 
-  await download.saveAs('./dist-tests/segmentation-all.zip')
+  await download.saveAs('./dist-tests/vision-segmentation-all.zip')
 })
 
 test('vision segmentation launch', async () => {
@@ -115,7 +115,7 @@ test('vision segmentation launch', async () => {
     page.click('button:has-text("Download")')
   ])
 
-  await download.saveAs('./dist-tests/segmentation-launch.zip')
+  await download.saveAs('./dist-tests/vision-segmentation-launch.zip')
 })
 
 test('vision segmentation spawn', async () => {
@@ -138,5 +138,5 @@ test('vision segmentation spawn', async () => {
     page.click('button:has-text("Download")')
   ])
 
-  await download.saveAs('./dist-tests/segmentation-spawn.zip')
+  await download.saveAs('./dist-tests/vision-segmentation-spawn.zip')
 })

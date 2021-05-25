@@ -37,7 +37,7 @@ test('vision classification simple', async () => {
     page.click('button:has-text("Download")')
   ])
 
-  await download.saveAs('./dist-tests/classification-simple.zip')
+  await download.saveAs('./dist-tests/vision-classification-simple.zip')
 })
 
 test('vision classification all', async () => {
@@ -93,7 +93,7 @@ test('vision classification all', async () => {
     page.click('button:has-text("Download")')
   ])
 
-  await download.saveAs('./dist-tests/classification-all.zip')
+  await download.saveAs('./dist-tests/vision-classification-all.zip')
 })
 
 test('vision classification launch', async () => {
@@ -115,7 +115,7 @@ test('vision classification launch', async () => {
     page.click('button:has-text("Download")')
   ])
 
-  await download.saveAs('./dist-tests/classification-launch.zip')
+  await download.saveAs('./dist-tests/vision-classification-launch.zip')
 })
 
 test('vision classification spawn', async () => {
@@ -138,5 +138,5 @@ test('vision classification spawn', async () => {
     page.click('button:has-text("Download")')
   ])
 
-  await download.saveAs('./dist-tests/classification-spawn.zip')
+  await download.saveAs('./dist-tests/vision-classification-spawn.zip')
 })
