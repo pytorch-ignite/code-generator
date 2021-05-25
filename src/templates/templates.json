@@ -7,6 +7,7 @@
     "model.py",
     "trainers.py",
     "utils.py",
+    "test_all.py",
     "requirements.txt"
   ],
   "template-vision-dcgan": [
@@ -17,6 +18,7 @@
     "model.py",
     "trainers.py",
     "utils.py",
+    "test_all.py",
     "requirements.txt"
   ],
   "template-vision-segmentation": [
@@ -27,6 +29,7 @@
     "trainers.py",
     "utils.py",
     "vis.py",
+    "test_all.py",
     "requirements.txt"
   ]
 }

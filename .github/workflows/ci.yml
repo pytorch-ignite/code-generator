@@ -10,6 +10,8 @@ on:
 jobs:
   tests:
     runs-on: ${{ matrix.os }}
+    env:
+      RUN_SLOW_TESTS: 1
     strategy:
       fail-fast: false
       matrix:
@@ -59,12 +61,12 @@ jobs:
       - run: pnpm test:ci
       - run: sh ./scripts/run_tests.sh unzip
 
-      - name: Run simple
-        run: sh ./scripts/run_tests.sh simple
-        if: github.event_name != 'schedule'
-
       - name: Run all
         run: sh ./scripts/run_tests.sh all
+        if: github.event_name != 'schedule'
+
+      - name: Run simple
+        run: sh ./scripts/run_tests.sh simple
         if: github.event_name != 'schedule'
 
       - name: Run launch

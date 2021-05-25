@@ -4,3 +4,4 @@ pytorch-ignite>=0.4.2
 pyyaml
 albumentations
 image_dataset_viz
+pytest
