@@ -35,8 +35,8 @@
   "template-text-classification": [
     "README.md",
     "config.yaml",
-    "main.py",
     "data.py",
+    "main.py",
     "model.py",
     "trainers.py",
     "utils.py",
