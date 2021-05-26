@@ -69,7 +69,7 @@ export function genCode() {
       }
       store.code[file] = ejs
         .render(currentFiles[file], store.config)
-        .replaceAll(/\s{4}\n/gi, '')
+        .replaceAll(/\s{4}\n/gi, '\n')
         .replaceAll(/(\n{3,})/gi, '\n\n')
     }
     if (isDev) {
