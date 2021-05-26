@@ -61,6 +61,7 @@ export function saveConfig(key, value) {
 export function genCode() {
   const currentFiles = files[store.config.template]
   if (currentFiles && Object.keys(currentFiles).length) {
+    store.code = {}
     for (const file in currentFiles) {
       if (!store.config.include_test && file === 'test_all.py') {
         delete store.code['test_all.py']
