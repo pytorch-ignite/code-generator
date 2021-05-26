@@ -31,5 +31,16 @@
     "vis.py",
     "test_all.py",
     "requirements.txt"
+  ],
+  "template-text-classification": [
+    "README.md",
+    "config.yaml",
+    "main.py",
+    "data.py",
+    "model.py",
+    "trainers.py",
+    "utils.py",
+    "test_all.py",
+    "requirements.txt"
   ]
 }

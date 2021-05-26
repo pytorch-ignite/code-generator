@@ -1,0 +1,20 @@
+torch>=1.8.0
+torchvision>=0.9.0
+pytorch-ignite>=0.4.4
+pyyaml
+transformers
+datasets
+
+#::: if (['neptune', 'polyaxon'].includes(it.logger)) { :::#
+
+#:::= it.logger + '-client' :::#
+
+#::: } else { :::#
+
+#:::= it.logger :::#
+
+#::: } :::#
+
+#::: if (it.include_tests) { :::#
+pytest
+#::: } :::#
