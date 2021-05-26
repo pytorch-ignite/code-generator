@@ -60,8 +60,8 @@ export function saveConfig(key, value) {
 // render the code if there are fetched files for current selected template
 export function genCode() {
   const currentFiles = files[store.config.template]
+  store.code = {}
   if (currentFiles && Object.keys(currentFiles).length) {
-    store.code = {}
     for (const file in currentFiles) {
       if (!store.config.include_test && file === 'test_all.py') {
         delete store.code['test_all.py']
