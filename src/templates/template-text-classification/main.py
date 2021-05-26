@@ -93,8 +93,8 @@ def run(local_rank: int, config: Any):
     else:
         trainer.add_event_handler(Events.ITERATION_STARTED, lr_scheduler)
 
-    # setup ignite handlers
     #::: if (it.save_training || it.save_evaluation || it.patience || it.terminate_on_nan || it.timer || it.limit_sec) { :::#
+    # setup ignite handlers
 
     #::: if (it.save_training) { :::#
     to_save_train = {
@@ -118,8 +118,8 @@ def run(local_rank: int, config: Any):
     )
     #::: } :::#
 
-    # experiment tracking
     #::: if (it.logger) { :::#
+    # experiment tracking
     if rank == 0:
         exp_logger = setup_exp_logging(config, trainer, optimizer, evaluator)
     #::: } :::#
@@ -140,8 +140,8 @@ def run(local_rank: int, config: Any):
     # for evaluation stats
     @trainer.on(Events.EPOCH_COMPLETED(every=1))
     def _():
-        # show timer
         #::: if (it.save_training || it.save_evaluation || it.patience || it.terminate_on_nan || it.timer || it.limit_sec) { :::#
+        # show timer
         if timer is not None:
             logger.info("Time per batch: %.4f seconds", timer.value())
             timer.reset()
@@ -162,8 +162,8 @@ def run(local_rank: int, config: Any):
         epoch_length=config.train_epoch_length,
     )
 
-    # close logger
     #::: if (it.logger) { :::#
+    # close logger
     if rank == 0:
         from ignite.contrib.handlers.wandb_logger import WandBLogger
 
@@ -175,8 +175,8 @@ def run(local_rank: int, config: Any):
             exp_logger.close()
     #::: } :::#
 
-    # show the last checkpoint filename
     #::: if (it.save_training || it.save_evaluation || it.patience || it.terminate_on_nan || it.timer || it.limit_sec) { :::#
+    # show the last checkpoint filename
     if ckpt_handler_train is not None:
         logger.info(
             "Last training checkpoint name - %s",
