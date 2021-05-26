@@ -1,6 +1,5 @@
 <template>
   <div v-if="tabs()">
-    <div class="right-pane-tabs-container">
       <div class="right-pane-tabs">
         <div
           v-for="tab in tabs()"
@@ -11,7 +10,6 @@
         >
           <span class="iconify" :data-icon="getFileType(tab)"></span>
           {{ tab }}
-        </div>
       </div>
     </div>
     <div class="right-pane-contexts" v-if="store.code[currentTab]">
@@ -79,9 +77,9 @@ export default {
 .right-pane-tabs::-webkit-scrollbar {
   display: none;
 }
-.right-pane-tabs-container,
+.right-pane-tabs,
 .right-pane-contexts {
-  padding-right: 1.5rem;
+   margin-right: 1.5rem;
 }
 .right-pane-tab {
   display: flex;
