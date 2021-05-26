@@ -63,7 +63,9 @@ def run(local_rank: int, config: Any):
     metrics = {"IoU": IoU(cm_metric), "mIoU_bg": mIoU(cm_metric)}
 
     # trainer and evaluator
-    trainer = setup_trainer(config, model, optimizer, loss_fn, device)
+    trainer = setup_trainer(
+        config, model, optimizer, loss_fn, device, dataloader_train.sampler
+    )
     evaluator = setup_evaluator(config, model, metrics, device)
 
     # setup engines logger with python logging
@@ -72,14 +74,6 @@ def run(local_rank: int, config: Any):
     logger.info("Configuration: \n%s", pformat(vars(config)))
     (config.output_dir / "config-lock.yaml").write_text(yaml.dump(config))
     trainer.logger = evaluator.logger = logger
-
-    # set epoch for distributed sampler
-    @trainer.on(Events.EPOCH_STARTED)
-    def set_epoch():
-        if idist.get_world_size() > 1 and isinstance(
-            dataloader_train.sampler, DistributedSampler
-        ):
-            dataloader_train.sampler.set_epoch(trainer.state.epoch - 1)
 
     if isinstance(lr_scheduler, _LRScheduler):
         trainer.add_event_handler(

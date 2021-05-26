@@ -9,7 +9,6 @@ from ignite.metrics import Accuracy, Loss
 from ignite.utils import manual_seed
 from model import Net
 from torch import nn, optim
-from torch.utils.data.distributed import DistributedSampler
 from trainers import setup_evaluator, setup_trainer
 from utils import *
 
@@ -33,7 +32,9 @@ def run(local_rank: int, config: Any):
     loss_fn = nn.CrossEntropyLoss().to(device=device)
 
     # trainer and evaluator
-    trainer = setup_trainer(config, model, optimizer, loss_fn, device)
+    trainer = setup_trainer(
+        config, model, optimizer, loss_fn, device, dataloader_train.sampler
+    )
     evaluator = setup_evaluator(config, model, device)
 
     # attach metrics to evaluator
@@ -51,15 +52,7 @@ def run(local_rank: int, config: Any):
     logger = setup_logging(config)
     logger.info("Configuration: \n%s", pformat(vars(config)))
     (config.output_dir / "config-lock.yaml").write_text(yaml.dump(config))
-    trainer.logger = evaluator.logger = logger
-
-    # set epoch for distributed sampler
-    @trainer.on(Events.EPOCH_STARTED)
-    def set_epoch():
-        if idist.get_world_size() > 1 and isinstance(
-            dataloader_train.sampler, DistributedSampler
-        ):
-            dataloader_train.sampler.set_epoch(trainer.state.epoch - 1)
+    trainer.logger = evaluator.logger = loggerw
 
     # setup ignite handlers
     #::: if (it.save_training || it.save_evaluation || it.patience || it.terminate_on_nan || it.timer || it.limit_sec) { :::#
