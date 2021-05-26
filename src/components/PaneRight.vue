@@ -1,15 +1,15 @@
 <template>
   <div v-if="tabs()">
-      <div class="right-pane-tabs">
-        <div
-          v-for="tab in tabs()"
-          :key="tab"
-          class="right-pane-tab"
-          :class="{ active: currentTab === tab }"
-          @click="currentTab = tab"
-        >
-          <span class="iconify" :data-icon="getFileType(tab)"></span>
-          {{ tab }}
+    <div class="right-pane-tabs">
+      <div
+        v-for="tab in tabs()"
+        :key="tab"
+        class="right-pane-tab"
+        :class="{ active: currentTab === tab }"
+        @click="currentTab = tab"
+      >
+        <span class="iconify" :data-icon="getFileType(tab)"></span>
+        {{ tab }}
       </div>
     </div>
     <div class="right-pane-contexts" v-if="store.code[currentTab]">
@@ -79,7 +79,7 @@ export default {
 }
 .right-pane-tabs,
 .right-pane-contexts {
-   margin-right: 1.5rem;
+  margin-right: 1.5rem;
 }
 .right-pane-tab {
   display: flex;
