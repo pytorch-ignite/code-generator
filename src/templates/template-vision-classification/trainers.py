@@ -52,6 +52,8 @@ def setup_trainer(
         ):
             train_sampler.set_epoch(trainer.state.epoch - 1)
 
+    return trainer
+
 
 def setup_evaluator(
     config: Any,

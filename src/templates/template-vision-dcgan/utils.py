@@ -133,8 +133,6 @@ def setup_logging(config: Any) -> Logger:
 
 
 #::: if (it.save_training || it.save_evaluation || it.patience || it.terminate_on_nan || it.timer || it.limit_sec) { :::#
-
-
 def setup_handlers(
     trainer: Engine,
     evaluator: Engine,

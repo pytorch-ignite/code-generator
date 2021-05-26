@@ -52,7 +52,7 @@ def run(local_rank: int, config: Any):
     logger = setup_logging(config)
     logger.info("Configuration: \n%s", pformat(vars(config)))
     (config.output_dir / "config-lock.yaml").write_text(yaml.dump(config))
-    trainer.logger = evaluator.logger = loggerw
+    trainer.logger = evaluator.logger = logger
 
     # setup ignite handlers
     #::: if (it.save_training || it.save_evaluation || it.patience || it.terminate_on_nan || it.timer || it.limit_sec) { :::#
