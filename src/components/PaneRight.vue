@@ -1,15 +1,17 @@
 <template>
   <div v-if="tabs()">
-    <div class="right-pane-tabs">
-      <div
-        v-for="tab in tabs()"
-        :key="tab"
-        class="right-pane-tab"
-        :class="{ active: currentTab === tab }"
-        @click="currentTab = tab"
-      >
-        <span class="iconify" :data-icon="getFileType(tab)"></span>
-        {{ tab }}
+    <div class="right-pane-tabs-container">
+      <div class="right-pane-tabs">
+        <div
+          v-for="tab in tabs()"
+          :key="tab"
+          class="right-pane-tab"
+          :class="{ active: currentTab === tab }"
+          @click="currentTab = tab"
+        >
+          <span class="iconify" :data-icon="getFileType(tab)"></span>
+          {{ tab }}
+        </div>
       </div>
     </div>
     <div class="right-pane-contexts" v-if="store.code[currentTab]">
@@ -77,7 +79,7 @@ export default {
 .right-pane-tabs::-webkit-scrollbar {
   display: none;
 }
-.right-pane-tabs,
+.right-pane-tabs-container,
 .right-pane-contexts {
   padding-right: 1.5rem;
 }
