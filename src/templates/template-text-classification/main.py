@@ -178,6 +178,7 @@ def run(local_rank: int, config: Any):
         "Last evaluation checkpoint name - %s",
         ckpt_handler_eval.last_checkpoint,
     )
+    #::: } :::#
 
 
 # main entrypoint

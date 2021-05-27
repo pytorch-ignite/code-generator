@@ -25,6 +25,8 @@ logger.info(
     "Last evaluation checkpoint name - %s",
     ckpt_handler_eval.last_checkpoint,
 )
+#::: } :::#
+
 
 # main entrypoint
 def main():
