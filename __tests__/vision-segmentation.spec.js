@@ -76,9 +76,6 @@ test('vision segmentation all', async () => {
   await page.check('#terminate_on_nan-checkbox')
   expect(await page.isChecked('#terminate_on_nan-checkbox')).toBeTruthy()
 
-  await page.check('#timer-checkbox')
-  expect(await page.isChecked('#timer-checkbox')).toBeTruthy()
-
   await page.fill('#patience-input-number', '2')
   expect(await page.$eval('#patience-input-number', (e) => e.value)).toBe('2')
 

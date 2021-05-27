@@ -84,9 +84,8 @@ def run(local_rank: int, config: Any):
     (config.output_dir / "config-lock.yaml").write_text(yaml.dump(config))
     trainer.logger = evaluator.logger = logger
 
-    #::: if (it.save_training || it.save_evaluation || it.patience || it.terminate_on_nan || it.timer || it.limit_sec) { :::#
     # setup ignite handlers
-
+    #::: if (it.save_training || it.save_evaluation) { :::#
     #::: if (it.save_training) { :::#
     to_save_train = {
         "model_d": model_d,
@@ -98,16 +97,16 @@ def run(local_rank: int, config: Any):
     #::: } else { :::#
     to_save_train = None
     #::: } :::#
-
     #::: if (it.save_evaluation) { :::#
     to_save_eval = {"model_d": model_d, "model_g": model_g}
     #::: } else { :::#
-    to_save_eval = None
+    to_save_train = None
     #::: } :::#
-
-    ckpt_handler_train, ckpt_handler_eval, timer = setup_handlers(
+    ckpt_handler_train, ckpt_handler_eval = setup_handlers(
         trainer, evaluator, config, to_save_train, to_save_eval
     )
+    #::: } else if (it.patience || it.terminate_on_nan || it.limit_sec) { :::#
+    setup_handlers(trainer, evaluator, config)
     #::: } :::#
 
     #::: if (it.logger) { :::#
@@ -151,13 +150,6 @@ def run(local_rank: int, config: Any):
     # for evaluation stats
     @trainer.on(Events.EPOCH_COMPLETED(every=1))
     def _():
-        #::: if (it.save_training || it.save_evaluation || it.patience || it.terminate_on_nan || it.timer || it.limit_sec) { :::#
-        # show timer
-        if timer is not None:
-            logger.info("Time per batch: %.4f seconds", timer.value())
-            timer.reset()
-        #::: } :::#
-
         evaluator.run(dataloader_eval, epoch_length=config.eval_epoch_length)
         log_metrics(evaluator, "eval")
 
@@ -186,19 +178,17 @@ def run(local_rank: int, config: Any):
             exp_logger.close()
     #::: } :::#
 
-    #::: if (it.save_training || it.save_evaluation || it.patience || it.terminate_on_nan || it.timer || it.limit_sec) { :::#
+    #::: if (it.save_training || it.save_evaluation) { :::#
     # show last checkpoint names
-    if ckpt_handler_train is not None:
-        logger.info(
-            "Last training checkpoint name - %s",
-            ckpt_handler_train.last_checkpoint,
-        )
+    logger.info(
+        "Last training checkpoint name - %s",
+        ckpt_handler_train.last_checkpoint,
+    )
 
-    if ckpt_handler_eval is not None:
-        logger.info(
-            "Last evaluation checkpoint name - %s",
-            ckpt_handler_eval.last_checkpoint,
-        )
+    logger.info(
+        "Last evaluation checkpoint name - %s",
+        ckpt_handler_eval.last_checkpoint,
+    )
     #::: } :::#
 
 
