@@ -79,7 +79,7 @@ export default {
 }
 .right-pane-tabs,
 .right-pane-contexts {
-  padding-right: 1.5rem;
+  margin-right: 1.5rem;
 }
 .right-pane-tab {
   display: flex;
