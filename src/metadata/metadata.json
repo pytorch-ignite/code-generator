@@ -47,7 +47,7 @@
     "save_training": {
       "name": "save_training",
       "type": "checkbox",
-      "description": "Save the training state (models, optimizers, trainers, ...) by every save_every_iters."
+      "description": "Save the training state (models, optimizers, trainers, ...)."
     },
     "save_evaluation": {
       "name": "save_evaluation",

@@ -2,10 +2,11 @@ from typing import Any, Union
 
 import ignite.distributed as idist
 import torch
-from ignite.engine import DeterministicEngine, Engine
+from ignite.engine import DeterministicEngine, Engine, Events
 from torch.cuda.amp import autocast
 from torch.nn import Module
 from torch.optim import Optimizer
+from torch.utils.data import DistributedSampler, Sampler
 
 
 def setup_trainer(
@@ -16,6 +17,7 @@ def setup_trainer(
     optimizer_g: Optimizer,
     loss_fn: Module,
     device: Union[str, torch.device],
+    train_sampler: Sampler,
 ) -> Union[Engine, DeterministicEngine]:
 
     ws = idist.get_world_size()
@@ -87,10 +89,20 @@ def setup_trainer(
         return metrics
 
     #::: if(it.deterministic) { :::#
-    return DeterministicEngine(train_function)
+    trainer = DeterministicEngine(train_function)
     #::: } else { :::#
-    return Engine(train_function)
+    trainer = Engine(train_function)
     #::: } :::#
+
+    # set epoch for distributed sampler
+    @trainer.on(Events.EPOCH_STARTED)
+    def set_epoch():
+        if idist.get_world_size() > 1 and isinstance(
+            train_sampler, DistributedSampler
+        ):
+            train_sampler.set_epoch(trainer.state.epoch - 1)
+
+    return trainer
 
 
 def setup_evaluator(

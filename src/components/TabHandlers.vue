@@ -11,16 +11,19 @@
       :saveKey="save_evaluation.name"
     />
     <FormInput
+      v-if="store.config.save_training"
       :label="filename_prefix.description"
       :saveKey="filename_prefix.name"
       :type="filename_prefix.type"
     />
     <FormInput
+      v-if="store.config.save_training"
       :label="save_every_iters.description"
       :saveKey="save_every_iters.name"
       :type="save_every_iters.type"
     />
     <FormInput
+      v-if="store.config.save_training || store.config.save_evaluation"
       :label="n_saved.description"
       :saveKey="n_saved.name"
       :type="n_saved.type"
@@ -30,8 +33,6 @@
       :label="terminate_on_nan.description"
       :saveKey="terminate_on_nan.name"
     />
-    <h2>Events Timer</h2>
-    <FormCheckbox :label="timer.description" :saveKey="timer.name" />
     <h2>Early Stopping</h2>
     <FormInput
       :label="patience.description"
@@ -51,11 +52,12 @@
 import { handlers } from '../metadata/metadata.json'
 import FormInput from './FormInput.vue'
 import FormCheckbox from './FormCheckbox.vue'
+import { store } from '../store.js'
 
 export default {
   components: { FormInput, FormCheckbox },
   setup() {
-    return { ...handlers }
+    return { ...handlers, store }
   }
 }
 </script>

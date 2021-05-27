@@ -9,7 +9,6 @@ from ignite.metrics import Accuracy, Loss
 from ignite.utils import manual_seed
 from model import Net
 from torch import nn, optim
-from torch.utils.data.distributed import DistributedSampler
 from trainers import setup_evaluator, setup_trainer
 from utils import *
 
@@ -33,7 +32,9 @@ def run(local_rank: int, config: Any):
     loss_fn = nn.CrossEntropyLoss().to(device=device)
 
     # trainer and evaluator
-    trainer = setup_trainer(config, model, optimizer, loss_fn, device)
+    trainer = setup_trainer(
+        config, model, optimizer, loss_fn, device, dataloader_train.sampler
+    )
     evaluator = setup_evaluator(config, model, device)
 
     # attach metrics to evaluator
@@ -53,36 +54,27 @@ def run(local_rank: int, config: Any):
     (config.output_dir / "config-lock.yaml").write_text(yaml.dump(config))
     trainer.logger = evaluator.logger = logger
 
-    # set epoch for distributed sampler
-    @trainer.on(Events.EPOCH_STARTED)
-    def set_epoch():
-        if idist.get_world_size() > 1 and isinstance(
-            dataloader_train.sampler, DistributedSampler
-        ):
-            dataloader_train.sampler.set_epoch(trainer.state.epoch - 1)
-
     # setup ignite handlers
-    #::: if (it.save_training || it.save_evaluation || it.patience || it.terminate_on_nan || it.timer || it.limit_sec) { :::#
-
+    #::: if (it.save_training || it.save_evaluation) { :::#
     #::: if (it.save_training) { :::#
     to_save_train = {"model": model, "optimizer": optimizer, "trainer": trainer}
     #::: } else { :::#
     to_save_train = None
     #::: } :::#
-
     #::: if (it.save_evaluation) { :::#
     to_save_eval = {"model": model}
     #::: } else { :::#
     to_save_eval = None
     #::: } :::#
-
-    ckpt_handler_train, ckpt_handler_eval, timer = setup_handlers(
+    ckpt_handler_train, ckpt_handler_eval = setup_handlers(
         trainer, evaluator, config, to_save_train, to_save_eval
     )
+    #::: } else if (it.patience || it.terminate_on_nan || it.limit_sec) { :::#
+    setup_handlers(trainer, evaluator, config)
     #::: } :::#
 
-    # experiment tracking
     #::: if (it.logger) { :::#
+    # experiment tracking
     if rank == 0:
         exp_logger = setup_exp_logging(config, trainer, optimizer, evaluator)
     #::: } :::#
@@ -103,13 +95,6 @@ def run(local_rank: int, config: Any):
     # for evaluation stats
     @trainer.on(Events.EPOCH_COMPLETED(every=1))
     def _():
-        # show timer
-        #::: if (it.save_training || it.save_evaluation || it.patience || it.terminate_on_nan || it.timer || it.limit_sec) { :::#
-        if timer is not None:
-            logger.info("Time per batch: %.4f seconds", timer.value())
-            timer.reset()
-        #::: } :::#
-
         evaluator.run(dataloader_eval, epoch_length=config.eval_epoch_length)
         log_metrics(evaluator, "eval")
 
@@ -125,8 +110,8 @@ def run(local_rank: int, config: Any):
         epoch_length=config.train_epoch_length,
     )
 
-    # close logger
     #::: if (it.logger) { :::#
+    # close logger
     if rank == 0:
         from ignite.contrib.handlers.wandb_logger import WandBLogger
 
@@ -138,19 +123,17 @@ def run(local_rank: int, config: Any):
             exp_logger.close()
     #::: } :::#
 
-    # show the last checkpoint filename
-    #::: if (it.save_training || it.save_evaluation || it.patience || it.terminate_on_nan || it.timer || it.limit_sec) { :::#
-    if ckpt_handler_train is not None:
-        logger.info(
-            "Last training checkpoint name - %s",
-            ckpt_handler_train.last_checkpoint,
-        )
+    #::: if (it.save_training || it.save_evaluation) { :::#
+    # show last checkpoint names
+    logger.info(
+        "Last training checkpoint name - %s",
+        ckpt_handler_train.last_checkpoint,
+    )
 
-    if ckpt_handler_eval is not None:
-        logger.info(
-            "Last evaluation checkpoint name - %s",
-            ckpt_handler_eval.last_checkpoint,
-        )
+    logger.info(
+        "Last evaluation checkpoint name - %s",
+        ckpt_handler_eval.last_checkpoint,
+    )
     #::: } :::#
 
 

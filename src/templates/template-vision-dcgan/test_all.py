@@ -65,7 +65,7 @@ def test_setup_trainer():
     model, optimizer, device, loss_fn, batch = set_up()
     config = Namespace(use_amp=False, train_batch_size=2, z_dim=100)
     trainer = setup_trainer(
-        config, model, model, optimizer, optimizer, loss_fn, device
+        config, model, model, optimizer, optimizer, loss_fn, device, None
     )
     trainer.run([batch, batch])
     assert isinstance(trainer.state.output, dict)

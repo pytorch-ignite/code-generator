@@ -69,7 +69,8 @@ export function genCode() {
       }
       store.code[file] = ejs
         .render(currentFiles[file], store.config)
-        .replaceAll(/(\n\n\n\n)+/gi, '\n')
+        .replaceAll(/\s{4}\n/gi, '\n')
+        .replaceAll(/(\n{3,})/gi, '\n\n')
     }
     if (isDev) {
       store.code[__DEV_CONFIG_FILE__] = JSON.stringify(store.config, null, 2)
