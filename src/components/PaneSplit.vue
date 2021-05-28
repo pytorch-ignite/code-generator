@@ -7,37 +7,35 @@
     @mouseup="stopDragging"
     @mouseleave="stopDragging"
   >
-    <div
-      class="left"
-      :class="{ open: clicked }"
-      :style="{ width: getWidth() + '%' }"
-    >
+    <div class="left" :style="{ width: getWidth() + '%' }">
       <slot name="left" />
       <div class="split-line" @mousedown.prevent="startDragging" />
     </div>
-    <div class="right" :style="{ width: 100 - getWidth() + '%' }">
+    <div
+      class="right"
+      :class="{ open: clicked }"
+      :style="{ width: 100 - getWidth() + '%' }"
+    >
       <slot name="right" />
     </div>
   </div>
-  <div class="sidebar" @click="openSideBar">
-    <div class="icon">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        aria-hidden="true"
-        role="img"
-        class="iconify iconify--mdi"
-        width="2em"
-        height="2em"
-        preserveAspectRatio="xMidYMid meet"
-        viewBox="0 0 24 24"
-      >
-        <path
-          d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"
-          fill="currentColor"
-        ></path>
-      </svg>
-    </div>
+  <div class="icon" @click="openSideBar">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      aria-hidden="true"
+      role="img"
+      class="iconify iconify--mdi"
+      width="2em"
+      height="2em"
+      preserveAspectRatio="xMidYMid meet"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"
+        fill="currentColor"
+      ></path>
+    </svg>
   </div>
 </template>
 
@@ -114,7 +112,7 @@ export default {
   width: 10px;
   cursor: ew-resize;
 }
-.sidebar {
+.icon {
   display: none;
 }
 /* media queries */
@@ -132,16 +130,12 @@ export default {
   .split-line {
     display: none;
   }
-  .sidebar {
-    position: absolute;
-    display: block;
-  }
-  .sidebar .icon {
+  .icon {
     cursor: pointer;
     display: block;
     position: fixed;
     right: 1rem;
-    bottom: 1rem;
+    bottom: 2.5rem;
     color: var(--c-brand-red);
     background-color: var(--c-white-light);
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
@@ -150,9 +144,9 @@ export default {
     height: 2rem;
     z-index: 6;
   }
-  .left {
+  .right {
     position: fixed;
-    transform: translateX(-100%);
+    transform: translateX(100%);
     transition: transform 0.25s ease-in;
     z-index: 5;
     background-color: var(--c-white);
@@ -161,7 +155,7 @@ export default {
     overflow: auto;
     height: auto;
   }
-  .left.open {
+  .right.open {
     transform: translateX(0);
     transition: transform 0.35s ease-out;
   }
