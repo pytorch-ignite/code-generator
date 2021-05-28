@@ -31,7 +31,6 @@ import CodeBlock from './CodeBlock.vue'
 import Instruction from './Instruction.vue'
 import { store, __DEV_CONFIG_FILE__ } from '../store'
 import { computed, ref } from 'vue'
-import templates from '../templates/templates.json'
 import '@iconify/iconify'
 
 export default {
@@ -105,7 +104,7 @@ export default {
 @media (max-width: 768px) {
   .right-pane-contexts {
     height: 100%;
-    padding: 0;
+    margin: 0;
   }
 }
 .loading-code {
