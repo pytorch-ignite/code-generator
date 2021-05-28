@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { computed, ref, toRefs } from 'vue'
+import { computed, onMounted, ref, toRefs } from 'vue'
 import { saveConfig } from '../store'
 export default {
   props: {
@@ -65,10 +65,13 @@ export default {
   setup(props) {
     const { label, type, saveKey, required, defaultV } = toRefs(props)
     const inputted = ref('')
-    if (defaultV.value.length > 0 || defaultV.value) {
-      inputted.value = defaultV.value
-      saveConfig(saveKey.value, inputted.value)
-    }
+
+    onMounted(() => {
+      if (defaultV.value.length > 0 || defaultV.value) {
+        inputted.value = defaultV.value
+        saveConfig(saveKey.value, inputted.value)
+      }
+    })
 
     const saveInput = () => saveConfig(saveKey.value, inputted.value)
     const inputId = computed(() => saveKey.value + '-input-' + type.value)
