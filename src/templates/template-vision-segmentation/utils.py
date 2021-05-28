@@ -15,7 +15,6 @@ from ignite.handlers import Checkpoint, DiskSaver, global_step_from_engine
 from ignite.handlers.early_stopping import EarlyStopping
 from ignite.handlers.terminate_on_nan import TerminateOnNan
 from ignite.handlers.time_limit import TimeLimit
-from ignite.handlers.timing import Timer
 from ignite.utils import setup_logger
 
 
