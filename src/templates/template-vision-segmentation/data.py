@@ -182,5 +182,14 @@ def prepare_image_mask(batch, device, non_blocking):
 
 
 def download_datasets(data_path):
+    local_rank = idist.get_local_rank()
+    if local_rank > 0:
+        # Ensure that only rank 0 download the dataset
+        idist.barrier()
+
     VOCSegmentation(data_path, image_set="train", download=True)
     VOCSegmentation(data_path, image_set="val", download=True)
+
+    if local_rank == 0:
+        # Ensure that only rank 0 download the dataset
+        idist.barrier()
