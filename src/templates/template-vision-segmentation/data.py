@@ -77,12 +77,26 @@ class VOCSegmentationPIL(VOCSegmentation):
 
 
 def setup_data(config: Namespace):
-    dataset_train = VOCSegmentationPIL(
-        root=config.data_path, year="2012", image_set="train", download=False
-    )
-    dataset_eval = VOCSegmentationPIL(
-        root=config.data_path, year="2012", image_set="val", download=False
-    )
+    try:
+        dataset_train = VOCSegmentationPIL(
+            root=config.data_path,
+            year="2012",
+            image_set="train",
+            download=False,
+        )
+    except RuntimeError as e:
+        raise e(
+            "Dataset not found. You can use `download_datasets` from data.py function to download it."
+        )
+
+    try:
+        dataset_eval = VOCSegmentationPIL(
+            root=config.data_path, year="2012", image_set="val", download=False
+        )
+    except RuntimeError as e:
+        raise e(
+            "Dataset not found. You can use `download_datasets` from data.py function to download it."
+        )
 
     val_img_size = 513
     train_img_size = 480
