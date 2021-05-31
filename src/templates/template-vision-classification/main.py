@@ -7,7 +7,7 @@ from data import setup_data
 from ignite.engine import Events
 from ignite.metrics import Accuracy, Loss
 from ignite.utils import manual_seed
-from model import Net
+from model import setup_model
 from torch import nn, optim
 from trainers import setup_evaluator, setup_trainer
 from utils import *
@@ -27,7 +27,7 @@ def run(local_rank: int, config: Any):
 
     # model, optimizer, loss function, device
     device = idist.device()
-    model = idist.auto_model(Net())
+    model = idist.auto_model(setup_model(config.model))
     optimizer = idist.auto_optim(optim.Adam(model.parameters(), lr=config.lr))
     loss_fn = nn.CrossEntropyLoss().to(device=device)
 
