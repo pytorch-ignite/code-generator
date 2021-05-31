@@ -9,7 +9,7 @@ from ignite.engine import Events
 from ignite.handlers.param_scheduler import LRScheduler, PiecewiseLinear
 from ignite.metrics import Accuracy, Loss
 from ignite.utils import manual_seed
-from model import TransformerModel
+from models import TransformerModel
 from torch import nn, optim
 from torch.optim.lr_scheduler import _LRScheduler
 from trainers import setup_evaluator, setup_trainer

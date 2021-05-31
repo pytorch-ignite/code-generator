@@ -7,7 +7,7 @@ from data import setup_data
 from ignite.engine import Events
 from ignite.metrics import Accuracy, Loss
 from ignite.utils import manual_seed
-from model import setup_model
+from models import setup_model
 from torch import nn, optim
 from trainers import setup_evaluator, setup_trainer
 from utils import *
