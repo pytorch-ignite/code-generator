@@ -7,7 +7,7 @@ import ignite.distributed as idist
 import pytest
 import torch
 from data import setup_data
-from model import Discriminator, Generator
+from models import Discriminator, Generator
 from torch import Tensor, nn, optim
 from torch.utils.data.dataloader import DataLoader
 from trainers import setup_trainer
