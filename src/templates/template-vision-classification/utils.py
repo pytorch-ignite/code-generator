@@ -169,6 +169,8 @@ def setup_handlers(
         filename_prefix="best",
         n_saved=config.n_saved,
         global_step_transform=global_step_transform,
+        score_name="eval_accuracy",
+        score_function=Checkpoint.get_default_score_fn("eval_accuracy"),
     )
     evaluator.add_event_handler(
         Events.EPOCH_COMPLETED(every=1), ckpt_handler_eval

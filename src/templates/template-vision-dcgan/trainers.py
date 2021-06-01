@@ -158,7 +158,6 @@ def setup_evaluator(
         metrics = {
             "epoch": engine.state.epoch,
             "errD": errD.item(),
-            "eval_loss": errD.item(),
             "errG": errG.item(),
             "D_x": D_x,
             "D_G_z1": D_G_z1,
