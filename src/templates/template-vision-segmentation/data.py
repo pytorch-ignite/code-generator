@@ -77,9 +77,18 @@ class VOCSegmentationPIL(VOCSegmentation):
 
 
 def setup_data(config: Namespace):
-    dataset_train = VOCSegmentationPIL(
-        root=config.data_path, year="2012", image_set="train", download=False
-    )
+    try:
+        dataset_train = VOCSegmentationPIL(
+            root=config.data_path,
+            year="2012",
+            image_set="train",
+            download=False,
+        )
+    except RuntimeError as e:
+        raise e(
+            "Dataset not found. You can use `download_datasets` from data.py function to download it."
+        )
+
     dataset_eval = VOCSegmentationPIL(
         root=config.data_path, year="2012", image_set="val", download=False
     )
@@ -168,5 +177,14 @@ def prepare_image_mask(batch, device, non_blocking):
 
 
 def download_datasets(data_path):
+    local_rank = idist.get_local_rank()
+    if local_rank > 0:
+        # Ensure that only rank 0 download the dataset
+        idist.barrier()
+
     VOCSegmentation(data_path, image_set="train", download=True)
     VOCSegmentation(data_path, image_set="val", download=True)
+
+    if local_rank == 0:
+        # Ensure that only rank 0 download the dataset
+        idist.barrier()
