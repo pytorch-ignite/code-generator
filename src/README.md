@@ -17,21 +17,21 @@ This directory contains components - building blocks used in the Code-Generator 
 
 The following table explains the usage of some notable components. The components that are not in the following table are self-explanatory.
 
-| Component name                       | Description                                                                                                             |
-| :----------------------------------- | :---------------------------------------------------------------------------------------------------------------------- |
-| [`CodeBlock`](./CodeBlock.vue)       | Use for showing the code                                                                                                |
-| [`Footer`](./Footer.vue)             | Use for footer                                                                                                          |
-| [`FormCheckbox`](./FormCheckbox.vue) | Use for checkbox input                                                                                                  |
-| [`FormInput`](./FormInput.vue)       | Use for text/number input                                                                                               |
-| [`FormRadio`](./FormRadio.vue)       | Use for radio input                                                                                                     |
-| [`FormSelect`](./FormSelect.vue)     | Use for select item input                                                                                               |
-| [`Instruction`](./Instruction.vue)   | Use for showing how to get started                                                                                      |
-| [`Message`](./Message.vue)           | Use for showing the status of user input event (copying code, missing configuration values when attempting to download) |
-| [`NavBar`](./NavBar.vue)             | Use for navigation bar                                                                                                  |
-| [`PaneLeft`](./PaneLeft.vue)         | Use for everything in the left pane                                                                                     |
-| [`PaneRight`](./PaneRight.vue)       | Use for everything in the right pane                                                                                    |
-| [`PaneSplit`](./PaneSplit.vue)       | Use for how to split the left pane, right pane, and split line                                                          |
-| [`TabHandlers`](./TabHandlers.vue)   | Use for `Handlers` tab of the left pane                                                                                 |
-| [`TabLoggers`](./TabLoggers.vue)     | Use for `Loggers` tab of the left pane                                                                                  |
-| [`TabTemplates`](./TabTemplates.vue) | Use for `Templates` tab of the left pane                                                                                |
-| [`TabTraining`](./TabTraining.vue)   | Use for `Training` tab of the left pane                                                                                 |
+| Component name                                  | Description                                                                                                             |
+| :---------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------- |
+| [`CodeBlock`](./components/CodeBlock.vue)       | Use for showing the code                                                                                                |
+| [`Footer`](./components/Footer.vue)             | Use for footer                                                                                                          |
+| [`FormCheckbox`](./components/FormCheckbox.vue) | Use for checkbox input                                                                                                  |
+| [`FormInput`](./components/FormInput.vue)       | Use for text/number input                                                                                               |
+| [`FormRadio`](./components/FormRadio.vue)       | Use for radio input                                                                                                     |
+| [`FormSelect`](./components/FormSelect.vue)     | Use for select item input                                                                                               |
+| [`Instruction`](./components/Instruction.vue)   | Use for showing how to get started                                                                                      |
+| [`Message`](./components/Message.vue)           | Use for showing the status of user input event (copying code, missing configuration values when attempting to download) |
+| [`NavBar`](./components/NavBar.vue)             | Use for navigation bar                                                                                                  |
+| [`PaneLeft`](./components/PaneLeft.vue)         | Use for everything in the left pane                                                                                     |
+| [`PaneRight`](./components/PaneRight.vue)       | Use for everything in the right pane                                                                                    |
+| [`PaneSplit`](./components/PaneSplit.vue)       | Use for how to split the left pane, right pane, and split line                                                          |
+| [`TabHandlers`](./components/TabHandlers.vue)   | Use for `Handlers` tab of the left pane                                                                                 |
+| [`TabLoggers`](./components/TabLoggers.vue)     | Use for `Loggers` tab of the left pane                                                                                  |
+| [`TabTemplates`](./components/TabTemplates.vue) | Use for `Templates` tab of the left pane                                                                                |
+| [`TabTraining`](./components/TabTraining.vue)   | Use for `Training` tab of the left pane                                                                                 |
