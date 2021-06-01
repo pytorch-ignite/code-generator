@@ -89,14 +89,9 @@ def setup_data(config: Namespace):
             "Dataset not found. You can use `download_datasets` from data.py function to download it."
         )
 
-    try:
-        dataset_eval = VOCSegmentationPIL(
-            root=config.data_path, year="2012", image_set="val", download=False
-        )
-    except RuntimeError as e:
-        raise e(
-            "Dataset not found. You can use `download_datasets` from data.py function to download it."
-        )
+    dataset_eval = VOCSegmentationPIL(
+        root=config.data_path, year="2012", image_set="val", download=False
+    )
 
     val_img_size = 513
     train_img_size = 480
