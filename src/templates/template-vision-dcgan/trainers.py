@@ -88,6 +88,7 @@ def setup_trainer(
 
         return metrics
 
+    #
     #::: if(it.deterministic) { :::#
     trainer = DeterministicEngine(train_function)
     #::: } else { :::#
