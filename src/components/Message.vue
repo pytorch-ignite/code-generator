@@ -57,6 +57,7 @@ export default {
   left: 0;
   padding-left: var(--msg-offset);
   width: inherit;
+  z-index: 10;
 }
 .msg {
   border-radius: 8px;

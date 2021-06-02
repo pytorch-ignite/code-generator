@@ -55,6 +55,17 @@ h5,
 h6 {
   font-weight: 500;
 }
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+  h2 {
+    font-size: 1.25rem;
+  }
+  h3 {
+    font-size: 1.125rem;
+  }
+}
 a {
   text-decoration: none;
   color: var(--c-text);
