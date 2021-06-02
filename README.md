@@ -1,19 +1,14 @@
-[![Streamlit App][streamlit-img]][streamlit-url]
-[![ci][gha-img]][gha-url]
-
-<!-- [![Preview App][aws-img]][aws-url] -->
-
-# Code Generator
+# Code Generator [![ci][gha-img]][gha-url]
 
 Application to generate your training scripts with [PyTorch-Ignite](https://github.com/pytorch/ignite).
 
-<div>
-Here should be an image and link to deployed application
-</div>
+<a href="https://code-generator.netlify.app" target="_blank" rel="noopener noreferrer">
+  <img src="./src/assets/code-generator-preview.png" alt="Code Generator Preview">
+</a>
 
 ## Contribution
 
-Please, see [Contribution Guide](CONTRIBUTING.md).
+Please see [Contribution Guide](./CONTRIBUTING.md).
 
 ## Acknowledgements
 
@@ -23,12 +18,7 @@ Development of this project is supported by NumFOCUS Small Development Grant. We
 
 ## License
 
-[BSD 3-Clause](LICENSE)
+[BSD 3-Clause](./LICENSE)
 
-<!-- [aws-img]: https://badgen.net/badge/%20/Deployed%20master%20version/ee4c2c?label= -->
-<!-- [aws-url]: http://pytorch-ignite-code-generator-dev.eu-west-3.elasticbeanstalk.com/ -->
-
-[gha-img]: https://github.com/pytorch-ignite/code-generator/actions/workflows/ci.yml/badge.svg
+[gha-img]: https://github.com/pytorch-ignite/code-generator/actions/workflows/ci.yml/badge.svg?branch=main
 [gha-url]: https://github.com/pytorch-ignite/code-generator/actions/workflows/ci.yml
-[streamlit-img]: https://static.streamlit.io/badges/streamlit_badge_black_white.svg
-[streamlit-url]: https://share.streamlit.io/pytorch-ignite/code-generator
