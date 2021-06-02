@@ -45,7 +45,7 @@
 import { ref } from 'vue'
 export default {
   setup() {
-    const width = ref(50)
+    const width = ref(40)
     const isDragging = ref(false)
     const clicked = ref(false)
     const container = ref()
