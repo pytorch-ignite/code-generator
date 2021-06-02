@@ -111,13 +111,13 @@
       "type": "array",
       "description": "Select experiment tracking system",
       "options": [
-        "clearml",
-        "mlflow",
-        "neptune",
-        "polyaxon",
-        "tensorboard",
-        "visdom",
-        "wandb"
+        "ClearML",
+        "MLflow",
+        "Neptune",
+        "Polyaxon",
+        "TensorBoard",
+        "Visdom",
+        "WandB"
       ]
     }
   }
