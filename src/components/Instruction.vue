@@ -7,7 +7,7 @@
         xmlns:xlink="http://www.w3.org/1999/xlink"
         aria-hidden="true"
         role="img"
-        class="iconify iconify--carbon animate-bounce"
+        class="animate-bounce iconify iconify--carbon"
         width="32"
         height="32"
         preserveAspectRatio="xMidYMid meet"
@@ -60,7 +60,7 @@
 .mobile {
   display: none;
 }
-@media (max-width: 768px) {
+@media (max-width: 860px) {
   .desktop {
     display: none;
   }

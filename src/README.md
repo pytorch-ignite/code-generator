@@ -6,6 +6,7 @@ This is the source directory of Code-Generator App.
 
 - `assets` - includes image files
 - `components` - includes Vue components
+- `components/css` - includes the common css code used in components
 - `metadata` - includes the data of the app in json format (Distributed/Non-distributed training values, Ignite Handlers, and Loggers)
 - `templates` - includes deep learning training template scripts
 
@@ -28,6 +29,7 @@ The following table explains the usage of some notable components. The component
 | [`Instruction`](./components/Instruction.vue)   | Use for showing how to get started                                                                                      |
 | [`Message`](./components/Message.vue)           | Use for showing the status of user input event (copying code, missing configuration values when attempting to download) |
 | [`NavBar`](./components/NavBar.vue)             | Use for navigation bar                                                                                                  |
+| [`NavHelp`](./components/NavHelp.vue)           | Use for showing step by step guide                                                                                      |
 | [`PaneLeft`](./components/PaneLeft.vue)         | Use for everything in the left pane                                                                                     |
 | [`PaneRight`](./components/PaneRight.vue)       | Use for everything in the right pane                                                                                    |
 | [`PaneSplit`](./components/PaneSplit.vue)       | Use for how to split the left pane, right pane, and split line                                                          |

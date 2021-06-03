@@ -116,7 +116,7 @@ export default {
   display: none;
 }
 /* media queries */
-@media (max-width: 768px) {
+@media (max-width: 860px) {
   .split-pane {
     flex-wrap: wrap;
   }

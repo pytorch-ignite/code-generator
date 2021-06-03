@@ -101,7 +101,7 @@ export default {
   overflow: auto;
 }
 /* media queries */
-@media (max-width: 768px) {
+@media (max-width: 860px) {
   .left-pane-contexts {
     height: 100%;
     padding: 0;
