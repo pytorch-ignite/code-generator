@@ -1,11 +1,11 @@
 seed: 666
 data_path: ./
-train_batch_size: 4
-eval_batch_size: 4
-num_workers: 2
-max_epochs: 2
-train_epoch_length: 4
-eval_epoch_length: 4
+train_batch_size: 32
+eval_batch_size: 32
+num_workers: 4
+max_epochs: 20
+train_epoch_length: null
+eval_epoch_length: null
 use_amp: false
 debug: false
 model: bert-base-uncased
