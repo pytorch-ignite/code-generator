@@ -4,8 +4,8 @@
       v-for="tab in tabs"
       :key="tab"
       class="left-pane-tab"
-      :class="{ active: currentTab === tab }"
-      @click="currentTab = tab"
+      :class="{ active: currentTab === tab, disable: !hasTemplate }"
+      @click="switchTab(tab)"
     >
       {{ tab }}
     </div>
@@ -25,20 +25,36 @@ import TabHandlers from './TabHandlers.vue'
 import TabLoggers from './TabLoggers.vue'
 import Message from './Message.vue'
 import { computed, ref } from 'vue'
-import { msg } from '../store.js'
+import { msg, store } from '../store.js'
 
 export default {
   components: { TabTemplates, TabTraining, TabLoggers, TabHandlers, Message },
   setup() {
     const currentTab = ref('Templates')
-    const tabs = ref(['Templates', 'Training', 'Handlers', 'Loggers'])
+    const tabs = ['Templates', 'Training', 'Handlers', 'Loggers']
 
     // computed properties
     const currentTabComponent = computed(() => {
       return 'tab-' + currentTab.value.toLowerCase()
     })
 
-    return { currentTab, tabs, currentTabComponent, msg }
+    const switchTab = (tab) => {
+      if (store.config.template) {
+        currentTab.value = tab
+      }
+    }
+    const hasTemplate = computed(() => {
+      return store.config.template
+    })
+
+    return {
+      currentTab,
+      tabs,
+      currentTabComponent,
+      msg,
+      switchTab,
+      hasTemplate
+    }
   }
 }
 </script>
@@ -68,6 +84,12 @@ export default {
   text-align: center;
   padding: 0.4rem 0.8rem;
   border-bottom: 3px solid transparent;
+}
+.disable {
+  cursor: not-allowed;
+}
+.active {
+  cursor: pointer;
 }
 .left-pane-tab:hover,
 .active {
