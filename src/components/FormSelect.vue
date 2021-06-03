@@ -61,8 +61,9 @@ export default {
     const saveSelected = () => {
       if (typeof selected.value === 'string') {
         saveConfig(saveKey.value, selected.value.toLowerCase())
+      } else {
+        saveConfig(saveKey.value, selected.value)
       }
-      saveConfig(saveKey.value, selected.value)
     }
     const selectId = computed(() => saveKey.value + '-select')
     const isRequired = computed(() => (required.value ? '*' : ''))
