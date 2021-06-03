@@ -71,9 +71,12 @@ export function genCode() {
       }
       store.code[file] = ejs
         .render(
+          // replace `\s(s) or \n(s)#:::\s`
+          // with `#::: `
           currentFiles[file].replace(/([\s\n]+#:::\s)/gi, '#::: '),
           store.config
         )
+        // trim `    #`
         .replace(/\s{4}#$/gim, '')
     }
     if (isDev) {
