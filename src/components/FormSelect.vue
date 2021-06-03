@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { computed, ref, toRefs } from 'vue'
+import { computed, onMounted, ref, toRefs } from 'vue'
 import { saveConfig } from '../store.js'
 export default {
   props: {
@@ -42,15 +42,25 @@ export default {
     saveKey: {
       type: String,
       required: true
+    },
+    defaultV: {
+      type: String,
+      default: ''
     }
   },
   setup(props) {
-    const { label, options, required, saveKey } = toRefs(props)
+    const { label, options, required, saveKey, defaultV } = toRefs(props)
     const selected = ref('')
 
+    onMounted(() => {
+      if (defaultV.value.length > 0) {
+        selected.value = defaultV.value
+        saveSelected()
+      }
+    })
     const saveSelected = () => {
       if (typeof selected.value === 'string') {
-        selected.value = selected.value.toLowerCase()
+        saveConfig(saveKey.value, selected.value.toLowerCase())
       }
       saveConfig(saveKey.value, selected.value)
     }

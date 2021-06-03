@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { ref, toRefs, computed } from 'vue'
+import { ref, toRefs, computed, onMounted } from 'vue'
 import { saveConfig } from '../store.js'
 
 export default {
@@ -33,12 +33,22 @@ export default {
     required: {
       type: Boolean,
       required: false
+    },
+    defaultV: {
+      type: Boolean,
+      default: false
     }
   },
   setup(props) {
-    const { label, saveKey, required } = toRefs(props)
+    const { label, saveKey, required, defaultV } = toRefs(props)
     const checked = ref(false)
 
+    onMounted(() => {
+      if (defaultV.value) {
+        checked.value = defaultV.value
+        saveChecked()
+      }
+    })
     const saveChecked = () => saveConfig(saveKey.value, checked.value)
     const checkboxId = computed(() => saveKey.value + '-checkbox')
     const isRequired = computed(() => (required.value ? '*' : ''))

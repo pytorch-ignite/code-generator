@@ -69,7 +69,7 @@ export default {
     onMounted(() => {
       if (defaultV.value.length > 0 || defaultV.value) {
         inputted.value = defaultV.value
-        saveConfig(saveKey.value, inputted.value)
+        saveInput()
       }
     })
 

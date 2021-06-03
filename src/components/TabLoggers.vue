@@ -5,16 +5,19 @@
       type="text"
       :label="output_dir.description"
       :saveKey="output_dir.name"
+      :defaultV="output_dir.default"
     />
     <FormInput
       type="number"
       :label="log_every_iters.description"
       :saveKey="log_every_iters.name"
+      :defaultV="log_every_iters.default"
     />
     <FormSelect
       :label="logger.description"
       :options="logger.options"
       :saveKey="logger.name"
+      :defaultV="logger.default"
     />
   </div>
 </template>
