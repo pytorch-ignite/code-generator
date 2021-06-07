@@ -15,6 +15,6 @@ datasets
 
 #::: } :::#
 
-#::: if (it.include_tests) { :::#
+#::: if (it.include_test) { :::#
 pytest
 #::: } :::#
