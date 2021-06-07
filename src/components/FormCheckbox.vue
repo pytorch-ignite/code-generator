@@ -6,6 +6,7 @@
           type="checkbox"
           :id="checkboxId"
           :required="required"
+          :disabled="noTemplate"
           v-model="checked"
           @change.prevent="saveChecked"
         />
@@ -18,7 +19,7 @@
 
 <script>
 import { ref, toRefs, computed } from 'vue'
-import { saveConfig } from '../store.js'
+import { saveConfig, store } from '../store.js'
 
 export default {
   props: {
@@ -42,6 +43,7 @@ export default {
     const saveChecked = () => saveConfig(saveKey.value, checked.value)
     const checkboxId = computed(() => saveKey.value + '-checkbox')
     const isRequired = computed(() => (required.value ? '*' : ''))
+    const noTemplate = computed(() => !store.config.template)
 
     return {
       label,
@@ -50,7 +52,8 @@ export default {
       checked,
       saveChecked,
       checkboxId,
-      isRequired
+      isRequired,
+      noTemplate
     }
   }
 }
