@@ -18,7 +18,13 @@ run_simple() {
   for dir in $(find ./dist-tests/*-simple -type d)
   do
     cd $dir
-    python main.py --data_path ~/data
+    python main.py --data_path ~/data \
+      --train_batch_size 4 \
+      --eval_batch_size 4 \
+      --num_workers 2 \
+      --max_epochs 2 \
+      --train_epoch_length 4 \
+      --eval_epoch_length 4
     cd $CWD
   done
 }
@@ -28,7 +34,13 @@ run_all() {
   do
     cd $dir
     pytest -vra --color=yes --tb=short test_*.py
-    python main.py --data_path ~/data
+    python main.py --data_path ~/data \
+      --train_batch_size 4 \
+      --eval_batch_size 4 \
+      --num_workers 2 \
+      --max_epochs 2 \
+      --train_epoch_length 4 \
+      --eval_epoch_length 4
     cd $CWD
   done
 }
@@ -39,7 +51,13 @@ run_launch() {
     cd $dir
     python -m torch.distributed.launch \
       --nproc_per_node 2 --use_env \
-      main.py --backend gloo --data_path ~/data
+      main.py --backend gloo --data_path ~/data \
+      --train_batch_size 4 \
+      --eval_batch_size 4 \
+      --num_workers 2 \
+      --max_epochs 2 \
+      --train_epoch_length 4 \
+      --eval_epoch_length 4
     cd $CWD
   done
 }
@@ -49,7 +67,13 @@ run_spawn() {
   do
     cd $dir
     python main.py --data_path ~/data \
-      --nproc_per_node 2 --backend gloo
+      --nproc_per_node 2 --backend gloo \
+      --train_batch_size 4 \
+      --eval_batch_size 4 \
+      --num_workers 2 \
+      --max_epochs 2 \
+      --train_epoch_length 4 \
+      --eval_epoch_length 4
     cd $CWD
   done
 }

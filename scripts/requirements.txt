@@ -7,3 +7,4 @@ image_dataset_viz
 pytest
 transformers
 datasets
+tensorboard
