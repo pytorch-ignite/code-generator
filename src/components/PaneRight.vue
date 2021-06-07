@@ -12,7 +12,7 @@
         {{ tab }}
       </div>
     </div>
-    <div class="right-pane-contexts" v-if="store.code[currentTab]">
+    <div class="right-pane-contexts" v-if="currentCode()">
       <KeepAlive>
         <CodeBlock :lang="getLang" :code="formattedCode()" />
       </KeepAlive>
@@ -59,7 +59,22 @@ export default {
     }
     const getLang = computed(() => currentTab.value.split('.')[1])
     const formattedCode = () => store.code[currentTab.value].trim()
-    return { store, currentTab, tabs, getLang, getFileType, formattedCode }
+    const currentCode = () => {
+      const code = store.code[currentTab.value]
+      if (code) {
+        return code
+      }
+      currentTab.value = 'README.md'
+      return store.code[currentTab.value]
+    }
+    return {
+      currentCode,
+      currentTab,
+      tabs,
+      getLang,
+      getFileType,
+      formattedCode
+    }
   }
 }
 </script>
