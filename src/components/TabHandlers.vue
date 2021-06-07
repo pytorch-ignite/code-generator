@@ -5,28 +5,33 @@
     <FormCheckbox
       :label="save_training.description"
       :saveKey="save_training.name"
+      :defaultV="save_training.default"
     />
     <FormCheckbox
       :label="save_evaluation.description"
       :saveKey="save_evaluation.name"
+      :defaultV="save_evaluation.default"
     />
     <FormInput
       v-if="store.config.save_training"
       :label="filename_prefix.description"
       :saveKey="filename_prefix.name"
       :type="filename_prefix.type"
+      :defaultV="filename_prefix.default"
     />
     <FormInput
       v-if="store.config.save_training"
       :label="save_every_iters.description"
       :saveKey="save_every_iters.name"
       :type="save_every_iters.type"
+      :defaultV="save_every_iters.default"
     />
     <FormInput
       v-if="store.config.save_training || store.config.save_evaluation"
       :label="n_saved.description"
       :saveKey="n_saved.name"
       :type="n_saved.type"
+      :defaultV="n_saved.default"
     />
     <h2>Training Termination</h2>
     <FormCheckbox
@@ -38,6 +43,7 @@
       :label="patience.description"
       :saveKey="patience.name"
       :type="patience.type"
+      :defaultV="patience.default"
     />
     <h2>Limit Training Time</h2>
     <FormInput

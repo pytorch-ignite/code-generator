@@ -47,12 +47,14 @@
     "save_training": {
       "name": "save_training",
       "type": "checkbox",
-      "description": "Save the training state (models, optimizers, trainers, ...)."
+      "description": "Save the training state (models, optimizers, trainers, ...).",
+      "default": true
     },
     "save_evaluation": {
       "name": "save_evaluation",
       "type": "checkbox",
-      "description": "Save the model(s) by best evaluation metric score."
+      "description": "Save the model(s) by best evaluation metric score.",
+      "default": true
     },
     "terminate_on_nan": {
       "name": "terminate_on_nan",
@@ -67,25 +69,29 @@
     "patience": {
       "name": "patience",
       "type": "number",
-      "description": "Number of events to wait if no improvement and then stop the training."
+      "description": "Number of events to wait if no improvement and then stop the training.",
+      "default": 3
     },
     "filename_prefix": {
       "name": "filename_prefix",
       "type": "text",
       "value": "checkpointing",
-      "description": "What prefix would you like to put in front of saved checkpoint file? (mandatory for saving training states)"
+      "description": "What prefix would you like to put in front of saved checkpoint file? (mandatory for saving training states)",
+      "default": "training"
     },
     "save_every_iters": {
       "name": "save_every_iters",
       "type": "number",
       "value": "checkpointing",
-      "description": "Iteration interval for saving training states (mandatory for saving training states)"
+      "description": "Iteration interval for saving training states (mandatory for saving training states)",
+      "default": 1000
     },
     "n_saved": {
       "name": "n_saved",
       "type": "number",
       "value": "checkpointing",
-      "description": "How many checkpoint file would you like to keep on disk? (mandatory for saving both training and evaluation)"
+      "description": "How many checkpoint file would you like to keep on disk? (mandatory for saving both training and evaluation)",
+      "default": 2
     },
     "limit_sec": {
       "name": "limit_sec",
@@ -118,7 +124,8 @@
         "TensorBoard",
         "Visdom",
         "WandB"
-      ]
+      ],
+      "default": "TensorBoard"
     }
   }
 }

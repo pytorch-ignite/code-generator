@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { computed, ref, toRefs } from 'vue'
+import { computed, onMounted, ref, toRefs } from 'vue'
 import { saveConfig } from '../store'
 export default {
   props: {
@@ -43,10 +43,13 @@ export default {
   setup(props) {
     const { options, saveKey, required, defaultV } = toRefs(props)
     const picked = ref('')
-    if (defaultV.value.length > 0) {
-      picked.value = defaultV.value
-      saveConfig(saveKey.value, picked.value)
-    }
+
+    onMounted(() => {
+      if (defaultV.value.length > 0) {
+        picked.value = defaultV.value
+        saveInput()
+      }
+    })
 
     const saveInput = () => saveConfig(saveKey.value, picked.value)
     const isRequired = computed(() => (required.value ? '*' : ''))
