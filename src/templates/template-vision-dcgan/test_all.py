@@ -1,6 +1,5 @@
 import os
 from argparse import Namespace
-from numbers import Number
 from typing import Iterable
 
 import ignite.distributed as idist

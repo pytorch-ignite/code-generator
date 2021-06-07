@@ -10,7 +10,6 @@ from ignite.engine import Events
 from ignite.utils import manual_seed
 from models import Discriminator, Generator
 from torch import nn, optim
-from torch.utils.data.distributed import DistributedSampler
 from trainers import setup_evaluator, setup_trainer
 from utils import *
 
