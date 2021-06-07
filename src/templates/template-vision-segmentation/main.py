@@ -4,7 +4,7 @@ from typing import Any, cast
 
 import ignite.distributed as idist
 import yaml
-from data import denormalize, download_datasets, setup_data
+from data import denormalize, setup_data
 from ignite.contrib.handlers import LRScheduler
 from ignite.engine import Events
 from ignite.metrics import ConfusionMatrix, IoU, mIoU
