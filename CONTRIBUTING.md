@@ -15,9 +15,9 @@ Contributing to Code-Generator can be divided into two parts:
 >
 > Or you can send the PR to test the app using PR Preview feature from Netlify.
 
-To contribute to Code-Generator App, you will need Nodejs LTS v14.16.x, VSCode, Vetur, and pnpm package manager.
+To contribute to Code-Generator App, you will need Nodejs LTS v14.16.x, VSCode, Vetur, pip or conda, and pnpm package manager.
 
-- Install [VSCode](https://code.visualstudio.com/) as per your OS.
+- Install [VSCode](https://code.visualstudio.com/) according to your OS.
 
 - Install [Vetur extension](https://marketplace.visualstudio.com/items?itemName=octref.vetur) to get syntax highlighting for `.vue` files. You can search `Vetur` in VSCode Extensions Tab to install.
 
@@ -25,17 +25,34 @@ To contribute to Code-Generator App, you will need Nodejs LTS v14.16.x, VSCode, 
 
 - Install pnpm from https://pnpm.io/installation. Use standalone script if there is a root issue with installing with npm.
 
+- Create a virtual environment for python.
+
+  - With pip:
+
+    ```sh
+    # create a virtual environment with built-in venv.
+    python -m venv ~/.code-generator-venv
+    # activate the virtual envrionment
+    source ~/.code-generator-venv/bin/activate
+    ```
+
+  - With conda:
+    ```sh
+    # create a virtual environment with conda.
+    conda create -n code-generator-venv
+    # activate the virtual envrionment
+    conda activate code-generator-venv
+    ```
+
 - Install the dependencies with `pnpm install` and `bash .github/run_code_style.sh install` in the project root directory. This might take a while to install.
 
 - Run `pnpm run dev` to start local development server and starts editing the codes in the `src` directory. Changes will be updated on the app.
 
 - If you want to test building the app locally, run `pnpm run build`. This will generate the `dist` directory which contains all the codes for the app to run from CDN or web server. You can test the built codes in the `dist` with `pnpm run serve`. However, changes won't be updated on the app with this command.
 
-Please see `README.md` in the respective directories of `src` to see what the respective directory contains.
-
 ## Contributing to Code-Generator App
 
-Code-Generator is a web app built with Vue 3. Source code is mainly in the files of `src`, `src/components`, `src/metadata` directories.
+Code-Generator is a web app built with Vue 3. Source code is mainly in the files of `src`, `src/components`, `src/metadata` directories. See [`src/REAME.md`](./src/README.md).
 
 - If you have found bugs, please send a PR fixing the bugs.
 - If you have design, layout, and UI improvements, please open a suggestion issue first, discuss with the maintainers, and have it approved before working on it.
@@ -49,13 +66,12 @@ To add a new template,
 
 2. Put the template code files in that directory.
 
-3. Training configurations are managed with [Hydra](https://hydra.cc), a single configuration yaml file is needed. Usually, it is `config.yaml`. What to put inside in `config.yaml` can be copied from `template-common/config.yaml` and adjust with the respective template.
+3. Training configurations are managed with Argparse + YAML file. A single configuration yaml file is needed. Usually, it is `config.yaml`. What to put inside in `config.yaml` can be copied from `template-common/config.yaml` and adjust with the respective template.
 
 4. To have Ignite core features and distributed training, you have to add some template code in the `main.py`. You can reference the template codes from `template-vision-classification/main.py`. They can be found with below comments.
 
    - `setup ignite handlers` - to have various useful handlers provided by Ignite core modules.
    - `experiment tracking` - to have experiment trakcing system provided by Ignite contrib integration.
-   - `show timer` - to show the amount of time spent per batch between events.
    - `close logger` - to close the experiment tracking loggers after the training finished.
    - `show the last checkpoint filename` - to print the last checkpoint filename (training, evaluation) to find quickly.
    - `main entrypoint` - to have training works with both distributed/non-distributed and launch/spawn training.
@@ -70,11 +86,15 @@ To add a new template,
 
 9. You can check if the copied codes needed are up-to-date with the base codes with: `python scripts/check_copies.py`
 
+10. Add model forward and dataloading tests in the `test_all.py`.
+
 ## Pull Request Guidelines
 
 - Checkout a topic branch from a base branch, e.g. `main` (currently).
 
 - If adding a new template:
+
+  - Make sure the tests pass.
 
   - Please open a suggestion issue first and have it approved before working on it.
 
@@ -129,6 +149,6 @@ Now you can get the latest development into your forked repository with this:
 
 ```sh
 git fetch --all --prune
-git checkout v1
-git merge upstream/v1
+git checkout main
+git merge upstream/main
 ```

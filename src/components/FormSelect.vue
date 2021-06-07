@@ -48,7 +48,12 @@ export default {
     const { label, options, required, saveKey } = toRefs(props)
     const selected = ref('')
 
-    const saveSelected = () => saveConfig(saveKey.value, selected.value)
+    const saveSelected = () => {
+      if (typeof selected.value === 'string') {
+        selected.value = selected.value.toLowerCase()
+      }
+      saveConfig(saveKey.value, selected.value)
+    }
     const selectId = computed(() => saveKey.value + '-select')
     const isRequired = computed(() => (required.value ? '*' : ''))
     return {
