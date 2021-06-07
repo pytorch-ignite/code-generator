@@ -19,7 +19,7 @@
 
 <script>
 import { ref, toRefs, computed, onMounted } from 'vue'
-import { saveConfig } from '../store.js'
+import { saveConfig, store } from '../store.js'
 
 export default {
   props: {
