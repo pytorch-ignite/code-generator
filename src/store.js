@@ -41,9 +41,7 @@ export const store = reactive({
   code: {},
   config: {
     template: '',
-    include_test: false,
-    output_dir: './logs',
-    log_every_iters: 2
+    include_test: false
   }
 })
 
@@ -62,7 +60,7 @@ export function saveConfig(key, value) {
 // render the code if there are fetched files for current selected template
 export function genCode() {
   const currentFiles = files[store.config.template]
-  store.code = {}
+  store.code = {} // empty the `store.code` after changing templates
   if (currentFiles && Object.keys(currentFiles).length) {
     for (const file in currentFiles) {
       if (!store.config.include_test && file === 'test_all.py') {
