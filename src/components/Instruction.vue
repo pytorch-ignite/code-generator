@@ -60,7 +60,7 @@
 .mobile {
   display: none;
 }
-@media (max-width: 860px) {
+@media (max-width: 915px) {
   .desktop {
     display: none;
   }

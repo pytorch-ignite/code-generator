@@ -168,7 +168,7 @@ div[class~='language-yaml']::before {
   content: 'yaml';
 }
 /* media queries */
-@media (max-width: 860px) {
+@media (max-width: 915px) {
   .code-block-wrapper {
     height: 100%;
   }

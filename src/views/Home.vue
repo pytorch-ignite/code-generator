@@ -135,7 +135,7 @@ export default {
   height: 100%;
   margin-top: 5rem;
 }
-@media (max-width: 860px) {
+@media (max-width: 915px) {
   .landing {
     max-width: 95vw;
   }

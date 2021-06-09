@@ -85,7 +85,7 @@ export default {
   position: absolute;
   max-width: 38rem;
   padding: 0 0.5rem;
-  margin: 20vh auto 0;
+  margin: 20vh auto 100%;
   inset: 0;
   z-index: 12;
 }

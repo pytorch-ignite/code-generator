@@ -112,7 +112,7 @@ export default {
   max-width: 38rem;
   padding: 0 1rem;
   text-align: center;
-  margin: 20vh auto 0;
+  margin: 20vh auto 100%;
   inset: 0;
   z-index: 12;
 }
