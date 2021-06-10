@@ -116,7 +116,7 @@ export default {
   margin-right: 6px;
 }
 /* media queries */
-@media (max-width: 768px) {
+@media (max-width: 915px) {
   .right-pane-contexts {
     height: 100%;
     margin: 0;

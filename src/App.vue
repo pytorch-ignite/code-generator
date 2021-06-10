@@ -55,7 +55,7 @@ h5,
 h6 {
   font-weight: 500;
 }
-@media (max-width: 768px) {
+@media (max-width: 915px) {
   h1 {
     font-size: 1.5rem;
   }
