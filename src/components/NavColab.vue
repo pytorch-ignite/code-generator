@@ -196,11 +196,11 @@ export default {
 
           var nbUid = uuidv4()
           var nbName = 'pytorch-ignite-notebook.ipynb'
-          var repoOwner = process.env.GH_USER
-          var repo = process.env.GH_REPO
+          var repoOwner = process.env.VUE_APP_GH_USER
+          var repo = process.env.VUE_APP_GH_REPO
 
           const octokit = new Octokit({
-            auth: process.env.GH_TOKEN
+            auth: process.env.VUE_APP_GH_TOKEN
           })
           const response = octokit.request(
             'PUT /repos/{owner}/{repo}/contents/{path}',
