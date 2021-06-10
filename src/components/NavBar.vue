@@ -80,6 +80,7 @@ h1 img {
   align-items: center;
   font-size: 0.9em;
 }
+
 /* media queries */
 @media (max-width: 915px) {
   .pname {
