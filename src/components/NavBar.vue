@@ -14,6 +14,7 @@
     <div class="left-side-badges">
       <NavHelp />
       <NavDownload />
+      <NavColab />
       <NavGitHub />
       <NavTwitter />
       <NavDiscord />
@@ -33,12 +34,20 @@
 import { version } from '../../package.json'
 import NavDiscord from './NavDiscord.vue'
 import NavDownload from './NavDownload.vue'
+import NavColab from './NavColab.vue'
 import NavGitHub from './NavGitHub.vue'
 import NavTwitter from './NavTwitter.vue'
 import NavHelp from './NavHelp.vue'
 
 export default {
-  components: { NavDiscord, NavDownload, NavGitHub, NavTwitter, NavHelp },
+  components: {
+    NavDiscord,
+    NavDownload,
+    NavColab,
+    NavGitHub,
+    NavTwitter,
+    NavHelp
+  },
   setup() {
     const currentCommit = __COMMIT__ // from vite.config.js
 
