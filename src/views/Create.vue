@@ -44,6 +44,8 @@ export default {
       // which are defined in store.js
       store.config.template = ''
       store.config.include_test = false
+      store.config.output_dir = './logs'
+      store.config.log_every_iters = 2
     })
   }
 }
