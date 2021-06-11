@@ -11,13 +11,13 @@
     </div>
   </div>
   <div class="left-pane-contexts">
-    <KeepAlive>
-      <component :is="currentTabComponent" />
-    </KeepAlive>
     <div class="download-n-colab">
       <NavDownload />
       <NavColab />
     </div>
+    <KeepAlive>
+      <component :is="currentTabComponent" />
+    </KeepAlive>
   </div>
   <Message :message="msg.content" :color="msg.color" />
 </template>
@@ -126,6 +126,6 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  margin-bottom: 1rem;
+  margin-top: 1rem;
 }
 </style>
