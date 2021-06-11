@@ -47,7 +47,7 @@ test('text classification all', async () => {
   expect(await page.isChecked('#include_test-checkbox')).toBeTruthy()
 
   await page.waitForSelector('text=README.md')
-  await page.click(':nth-match(:text("Training"), 2)')
+  await page.click('text=Training')
 
   await page.check('#deterministic-checkbox')
   expect(await page.isChecked('#deterministic-checkbox')).toBeTruthy()
@@ -97,7 +97,7 @@ test('text classification launch', async () => {
   await page.selectOption('select', 'template-text-classification')
 
   await page.waitForSelector('text=README.md')
-  await page.click(':nth-match(:text("Training"), 2)')
+  await page.click('text=Training')
 
   await page.check('#use_dist-checkbox')
   expect(await page.isChecked('#use_dist-checkbox')).toBeTruthy()
@@ -119,7 +119,7 @@ test('text classification spawn', async () => {
   await page.selectOption('select', 'template-text-classification')
 
   await page.waitForSelector('text=README.md')
-  await page.click(':nth-match(:text("Training"), 2)')
+  await page.click('text=Training')
 
   await page.check('#use_dist-checkbox')
   expect(await page.isChecked('#use_dist-checkbox')).toBeTruthy()
