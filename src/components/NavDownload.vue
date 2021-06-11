@@ -20,7 +20,7 @@
       <polyline points="7 10 12 15 17 10"></polyline>
       <line x1="12" y1="15" x2="12" y2="3"></line>
     </svg>
-    <span class="icon-text">Download</span>
+    <span>Download</span>
   </button>
   <div
     class="download-success"
@@ -85,8 +85,6 @@ export default {
 </script>
 
 <style scoped>
-@import url('./css/nav-right.css');
-
 .download-button {
   display: inline-flex;
   align-items: center;
@@ -96,7 +94,12 @@ export default {
   cursor: pointer;
   font-family: var(--font-family-base);
   font-size: 1em;
-  padding: 0;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--c-brand-red);
+  border-radius: 4px;
+}
+.download-button span {
+  margin-left: 0.25rem;
 }
 .download-success {
   position: fixed;

@@ -13,9 +13,11 @@
     </h1>
     <div class="left-side-badges">
       <NavHelp />
-      <NavDownload />
-      <NavColab />
+      <!-- <NavDownload /> -->
+      <!-- <NavColab /> -->
       <NavGitHub />
+      <NavTwitter />
+      <NavDiscord />
       <a
         :href="`https://github.com/pytorch-ignite/code-generator/commit/${currentCommit}`"
         target="_blank"
@@ -39,9 +41,11 @@ import NavHelp from './NavHelp.vue'
 
 export default {
   components: {
+    NavDiscord,
     NavDownload,
     NavColab,
     NavGitHub,
+    NavTwitter,
     NavHelp
   },
   setup() {

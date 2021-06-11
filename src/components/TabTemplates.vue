@@ -16,17 +16,24 @@
         saveKey="include_test"
       />
     </div>
+    <div class="download-n-colab">
+      <NavDownload />
+      <NavColab />
+    </div>
   </div>
 </template>
 
 <script>
 import FormSelect from './FormSelect.vue'
 import FormCheckbox from './FormCheckbox.vue'
+import NavDownload from './NavDownload.vue'
+import NavColab from './NavColab.vue'
+
 import templates from '../templates/templates.json'
 import { store, fetchTemplates } from '../store.js'
 
 export default {
-  components: { FormSelect, FormCheckbox },
+  components: { FormSelect, FormCheckbox, NavDownload, NavColab },
   setup() {
     const templateLabel = 'Choose A Template'
     const templateOptions = Object.keys(templates)
@@ -41,3 +48,11 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.download-n-colab {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+</style>
