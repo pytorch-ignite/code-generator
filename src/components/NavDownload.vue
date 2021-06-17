@@ -111,7 +111,7 @@ export default {
   height: 100vh;
 }
 .msg-wrapper {
-  position: absolute;
+  position: fixed;
   max-width: 38rem;
   padding: 0 1rem;
   text-align: center;

@@ -6,7 +6,7 @@
   >
     <a
       class="external-links"
-      v-bind:href="colabLink"
+      :href="colabLink"
       target="_blank"
       rel="noopener noreferrer"
     >

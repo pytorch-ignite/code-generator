@@ -82,7 +82,7 @@ export default {
   height: 100vh;
 }
 .help-wrapper {
-  position: absolute;
+  position: fixed;
   max-width: 38rem;
   padding: 0 0.5rem;
   margin: 20vh auto 100%;
