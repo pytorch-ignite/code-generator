@@ -107,7 +107,7 @@ export default {
           msg.showMsg = true
           msg.content = `Logging interval is required. Please input in Loggers tab.`
         } else {
-          const res = await fetch('../functions/colab', {
+          const res = await fetch('../.netlify/functions/colab', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'

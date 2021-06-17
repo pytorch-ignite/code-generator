@@ -7,7 +7,7 @@ const nbName = 'pytorch-ignite-notebook.ipynb'
 const repoOwner = process.env.VUE_APP_GH_USER
 const repo = process.env.VUE_APP_GH_REPO
 
-async function createOnGitHub(nbJSON) {
+async function createOnGitHub(content) {
   const octokit = new Octokit({
     auth: process.env.VUE_APP_GH_TOKEN
   })
@@ -18,7 +18,7 @@ async function createOnGitHub(nbJSON) {
       repo: repo,
       path: `nbs/${nbUid}/${nbName}`,
       message: `nb: add ${nbUid}`,
-      content: btoa(unescape(encodeURIComponent(nbJSON)))
+      content: content
     }
   )
   return response
