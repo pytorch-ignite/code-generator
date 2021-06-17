@@ -1,3 +1,7 @@
+// Below imports are defined in
+// `external_node_modules` of [functions] in netlify.toml
+// They are required for this function to run
+
 import { v4 as uuidv4 } from 'uuid'
 import { Octokit } from '@octokit/core'
 import JSZip from 'jszip'
@@ -7,7 +11,13 @@ const nbName = 'pytorch-ignite-notebook.ipynb'
 const repoOwner = process.env.VUE_APP_GH_USER
 const repo = process.env.VUE_APP_GH_REPO
 
-async function createOnGitHub(content, filename) {
+/**
+ * Create a file on GitHub with Octokit.
+ * @param {string} content
+ * @param {string} filename
+ * @returns download_url
+ */
+async function pushToGitHub(content, filename) {
   const octokit = new Octokit({
     auth: process.env.VUE_APP_GH_TOKEN
   })
@@ -22,43 +32,61 @@ async function createOnGitHub(content, filename) {
         content: content
       }
     )
+    // the download url is raw url - https://raw.githubusercontent.com/...
     return res.data.content.download_url
   } catch (e) {
     console.error(e)
   }
 }
 
-export async function handler(event, context) {
+// This function is the one Netlify function runs on
+// https://docs.netlify.com/functions/build-with-javascript/#synchronous-function-format
+export async function handler(event, _) {
+  // event is a JSON object
   const data = JSON.parse(event.body)
   const zip = new JSZip()
 
+  // As usual from Download component,
+  // we will zip the files and
+  // generate a base64 format for pushing to GitHub
+  // with Octokit.
   for (const filename in data) {
     zip.file(filename, data[filename])
   }
   const content = await zip.generateAsync({ type: 'base64' })
-  const zipRes = await createOnGitHub(content, 'pytorch-ignite-notebook.zip')
+  const zipRes = await pushToGitHub(content, 'pytorch-ignite-notebook.zip')
+
+  // notebook cell structure
   const nb = {
     nbformat: 4,
     nbformat_minor: 0,
-    metadata: {},
+    metadata: {
+      kernelspec: {
+        display_name: 'Python 3',
+        name: 'python3'
+      }
+    },
     cells: [
       {
         cell_type: 'code',
         metadata: {},
         execution_count: null,
         outputs: [],
-        source: [`!curl ${zipRes}`]
+        source: [
+          `!wget ${zipRes}`,
+          '!unzip pytorch-ignite-notebook.zip',
+          '!pip install -r requirements.txt',
+          '!python main.py'
+        ]
       }
     ]
   }
-  await createOnGitHub(
-    Buffer.from(JSON.stringify(nb)).toString('base64'),
-    nbName
-  )
+  // Create the notebook on GitHub
+  await pushToGitHub(Buffer.from(JSON.stringify(nb)).toString('base64'), nbName)
 
   const colabLink = `https://colab.research.google.com/github/${repoOwner}/${repo}/blob/main/nbs/${nbUid}/${nbName}`
   return {
     statusCode: 200,
-    body: JSON.stringify({ link: colabLink })
+    body: colabLink
   }
 }

@@ -107,6 +107,10 @@ export default {
           msg.showMsg = true
           msg.content = `Logging interval is required. Please input in Loggers tab.`
         } else {
+          // By default, Netlify function url is
+          // base netlify url + .netlify/functions/function-name
+          // We make a POST request to the function with
+          // the content of store.code in JSON as request body
           const res = await fetch('../.netlify/functions/colab', {
             method: 'POST',
             headers: {
@@ -114,9 +118,11 @@ export default {
             },
             body: JSON.stringify(store.code)
           })
-          const colabLink = await res.json()
+          // response body is plain text
+          const colabLink = await res.text()
+          // create a hyperlink element
           const el = document.createElement('a')
-          el.setAttribute('href', colabLink.link)
+          el.setAttribute('href', colabLink)
           el.setAttribute('target', '_blank')
           el.setAttribute('rel', 'noopener noreferrer')
           el.click()
