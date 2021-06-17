@@ -41,7 +41,9 @@ export const store = reactive({
   code: {},
   config: {
     template: '',
-    include_test: false
+    include_test: false,
+    output_dir: './logs',
+    log_every_iters: 2
   }
 })
 

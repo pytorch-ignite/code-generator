@@ -1,12 +1,12 @@
 <template>
   <button
     @click="downloadProject"
-    class="download-button external-links"
+    class="download-button"
     title="Open in Colab"
   >
     <a
       class="external-links"
-      v-bind:href="colabLink"
+      :href="colabLink"
       target="_blank"
       rel="noopener noreferrer"
     >
@@ -63,7 +63,7 @@
           </svg>
         </g>
       </svg>
-      <span class="icon-text">Open in Colab</span>
+      <span>Open in Colab</span>
     </a>
   </button>
   <div
@@ -227,8 +227,6 @@ export default {
 </script>
 
 <style scoped>
-@import url('./css/nav-right.css');
-
 .download-button {
   display: inline-flex;
   align-items: center;
@@ -238,7 +236,13 @@ export default {
   cursor: pointer;
   font-family: var(--font-family-base);
   font-size: 1em;
-  padding: 0;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--c-brand-red);
+  border-radius: 4px;
+}
+.external-links {
+  display: flex;
+  align-items: center;
 }
 .download-success {
   position: fixed;

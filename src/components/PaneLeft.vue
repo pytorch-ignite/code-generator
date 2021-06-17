@@ -11,6 +11,10 @@
     </div>
   </div>
   <div class="left-pane-contexts">
+    <div class="download-n-colab">
+      <NavDownload />
+      <NavColab />
+    </div>
     <KeepAlive>
       <component :is="currentTabComponent" />
     </KeepAlive>
@@ -24,11 +28,21 @@ import TabTraining from './TabTraining.vue'
 import TabHandlers from './TabHandlers.vue'
 import TabLoggers from './TabLoggers.vue'
 import Message from './Message.vue'
+import NavDownload from './NavDownload.vue'
+import NavColab from './NavColab.vue'
 import { computed, ref } from 'vue'
 import { msg, store } from '../store.js'
 
 export default {
-  components: { TabTemplates, TabTraining, TabLoggers, TabHandlers, Message },
+  components: {
+    TabTemplates,
+    TabTraining,
+    TabLoggers,
+    TabHandlers,
+    Message,
+    NavDownload,
+    NavColab
+  },
   setup() {
     const currentTab = ref('Templates')
     const tabs = ['Templates', 'Training', 'Handlers', 'Loggers']
@@ -107,5 +121,11 @@ export default {
     padding: 0;
     margin-bottom: 2.5rem;
   }
+}
+.download-n-colab {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin-top: 1rem;
 }
 </style>

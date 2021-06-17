@@ -97,7 +97,7 @@ jobs:
           restore-keys: |
             pnpm-and-pip-cache-
 
-      - run: pip install -Uq pip wheel && sh scripts/run_code_style.sh install
+      - run: pip install -Uq pip wheel && bash scripts/run_code_style.sh install
       - run: npm i -g pnpm
       - run: pnpm i --frozen-lockfile --color
       - run: pnpm lint

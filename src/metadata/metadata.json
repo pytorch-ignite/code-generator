@@ -103,7 +103,7 @@
     "output_dir": {
       "name": "output_dir",
       "type": "text",
-      "description": "Directory to save all outputs",
+      "description": "Directory to save all outputs (including checkpoints, logs)",
       "default": "./logs"
     },
     "log_every_iters": {

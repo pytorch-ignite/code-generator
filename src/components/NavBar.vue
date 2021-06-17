@@ -13,8 +13,6 @@
     </h1>
     <div class="left-side-badges">
       <NavHelp />
-      <NavDownload />
-      <NavColab />
       <NavGitHub />
       <NavTwitter />
       <NavDiscord />
