@@ -73,10 +73,10 @@ export async function handler(event, _) {
         execution_count: null,
         outputs: [],
         source: [
-          `!wget ${zipRes}`,
-          '!unzip pytorch-ignite-notebook.zip',
-          '!pip install -r requirements.txt',
-          '!python main.py'
+          `!wget ${zipRes}\n`,
+          '!unzip pytorch-ignite-notebook.zip\n',
+          '!pip install -r requirements.txt\n',
+          '!python main.py\n'
         ]
       }
     ]
