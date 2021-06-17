@@ -37,8 +37,22 @@ export async function handler(event, context) {
   }
   const content = await zip.generateAsync({ type: 'base64' })
   const zipRes = await createOnGitHub(content, 'pytorch-ignite-notebook.zip')
+  const nb = {
+    nbformat: 4,
+    nbformat_minor: 0,
+    metadata: {},
+    cells: [
+      {
+        cell_type: 'code',
+        metadata: {},
+        execution_count: null,
+        outputs: [],
+        source: [`!curl ${zipRes}`]
+      }
+    ]
+  }
   await createOnGitHub(
-    Buffer.from(`curl ${zipRes.replace('blob', 'raw')}`).toString('base64'),
+    Buffer.from(JSON.stringify(nb)).toString('base64'),
     nbName
   )
 

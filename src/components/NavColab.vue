@@ -114,9 +114,9 @@ export default {
             },
             body: JSON.stringify(store.code)
           })
-          const colabLink = await res.json().link
+          const colabLink = await res.json()
           const el = document.createElement('a')
-          el.setAttribute('href', colabLink)
+          el.setAttribute('href', colabLink.link)
           el.setAttribute('target', '_blank')
           el.setAttribute('rel', 'noopener noreferrer')
           el.click()
