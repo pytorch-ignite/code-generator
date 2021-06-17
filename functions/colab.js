@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'
-import { Octokit } from 'https://cdn.skypack.dev/@octokit/core'
+import { Octokit } from '@octokit/core'
 import JSZip from 'jszip'
 
 const nbUid = uuidv4()
@@ -24,7 +24,7 @@ async function createOnGitHub(nbJSON) {
   return response
 }
 
-exports.handler = async (event, context) => {
+export async function handler(event, context) {
   const data = JSON.parse(event.body)
   const zip = new JSZip()
 
