@@ -58,6 +58,11 @@ export async function handler(event, _) {
   const content = await zip.generateAsync({ type: 'base64' })
   const zipRes = await pushToGitHub(content, `${template}.zip`)
 
+  const title = template
+    .replace('ignite-', '')
+    .split('-')
+    .map((v) => v[0].toUpperCase() + v.slice(1))
+    .join(' ')
   // notebook cell structure
   const nb = {
     nbformat: 4,
@@ -76,10 +81,7 @@ export async function handler(event, _) {
         execution_count: null,
         outputs: [],
         source: [
-          `${template
-            .split('-')
-            .join(' ')
-            .toUpperCase()} by PyTorch-Ignite Code-Generator\n\n`,
+          `# ${title} by PyTorch-Ignite Code-Generator\n\n`,
           'Please, run the cell below to execute your code.'
         ]
       },
