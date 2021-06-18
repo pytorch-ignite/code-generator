@@ -90,7 +90,10 @@ export default {
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify(store.code)
+            body: JSON.stringify({
+              code: store.code,
+              template: store.config.template
+            })
           })
           // response body is plain text
           const colabLink = await res.text()
@@ -100,112 +103,6 @@ export default {
           el.setAttribute('target', '_blank')
           el.setAttribute('rel', 'noopener noreferrer')
           el.click()
-          // // Create notebook placeholder
-          // var nb = {
-          //   metadata: {},
-          //   cells: [],
-          //   nbformat: 4,
-          //   nbformat_minor: 2
-          // }
-
-          // var firstCell // README
-          // var reqCell // !pip install ...
-          // var configCell // %%writefile config.yaml
-          // var lastCell // main()
-
-          // for (const filename in store.code) {
-          //   // Append regular py files
-          //   if (filename.includes('.py')) {
-          //     var cell = {
-          //       cell_type: 'code',
-          //       metadata: {},
-          //       source: [store.code[filename]],
-          //       outputs: [],
-          //       execution_count: null
-          //     }
-          //     // main will be at the end
-          //     if (filename.includes('main.py')) {
-          //       lastCell = cell
-          //     } else if (filename.includes('test_all.py')) {
-          //       continue
-          //     } else {
-          //       nb['cells'].push(cell)
-          //     }
-          //     // Readme will be at the beginning
-          //   } else if (filename.includes('README.md')) {
-          //     var firstCell = {
-          //       cell_type: 'markdown',
-          //       metadata: {},
-          //       source: [store.code[filename]]
-          //     }
-          //     // requirements should be just after the README
-          //   } else if (filename.includes('requirements.txt')) {
-          //     var cell = {
-          //       cell_type: 'code',
-          //       metadata: {},
-          //       source: [
-          //         '!pip install '.concat(
-          //           store.code[filename]
-          //             .split('\n')
-          //             .join(' ')
-          //             .replace('pytest', '')
-          //         )
-          //       ],
-          //       outputs: [],
-          //       execution_count: null
-          //     }
-          //     reqCell = cell
-          //     // config will be after installing requirements
-          //   } else if (filename.includes('config.yaml')) {
-          //     var cell = {
-          //       cell_type: 'code',
-          //       metadata: {},
-          //       source: ['%%writefile config.yaml\n', store.code[filename]],
-          //       outputs: [],
-          //       execution_count: null
-          //     }
-          //     configCell = cell
-          //   }
-          // }
-
-          // // Finalize notebook structure
-          // nb['cells'] = [
-          //   firstCell,
-          //   reqCell,
-          //   {
-          //     cell_type: 'markdown',
-          //     metadata: {},
-          //     source: ['### Create a config file\n']
-          //   },
-          //   configCell,
-          //   ...nb['cells'],
-          //   lastCell
-          // ]
-
-          // // Conver to json
-          // var nbJSON = JSON.stringify(nb)
-
-          // var nbUid = uuidv4()
-          // var nbName = 'pytorch-ignite-notebook.ipynb'
-          // var repoOwner = process.env.VUE_APP_GH_USER
-          // var repo = process.env.VUE_APP_GH_REPO
-
-          // const octokit = new Octokit({
-          //   auth: process.env.VUE_APP_GH_TOKEN
-          // })
-          // const response = octokit.request(
-          //   'PUT /repos/{owner}/{repo}/contents/{path}',
-          //   {
-          //     owner: repoOwner,
-          //     repo: repo,
-          //     path: `nbs/${nbUid}/${nbName}`,
-          //     message: `nb: add ${nbUid}`,
-          //     content: btoa(unescape(encodeURIComponent(nbJSON)))
-          //   }
-          // )
-
-          // // Getting static link
-          // colabLink.value = `https://colab.research.google.com/github/${repoOwner}/${repo}/blob/main/nbs/${nbUid}/${nbName}`
         }
       } else {
         msg.showMsg = true

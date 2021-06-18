@@ -7,7 +7,6 @@ import { Octokit } from '@octokit/core'
 import JSZip from 'jszip'
 
 const nbUid = uuidv4()
-const nbName = 'pytorch-ignite-notebook.ipynb'
 const repoOwner = process.env.VUE_APP_GH_USER
 const repo = process.env.VUE_APP_GH_REPO
 
@@ -45,16 +44,19 @@ export async function handler(event, _) {
   // event is a JSON object
   const data = JSON.parse(event.body)
   const zip = new JSZip()
+  const code = data.code
+  const template = `ignite-${data.template}`
+  const nbName = `${template}.ipynb`
 
   // As usual from Download component,
   // we will zip the files and
   // generate a base64 format for pushing to GitHub
   // with Octokit.
-  for (const filename in data) {
-    zip.file(filename, data[filename])
+  for (const filename in code) {
+    zip.file(filename, code[filename])
   }
   const content = await zip.generateAsync({ type: 'base64' })
-  const zipRes = await pushToGitHub(content, 'pytorch-ignite-notebook.zip')
+  const zipRes = await pushToGitHub(content, `${template}.zip`)
 
   // notebook cell structure
   const nb = {
@@ -64,9 +66,23 @@ export async function handler(event, _) {
       kernelspec: {
         display_name: 'Python 3',
         name: 'python3'
-      }
+      },
+      accelerator: 'GPU'
     },
     cells: [
+      {
+        cell_type: 'markdown',
+        metadata: {},
+        execution_count: null,
+        outputs: [],
+        source: [
+          `${template
+            .split('-')
+            .join(' ')
+            .toUpperCase()} by PyTorch-Ignite Code-Generator\n\n`,
+          'Please, run the cell below to execute your code.'
+        ]
+      },
       {
         cell_type: 'code',
         metadata: {},
@@ -74,7 +90,7 @@ export async function handler(event, _) {
         outputs: [],
         source: [
           `!wget ${zipRes}\n`,
-          '!unzip pytorch-ignite-notebook.zip\n',
+          `!unzip ${template}.zip\n`,
           '!pip install -r requirements.txt\n',
           '!python main.py\n'
         ]
