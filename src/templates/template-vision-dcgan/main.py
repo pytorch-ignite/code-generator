@@ -167,14 +167,7 @@ def run(local_rank: int, config: Any):
     #::: if (it.logger) { :::#
     # close logger
     if rank == 0:
-        from ignite.contrib.handlers.wandb_logger import WandBLogger
-
-        if isinstance(exp_logger, WandBLogger):
-            # why handle differently for wandb?
-            # See: https://github.com/pytorch/ignite/issues/1894
-            exp_logger.finish()
-        elif exp_logger:
-            exp_logger.close()
+        exp_logger.close()
     #::: } :::#
     #
     #::: if (it.save_training || it.save_evaluation) { :::#
