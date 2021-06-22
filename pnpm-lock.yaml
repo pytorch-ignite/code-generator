@@ -2,6 +2,7 @@ lockfileVersion: 5.3
 
 specifiers:
   '@iconify/iconify': ^2.0.1
+  '@octokit/core': ^3.5.1
   '@types/ejs': ^3.0.6
   '@types/file-saver': ^2.0.2
   '@types/jest': ^26.0.23
@@ -27,6 +28,7 @@ specifiers:
 
 devDependencies:
   '@iconify/iconify': 2.0.1
+  '@octokit/core': 3.5.1
   '@types/ejs': 3.0.6
   '@types/file-saver': 2.0.2
   '@types/jest': 26.0.23
@@ -739,6 +741,93 @@ packages:
       chalk: 4.1.1
     dev: true
 
+  /@octokit/auth-token/2.4.5:
+    resolution:
+      {
+        integrity: sha512-BpGYsPgJt05M7/L/5FoE1PiAbdxXFZkX/3kDYcsvd1v6UhlnE5e96dTDr0ezX/EFwciQxf3cNV0loipsURU+WA==
+      }
+    dependencies:
+      '@octokit/types': 6.16.4
+    dev: true
+
+  /@octokit/core/3.5.1:
+    resolution:
+      {
+        integrity: sha512-omncwpLVxMP+GLpLPgeGJBF6IWJFjXDS5flY5VbppePYX9XehevbDykRH9PdCdvqt9TS5AOTiDide7h0qrkHjw==
+      }
+    dependencies:
+      '@octokit/auth-token': 2.4.5
+      '@octokit/graphql': 4.6.4
+      '@octokit/request': 5.6.0
+      '@octokit/request-error': 2.1.0
+      '@octokit/types': 6.16.4
+      before-after-hook: 2.2.2
+      universal-user-agent: 6.0.0
+    dev: true
+
+  /@octokit/endpoint/6.0.12:
+    resolution:
+      {
+        integrity: sha512-lF3puPwkQWGfkMClXb4k/eUT/nZKQfxinRWJrdZaJO85Dqwo/G0yOC434Jr2ojwafWJMYqFGFa5ms4jJUgujdA==
+      }
+    dependencies:
+      '@octokit/types': 6.16.4
+      is-plain-object: 5.0.0
+      universal-user-agent: 6.0.0
+    dev: true
+
+  /@octokit/graphql/4.6.4:
+    resolution:
+      {
+        integrity: sha512-SWTdXsVheRmlotWNjKzPOb6Js6tjSqA2a8z9+glDJng0Aqjzti8MEWOtuT8ZSu6wHnci7LZNuarE87+WJBG4vg==
+      }
+    dependencies:
+      '@octokit/request': 5.6.0
+      '@octokit/types': 6.16.4
+      universal-user-agent: 6.0.0
+    dev: true
+
+  /@octokit/openapi-types/7.3.2:
+    resolution:
+      {
+        integrity: sha512-oJhK/yhl9Gt430OrZOzAl2wJqR0No9445vmZ9Ey8GjUZUpwuu/vmEFP0TDhDXdpGDoxD6/EIFHJEcY8nHXpDTA==
+      }
+    dev: true
+
+  /@octokit/request-error/2.1.0:
+    resolution:
+      {
+        integrity: sha512-1VIvgXxs9WHSjicsRwq8PlR2LR2x6DwsJAaFgzdi0JfJoGSO8mYI/cHJQ+9FbN21aa+DrgNLnwObmyeSC8Rmpg==
+      }
+    dependencies:
+      '@octokit/types': 6.16.4
+      deprecation: 2.3.1
+      once: 1.4.0
+    dev: true
+
+  /@octokit/request/5.6.0:
+    resolution:
+      {
+        integrity: sha512-4cPp/N+NqmaGQwbh3vUsYqokQIzt7VjsgTYVXiwpUP2pxd5YiZB2XuTedbb0SPtv9XS7nzAKjAuQxmY8/aZkiA==
+      }
+    dependencies:
+      '@octokit/endpoint': 6.0.12
+      '@octokit/request-error': 2.1.0
+      '@octokit/types': 6.16.4
+      is-plain-object: 5.0.0
+      node-fetch: 2.6.1
+      universal-user-agent: 6.0.0
+    dev: true
+
+  /@octokit/types/6.16.4:
+    resolution:
+      {
+        integrity: sha512-UxhWCdSzloULfUyamfOg4dJxV9B+XjgrIZscI0VCbp4eNrjmorGEw+4qdwcpTsu6DIrm9tQsFQS2pK5QkqQ04A==
+      }
+    dependencies:
+      '@octokit/openapi-types': 7.3.2
+    dev: true
+
   /@sideway/address/4.1.2:
     resolution:
       {
@@ -1388,6 +1477,13 @@ packages:
       isobject: 3.0.1
       mixin-deep: 1.3.2
       pascalcase: 0.1.1
+    dev: true
+
+  /before-after-hook/2.2.2:
+    resolution:
+      {
+        integrity: sha512-3pZEU3NT5BFUo/AD5ERPWOgQOCZITni6iavr5AUw5AUwQjMlI0kzu5btnyD39AF0gUEsDPwJT+oY1ORBJijPjQ==
+      }
     dev: true
 
   /big.js/5.2.2:
@@ -2195,6 +2291,13 @@ packages:
       }
     dev: true
     optional: true
+
+  /deprecation/2.3.1:
+    resolution:
+      {
+        integrity: sha512-xmHIy4F3scKVwMsQ4WnVaS8bHOx0DmVwRywosKhaILI0ywMDWPtBSku2HNxRvF7jtwDRsoEwYQSfbxj8b7RlJQ==
+      }
+    dev: true
 
   /detect-newline/3.1.0:
     resolution:
@@ -3271,6 +3374,14 @@ packages:
     engines: { node: '>=0.10.0' }
     dependencies:
       isobject: 3.0.1
+    dev: true
+
+  /is-plain-object/5.0.0:
+    resolution:
+      {
+        integrity: sha512-VRSzKkbMm5jMDoKLbltAkFQ5Qr7VDiTFGXxYFXXowVj387GeGNOCsOH6Msy00SGZ3Fp84b1Naa1psqgcCIEP5Q==
+      }
+    engines: { node: '>=0.10.0' }
     dev: true
 
   /is-potential-custom-element-name/1.0.1:
@@ -6262,6 +6373,13 @@ packages:
       get-value: 2.0.6
       is-extendable: 0.1.1
       set-value: 2.0.1
+    dev: true
+
+  /universal-user-agent/6.0.0:
+    resolution:
+      {
+        integrity: sha512-isyNax3wXoKaulPDZWHQqbmIx1k2tb9fb3GGDBRxCscfYV2Ch7WxPArBsFEG8s/safwXTT7H4QGhaIkTp9447w==
+      }
     dev: true
 
   /universalify/0.1.2:

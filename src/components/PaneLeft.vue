@@ -127,5 +127,7 @@ export default {
   align-items: center;
   justify-content: space-evenly;
   margin-top: 1rem;
+  padding-bottom: 1em;
+  border-bottom: 1px solid #ddd;
 }
 </style>
