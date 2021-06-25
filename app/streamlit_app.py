@@ -84,6 +84,10 @@ for common training tasks in deep learning.
 
     def __init__(self):
         st.set_page_config(page_title=self.page_title, page_icon=self.page_icon)
+        st.info(
+            "Code-Generator v0.2.0 released with new UI, templates, and bug fixes.\
+            \nTry now at: https://code-generator.netlify.app"
+        )
         st.write(self.description, unsafe_allow_html=True)
 
         self.codegen = CodeGenerator()

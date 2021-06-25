@@ -6,9 +6,7 @@
 
 Application to generate your training scripts with [PyTorch-Ignite](https://github.com/pytorch/ignite).
 
-<div>
-Here should be an image and link to deployed application
-</div>
+[![Code-Generator](https://user-images.githubusercontent.com/32727188/115562045-214aff00-a2dc-11eb-9de5-bec9fa7b94d2.png)][streamlit-url]
 
 ## Contribution
 
