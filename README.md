@@ -2,17 +2,17 @@
 
 Application to generate your training scripts with [PyTorch-Ignite](https://github.com/pytorch/ignite).
 
-<a href="https://code-generator.netlify.app" target="_blank" rel="noopener noreferrer">
-  <img src="./src/assets/code-generator-preview.png" alt="Code Generator Preview">
-</a>
+<div align="center">
+  <a href="https://code-generator.netlify.app" target="_blank" rel="noopener noreferrer">
+    <img src="./src/assets/code-generator-demo.gif" alt="Code Generator Preview">
+  </a>
+</div>
 
 ## Contribution
 
 Please see [Contribution Guide](./CONTRIBUTING.md).
 
 ## Acknowledgements
-
-This project is highly inspired from https://traingenerator.jrieke.com/ project, big thanks to its author Johannes Rieke!
 
 Development of this project is supported by NumFOCUS Small Development Grant. We are very grateful to them for this support!
 
