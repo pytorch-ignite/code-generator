@@ -3,7 +3,7 @@
 Application to generate your training scripts with [PyTorch-Ignite](https://github.com/pytorch/ignite).
 
 <div align="center">
-  <a href="https://code-generator.netlify.app" target="_blank" rel="noopener noreferrer">
+  <a href="https://code-generator.pytorch-ignite.ai/" target="_blank" rel="noopener noreferrer">
     <img src="./src/assets/code-generator-demo.gif" alt="Code Generator Preview">
   </a>
 </div>
