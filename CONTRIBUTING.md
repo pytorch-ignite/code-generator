@@ -44,7 +44,7 @@ To contribute to Code-Generator App, you will need Nodejs LTS v14.16.x, VSCode, 
     conda activate code-generator-venv
     ```
 
-- Install the dependencies with `pnpm install` and `bash .github/run_code_style.sh install` in the project root directory. This might take a while to install.
+- Install the dependencies with `pnpm install` and `bash scripts/run_code_style.sh install` in the project root directory. This might take a while to install.
 
 - Run `pnpm run dev` to start local development server and starts editing the codes in the `src` directory. Changes will be updated on the app.
 
