@@ -21,7 +21,7 @@ run_simple() {
     python main.py --data_path ~/data \
       --train_batch_size 4 \
       --eval_batch_size 4 \
-      --num_workers 2 \
+      --num_workers 1 \
       --max_epochs 2 \
       --train_epoch_length 4 \
       --eval_epoch_length 4
@@ -37,7 +37,7 @@ run_all() {
     python main.py --data_path ~/data \
       --train_batch_size 4 \
       --eval_batch_size 4 \
-      --num_workers 2 \
+      --num_workers 1 \
       --max_epochs 2 \
       --train_epoch_length 4 \
       --eval_epoch_length 4
@@ -54,7 +54,7 @@ run_launch() {
       main.py --backend gloo --data_path ~/data \
       --train_batch_size 4 \
       --eval_batch_size 4 \
-      --num_workers 2 \
+      --num_workers 1 \
       --max_epochs 2 \
       --train_epoch_length 4 \
       --eval_epoch_length 4
@@ -70,7 +70,7 @@ run_spawn() {
       --nproc_per_node 2 --backend gloo \
       --train_batch_size 4 \
       --eval_batch_size 4 \
-      --num_workers 2 \
+      --num_workers 1 \
       --max_epochs 2 \
       --train_epoch_length 4 \
       --eval_epoch_length 4
