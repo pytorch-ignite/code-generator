@@ -8,74 +8,74 @@ on:
     - cron: '0 0 * * *'
 
 jobs:
-  tests:
-    runs-on: ${{ matrix.os }}
-    env:
-      RUN_SLOW_TESTS: 1
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest]
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-          python-version: 3.6
+  # tests:
+  #   runs-on: ${{ matrix.os }}
+  #   env:
+  #     RUN_SLOW_TESTS: 1
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       os: [ubuntu-latest]
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: actions/setup-python@v2
+  #       with:
+  #         python-version: 3.6
 
-      - uses: actions/setup-node@v2
-        with:
-          node-version: 14
+  #     - uses: actions/setup-node@v2
+  #       with:
+  #         node-version: 14
 
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ~/.pnpm-store
-            ~/.cache/pip
-          key: pnpm-and-pip-cache-${{ hashFiles('pnpm-lock.yaml') }}
-          restore-keys: |
-            pnpm-and-pip-cache-
+  #     - uses: actions/cache@v2
+  #       with:
+  #         path: |
+  #           ~/.pnpm-store
+  #           ~/.cache/pip
+  #         key: pnpm-and-pip-cache-${{ hashFiles('pnpm-lock.yaml') }}
+  #         restore-keys: |
+  #           pnpm-and-pip-cache-
 
-      - name: Cache datasets
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/data
-          key: datasets
-          restore-keys: |
-            datasets
+  #     - name: Cache datasets
+  #       uses: actions/cache@v2
+  #       with:
+  #         path: |
+  #           ~/data
+  #         key: datasets
+  #         restore-keys: |
+  #           datasets
 
-      - name: Install dependencies
-        run: |
-          pip install wheel setuptools pip -Uqq
-          pip install -r ./scripts/requirements.txt -f https://download.pytorch.org/whl/cpu/torch_stable.html --progress-bar off
-          pip uninstall -y tqdm
-          npm i -g pnpm
-          pnpm i --frozen-lockfile --color
+  #     - name: Install dependencies
+  #       run: |
+  #         pip install wheel setuptools pip -Uqq
+  #         pip install -r ./scripts/requirements.txt -f https://download.pytorch.org/whl/cpu/torch_stable.html --progress-bar off
+  #         pip uninstall -y tqdm
+  #         npm i -g pnpm
+  #         pnpm i --frozen-lockfile --color
 
-      - name: Download datasets
-        run: |
-          python ./scripts/download_datasets.py
-          pip install tqdm
+  #     - name: Download datasets
+  #       run: |
+  #         python ./scripts/download_datasets.py
+  #         pip install tqdm
 
-      - run: pnpm build
-      - run: pnpm test:ci
-      - run: sh ./scripts/run_tests.sh unzip
+  #     - run: pnpm build
+  #     - run: pnpm test:ci
+  #     - run: sh ./scripts/run_tests.sh unzip
 
-      - name: Run all
-        run: sh ./scripts/run_tests.sh all
-        if: github.event_name != 'schedule'
+  #     - name: Run all
+  #       run: sh ./scripts/run_tests.sh all
+  #       if: github.event_name != 'schedule'
 
-      - name: Run simple
-        run: sh ./scripts/run_tests.sh simple
-        if: github.event_name != 'schedule'
+  #     - name: Run simple
+  #       run: sh ./scripts/run_tests.sh simple
+  #       if: github.event_name != 'schedule'
 
-      - name: Run launch
-        run: sh ./scripts/run_tests.sh launch
-        if: github.event_name == 'schedule'
+  #     - name: Run launch
+  #       run: sh ./scripts/run_tests.sh launch
+  #       if: github.event_name == 'schedule'
 
-      - name: Run spawn
-        run: sh ./scripts/run_tests.sh spawn
-        if: github.event_name == 'schedule'
+  #     - name: Run spawn
+  #       run: sh ./scripts/run_tests.sh spawn
+  #       if: github.event_name == 'schedule'
 
   lint:
     runs-on: ubuntu-latest

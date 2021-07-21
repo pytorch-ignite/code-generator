@@ -1,0 +1,72 @@
+version: 2.1
+
+jobs:
+  test:
+    docker:
+      - image: cimg/python:3.6-node
+    steps:
+      - checkout
+      - restore_cache:
+        key:
+          - pnpm-and-pip-cache-
+
+      - run:
+        name: Install dependencies
+        command: |
+          pip install wheel setuptools pip -Uqq
+          pip install -r ./scripts/requirements.txt -f https://download.pytorch.org/whl/cpu/torch_stable.html --progress-bar off
+          pip uninstall -y tqdm
+          npm i -g pnpm
+          pnpm i --frozen-lockfile --color
+
+      - run:
+        name: Download datasets
+        command: |
+          python ./scripts/download_datasets.py
+          pip install tqdm
+
+      - save_cache:
+        key: pnpm-and-pip-cache-{{ checksum "pnpm-lock.yaml" }}
+        paths:
+          - ~/.pnpm-store
+          - ~/.cache/pip
+
+      - run: pnpm build
+      - run: pnpm test:ci
+      - run: sh ./scripts/run_tests.sh unzip
+
+      - run:
+        name: Run all
+        command: |
+          sh ./scripts/run_tests.sh all
+
+      - run:
+        name: Run simple
+        command: |
+          sh ./scripts/run_tests.sh simple
+
+      # - run:
+      #   name: Run launch
+      #   command: |
+      #     sh ./scripts/run_tests.sh launch
+
+
+      # - run:
+      #   name: Run spawn
+      #   command: |
+      #     sh ./scripts/run_tests.sh spawn
+
+
+workflows:
+  version: 2
+  ci:
+    triggers:
+      - schedule:
+        cron: '0 0 * * *'
+        filters:
+          branches:
+            only:
+              - main
+
+    jobs:
+      - test
