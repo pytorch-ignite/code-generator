@@ -50,12 +50,10 @@ jobs:
       #   command: |
       #     sh ./scripts/run_tests.sh launch
 
-
       # - run:
       #   name: Run spawn
       #   command: |
       #     sh ./scripts/run_tests.sh spawn
-
 
 workflows:
   version: 2
