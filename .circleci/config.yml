@@ -17,7 +17,7 @@ jobs:
             pip install wheel setuptools pip -Uqq
             pip install -r ./scripts/requirements.txt -f https://download.pytorch.org/whl/cpu/torch_stable.html --progress-bar off
             pip uninstall -y tqdm
-            npm i -g pnpm
+            sudo npm i -g pnpm
             pnpm i --frozen-lockfile --color
 
       - run:
