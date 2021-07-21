@@ -59,13 +59,13 @@ jobs:
 workflows:
   version: 2
   ci:
-    triggers:
-      - schedule:
-          cron: '0 0 * * *'
-          filters:
-            branches:
-              only:
-                - main
+    # triggers:
+    #   - schedule:
+    #       cron: '0 0 * * *'
+    #       filters:
+    #         branches:
+    #           only:
+    #             - main
 
     jobs:
       - test
