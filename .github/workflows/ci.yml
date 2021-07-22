@@ -16,6 +16,13 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
+        template:
+          [
+            text-classification,
+            vision-dcgan,
+            vision-classification,
+            vision-segmentation
+          ]
         test: [all, simple, launch, spawn]
     steps:
       - uses: actions/checkout@v2
@@ -62,8 +69,8 @@ jobs:
       - run: pnpm test:ci
       - run: sh ./scripts/run_tests.sh unzip
 
-      - name: "Run ${{ matrix.test }}"
-        run: sh ./scripts/run_tests.sh ${{ matrix.test }}
+      - name: 'Run ${{ matrix.template }} ${{ matrix.test }}'
+        run: sh ./scripts/run_tests.sh ${{ matrix.test }} ${{ matrix.template }}
         if: github.event_name != 'schedule'
 
   lint:
