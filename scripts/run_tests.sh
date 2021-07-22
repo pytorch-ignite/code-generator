@@ -20,7 +20,7 @@ run_simple() {
     cd $dir
     python main.py --data_path ~/data \
       --train_batch_size 2 \
-      --eval_batch_size 1 \
+      --eval_batch_size 2 \
       --num_workers 2 \
       --max_epochs 2 \
       --train_epoch_length 4 \
@@ -36,7 +36,7 @@ run_all() {
     pytest -vra --color=yes --tb=short test_*.py
     python main.py --data_path ~/data \
       --train_batch_size 2 \
-      --eval_batch_size 1 \
+      --eval_batch_size 2 \
       --num_workers 2 \
       --max_epochs 2 \
       --train_epoch_length 4 \
@@ -53,7 +53,7 @@ run_launch() {
       --nproc_per_node 2 --use_env \
       main.py --backend gloo --data_path ~/data \
       --train_batch_size 2 \
-      --eval_batch_size 1 \
+      --eval_batch_size 2 \
       --num_workers 2 \
       --max_epochs 2 \
       --train_epoch_length 4 \
@@ -69,7 +69,7 @@ run_spawn() {
     python main.py --data_path ~/data \
       --nproc_per_node 2 --backend gloo \
       --train_batch_size 2 \
-      --eval_batch_size 1 \
+      --eval_batch_size 2 \
       --num_workers 2 \
       --max_epochs 2 \
       --train_epoch_length 4 \
