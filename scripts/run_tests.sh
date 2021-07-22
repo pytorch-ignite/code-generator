@@ -79,7 +79,7 @@ run_spawn() {
 }
 
 if [ $1 = "unzip" ]; then
-  unzip_all $2
+  unzip_all
 elif [ $1 = "simple" ]; then
   run_simple $2
 elif [ $1 = "all" ]; then
