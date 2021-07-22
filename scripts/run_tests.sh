@@ -70,7 +70,7 @@ run_spawn() {
       --nproc_per_node 2 --backend gloo \
       --train_batch_size 2 \
       --eval_batch_size 2 \
-      --num_workers 2 \
+      --num_workers 1 \
       --max_epochs 2 \
       --train_epoch_length 4 \
       --eval_epoch_length 4
