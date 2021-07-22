@@ -67,8 +67,8 @@ run_spawn() {
   do
     cd $dir
     python main.py --data_path ~/data \
-      --nproc_per_node 2 --backend gloo \
-      --train_batch_size 4 \
+      --nproc_per_node 1 --backend gloo \
+      --train_batch_size 2 \
       --eval_batch_size 2 \
       --num_workers 1 \
       --max_epochs 2 \
