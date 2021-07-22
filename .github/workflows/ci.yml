@@ -16,6 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
+        test: [all, simple, launch, spawn]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
@@ -61,21 +62,9 @@ jobs:
       - run: pnpm test:ci
       - run: sh ./scripts/run_tests.sh unzip
 
-      - name: Run all
-        run: sh ./scripts/run_tests.sh all
+      - name: "Run ${{ matrix.test }}"
+        run: sh ./scripts/run_tests.sh ${{ matrix.test }}
         if: github.event_name != 'schedule'
-
-      - name: Run simple
-        run: sh ./scripts/run_tests.sh simple
-        if: github.event_name != 'schedule'
-
-      - name: Run launch
-        run: sh ./scripts/run_tests.sh launch
-        if: github.event_name == 'schedule'
-
-      - name: Run spawn
-        run: sh ./scripts/run_tests.sh spawn
-        if: github.event_name == 'schedule'
 
   lint:
     runs-on: ubuntu-latest
