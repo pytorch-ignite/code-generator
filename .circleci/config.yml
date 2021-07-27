@@ -6,7 +6,7 @@ orbs:
 jobs:
   test:
     docker:
-      - image: cimg/python:3.6
+      - image: cimg/python:3.6-node
     steps:
       - checkout
       - restore_cache:
