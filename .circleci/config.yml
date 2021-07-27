@@ -1,15 +1,21 @@
 version: 2.1
 
+orbs:
+  node: circleci/node@4
+
 jobs:
   test:
     docker:
-      - image: cimg/python:3.6-node
+      - image: cimg/python:3.6
     steps:
       - checkout
       - restore_cache:
           keys:
             - pnpm-and-pip-cache-{{ checksum "pnpm-lock.yaml" }}
             - pnpm-and-pip-cache-
+
+      - node/install:
+          lts: true
 
       - run:
           name: Install dependencies
@@ -18,7 +24,10 @@ jobs:
             pip install -r ./scripts/requirements.txt -f https://download.pytorch.org/whl/cpu/torch_stable.html -q
             pip uninstall -y tqdm -q
             sudo npm i -g pnpm
-            pnpm i --frozen-lockfile --color
+
+      - node/install-packages:
+          cache-path: ~/.pnpm-store
+          override-ci-command: pnpm i --frozen-lockfile --color
 
       - run:
           name: Download datasets
