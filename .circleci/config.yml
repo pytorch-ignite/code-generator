@@ -1,21 +1,96 @@
 version: 2.1
+
 orbs:
   browser-tools: circleci/browser-tools@1.1.3
-jobs:
-  tests:
-    docker:
-      - image: cimg/python:3.7.11-node
 
+commands:
+  install_dependencies:
     steps:
-      - checkout
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
-      - run: google-chrome --version
-      - run: chromedriver --version
-      - run: node --version
-      - run: python --version
+
+      - run:
+          name: Check Setup
+          command: |
+            google-chrome --version
+            chromedriver --version
+            node --version
+            python --version
+
+      - run:
+          name: Install Dependencies
+          command: |
+            pip install wheel setuptools pip -Uqq
+            pip install -r ./scripts/requirements.txt -f https://download.pytorch.org/whl/cpu/torch_stable.html --progress-bar off
+            pip uninstall -y tqdm -q
+            sudo npm i -g pnpm
+            pnpm i --frozen-lockfile --color
+
+      - run:
+          name: Download Datasets
+          command: |
+            python ./scripts/download_datasets.py
+            pip install tqdm
+
+      - run:
+          name: Build, Test, Unzip
+          command: |
+            pnpm build
+            pnpm test:ci
+            sh ./scripts/run_tests.sh unzip
+
+  run_tests:
+    parameters:
+      kind:
+        default: 'all'
+        type: string
+    steps:
+      - run:
+          name: Run tests << parameters.kind >>
+          command: |
+            sh ./scripts/run_tests.sh << parameters.kind >>
+
+jobs:
+  tests_all:
+    docker:
+      - image: cimg/python:3.7.11-node
+    steps:
+      - checkout
+      - install_dependencies
+      - run_tests:
+          kind: 'all'
+
+  tests_simple:
+    docker:
+      - image: cimg/python:3.7.11-node
+    steps:
+      - checkout
+      - install_dependencies
+      - run_tests:
+          kind: 'simple'
+
+  tests_launch:
+    docker:
+      - image: cimg/python:3.7.11-node
+    steps:
+      - checkout
+      - install_dependencies
+      - run_tests:
+          kind: 'launch'
+
+  tests_spawn:
+    docker:
+      - image: cimg/python:3.7.11-node
+    steps:
+      - checkout
+      - install_dependencies
+      - run_tests:
+          kind: 'spawn'
 
 workflows:
-  run_tests:
+  tests:
     jobs:
-      - tests
+      - tests_all
+      - tests_simple
+      - tests_launch
+      - tests_spawn
