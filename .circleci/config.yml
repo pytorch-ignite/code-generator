@@ -2,7 +2,6 @@ version: 2.1
 
 orbs:
   browser-tools: circleci/browser-tools@1.1.3
-#   python: circleci/python@1.4.0
   node: circleci/node@4.5.2
 
 commands:
@@ -11,7 +10,6 @@ commands:
       - run: sudo ln -sfn `which python3` `which python`
 
       - node/install:
-          install-npm: true
           lts: true
 
       - node/install-packages:
@@ -36,7 +34,9 @@ commands:
             pip install wheel setuptools pip -Uqq
             pip install -r ./scripts/requirements.txt -f https://download.pytorch.org/whl/cpu/torch_stable.html --progress-bar off
             pip uninstall -y tqdm -q
-            pnpm i --frozen-lockfile --color
+
+      - node/install-packages:
+          override-ci-command: pnpm i --frozen-lockfile --color
 
       - run:
           name: Download Datasets
@@ -54,7 +54,7 @@ commands:
   run_tests:
     parameters:
       kind:
-        default: 'all'
+        default: 'simple'
         type: string
     steps:
       - run:
@@ -64,8 +64,6 @@ commands:
 
 jobs:
   tests_simple:
-#     docker:
-#       - image: cimg/python:3.6.14-node
     machine:
       image: ubuntu-2004:202107-01
     steps:
@@ -73,6 +71,8 @@ jobs:
       - install_dependencies
       - run_tests:
           kind: 'simple'
+      - run_tests:
+          kind: 'all'
 
   tests_all:
     docker:
