@@ -52,8 +52,8 @@ commands:
 
 jobs:
   tests_simple:
-    docker:
-      - image: cimg/python:3.6.14-node
+#     docker:
+#       - image: cimg/python:3.6.14-node
     machine: true
     steps:
       - checkout
