@@ -51,6 +51,16 @@ commands:
             sh ./scripts/run_tests.sh << parameters.kind >>
 
 jobs:
+  tests_simple:
+    docker:
+      - image: cimg/python:3.6.14-node
+    machine: true
+    steps:
+      - checkout
+      - install_dependencies
+      - run_tests:
+          kind: 'simple'
+
   tests_all:
     docker:
       - image: cimg/python:3.6.14-node
@@ -59,15 +69,6 @@ jobs:
       - install_dependencies
       - run_tests:
           kind: 'all'
-
-  tests_simple:
-    docker:
-      - image: cimg/python:3.6.14-node
-    steps:
-      - checkout
-      - install_dependencies
-      - run_tests:
-          kind: 'simple'
 
   tests_launch:
     docker:
@@ -90,7 +91,7 @@ jobs:
 workflows:
   tests:
     jobs:
-      - tests_all
       - tests_simple
-      - tests_launch
-      - tests_spawn
+#       - tests_all
+#       - tests_launch
+#       - tests_spawn
