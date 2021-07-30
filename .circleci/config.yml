@@ -11,8 +11,8 @@ commands:
       - run: bash sudo ln -sfn `which python3` `which python`
 
       - node/install:
-        install-npm: true
-        lts: true
+          install-npm: true
+          lts: true
 
       - node/install-packages:
           override-ci-command: npm i -g pnpm
