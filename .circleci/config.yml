@@ -1,0 +1,16 @@
+version: 2.1
+
+jobs:
+  tests:
+    docker:
+      - image: cimg/python:3.7.11-node
+
+    steps:
+      - checkout
+      - run: node --version
+      - run: python --version
+
+workflows:
+  run_tests:
+    jobs:
+      - tests
