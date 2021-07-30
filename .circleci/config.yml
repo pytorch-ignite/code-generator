@@ -8,7 +8,7 @@ orbs:
 commands:
   install_dependencies:
     steps:
-      - run: bash sudo ln -sfn `which python3` `which python`
+      - run: sudo ln -sfn `which python3` `which python`
 
       - node/install:
           install-npm: true
