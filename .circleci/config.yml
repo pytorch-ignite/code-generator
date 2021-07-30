@@ -34,9 +34,7 @@ commands:
             pip install wheel setuptools pip -Uqq
             pip install -r ./scripts/requirements.txt -f https://download.pytorch.org/whl/cpu/torch_stable.html --progress-bar off
             pip uninstall -y tqdm -q
-
-      - node/install-packages:
-          override-ci-command: pnpm i --frozen-lockfile --color
+            pnpm i --frozen-lockfile --color
 
       - run:
           name: Download Datasets
