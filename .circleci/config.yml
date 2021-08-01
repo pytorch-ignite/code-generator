@@ -71,6 +71,8 @@ jobs:
           kind: 'simple'
       - run_tests:
           kind: 'all'
+      - run_tests:
+          kind: 'launch'
 
   tests_all:
     docker:
