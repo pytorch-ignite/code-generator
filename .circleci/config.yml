@@ -57,6 +57,7 @@ commands:
     steps:
       - run:
           name: Run tests << parameters.kind >>
+          no_output_timeout: 30m
           command: |
             sh ./scripts/run_tests.sh << parameters.kind >>
 
@@ -102,6 +103,6 @@ jobs:
 workflows:
   tests:
     jobs:
-      - tests_simple_all
+#       - tests_simple_all
       - tests_launch
       - tests_spawn
