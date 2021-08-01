@@ -33,7 +33,7 @@ run_all() {
   for dir in $(find ./dist-tests/*-all -type d)
   do
     cd $dir
-    pytest -vra --color=yes --tb=short test_*.py
+    python -m pytest -vra --color=yes --tb=short test_*.py
     python main.py --data_path ~/data \
       --train_batch_size 2 \
       --eval_batch_size 2 \
