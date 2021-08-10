@@ -27,6 +27,20 @@ jobs:
         test: [all, simple, launch, spawn]
     steps:
       - uses: actions/checkout@v2
+
+      - name: Free up some space
+        run: |
+          sudo apt-get autoremove -y
+          sudo apt-get autoclean  -y
+          sudo apt-get clean -y
+          docker system prune --all --force
+          docker system prune --all --force --volumes
+          sudo dd if=/dev/zero of=/swapfile bs=1M count=16384
+          sudo chmod 0600 /swapfile
+          sudo mkswap /swapfile
+          sudo swapon /swapfile
+          sudo swapoff -a
+
       - uses: actions/setup-python@v2
         with:
           python-version: 3.6
