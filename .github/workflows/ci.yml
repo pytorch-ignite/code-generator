@@ -39,7 +39,7 @@ jobs:
           sudo chmod 0600 /swapfile
           sudo mkswap /swapfile
           sudo swapon /swapfile
-          sudo swapoff -a
+          swapon -s
 
       - uses: actions/setup-python@v2
         with:
