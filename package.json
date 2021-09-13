@@ -5,7 +5,7 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "test": "jest --color",
+    "test": "jest --color --runInBand",
     "test:ci": "start-server-and-test serve 5000 test",
     "release": "node scripts/release.js",
     "fmt": "prettier --write . && bash scripts/run_code_style.sh fmt",

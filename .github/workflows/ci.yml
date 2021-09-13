@@ -12,10 +12,24 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       RUN_SLOW_TESTS: 1
+      OMP_NUM_THREADS: 1
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
+        template:
+          [
+            text-classification,
+            vision-dcgan,
+            vision-classification,
+            vision-segmentation
+          ]
+        test: [all, simple, launch, spawn]
+        exclude:
+          - template: vision-classification
+            test: launch
+          - template: vision-segmentation
+            test: launch
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
@@ -47,7 +61,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install wheel setuptools pip -Uqq
-          pip install -r ./scripts/requirements.txt -f https://download.pytorch.org/whl/cpu/torch_stable.html --progress-bar off
+          pip install -r ./scripts/requirements.txt -f https://download.pytorch.org/whl/cpu/torch_stable.html -q
           pip uninstall -y tqdm
           npm i -g pnpm
           pnpm i --frozen-lockfile --color
@@ -61,21 +75,9 @@ jobs:
       - run: pnpm test:ci
       - run: sh ./scripts/run_tests.sh unzip
 
-      - name: Run all
-        run: sh ./scripts/run_tests.sh all
+      - name: 'Run ${{ matrix.template }} ${{ matrix.test }}'
+        run: sh ./scripts/run_tests.sh ${{ matrix.test }} ${{ matrix.template }}
         if: github.event_name != 'schedule'
-
-      - name: Run simple
-        run: sh ./scripts/run_tests.sh simple
-        if: github.event_name != 'schedule'
-
-      - name: Run launch
-        run: sh ./scripts/run_tests.sh launch
-        if: github.event_name == 'schedule'
-
-      - name: Run spawn
-        run: sh ./scripts/run_tests.sh spawn
-        if: github.event_name == 'schedule'
 
   lint:
     runs-on: ubuntu-latest

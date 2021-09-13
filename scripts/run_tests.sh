@@ -15,12 +15,12 @@ unzip_all() {
 }
 
 run_simple() {
-  for dir in $(find ./dist-tests/*-simple -type d)
+  for dir in $(find ./dist-tests/$1-simple -type d)
   do
     cd $dir
     python main.py --data_path ~/data \
-      --train_batch_size 4 \
-      --eval_batch_size 4 \
+      --train_batch_size 2 \
+      --eval_batch_size 2 \
       --num_workers 2 \
       --max_epochs 2 \
       --train_epoch_length 4 \
@@ -30,13 +30,13 @@ run_simple() {
 }
 
 run_all() {
-  for dir in $(find ./dist-tests/*-all -type d)
+  for dir in $(find ./dist-tests/$1-all -type d)
   do
     cd $dir
     pytest -vra --color=yes --tb=short test_*.py
     python main.py --data_path ~/data \
-      --train_batch_size 4 \
-      --eval_batch_size 4 \
+      --train_batch_size 2 \
+      --eval_batch_size 2 \
       --num_workers 2 \
       --max_epochs 2 \
       --train_epoch_length 4 \
@@ -46,15 +46,15 @@ run_all() {
 }
 
 run_launch() {
-  for dir in $(find ./dist-tests/*-launch -type d)
+  for dir in $(find ./dist-tests/$1-launch -type d)
   do
     cd $dir
     python -m torch.distributed.launch \
       --nproc_per_node 2 --use_env \
       main.py --backend gloo --data_path ~/data \
-      --train_batch_size 4 \
-      --eval_batch_size 4 \
-      --num_workers 2 \
+      --train_batch_size 2 \
+      --eval_batch_size 2 \
+      --num_workers 1 \
       --max_epochs 2 \
       --train_epoch_length 4 \
       --eval_epoch_length 4
@@ -63,14 +63,14 @@ run_launch() {
 }
 
 run_spawn() {
-  for dir in $(find ./dist-tests/*-spawn -type d)
+  for dir in $(find ./dist-tests/$1-spawn -type d)
   do
     cd $dir
     python main.py --data_path ~/data \
       --nproc_per_node 2 --backend gloo \
       --train_batch_size 4 \
       --eval_batch_size 4 \
-      --num_workers 2 \
+      --num_workers 1 \
       --max_epochs 2 \
       --train_epoch_length 4 \
       --eval_epoch_length 4
@@ -81,11 +81,11 @@ run_spawn() {
 if [ $1 = "unzip" ]; then
   unzip_all
 elif [ $1 = "simple" ]; then
-  run_simple
+  run_simple $2
 elif [ $1 = "all" ]; then
-  run_all
+  run_all $2
 elif [ $1 = "launch" ]; then
-  run_launch
+  run_launch $2
 elif [ $1 = "spawn" ]; then
-  run_spawn
+  run_spawn $2
 fi
