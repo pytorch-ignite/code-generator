@@ -2,9 +2,11 @@
   <main>
     <NavBar />
     <div class="heading">
-      <h1>404 Page Not Found</h1>
+      <h1>404</h1>
+      <h3>Page Not Found</h3>
+      <h3>Oops we couldn't find that page.</h3>
       <p>
-        Oops we couldn't find that page. Try going
+        Try going
         <RouterLink to="/" class="link alt" :style="learnMore">home</RouterLink>
       </p>
     </div>
