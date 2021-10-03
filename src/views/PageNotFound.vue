@@ -14,9 +14,6 @@
 
 <script>
 import NavBar from '../components/NavBar.vue'
-import SplitPane from '../components/PaneSplit.vue'
-import PaneRight from '../components/PaneRight.vue'
-import PaneLeft from '../components/PaneLeft.vue'
 import Footer from '../components/Footer.vue'
 import { onUnmounted } from 'vue'
 import { store } from '../store'
