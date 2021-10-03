@@ -43,13 +43,13 @@ export default {
     // computed properties
     const className = computed(() => {
       if (props.lang === 'txt') {
-        return 'language-markup'
+        return 'language-text'
       }
       return `language-${lang.value}`
     })
     const highlightCode = computed(() => {
       if (lang.value === 'txt') {
-        return highlight(code.value, languages['markup'], 'markup')
+        return highlight(code.value, {}, 'txt')
       }
       return highlight(code.value, languages[lang.value], lang.value)
     })
@@ -147,6 +147,11 @@ div[class*='language-']::before,
 div[class~='language-md']::before,
 div[class~='language-markdown']::before {
   content: 'md';
+}
+
+div[class~='language-txt']::before,
+div[class~='language-text']::before {
+  content: 'txt';
 }
 
 div[class~='language-json']::before {
