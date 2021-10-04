@@ -2,14 +2,13 @@
   <main>
     <NavBar />
     <div class="heading">
-      <h1>404</h1>
-      <h3>Page Not Found</h3>
-      <h3>Oops! We couldn't find that page.</h3>
+      <h1>404 Page Not Found</h1>
+      <p>Oops! We couldn't find that page.</p>
       <p>
         Go back to the
         <RouterLink to="/" class="link alt" :style="learnMore"
           >homepage</RouterLink
-        >
+        >.
       </p>
     </div>
     <Footer />
@@ -50,7 +49,7 @@ export default {
 
 <style scoped>
 h1 {
-  color: orange;
+  color: var(--c-brand-red);
 }
 .heading {
   max-width: 75vw;
