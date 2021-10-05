@@ -65,8 +65,8 @@ h1 {
 .footer {
   position: absolute;
   bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
+  right: 0;
   width: 100vw;
   margin: auto;
 }
