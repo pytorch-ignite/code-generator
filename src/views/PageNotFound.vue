@@ -62,11 +62,11 @@ h1 {
   color: var(--c-brand-red);
 }
 
-.footer{
+.footer {
   position: absolute;
   bottom: 0;
   left: 50%;
-  transform:translateX(-50%);
+  transform: translateX(-50%);
   width: 100vw;
   margin: auto;
 }
