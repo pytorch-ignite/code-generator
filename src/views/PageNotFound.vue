@@ -11,7 +11,7 @@
         >.
       </p>
     </div>
-    <Footer />
+    <Footer class="footer" />
   </main>
 </template>
 
@@ -52,6 +52,7 @@ h1 {
   color: var(--c-brand-red);
 }
 .heading {
+  padding-top: 12rem;
   max-width: 75vw;
   margin: auto;
   text-align: center;
@@ -59,5 +60,14 @@ h1 {
 .heading .alt {
   background: var(--c-white);
   color: var(--c-brand-red);
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100vw;
+  margin: auto;
 }
 </style>
