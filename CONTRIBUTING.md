@@ -15,13 +15,13 @@ Contributing to Code-Generator can be divided into two parts:
 >
 > Or you can send the PR to test the app using PR Preview feature from Netlify.
 
-To contribute to Code-Generator App, you will need Nodejs LTS v14.16.x, VSCode, Vetur, pip or conda, and pnpm package manager.
+To contribute to Code-Generator App, you will need Nodejs LTS v16, VSCode, Vetur, pip or conda, and pnpm package manager.
 
 - Install [VSCode](https://code.visualstudio.com/) according to your OS.
 
 - Install [Vetur extension](https://marketplace.visualstudio.com/items?itemName=octref.vetur) to get syntax highlighting for `.vue` files. You can search `Vetur` in VSCode Extensions Tab to install.
 
-- Install Nodejs LTS v14.16.x from https://nodejs.org for macOS and Windows. For Linux distributions, please follow the steps from [Node.js Website](https://nodejs.org/en/download/package-manager/) and [NodeSource GitHub](https://github.com/nodesource/distributions/blob/master/README.md#installation-instructions).
+- Install Nodejs LTS v16 from https://nodejs.org for macOS and Windows. For Linux distributions, please follow the steps from [Node.js Website](https://nodejs.org/en/download/package-manager/) and [NodeSource GitHub](https://github.com/nodesource/distributions/blob/master/README.md#installation-instructions).
 
 - Install pnpm from https://pnpm.io/installation. Use standalone script if there is a root issue with installing with npm.
 
