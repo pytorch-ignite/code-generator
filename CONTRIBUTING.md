@@ -52,7 +52,7 @@ To contribute to Code-Generator App, you will need Nodejs LTS v16, VSCode, Vetur
 
 ## Contributing to Code-Generator App
 
-Code-Generator is a web app built with Vue 3. Source code is mainly in the files of `src`, `src/components`, `src/metadata` directories. See [`src/REAME.md`](./src/README.md).
+Code-Generator is a web app built with Vue 3. Source code is mainly in the files of `src`, `src/components`, `src/metadata` directories. See [`src/README.md`](./src/README.md).
 
 - If you have found bugs, please send a PR fixing the bugs.
 - If you have design, layout, and UI improvements, please open a suggestion issue first, discuss with the maintainers, and have it approved before working on it.
