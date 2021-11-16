@@ -1,5 +1,6 @@
 {
-  "extends": ["config:base", "schedule:daily"],
+  "extends": ["config:base", "schedule:weekly", "group:allNonMajor"],
   "labels": ["dependencies"],
-  "pin": false
+  "pin": false,
+  "rangeStrategy": "bump"
 }
