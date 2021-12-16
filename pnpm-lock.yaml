@@ -7,7 +7,7 @@ specifiers:
   '@types/file-saver': ^2.0.4
   '@types/jest': ^27.0.3
   '@types/prismjs': ^1.16.6
-  '@vitejs/plugin-vue': ^1.10.2
+  '@vitejs/plugin-vue': ^2.0.1
   '@vue/compiler-sfc': ^3.2.26
   conventional-changelog-cli: ^2.1.1
   ejs: ^3.1.6
@@ -33,7 +33,7 @@ devDependencies:
   '@types/file-saver': 2.0.4
   '@types/jest': 27.0.3
   '@types/prismjs': 1.16.6
-  '@vitejs/plugin-vue': 1.10.2_vite@2.7.3
+  '@vitejs/plugin-vue': 2.0.1_vite@2.7.3+vue@3.2.26
   '@vue/compiler-sfc': 3.2.26
   conventional-changelog-cli: 2.1.1
   ejs: 3.1.6
@@ -836,13 +836,15 @@ packages:
     dev: true
     optional: true
 
-  /@vitejs/plugin-vue/1.10.2_vite@2.7.3:
-    resolution: {integrity: sha512-/QJ0Z9qfhAFtKRY+r57ziY4BSbGUTGsPRMpB/Ron3QPwBZM4OZAZHdTa4a8PafCwU5DTatXG8TMDoP8z+oDqJw==}
+  /@vitejs/plugin-vue/2.0.1_vite@2.7.3+vue@3.2.26:
+    resolution: {integrity: sha512-wtdMnGVvys9K8tg+DxowU1ytTrdVveXr3LzdhaKakysgGXyrsfaeds2cDywtvujEASjWOwWL/OgWM+qoeM8Plg==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
       vite: ^2.5.10
+      vue: ^3.2.25
     dependencies:
       vite: 2.7.3
+      vue: 3.2.26
     dev: true
 
   /@vue/compiler-core/3.2.26:
