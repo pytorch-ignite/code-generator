@@ -19,7 +19,7 @@
     "@types/file-saver": "^2.0.4",
     "@types/jest": "^27.0.3",
     "@types/prismjs": "^1.16.6",
-    "@vitejs/plugin-vue": "^1.10.2",
+    "@vitejs/plugin-vue": "^2.0.1",
     "@vue/compiler-sfc": "^3.2.26",
     "conventional-changelog-cli": "^2.1.1",
     "ejs": "^3.1.6",
