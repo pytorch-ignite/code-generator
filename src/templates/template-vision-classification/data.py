@@ -20,6 +20,12 @@ def setup_data(config: Any):
         ]
     )
 
+    #::: if (it.use_dist) { :::#
+    if local_rank > 0:
+        # Ensure that only rank 0 download the dataset
+        idist.barrier()
+    #::: } :::#
+
     dataset_train = torchvision.datasets.CIFAR10(
         root=config.data_path,
         train=True,
@@ -32,6 +38,12 @@ def setup_data(config: Any):
         download=True,
         transform=transform,
     )
+
+    #::: if (it.use_dist) { :::#
+    if local_rank == 0:
+        # Ensure that only rank 0 download the dataset
+        idist.barrier()
+    #::: } :::#
 
 
     dataloader_train = idist.auto_dataloader(
