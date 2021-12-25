@@ -113,11 +113,11 @@ To add a new template,
 
   ```sh
   # install code formatting dependencies
-  bash .github/run_code_style.sh install
+  bash scripts/run_code_style.sh install
   # format the codes
-  bash .github/run_code_style.sh fmt
+  bash scripts/run_code_style.sh fmt
   # lint the codes
-  bash .github/run_code_style.sh lint
+  bash scripts/run_code_style.sh lint
   ```
 
 _NOTE: Even if you have a half-completed/working PR, sending a PR is still a valid contribution and we can help you finish the PR._
