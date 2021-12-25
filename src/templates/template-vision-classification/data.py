@@ -14,10 +14,7 @@ def setup_data(config: Any):
     """
     local_rank = idist.get_local_rank()
     transform = T.Compose(
-        [
-            T.ToTensor(),
-            T.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-        ]
+        [T.ToTensor(), T.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),]
     )
 
     #::: if (it.use_dist) { :::#
@@ -27,16 +24,10 @@ def setup_data(config: Any):
     #::: } :::#
 
     dataset_train = torchvision.datasets.CIFAR10(
-        root=config.data_path,
-        train=True,
-        download=True,
-        transform=transform,
+        root=config.data_path, train=True, download=True, transform=transform,
     )
     dataset_eval = torchvision.datasets.CIFAR10(
-        root=config.data_path,
-        train=False,
-        download=True,
-        transform=transform,
+        root=config.data_path, train=False, download=True, transform=transform,
     )
 
     #::: if (it.use_dist) { :::#
@@ -44,7 +35,6 @@ def setup_data(config: Any):
         # Ensure that only rank 0 download the dataset
         idist.barrier()
     #::: } :::#
-
 
     dataloader_train = idist.auto_dataloader(
         dataset_train,
