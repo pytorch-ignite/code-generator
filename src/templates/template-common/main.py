@@ -10,11 +10,13 @@ if rank == 0:
 #::: if (it.save_training || it.save_evaluation) { :::#
 # show last checkpoint names
 logger.info(
-    "Last training checkpoint name - %s", ckpt_handler_train.last_checkpoint,
+    "Last training checkpoint name - %s",
+    ckpt_handler_train.last_checkpoint,
 )
 
 logger.info(
-    "Last evaluation checkpoint name - %s", ckpt_handler_eval.last_checkpoint,
+    "Last evaluation checkpoint name - %s",
+    ckpt_handler_eval.last_checkpoint,
 )
 #::: } :::#
 

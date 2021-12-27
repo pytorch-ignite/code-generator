@@ -57,7 +57,9 @@ def setup_trainer(
 
 
 def setup_evaluator(
-    config: Any, model: Module, device: Union[str, torch.device],
+    config: Any,
+    model: Module,
+    device: Union[str, torch.device],
 ) -> Engine:
     @torch.no_grad()
     def eval_function(engine: Engine, batch: Any):
