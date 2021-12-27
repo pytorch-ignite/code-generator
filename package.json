@@ -21,7 +21,7 @@
     "@types/prismjs": "^1.16.6",
     "@vitejs/plugin-vue": "^2.0.1",
     "@vue/compiler-sfc": "^3.2.26",
-    "conventional-changelog-cli": "^2.1.1",
+    "conventional-changelog-cli": "^2.2.2",
     "ejs": "^3.1.6",
     "execa": "^6.0.0",
     "file-saver": "^2.0.5",
@@ -34,7 +34,7 @@
     "semver": "^7.3.5",
     "start-server-and-test": "^1.14.0",
     "uuid": "^8.3.2",
-    "vite": "^2.7.3",
+    "vite": "^2.7.7",
     "vue": "^3.2.26",
     "vue-router": "^4.0.12"
   },
