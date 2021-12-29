@@ -12,7 +12,9 @@ def setup_data(config: Any):
     ----------
     config: needs to contain `data_path`, `train_batch_size`, `eval_batch_size`, and `num_workers`
     """
+    #::: if (it.use_dist) { :::#
     local_rank = idist.get_local_rank()
+    #::: } :::#
     transform = T.Compose(
         [
             T.Resize(64),
@@ -20,10 +22,11 @@ def setup_data(config: Any):
             T.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
         ]
     )
-
+    #::: if (it.use_dist) { :::#
     if local_rank > 0:
         # Ensure that only rank 0 download the dataset
         idist.barrier()
+    #::: } :::#
 
     dataset_train = torchvision.datasets.CIFAR10(
         root=config.data_path,
@@ -38,9 +41,11 @@ def setup_data(config: Any):
         transform=transform,
     )
     nc = 3
+    #::: if (it.use_dist) { :::#
     if local_rank == 0:
         # Ensure that only rank 0 download the dataset
         idist.barrier()
+    #::: } :::#
 
     dataloader_train = idist.auto_dataloader(
         dataset_train,

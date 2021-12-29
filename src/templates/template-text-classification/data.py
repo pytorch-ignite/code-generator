@@ -42,10 +42,12 @@ class TransformerDataset(torch.utils.data.Dataset):
 
 
 def setup_data(config):
+    #::: if (it.use_dist) { :::#
     local_rank = idist.get_local_rank()
 
     if local_rank > 0:
         idist.barrier()
+    #::: } :::#
 
     dataset_train, dataset_eval = load_dataset(
         "imdb", split=["train", "test"], cache_dir=config.data_path
@@ -61,9 +63,10 @@ def setup_data(config):
     dataset_eval = TransformerDataset(
         test_texts, test_labels, tokenizer, config.max_length
     )
-
+    #::: if (it.use_dist) { :::#
     if local_rank == 0:
         idist.barrier()
+    #::: } :::#
 
     dataloader_train = idist.auto_dataloader(
         dataset_train,
