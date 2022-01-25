@@ -6,9 +6,16 @@
       :label="deterministic.description"
       :saveKey="deterministic.name"
     />
-    <h2 class="training">Distributed Training (NCCL backend)</h2>
+    <h2 class="training">Distributed Training</h2>
     <FormCheckbox label="Use distributed training" saveKey="use_dist" />
     <div v-show="store.config.use_dist">
+      <h2>Choose a Backend</h2>
+      <FormSelect
+        required 
+        :saveKey="backend.name"
+        :label="backend.description"
+        :options="backend.options"
+      />
       <FormRadio :options="[launch, spawn]" saveKey="dist" defaultV="launch" />
       <FormInput
         :label="nproc_per_node.description"
@@ -46,13 +53,15 @@ import { training } from '../metadata/metadata.json'
 import FormCheckbox from './FormCheckbox.vue'
 import FormInput from './FormInput.vue'
 import FormRadio from './FormRadio.vue'
+import FormSelect from './FormSelect.vue'
 import { store } from '../store.js'
 
 export default {
-  components: { FormCheckbox, FormInput, FormRadio },
+  components: { FormCheckbox, FormInput, FormRadio,FormSelect },
   setup() {
     const {
       deterministic,
+      backend,
       launch,
       spawn,
       nproc_per_node,
@@ -69,6 +78,7 @@ export default {
     return {
       store,
       deterministic,
+      backend,
       launch,
       spawn,
       nproc_per_node,

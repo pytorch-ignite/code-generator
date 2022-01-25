@@ -31,7 +31,7 @@ python -m torch.distributed.launch \
   --master_addr #:::= it.master_addr :::# \
   --master_port #:::= it.master_port :::# \
   --use_env main.py \
-  --backend nccl
+  --backend #:::= backend :::#
 ```
 
 - Execute on worker nodes

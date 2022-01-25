@@ -41,6 +41,14 @@
       "description": "Master node port for torch native backends (mandatory if you have filled number of nodes)",
       "min": 0,
       "default": 8080
+    },
+    "backend": {
+      "name": "backend",
+      "description":"Choose a Backend",
+      "options":[
+        "NCCL",
+        "Gloo"
+      ]
     }
   },
   "handlers": {
