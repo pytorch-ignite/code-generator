@@ -11,7 +11,7 @@
     <div v-show="store.config.use_dist">
       <h2>Choose a Backend</h2>
       <FormSelect
-        required 
+        required
         :saveKey="backend.name"
         :label="backend.description"
         :options="backend.options"
@@ -57,7 +57,7 @@ import FormSelect from './FormSelect.vue'
 import { store } from '../store.js'
 
 export default {
-  components: { FormCheckbox, FormInput, FormRadio,FormSelect },
+  components: { FormCheckbox, FormInput, FormRadio, FormSelect },
   setup() {
     const {
       deterministic,

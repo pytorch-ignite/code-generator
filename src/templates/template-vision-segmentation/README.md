@@ -44,7 +44,7 @@ python -m torch.distributed.launch \
   --master_addr #:::= it.master_addr :::# \
   --master_port #:::= it.master_port :::# \
   --use_env main.py \
-  --backend nccl
+  --backend #:::= backend :::#
 ```
 
 #::: } else { :::#
@@ -77,7 +77,7 @@ python main.py  \
   --node_rank 0 \
   --master_addr #:::= it.master_addr :::# \
   --master_port #:::= it.master_port :::# \
-  --backend nccl
+  --backend #:::= backend :::#
 ```
 
 - Execute on worker nodes
@@ -89,7 +89,7 @@ python main.py  \
   --node_rank <node_rank> \
   --master_addr #:::= it.master_addr :::# \
   --master_port #:::= it.master_port :::# \
-  --backend nccl
+  --backend #:::= backend :::#
 ```
 
 #::: } else { :::#
@@ -99,7 +99,7 @@ python main.py  \
 ```sh
 python main.py  \
   --nproc_per_node #:::= it.nproc_per_node :::# \
-  --backend nccl
+  --backend #:::= backend :::#
 ```
 
 #::: } :::#
