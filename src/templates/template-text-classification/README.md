@@ -25,26 +25,26 @@ pip install -r requirements.txt --progress-bar off -U
 
 ```sh
 python -m torch.distributed.launch \
-  --nproc_per_node #:::= nproc_per_node :::# \
+  --nproc_per_node #:::= it.nproc_per_node :::# \
   --nnodes #:::= it.nnodes :::# \
   --node_rank 0 \
   --master_addr #:::= it.master_addr :::# \
   --master_port #:::= it.master_port :::# \
   --use_env main.py \
-  --backend #:::= backend :::#
+  --backend #:::= it.backend :::#
 ```
 
 - Execute on worker nodes
 
 ```sh
 python -m torch.distributed.launch \
-  --nproc_per_node #:::= nproc_per_node :::# \
+  --nproc_per_node #:::= it.nproc_per_node :::# \
   --nnodes #:::= it.nnodes :::# \
   --node_rank <node_rank> \
   --master_addr #:::= it.master_addr :::# \
   --master_port #:::= it.master_port :::# \
   --use_env main.py \
-  --backend #:::= backend :::#
+  --backend #:::= it.backend :::#
 ```
 
 #::: } else { :::#
@@ -55,7 +55,7 @@ python -m torch.distributed.launch \
 python -m torch.distributed.launch \
   --nproc_per_node #:::= it.nproc_per_node :::# \
   --use_env main.py \
-  --backend #:::= backend :::#
+  --backend #:::= it.backend :::#
 ```
 
 #::: } :::#
@@ -72,24 +72,24 @@ python -m torch.distributed.launch \
 
 ```sh
 python main.py  \
-  --nproc_per_node #:::= nproc_per_node :::# \
+  --nproc_per_node #:::= it.nproc_per_node :::# \
   --nnodes #:::= it.nnodes :::# \
   --node_rank 0 \
   --master_addr #:::= it.master_addr :::# \
   --master_port #:::= it.master_port :::# \
-  --backend #:::= backend :::#
+  --backend #:::= it.backend :::#
 ```
 
 - Execute on worker nodes
 
 ```sh
 python main.py  \
-  --nproc_per_node #:::= nproc_per_node :::# \
+  --nproc_per_node #:::= it.nproc_per_node :::# \
   --nnodes #:::= it.nnodes :::# \
   --node_rank <node_rank> \
   --master_addr #:::= it.master_addr :::# \
   --master_port #:::= it.master_port :::# \
-  --backend #:::= backend :::#
+  --backend #:::= it.backend :::#
 ```
 
 #::: } else { :::#
@@ -99,7 +99,7 @@ python main.py  \
 ```sh
 python main.py  \
   --nproc_per_node #:::= it.nproc_per_node :::# \
-  --backend #:::= backend :::#
+  --backend #:::= it.backend :::#
 ```
 
 #::: } :::#
