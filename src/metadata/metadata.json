@@ -46,6 +46,7 @@
       "name": "backend",
       "description": "Choose a Backend",
       "options": ["NCCL", "Gloo"]
+      "default": "NCCL"
     }
   },
   "handlers": {
