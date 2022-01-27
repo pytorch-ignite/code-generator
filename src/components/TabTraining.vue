@@ -9,12 +9,12 @@
     <h2 class="training">Distributed Training</h2>
     <FormCheckbox label="Use distributed training" saveKey="use_dist" />
     <div v-show="store.config.use_dist">
-      <h2>Choose a Backend</h2>
       <FormSelect
         required
         :saveKey="backend.name"
         :label="backend.description"
         :options="backend.options"
+        :defaultV="backend.default"
       />
       <FormRadio :options="[launch, spawn]" saveKey="dist" defaultV="launch" />
       <FormInput

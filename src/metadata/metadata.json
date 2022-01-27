@@ -44,8 +44,10 @@
     },
     "backend": {
       "name": "backend",
-      "description": "Choose a Backend",
-      "options": ["NCCL", "Gloo"]
+      "type": "array",
+      "description": "Choose a backend",
+      "options": ["Nccl", "Gloo"],
+      "default": "Nccl"
     }
   },
   "handlers": {
