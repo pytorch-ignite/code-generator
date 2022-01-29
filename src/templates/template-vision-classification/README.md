@@ -19,35 +19,42 @@ pip install -r requirements.txt --progress-bar off -U
 #::: if (it.nproc_per_node) { :::#
 #::: if (it.nnodes > 1 && it.master_addr && it.master_port) { :::#
 
-### Multi Node, Multi GPU Training (`torch.distributed.launch`) (recommended)
+### Multi Node, Multi GPU Training (`torch.distributed.run`) (recommended)
 
 - Execute on master node
 
 ```sh
-torchrun main.py \
+python -m torch.distributed.run \
   --nproc_per_node #:::= it.nproc_per_node :::# \
   --nnodes #:::= it.nnodes :::# \
   --node_rank 0 \
+  --master_addr #:::= it.master_addr :::# \
+  --master_port #:::= it.master_port :::# \
+    main.py \
   --backend #:::= it.backend :::#
 ```
 
 - Execute on worker nodes
 
 ```sh
-torchrun main.py \
+python -m torch.distributed.run \
   --nproc_per_node #:::= it.nproc_per_node :::# \
   --nnodes #:::= it.nnodes :::# \
   --node_rank <node_rank> \
+  --master_addr #:::= it.master_addr :::# \
+  --master_port #:::= it.master_port :::# \
+    main.py \
   --backend #:::= it.backend :::#
 ```
 
 #::: } else { :::#
 
-### Multi GPU Training (`torch.distributed.launch`) (recommended)
+### Multi GPU Training (`torch.distributed.run`) (recommended)
 
 ```sh
-torchrun main.py \
+python -m torch.distributed.run \
   --nproc_per_node #:::= it.nproc_per_node :::# \
+    main.py \
   --backend #:::= it.backend :::#
 ```
 

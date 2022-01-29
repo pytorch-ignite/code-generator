@@ -3,42 +3,42 @@
 #::: if (it.nproc_per_node) { :::#
 #::: if (it.nnodes > 1 && it.master_addr && it.master_port) { :::#
 
-### Multi Node, Multi GPU Training (`torch.distributed.launch`) (recommended)
+### Multi Node, Multi GPU Training (`torch.distributed.run`) (recommended)
 
 - Execute on master node
 
 ```sh
-python -m torch.distributed.launch \
+python -m torch.distributed.run \
   --nproc_per_node #:::= it.nproc_per_node :::# \
   --nnodes #:::= it.nnodes :::# \
   --node_rank 0 \
   --master_addr #:::= it.master_addr :::# \
   --master_port #:::= it.master_port :::# \
-  --use_env main.py \
+    main.py \
   --backend #:::= it.backend :::#
 ```
 
 - Execute on worker nodes
 
 ```sh
-python -m torch.distributed.launch \
+python -m torch.distributed.run \
   --nproc_per_node #:::= it.nproc_per_node :::# \
   --nnodes #:::= it.nnodes :::# \
   --node_rank <node_rank> \
   --master_addr #:::= it.master_addr :::# \
   --master_port #:::= it.master_port :::# \
-  --use_env main.py \
+    main.py \
   --backend #:::= it.backend :::#
 ```
 
 #::: } else { :::#
 
-### Multi GPU Training (`torch.distributed.launch`) (recommended)
+### Multi GPU Training (`torch.distributed.run`) (recommended)
 
 ```sh
-python -m torch.distributed.launch \
+python -m torch.distributed.run \
   --nproc_per_node #:::= it.nproc_per_node :::# \
-  --use_env main.py \
+    main.py \
   --backend #:::= it.backend :::#
 ```
 
