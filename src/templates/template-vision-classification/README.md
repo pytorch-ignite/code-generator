@@ -24,26 +24,26 @@ pip install -r requirements.txt --progress-bar off -U
 - Execute on master node
 
 ```sh
-python -m torch.distributed.run \
+torchrun \
   --nproc_per_node #:::= it.nproc_per_node :::# \
   --nnodes #:::= it.nnodes :::# \
   --node_rank 0 \
   --master_addr #:::= it.master_addr :::# \
   --master_port #:::= it.master_port :::# \
-    main.py \
+  main.py \
   --backend #:::= it.backend :::#
 ```
 
 - Execute on worker nodes
 
 ```sh
-python -m torch.distributed.run \
+torchrun \
   --nproc_per_node #:::= it.nproc_per_node :::# \
   --nnodes #:::= it.nnodes :::# \
   --node_rank <node_rank> \
   --master_addr #:::= it.master_addr :::# \
   --master_port #:::= it.master_port :::# \
-    main.py \
+  main.py \
   --backend #:::= it.backend :::#
 ```
 
@@ -52,9 +52,9 @@ python -m torch.distributed.run \
 ### Multi GPU Training (`torch.distributed.run`) (recommended)
 
 ```sh
-python -m torch.distributed.run \
+torchrun \
   --nproc_per_node #:::= it.nproc_per_node :::# \
-    main.py \
+  main.py \
   --backend #:::= it.backend :::#
 ```
 
