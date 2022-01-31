@@ -30,7 +30,7 @@ torchrun \
   --node_rank 0 \
   --master_addr #:::= it.master_addr :::# \
   --master_port #:::= it.master_port :::# \
-  main.py
+  main.py \
   --backend #:::= it.backend :::#
 ```
 
@@ -43,7 +43,7 @@ torchrun \
   --node_rank <node_rank> \
   --master_addr #:::= it.master_addr :::# \
   --master_port #:::= it.master_port :::# \
-  main.py
+  main.py \
   --backend #:::= it.backend :::#
 ```
 
