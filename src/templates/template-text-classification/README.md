@@ -19,7 +19,7 @@ pip install -r requirements.txt --progress-bar off -U
 #::: if (it.nproc_per_node) { :::#
 #::: if (it.nnodes > 1 && it.master_addr && it.master_port) { :::#
 
-### Multi Node, Multi GPU Training (`torch.distributed.run`) (recommended)
+### Multi Node, Multi GPU Training (`torchrun`) (recommended)
 
 - Execute on master node
 
@@ -40,7 +40,7 @@ torchrun \
 torchrun \
   --nproc_per_node #:::= it.nproc_per_node :::# \
   --nnodes #:::= it.nnodes :::# \
-  --node_rank 0 \
+  --node_rank <node_rank> \
   --master_addr #:::= it.master_addr :::# \
   --master_port #:::= it.master_port :::# \
   main.py
@@ -49,7 +49,7 @@ torchrun \
 
 #::: } else { :::#
 
-### Multi GPU Training (`torch.distributed.run`) (recommended)
+### Multi GPU Training (`torchrun`) (recommended)
 
 ```sh
 torchrun \
