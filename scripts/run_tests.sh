@@ -49,8 +49,8 @@ run_launch() {
   for dir in $(find ./dist-tests/$1-launch -type d)
   do
     cd $dir
-    python -m torch.distributed.launch \
-      --nproc_per_node 2 --use_env \
+    torchrun \
+      --nproc_per_node 2 \
       main.py --backend gloo --data_path ~/data \
       --train_batch_size 2 \
       --eval_batch_size 2 \
