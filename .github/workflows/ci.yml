@@ -36,7 +36,7 @@ jobs:
           - template: vision-segmentation
             test: launch
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/setup-python@v3
         with:
           python-version: 3.6
@@ -87,7 +87,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/setup-python@v3
         with:
           python-version: 3.8
