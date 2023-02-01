@@ -18,9 +18,7 @@ def set_up():
     return model, optimizer, loss_fn, device
 
 
-@pytest.mark.skipif(
-    os.getenv("RUN_SLOW_TESTS", 0) == 0, reason="Skip slow tests"
-)
+@pytest.mark.skipif(os.getenv("RUN_SLOW_TESTS", 0) == 0, reason="Skip slow tests")
 def test_setup_data():
     config = Namespace(
         data_path="/tmp/data",

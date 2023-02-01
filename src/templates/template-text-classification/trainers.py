@@ -5,7 +5,7 @@ import torch
 from ignite.engine import DeterministicEngine, Engine, Events
 from ignite.metrics.metric import Metric
 from torch import nn
-from torch.cuda.amp import GradScaler, autocast
+from torch.cuda.amp import autocast, GradScaler
 from torch.optim.optimizer import Optimizer
 from torch.utils.data import DistributedSampler, Sampler
 
@@ -22,9 +22,7 @@ def setup_trainer(
     scaler = GradScaler(enabled=config.use_amp)
 
     def train_function(engine: Union[Engine, DeterministicEngine], batch: Any):
-        input_ids = batch["input_ids"].to(
-            device, non_blocking=True, dtype=torch.long
-        )
+        input_ids = batch["input_ids"].to(device, non_blocking=True, dtype=torch.long)
         attention_mask = batch["attention_mask"].to(
             device, non_blocking=True, dtype=torch.long
         )
@@ -32,9 +30,7 @@ def setup_trainer(
             device, non_blocking=True, dtype=torch.long
         )
         labels = (
-            batch["label"]
-            .view(-1, 1)
-            .to(device, non_blocking=True, dtype=torch.float)
+            batch["label"].view(-1, 1).to(device, non_blocking=True, dtype=torch.float)
         )
 
         model.train()
@@ -62,9 +58,7 @@ def setup_trainer(
     # set epoch for distributed sampler
     @trainer.on(Events.EPOCH_STARTED)
     def set_epoch():
-        if idist.get_world_size() > 1 and isinstance(
-            train_sampler, DistributedSampler
-        ):
+        if idist.get_world_size() > 1 and isinstance(train_sampler, DistributedSampler):
             train_sampler.set_epoch(trainer.state.epoch - 1)
 
     return trainer
@@ -80,9 +74,7 @@ def setup_evaluator(
     def evalutate_function(engine: Engine, batch: Any):
         model.eval()
 
-        input_ids = batch["input_ids"].to(
-            device, non_blocking=True, dtype=torch.long
-        )
+        input_ids = batch["input_ids"].to(device, non_blocking=True, dtype=torch.long)
         attention_mask = batch["attention_mask"].to(
             device, non_blocking=True, dtype=torch.long
         )
@@ -90,9 +82,7 @@ def setup_evaluator(
             device, non_blocking=True, dtype=torch.long
         )
         labels = (
-            batch["label"]
-            .view(-1, 1)
-            .to(device, non_blocking=True, dtype=torch.float)
+            batch["label"].view(-1, 1).to(device, non_blocking=True, dtype=torch.float)
         )
 
         with autocast(enabled=config.use_amp):

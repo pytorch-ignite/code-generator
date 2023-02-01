@@ -3,12 +3,10 @@
 set -xeu
 
 if [ $1 == "lint" ]; then
-    black . -l 80 --check
-    isort . --profile black --check
+    ufmt diff .
     flake8 --select F401 .  # find unused imports
 elif [ $1 == "fmt" ]; then
-    isort . --profile black
-    black . -l 80
+    ufmt format .
 elif [ $1 == "install" ]; then
-    pip install "black==21.12b0" "isort==5.7.0" flake8
+    pip install --upgrade "black==21.12b0" "usort==1.0.2" "ufmt==1.3.2" flake8
 fi

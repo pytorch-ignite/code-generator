@@ -84,14 +84,10 @@ def resume_from(
             checkpoint_fp = Path(checkpoint_fp)
 
         if not checkpoint_fp.exists():
-            raise FileNotFoundError(
-                f"Given {str(checkpoint_fp)} does not exist."
-            )
+            raise FileNotFoundError(f"Given {str(checkpoint_fp)} does not exist.")
         checkpoint = torch.load(checkpoint_fp, map_location="cpu")
 
-    Checkpoint.load_objects(
-        to_load=to_load, checkpoint=checkpoint, strict=strict
-    )
+    Checkpoint.load_objects(to_load=to_load, checkpoint=checkpoint, strict=strict)
     logger.info("Successfully resumed from a checkpoint: %s", checkpoint_fp)
 
 
@@ -162,9 +158,7 @@ def setup_handlers(
     #::: if (it.save_evaluation) { :::#
     global_step_transform = None
     if to_save_train.get("trainer", None) is not None:
-        global_step_transform = global_step_from_engine(
-            to_save_train["trainer"]
-        )
+        global_step_transform = global_step_from_engine(to_save_train["trainer"])
     ckpt_handler_eval = Checkpoint(
         to_save_eval,
         saver,
@@ -174,9 +168,7 @@ def setup_handlers(
         score_name="eval_accuracy",
         score_function=Checkpoint.get_default_score_fn("Accuracy"),
     )
-    evaluator.add_event_handler(
-        Events.EPOCH_COMPLETED(every=1), ckpt_handler_eval
-    )
+    evaluator.add_event_handler(Events.EPOCH_COMPLETED(every=1), ckpt_handler_eval)
     #::: } :::#
     #::: } :::#
 
@@ -196,9 +188,7 @@ def setup_handlers(
 
     #::: if (it.limit_sec) { :::#
     # time limit
-    trainer.add_event_handler(
-        Events.ITERATION_COMPLETED, TimeLimit(config.limit_sec)
-    )
+    trainer.add_event_handler(Events.ITERATION_COMPLETED, TimeLimit(config.limit_sec))
     #::: } :::#
     #::: if (it.save_training || it.save_evaluation) { :::#
     return ckpt_handler_train, ckpt_handler_eval

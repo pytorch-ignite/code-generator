@@ -7,9 +7,7 @@ from torch import Tensor
 from torch.utils.data.dataloader import DataLoader
 
 
-@pytest.mark.skipif(
-    os.getenv("RUN_SLOW_TESTS", 0) == 0, reason="Skip slow tests"
-)
+@pytest.mark.skipif(os.getenv("RUN_SLOW_TESTS", 0) == 0, reason="Skip slow tests")
 def test_setup_data():
     config = Namespace(
         data_path="~/data", train_batch_size=1, eval_batch_size=1, num_workers=0

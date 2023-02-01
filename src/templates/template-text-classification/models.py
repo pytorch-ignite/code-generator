@@ -5,9 +5,7 @@ from transformers import AutoModel
 class TransformerModel(nn.Module):
     def __init__(self, model_name, model_dir, dropout, n_fc, n_classes):
         super().__init__()
-        self.transformer = AutoModel.from_pretrained(
-            model_name, cache_dir=model_dir
-        )
+        self.transformer = AutoModel.from_pretrained(model_name, cache_dir=model_dir)
         self.drop = nn.Dropout(dropout)
         self.classifier = nn.Linear(n_fc, n_classes)
 
