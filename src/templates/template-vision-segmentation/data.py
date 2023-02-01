@@ -104,9 +104,7 @@ def setup_data(config: Namespace):
             A.RandomScale(
                 scale_limit=(0.0, 1.5), interpolation=cv2.INTER_LINEAR, p=1.0
             ),
-            A.PadIfNeeded(
-                val_img_size, val_img_size, border_mode=cv2.BORDER_CONSTANT
-            ),
+            A.PadIfNeeded(val_img_size, val_img_size, border_mode=cv2.BORDER_CONSTANT),
             A.RandomCrop(train_img_size, train_img_size),
             A.HorizontalFlip(),
             A.Blur(blur_limit=3),
@@ -118,18 +116,14 @@ def setup_data(config: Namespace):
 
     transform_eval = A.Compose(
         [
-            A.PadIfNeeded(
-                val_img_size, val_img_size, border_mode=cv2.BORDER_CONSTANT
-            ),
+            A.PadIfNeeded(val_img_size, val_img_size, border_mode=cv2.BORDER_CONSTANT),
             A.Normalize(mean=mean, std=std),
             ignore_mask_boundaries,
             ToTensor(),
         ]
     )
 
-    dataset_train = TransformedDataset(
-        dataset_train, transform_fn=transform_train
-    )
+    dataset_train = TransformedDataset(dataset_train, transform_fn=transform_train)
     dataset_eval = TransformedDataset(dataset_eval, transform_fn=transform_eval)
 
     dataloader_train = idist.auto_dataloader(
@@ -150,7 +144,7 @@ def setup_data(config: Namespace):
     return dataloader_train, dataloader_eval
 
 
-def ignore_mask_boundaries(force_apply, **kwargs):
+def ignore_mask_boundaries(**kwargs):
     assert "mask" in kwargs, "Input should contain 'mask'"
     mask = kwargs["mask"]
     mask[mask == 255] = 0

@@ -11,7 +11,7 @@ from ignite.metrics import ConfusionMatrix, IoU, mIoU
 from ignite.utils import manual_seed
 from models import setup_model
 from torch import nn, optim
-from torch.optim.lr_scheduler import LambdaLR, _LRScheduler
+from torch.optim.lr_scheduler import _LRScheduler, LambdaLR
 from trainers import setup_evaluator, setup_trainer
 from utils import *
 from vis import predictions_gt_images_handler
@@ -135,9 +135,7 @@ def run(local_rank: int, config: Any):
                 another_engine=trainer,
                 prefix_tag="validation",
             ),
-            event_name=Events.ITERATION_COMPLETED(
-                event_filter=custom_event_filter
-            ),
+            event_name=Events.ITERATION_COMPLETED(event_filter=custom_event_filter),
         )
 
     #::: } :::#

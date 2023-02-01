@@ -5,7 +5,7 @@ import torch
 from data import prepare_image_mask
 from ignite.engine import DeterministicEngine, Engine, Events
 from ignite.metrics import Metric
-from torch.cuda.amp import GradScaler, autocast
+from torch.cuda.amp import autocast, GradScaler
 from torch.nn import Module
 from torch.optim import Optimizer
 from torch.utils.data import DistributedSampler, Sampler
@@ -53,9 +53,7 @@ def setup_trainer(
     # set epoch for distributed sampler
     @trainer.on(Events.EPOCH_STARTED)
     def set_epoch():
-        if idist.get_world_size() > 1 and isinstance(
-            train_sampler, DistributedSampler
-        ):
+        if idist.get_world_size() > 1 and isinstance(train_sampler, DistributedSampler):
             train_sampler.set_epoch(trainer.state.epoch - 1)
 
     return trainer

@@ -98,9 +98,7 @@ def setup_trainer(
     # set epoch for distributed sampler
     @trainer.on(Events.EPOCH_STARTED)
     def set_epoch():
-        if idist.get_world_size() > 1 and isinstance(
-            train_sampler, DistributedSampler
-        ):
+        if idist.get_world_size() > 1 and isinstance(train_sampler, DistributedSampler):
             train_sampler.set_epoch(trainer.state.epoch - 1)
 
     return trainer
@@ -118,9 +116,7 @@ def setup_evaluator(
 
     real_labels = torch.ones(config.eval_batch_size // ws, device=device)
     fake_labels = torch.zeros(config.eval_batch_size // ws, device=device)
-    noise = torch.randn(
-        config.eval_batch_size // ws, config.z_dim, 1, 1, device=device
-    )
+    noise = torch.randn(config.eval_batch_size // ws, config.z_dim, 1, 1, device=device)
 
     @torch.no_grad()
     def eval_function(engine: Engine, batch: Any):

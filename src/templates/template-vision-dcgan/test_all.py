@@ -7,7 +7,7 @@ import pytest
 import torch
 from data import setup_data
 from models import Discriminator, Generator
-from torch import Tensor, nn, optim
+from torch import nn, optim, Tensor
 from torch.utils.data.dataloader import DataLoader
 from trainers import setup_trainer
 
@@ -22,9 +22,7 @@ def set_up():
     return model, optimizer, device, loss_fn, batch
 
 
-@pytest.mark.skipif(
-    os.getenv("RUN_SLOW_TESTS", 0) == 0, reason="Skip slow tests"
-)
+@pytest.mark.skipif(os.getenv("RUN_SLOW_TESTS", 0) == 0, reason="Skip slow tests")
 def test_setup_data():
     config = Namespace(
         data_path="~/data", train_batch_size=1, eval_batch_size=1, num_workers=0

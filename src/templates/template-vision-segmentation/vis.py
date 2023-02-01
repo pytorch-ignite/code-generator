@@ -63,9 +63,7 @@ def make_grid(batch_img, batch_mask, img_denormalize_fn, batch_gt_mask=None):
         img_denormalize_fn (Callable): function to denormalize batch of images
         batch_gt_mask (torch.Tensor, optional): batch of ground truth masks.
     """
-    assert isinstance(batch_img, torch.Tensor) and isinstance(
-        batch_mask, torch.Tensor
-    )
+    assert isinstance(batch_img, torch.Tensor) and isinstance(batch_mask, torch.Tensor)
     assert len(batch_img) == len(batch_mask)
 
     if batch_gt_mask is not None:
