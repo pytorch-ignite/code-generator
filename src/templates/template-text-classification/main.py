@@ -15,9 +15,7 @@ from torch.optim.lr_scheduler import _LRScheduler
 from trainers import setup_evaluator, setup_trainer
 from utils import *
 
-os.environ[
-    "TOKENIZERS_PARALLELISM"
-] = "false"  # remove tokenizer paralleism warning
+os.environ["TOKENIZERS_PARALLELISM"] = "false"  # remove tokenizer paralleism warning
 
 
 def run(local_rank: int, config: Any):
@@ -48,9 +46,7 @@ def run(local_rank: int, config: Any):
 
     config.lr *= idist.get_world_size()
     optimizer = idist.auto_optim(
-        optim.AdamW(
-            model.parameters(), lr=config.lr, weight_decay=config.weight_decay
-        )
+        optim.AdamW(model.parameters(), lr=config.lr, weight_decay=config.weight_decay)
     )
     loss_fn = nn.BCEWithLogitsLoss().to(device=device)
 

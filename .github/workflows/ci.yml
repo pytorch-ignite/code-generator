@@ -37,13 +37,13 @@ jobs:
             test: launch
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-python@v3
+      - uses: actions/setup-python@v4
         with:
-          python-version: 3.6
+          python-version: 3.9
 
       - uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: 18
 
       - uses: actions/cache@v3
         with:
@@ -88,13 +88,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-python@v3
+      - uses: actions/setup-python@v4
         with:
-          python-version: 3.8
+          python-version: 3.9
 
       - uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: 16
 
       - uses: actions/cache@v3
         with:

@@ -41,9 +41,7 @@ def run(local_rank: int, config: Any):
     )
 
     # networks
-    model_g = idist.auto_model(
-        Generator(config.z_dim, config.g_filters, num_channels)
-    )
+    model_g = idist.auto_model(Generator(config.z_dim, config.g_filters, num_channels))
     model_d = idist.auto_model(Discriminator(num_channels, config.d_filters))
 
     # loss
