@@ -1,7 +1,7 @@
 <template>
   <a
     class="external-links"
-    href="https://discord.gg/djZtm3EmKj"
+    href="https://pytorch-ignite.ai/chat"
     target="_blank"
     rel="noopener noreferrer"
   >
