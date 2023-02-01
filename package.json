@@ -32,7 +32,7 @@
     "prismjs": "^1.26.0",
     "prompts": "^2.4.2",
     "semver": "^7.3.5",
-    "start-server-and-test": "^1.14.0",
+    "start-server-and-test": "^1.15.3",
     "uuid": "^8.3.2",
     "vite": "^2.7.13",
     "vue": "^3.2.30",

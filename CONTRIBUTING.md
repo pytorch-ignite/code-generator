@@ -109,7 +109,7 @@ To add a new template,
   pnpm run lint
   ```
 
-- To ensure the codebase complies with a style guide, we use black and isort tools to format and check codebase for compliance with PEP8. Install and run with:
+- To ensure the codebase complies with a style guide, we use black and ufmt to format and check codebase for compliance with PEP8. Install and run with:
 
   ```sh
   # install code formatting dependencies

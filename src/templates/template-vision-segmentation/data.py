@@ -144,7 +144,7 @@ def setup_data(config: Namespace):
     return dataloader_train, dataloader_eval
 
 
-def ignore_mask_boundaries(force_apply, **kwargs):
+def ignore_mask_boundaries(**kwargs):
     assert "mask" in kwargs, "Input should contain 'mask'"
     mask = kwargs["mask"]
     mask[mask == 255] = 0
