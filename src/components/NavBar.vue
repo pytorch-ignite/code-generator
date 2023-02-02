@@ -24,6 +24,7 @@
       >
         v{{ version }}@{{ currentCommit.slice(0, 7) }}
       </a>
+      <NavIgniteWebsite />
     </div>
   </nav>
 </template>
@@ -34,6 +35,7 @@ import NavDiscord from './NavDiscord.vue'
 import NavDownload from './NavDownload.vue'
 import NavColab from './NavColab.vue'
 import NavGitHub from './NavGitHub.vue'
+import NavIgniteWebsite from './NavIgniteWebsite.vue'
 import NavTwitter from './NavTwitter.vue'
 import NavHelp from './NavHelp.vue'
 
@@ -43,6 +45,7 @@ export default {
     NavDownload,
     NavColab,
     NavGitHub,
+    NavIgniteWebsite,
     NavTwitter,
     NavHelp
   },

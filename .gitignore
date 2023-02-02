@@ -8,3 +8,4 @@ __pycache__
 .vscode
 *.tar.gz
 dist-tests
+package-lock.json
