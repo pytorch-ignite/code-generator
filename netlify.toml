@@ -5,8 +5,13 @@
 [build]
   publish = "./dist"
   command = "npx pnpm i --frozen-lockfile --store=node_modules/.pnpm-store && npx pnpm run build"
+
+[dev]
+  publish = "dist/"
   functions = "functions"
+  targetPort = 3000
 
 [functions]
+  directory = "functions"
   node_bundler = "esbuild"
   external_node_modules = ["uuid", "jszip", "@octokit/core"]

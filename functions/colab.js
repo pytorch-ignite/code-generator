@@ -3,8 +3,8 @@
 // They are required for this function to run
 
 import { v4 as uuidv4 } from 'uuid'
-import { Octokit } from '@octokit/core'
-import JSZip from 'jszip'
+// import { Octokit } from '@octokit/core'
+// import JSZip from 'jszip'
 
 const nbUid = uuidv4()
 const repoOwner = process.env.VUE_APP_GH_USER
@@ -17,6 +17,8 @@ const repo = process.env.VUE_APP_GH_REPO
  * @returns download_url
  */
 async function pushToGitHub(content, filename) {
+  const { Octokit } = require("@octokit/core");
+
   const octokit = new Octokit({
     auth: process.env.VUE_APP_GH_TOKEN
   })
@@ -40,7 +42,9 @@ async function pushToGitHub(content, filename) {
 
 // This function is the one Netlify function runs on
 // https://docs.netlify.com/functions/build-with-javascript/#synchronous-function-format
-export async function handler(event, _) {
+exports.handler = async function (event, _) {
+  const JSZip = require('jszip')
+
   // event is a JSON object
   const data = JSON.parse(event.body)
   const zip = new JSZip()
