@@ -12,7 +12,7 @@
     "lint": "prettier --check . && bash scripts/run_code_style.sh lint",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
-  "devDependencies": {
+  "dependencies": {
     "@iconify/iconify": "^2.1.2",
     "@octokit/core": "^4.2.0",
     "@types/ejs": "^3.1.0",

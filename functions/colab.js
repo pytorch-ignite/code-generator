@@ -3,8 +3,8 @@
 // They are required for this function to run
 
 import { v4 as uuidv4 } from 'uuid'
-import { Octokit } from '@octokit/core'
 import JSZip from 'jszip'
+const { Octokit } = require('@octokit/core')
 
 const nbUid = uuidv4()
 const repoOwner = process.env.VUE_APP_GH_USER
