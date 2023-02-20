@@ -13,7 +13,7 @@
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "dependencies": {
-    "@iconify/iconify": "^2.1.2",
+    "@iconify/iconify": "^3.1.0",
     "@octokit/core": "^4.2.0",
     "@types/ejs": "^3.1.0",
     "@types/file-saver": "^2.0.5",
