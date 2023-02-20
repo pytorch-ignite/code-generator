@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "@iconify/iconify": "^2.1.2",
-    "@octokit/core": "^3.5.1",
+    "@octokit/core": "^4.2.0",
     "@types/ejs": "^3.1.0",
     "@types/file-saver": "^2.0.5",
     "@types/jest": "^27.4.0",
