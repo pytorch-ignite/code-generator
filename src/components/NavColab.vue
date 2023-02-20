@@ -85,7 +85,7 @@ export default {
           // We make a POST request to the function with
           // the content of store.code in JSON as request body
           colabText.value = 'Opening in Colab'
-          const res = await fetch('../.netlify/functions/colab', {
+          const res = await fetch('/.netlify/functions/colab', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'

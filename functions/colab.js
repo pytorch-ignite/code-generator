@@ -40,7 +40,7 @@ async function pushToGitHub(content, filename) {
 
 // This function is the one Netlify function runs on
 // https://docs.netlify.com/functions/build-with-javascript/#synchronous-function-format
-export async function handler(event, _) {
+exports.handler = async function (event, _) {
   // event is a JSON object
   const data = JSON.parse(event.body)
   const zip = new JSZip()

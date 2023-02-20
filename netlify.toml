@@ -1,12 +1,15 @@
+[build]
+  publish = "./dist"
+  command = "npx pnpm i --frozen-lockfile --store=node_modules/.pnpm-store && npx pnpm run build"
+
 [build.environment]
   NODE_VERSION = "18"
   PYTHON_VERSION = "3.8"
 
-[build]
-  publish = "./dist"
-  command = "npx pnpm i --frozen-lockfile --store=node_modules/.pnpm-store && npx pnpm run build"
-  functions = "functions"
+[dev]
+  publish = "dist/"
+  targetPort = 3000
 
 [functions]
+  directory = "functions"
   node_bundler = "esbuild"
-  external_node_modules = ["uuid", "jszip", "@octokit/core"]
