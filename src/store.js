@@ -80,7 +80,9 @@ export function genCode() {
         .replace(/\s{4}#$/gim, '')
     }
     if (isDev) {
-      store.code[__DEV_CONFIG_FILE__] = JSON.stringify(store.config, null, 2)
+      store.code[__DEV_CONFIG_FILE__] =
+        '# THIS FILE APPEARS ONLY IN DEV MODE\n' +
+        JSON.stringify(store.config, null, 2)
     }
   }
 }
