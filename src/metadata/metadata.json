@@ -5,10 +5,10 @@
       "type": "checkbox",
       "description": "Should the training be deterministic?"
     },
-    "launch": {
-      "name": "launch",
+    "torchrun": {
+      "name": "torchrun",
       "type": "radio",
-      "description": "Run the training with torch.distributed.launch (recommended)"
+      "description": "Run the training with torchrun (recommended)"
     },
     "spawn": {
       "name": "spawn",

@@ -102,7 +102,7 @@ test('text classification launch', async () => {
   await page.check('#use_dist-checkbox')
   expect(await page.isChecked('#use_dist-checkbox')).toBeTruthy()
 
-  expect(await page.isChecked('#dist-launch-radio')).toBeTruthy()
+  expect(await page.isChecked('#dist-torchrun-radio')).toBeTruthy()
 
   await page.click('text=Loggers')
   await page.click('text=config.yaml')

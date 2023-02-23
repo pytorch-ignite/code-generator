@@ -16,7 +16,11 @@
         :options="backend.options"
         :defaultV="backend.default"
       />
-      <FormRadio :options="[launch, spawn]" saveKey="dist" defaultV="launch" />
+      <FormRadio
+        :options="[torchrun, spawn]"
+        saveKey="dist"
+        defaultV="torchrun"
+      />
       <FormInput
         :label="nproc_per_node.description"
         :type="nproc_per_node.type"
@@ -62,7 +66,7 @@ export default {
     const {
       deterministic,
       backend,
-      launch,
+      torchrun,
       spawn,
       nproc_per_node,
       nnodes,
@@ -79,7 +83,7 @@ export default {
       store,
       deterministic,
       backend,
-      launch,
+      torchrun,
       spawn,
       nproc_per_node,
       nnodes,

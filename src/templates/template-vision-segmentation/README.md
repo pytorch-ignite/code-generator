@@ -12,10 +12,52 @@ Install the dependencies with `pip`:
 pip install -r requirements.txt --progress-bar off -U
 ```
 
+### Code structure
+
+#::: if (it.include_test) { :::#
+
+```
+|
+|- README.md
+|
+|- main.py : main script to run
+|- data.py : helper module with functions to setup input datasets and create dataloaders
+|- models.py : helper module with functions to create a model or multiple models
+|- trainers.py : helper module with functions to create trainer and evaluator
+|- utils.py : module with various helper functions
+|- vis.py : helper module for data visualizations
+|
+|- requirements.txt : dependencies to install with pip
+|
+|- config.yaml : global configuration YAML file
+|
+|- test_all.py : test file with few basic sanity checks
+```
+
+#::: } else { :::#
+
+```
+|
+|- README.md
+|
+|- main.py : main script to run
+|- data.py : helper module with functions to setup input datasets and create dataloaders
+|- models.py : helper module with functions to create a model or multiple models
+|- trainers.py : helper module with functions to create trainer and evaluator
+|- utils.py : module with various helper functions
+|- vis.py : helper module for data visualizations
+|
+|- requirements.txt : dependencies to install with pip
+|
+|- config.yaml : global configuration YAML file
+```
+
+#::: } :::#
+
 ## Training
 
 #::: if (it.use_dist) { :::#
-#::: if (it.dist === 'launch') { :::#
+#::: if (it.dist === 'torchrun') { :::#
 #::: if (it.nproc_per_node) { :::#
 #::: if (it.nnodes > 1 && it.master_addr && it.master_port) { :::#
 
