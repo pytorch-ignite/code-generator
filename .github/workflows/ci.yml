@@ -82,7 +82,6 @@ jobs:
 
       - name: 'Run ${{ matrix.template }} ${{ matrix.test }}'
         run: sh ./scripts/run_tests.sh ${{ matrix.test }} ${{ matrix.template }}
-        if: github.event_name != 'schedule'
 
   lint:
     runs-on: ubuntu-latest
