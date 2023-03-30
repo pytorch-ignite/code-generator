@@ -78,11 +78,11 @@ To add a new template,
 
 5. Once everything looks good, put the template name with respective filenames (in array format) in the `templates.json` in `src/templates` directory. This is required to tell Code-Generator to fetch the files from this template.
 
-6. In the `README.md`, copy the training launch code from `src/template-common/README.md`.
+6. In the `README.md`, copy the training launch code from `src/templates/template-common/README.md`.
 
-7. For the `requirements.txt`, copy from the `src/template-common/requirements.txt`.
+7. For the `requirements.txt`, copy from the `src/templates/template-common/requirements.txt`.
 
-8. For the `utils.py`, copy the starter code from the `src/template-common/utils.py`.
+8. For the `utils.py`, copy the starter code from the `src/templates/template-common/utils.py`.
 
 9. You can check if the copied codes needed are up-to-date with the base codes with: `python scripts/check_copies.py`
 
