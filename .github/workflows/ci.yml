@@ -68,7 +68,7 @@ jobs:
           pip install wheel setuptools pip -Uqq
           pip install -r ./scripts/requirements.txt -f https://download.pytorch.org/whl/cpu/torch_stable.html -q
           pip uninstall -y tqdm
-          npm i -g pnpm
+          npm i -g pnpm@7
           pnpm i --frozen-lockfile --color
 
       - name: Download datasets
@@ -104,7 +104,7 @@ jobs:
             pnpm-and-pip-cache-
 
       - run: pip install -Uq pip wheel && bash scripts/run_code_style.sh install
-      - run: npm i -g pnpm
+      - run: npm i -g pnpm@7
       - run: pnpm i --frozen-lockfile --color
       - run: pnpm lint
       - run: python scripts/check_copies.py
