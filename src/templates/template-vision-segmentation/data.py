@@ -85,9 +85,9 @@ def setup_data(config: Namespace):
             download=False,
         )
     except RuntimeError as e:
-        raise e(
+        raise RuntimeError(
             "Dataset not found. You can use `download_datasets` from data.py function to download it."
-        )
+        ) from e
 
     dataset_eval = VOCSegmentationPIL(
         root=config.data_path, year="2012", image_set="val", download=False
