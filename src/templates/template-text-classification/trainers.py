@@ -18,7 +18,6 @@ def setup_trainer(
     device: Union[str, torch.device],
     train_sampler: Sampler,
 ) -> Union[Engine, DeterministicEngine]:
-
     scaler = GradScaler(enabled=config.use_amp)
 
     def train_function(engine: Union[Engine, DeterministicEngine], batch: Any):

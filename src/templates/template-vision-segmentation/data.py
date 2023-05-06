@@ -28,7 +28,6 @@ class TransformedDataset(Dataset):
 
 
 class VOCSegmentationPIL(VOCSegmentation):
-
     target_names = [
         "background",
         "aeroplane",
