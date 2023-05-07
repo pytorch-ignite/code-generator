@@ -17,16 +17,26 @@ Assumptions:
 
 ```bash
 # Assuming the current folder to be code-generator source root folder
-docker run --name=codegen-dev -it -v $PWD:/code -w /code -v /data:/host/path/to/data --network=host --ipc=host pytorchignite/codegenerator:dev /bin/bash
+docker run --name=codegen-dev -it -v $PWD:/code -w /code -v /host/path/to/data:/data --network=host --ipc=host pytorchignite/codegenerator:dev /bin/bash
 ```
 
-Inside the container we can install all other project related dependencies:
+Inside the container we can install all other project dependencies:
 ```bash
 git config --global --add safe.directory /code
 
 pnpm i --frozen-lockfile --color
 pnpm build
-npx playwright install
-npx playwright install-deps
+```
+
+- Local app deployment
+```
+pnpm dev
+```
+
+- Run ci tests locally
+```
 pnpm test:ci
+
+sh ./scripts/run_tests.sh unzip
+sh ./scripts/run_tests.sh simple vision-classification
 ```
