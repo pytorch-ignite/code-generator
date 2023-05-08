@@ -20,7 +20,6 @@ def setup_trainer(
     device: Union[str, torch.device],
     train_sampler: Sampler,
 ):
-
     prepare_batch = prepare_image_mask
     scaler = GradScaler(enabled=config.use_amp)
 

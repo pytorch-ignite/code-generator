@@ -19,7 +19,6 @@ def setup_trainer(
     device: Union[str, torch.device],
     train_sampler: Sampler,
 ) -> Union[Engine, DeterministicEngine]:
-
     ws = idist.get_world_size()
 
     real_labels = torch.ones(config.train_batch_size // ws, device=device)
@@ -111,7 +110,6 @@ def setup_evaluator(
     loss_fn: Module,
     device: Union[str, torch.device],
 ) -> Engine:
-
     ws = idist.get_world_size()
 
     real_labels = torch.ones(config.eval_batch_size // ws, device=device)
