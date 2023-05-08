@@ -10,7 +10,6 @@ class TransformerModel(nn.Module):
         self.classifier = nn.Linear(n_fc, n_classes)
 
     def forward(self, ids, mask, token_type_ids):
-
         hidden_output, pooled_output = self.transformer(
             ids,
             attention_mask=mask,

@@ -19,7 +19,6 @@ os.environ["TOKENIZERS_PARALLELISM"] = "false"  # remove tokenizer paralleism wa
 
 
 def run(local_rank: int, config: Any):
-
     # make a certain seed
     rank = idist.get_rank()
     manual_seed(config.seed + rank)
