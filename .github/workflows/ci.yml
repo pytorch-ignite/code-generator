@@ -70,6 +70,8 @@ jobs:
           pip uninstall -y tqdm
           npm install -g pnpm
           pnpm i --frozen-lockfile --color
+          # Show all installed dependencies
+          pip list
 
       - name: Download datasets
         run: |
