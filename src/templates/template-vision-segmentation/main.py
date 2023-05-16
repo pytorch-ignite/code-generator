@@ -21,6 +21,7 @@ try:
 except ImportError:
     from torch.optim.lr_scheduler import _LRScheduler as PyTorchLRScheduler
 
+
 def run(local_rank: int, config: Any):
     # make a certain seed
     rank = idist.get_rank()
