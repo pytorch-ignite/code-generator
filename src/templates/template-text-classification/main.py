@@ -11,9 +11,13 @@ from ignite.metrics import Accuracy, Loss
 from ignite.utils import manual_seed
 from models import TransformerModel
 from torch import nn, optim
-from torch.optim.lr_scheduler import _LRScheduler
 from trainers import setup_evaluator, setup_trainer
 from utils import *
+
+try:
+    from torch.optim.lr_scheduler import _LRScheduler as PyTorchLRScheduler
+except ImportError:
+    from torch.optim.lr_scheduler import LRScheduler as PyTorchLRScheduler
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"  # remove tokenizer paralleism warning
 
@@ -78,10 +82,10 @@ def run(local_rank: int, config: Any):
     (config.output_dir / "config-lock.yaml").write_text(yaml.dump(config))
     trainer.logger = evaluator.logger = logger
 
-    if isinstance(lr_scheduler, _LRScheduler):
+    if isinstance(lr_scheduler, PyTorchLRScheduler):
         trainer.add_event_handler(
             Events.ITERATION_COMPLETED,
-            lambda engine: cast(_LRScheduler, lr_scheduler).step(),
+            lambda engine: cast(PyTorchLRScheduler, lr_scheduler).step(),
         )
     elif isinstance(lr_scheduler, LRScheduler):
         trainer.add_event_handler(Events.ITERATION_COMPLETED, lr_scheduler)
