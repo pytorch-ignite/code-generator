@@ -34,6 +34,16 @@ def run(local_rank: int, config: Any):
     dataloader_train, dataloader_eval = setup_data(config)
     le = len(dataloader_train)
 
+    try:
+        config.eval_epoch_length
+    except AttributeError:
+        config.eval_epoch_length = None
+
+    try:
+        config.train_epoch_length
+    except AttributeError:
+        config.train_epoch_length = None
+
     # model, optimizer, loss function, device
     device = idist.device()
     model = idist.auto_model(setup_model(config))
@@ -197,7 +207,7 @@ def run(local_rank: int, config: Any):
 
 # main entrypoint
 def main():
-    config = setup_parser().parse_args()
+    config = setup_config()
     #::: if (it.dist === 'spawn') { :::#
     #::: if (it.nproc_per_node && it.nnodes > 1 && it.master_addr && it.master_port) { :::#
     kwargs = {
