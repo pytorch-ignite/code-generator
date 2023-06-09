@@ -54,7 +54,7 @@ dependencies:
     version: 2.4.2
   semver:
     specifier: ^7.3.5
-    version: 7.3.5
+    version: 7.5.1
   start-server-and-test:
     specifier: ^2.0.0
     version: 2.0.0
@@ -2417,7 +2417,7 @@ packages:
       jest-util: 27.5.0
       natural-compare: 1.4.0
       pretty-format: 27.5.0
-      semver: 7.3.5
+      semver: 7.5.1
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -3035,8 +3035,8 @@ packages:
     hasBin: true
     dev: false
 
-  /semver@7.3.5:
-    resolution: {integrity: sha512-PoeGJYh8HK4BTO/a9Tf6ZG3veo/A7ZVsYrSA6J8ny9nb3B1VrpkuN+z9OE5wfE5p6H4LchYZsegiQgbJD94ZFQ==}
+  /semver@7.5.1:
+    resolution: {integrity: sha512-Wvss5ivl8TMRZXXESstBA4uR5iXgEN/VC5/sOcuXdVLzcdkz4HWetIoRfG5gb5X+ij/G9rw9YoGn3QoQ8OCSpw==}
     engines: {node: '>=10'}
     hasBin: true
     dependencies:
