@@ -18,13 +18,7 @@ run_simple() {
   for dir in $(find ./dist-tests/$1-simple -type d)
   do
     cd $dir
-    python main.py --data_path ~/data \
-      --train_batch_size 2 \
-      --eval_batch_size 2 \
-      --num_workers 2 \
-      --max_epochs 2 \
-      --train_epoch_length 4 \
-      --eval_epoch_length 4
+    python main.py ../../src/tests/ci-configs/$1-simple.yaml
     cd $CWD
   done
 }
