@@ -69,6 +69,9 @@ export function genCode() {
         delete store.code['test_all.py']
         continue
       }
+      if(file in files['template-common-replace']){
+        currentFiles[file] = currentFiles[file].replace(/#::= replace_here ::#/g, files['template-common-replace'][file])
+      }
       store.code[file] = ejs
         .render(
           // replace `\s(s) or \n(s)#:::\s`
@@ -96,9 +99,14 @@ export async function fetchTemplates(template) {
   // fetch the template if there is no fetch of template before
   if (files[template] === undefined) {
     files[template] = {}
+    files['template-common-replace'] = {}
     for (const filename of templates[template]) {
       const response = await fetch(`${url}/${template}/${filename}`)
       files[template][filename] = await response.text()
+    }
+    for (const filename of templates['template-common-replace']) {
+      const res2 = await fetch(`${url}/template-common-replace/${filename}`)
+      files['template-common-replace'][filename] = await res2.text()
     }
 
     // calling genCode explicitly here
