@@ -1,5 +1,4 @@
 seed: 666
-backend: gloo
 data_path: ~/data
 train_batch_size: 2
 eval_batch_size: 2
@@ -13,7 +12,6 @@ model: bert-base-uncased
 model_dir: /tmp/model
 tokenizer_dir: /tmp/tokenizer
 num_classes: 1
-nproc_per_node: 2
 drop_out: .3
 n_fc: 768
 weight_decay: 0.01

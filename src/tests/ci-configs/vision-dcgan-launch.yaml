@@ -1,6 +1,5 @@
 seed: 666
 data_path: ~/data
-backend: gloo
 train_batch_size: 2
 eval_batch_size: 2
 num_workers: 1
@@ -13,6 +12,5 @@ debug: false
 z_dim: 100
 d_filters: 64
 g_filters: 64
-nproc_per_node: 2
 output_dir: ./logs
 log_every_iters: 2
