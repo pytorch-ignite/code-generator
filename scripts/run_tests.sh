@@ -37,7 +37,7 @@ run_launch() {
   for dir in $(find ./dist-tests/$1-launch -type d)
   do
     cd $dir
-    torchrun main.py ../../src/tests/ci-configs/$1-launch.yaml
+    torchrun --nproc_per_node 2 main.py ../../src/tests/ci-configs/$1-launch.yaml --backend gloo
     cd $CWD
   done
 }
@@ -46,7 +46,7 @@ run_spawn() {
   for dir in $(find ./dist-tests/$1-spawn -type d)
   do
     cd $dir
-    python main.py ../../src/tests/ci-configs/$1-spawn.yaml
+    python main.py ../../src/tests/ci-configs/$1-spawn.yaml --backend gloo
     cd $CWD
   done
 }
