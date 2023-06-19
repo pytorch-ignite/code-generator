@@ -1,6 +1,6 @@
 seed: 666
 data_path: ~/data
-ackend: gloo
+backend: gloo
 train_batch_size: 4
 eval_batch_size: 4
 num_workers: 1
