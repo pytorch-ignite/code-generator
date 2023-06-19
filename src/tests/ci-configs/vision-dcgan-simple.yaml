@@ -6,10 +6,11 @@ num_workers: 2
 max_epochs: 2
 train_epoch_length: 4
 eval_epoch_length: 4
-lr: 0.007
+lr: 0.0001
 use_amp: false
 debug: false
-accumulation_steps: 4
-num_classes: 21
+z_dim: 100
+d_filters: 64
+g_filters: 64
 output_dir: ./logs
 log_every_iters: 2

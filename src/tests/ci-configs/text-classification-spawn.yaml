@@ -1,0 +1,27 @@
+seed: 666
+data_path: ~/data
+ackend: gloo
+train_batch_size: 4
+eval_batch_size: 4
+num_workers: 1
+max_epochs: 2
+train_epoch_length: 4
+eval_epoch_length: 4
+use_amp: false
+debug: false
+model: bert-base-uncased
+model_dir: /tmp/model
+tokenizer_dir: /tmp/tokenizer
+num_classes: 1
+drop_out: .3
+n_fc: 768
+weight_decay: 0.01
+num_warmup_epochs: 0
+max_length: 256
+lr: 0.00005
+# distributed spawn
+nproc_per_node: 2
+# distributed multi node spawn
+nnodes: 1
+output_dir: ./logs
+log_every_iters: 2
