@@ -107,15 +107,11 @@ export async function fetchTemplates(template) {
       const text_specific = await response.text()
       // Dynamically fetch the common templates-code, if the file exists in common,
       // then render the replace_here code tag using ejs template 
+      // If the file doesn't exist in common, then it will fetch an empty string
+      // then the code tag is replaced with empty string
       const res_common = await fetch(`${url}/template-common/${filename}`)
-      if(res_common.ok){
-        const text_common = await res_common.text()
-        files[template][filename] = mergeCode(text_specific, text_common)
-      }
-      // else move on with the code from the specific file
-      else{
-        files[template][filename] = text_specific
-      }
+      const text_common = await res_common.text()
+      files[template][filename] = mergeCode(text_specific, text_common)
     }
 
     // calling genCode explicitly here
