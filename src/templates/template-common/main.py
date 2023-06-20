@@ -23,7 +23,7 @@ logger.info(
 
 # main entrypoint
 def main():
-    config = setup_parser().parse_args()
+    config = setup_config()
     #::: if (it.dist === 'spawn') { :::#
     #::: if (it.nproc_per_node && it.nnodes > 1 && it.master_addr && it.master_port) { :::#
     kwargs = {

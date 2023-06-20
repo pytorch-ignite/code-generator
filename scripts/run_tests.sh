@@ -18,13 +18,7 @@ run_simple() {
   for dir in $(find ./dist-tests/$1-simple -type d)
   do
     cd $dir
-    python main.py --data_path ~/data \
-      --train_batch_size 2 \
-      --eval_batch_size 2 \
-      --num_workers 2 \
-      --max_epochs 2 \
-      --train_epoch_length 4 \
-      --eval_epoch_length 4
+    python main.py ../../src/tests/ci-configs/$1-simple.yaml
     cd $CWD
   done
 }
@@ -34,13 +28,7 @@ run_all() {
   do
     cd $dir
     pytest -vra --color=yes --tb=short test_*.py
-    python main.py --data_path ~/data \
-      --train_batch_size 2 \
-      --eval_batch_size 2 \
-      --num_workers 2 \
-      --max_epochs 2 \
-      --train_epoch_length 4 \
-      --eval_epoch_length 4
+    python main.py ../../src/tests/ci-configs/$1-all.yaml
     cd $CWD
   done
 }
@@ -49,15 +37,7 @@ run_launch() {
   for dir in $(find ./dist-tests/$1-launch -type d)
   do
     cd $dir
-    torchrun \
-      --nproc_per_node 2 \
-      main.py --backend gloo --data_path ~/data \
-      --train_batch_size 2 \
-      --eval_batch_size 2 \
-      --num_workers 1 \
-      --max_epochs 2 \
-      --train_epoch_length 4 \
-      --eval_epoch_length 4
+    torchrun --nproc_per_node 2 main.py ../../src/tests/ci-configs/$1-launch.yaml --backend gloo
     cd $CWD
   done
 }
@@ -66,14 +46,7 @@ run_spawn() {
   for dir in $(find ./dist-tests/$1-spawn -type d)
   do
     cd $dir
-    python main.py --data_path ~/data \
-      --nproc_per_node 2 --backend gloo \
-      --train_batch_size 4 \
-      --eval_batch_size 4 \
-      --num_workers 1 \
-      --max_epochs 2 \
-      --train_epoch_length 4 \
-      --eval_epoch_length 4
+    python main.py ../../src/tests/ci-configs/$1-spawn.yaml --backend gloo
     cd $CWD
   done
 }
