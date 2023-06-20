@@ -59,6 +59,12 @@ export function saveConfig(key, value) {
   }
 }
 
+// merges the code from the common and specific files using ejs
+function mergeCode(specificFileText, commonFileText) {
+  const replaced = ejs.render(specificFileText, {replace_here: commonFileText})
+  return replaced
+}
+
 // render the code if there are fetched files for current selected template
 export function genCode() {
   const currentFiles = files[store.config.template]
@@ -68,9 +74,6 @@ export function genCode() {
       if (!store.config.include_test && file === 'test_all.py') {
         delete store.code['test_all.py']
         continue
-      }
-      if(file in files['template-common-replace']){
-        currentFiles[file] = currentFiles[file].replace(/#::= replace_here ::#/g, files['template-common-replace'][file])
       }
       store.code[file] = ejs
         .render(
@@ -99,14 +102,20 @@ export async function fetchTemplates(template) {
   // fetch the template if there is no fetch of template before
   if (files[template] === undefined) {
     files[template] = {}
-    files['template-common-replace'] = {}
     for (const filename of templates[template]) {
       const response = await fetch(`${url}/${template}/${filename}`)
-      files[template][filename] = await response.text()
-    }
-    for (const filename of templates['template-common-replace']) {
-      const res2 = await fetch(`${url}/template-common-replace/${filename}`)
-      files['template-common-replace'][filename] = await res2.text()
+      const text_specific = await response.text()
+      // Dynamically fetch the common templates-code, if the file exists in common,
+      // then render the replace_here code tag using ejs template 
+      const res_common = await fetch(`${url}/template-common/${filename}`)
+      if(res_common.ok){
+        const text_common = await res_common.text()
+        files[template][filename] = mergeCode(text_specific, text_common)
+      }
+      // else move on with the code from the specific file
+      else{
+        files[template][filename] = text_specific
+      }
     }
 
     // calling genCode explicitly here
