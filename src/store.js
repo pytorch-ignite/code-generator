@@ -61,7 +61,9 @@ export function saveConfig(key, value) {
 
 // merges the code from the common and specific files using ejs
 function mergeCode(specificFileText, commonFileText) {
-  const replaced = ejs.render(specificFileText, {replace_here: commonFileText})
+  const replaced = ejs.render(specificFileText, {
+    replace_here: commonFileText
+  })
   return replaced
 }
 
@@ -106,7 +108,7 @@ export async function fetchTemplates(template) {
       const response = await fetch(`${url}/${template}/${filename}`)
       const text_specific = await response.text()
       // Dynamically fetch the common templates-code, if the file exists in common,
-      // then render the replace_here code tag using ejs template 
+      // then render the replace_here code tag using ejs template
       // If the file doesn't exist in common, then it will fetch an empty string
       // then the code tag is replaced with empty string
       const res_common = await fetch(`${url}/template-common/${filename}`)
