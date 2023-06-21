@@ -1,0 +1,16 @@
+seed: 666
+data_path: ~/data
+train_batch_size: 2
+eval_batch_size: 2
+num_workers: 1
+max_epochs: 2
+train_epoch_length: 4
+eval_epoch_length: 4
+lr: 0.0001
+use_amp: false
+debug: false
+z_dim: 100
+d_filters: 64
+g_filters: 64
+output_dir: ./logs
+log_every_iters: 2

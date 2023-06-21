@@ -18,19 +18,33 @@ from ignite.handlers.time_limit import TimeLimit
 from ignite.utils import setup_logger
 
 
-def setup_parser():
-    with open("config.yaml", "r") as f:
+def get_default_parser():
+    parser = ArgumentParser()
+    parser.add_argument("config", type=Path, help="Config file path")
+    parser.add_argument(
+        "--backend",
+        default=None,
+        choices=["nccl", "gloo"],
+        type=str,
+        help="DDP backend",
+    )
+    return parser
+
+
+def setup_config(parser=None):
+    if parser is None:
+        parser = get_default_parser()
+
+    args = parser.parse_args()
+    config_path = args.config
+
+    with open(config_path, "r") as f:
         config = yaml.safe_load(f.read())
 
-    parser = ArgumentParser()
-    parser.add_argument("--backend", default=None, type=str)
     for k, v in config.items():
-        if isinstance(v, bool):
-            parser.add_argument(f"--{k}", action="store_true")
-        else:
-            parser.add_argument(f"--{k}", default=v, type=type(v))
+        setattr(args, k, v)
 
-    return parser
+    return args
 
 
 def log_metrics(engine: Engine, tag: str) -> None:
