@@ -73,7 +73,6 @@ def setup_handlers(
 #::: } :::#
 
 
-
 def lambda_lr_scheduler(iteration, lr0, n, a):
     return lr0 * pow((1.0 - 1.0 * iteration / n), a)
 
