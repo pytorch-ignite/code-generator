@@ -4,7 +4,9 @@ set -xeu
 
 if [ $1 == "lint" ]; then
     ufmt diff .
-    flake8 --select F401 .  # find unused imports
+    flake8 --select F401 ./dist-tests  # find unused imports
+elif [ $1 == "min_lint" ]; then
+    ufmt diff .
 elif [ $1 == "fmt" ]; then
     ufmt format .
 elif [ $1 == "install" ]; then
