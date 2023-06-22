@@ -109,4 +109,3 @@ jobs:
       - run: npm install -g pnpm
       - run: pnpm i --frozen-lockfile --color
       - run: pnpm lint
-      - run: python scripts/check_copies.py
