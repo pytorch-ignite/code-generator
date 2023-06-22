@@ -129,4 +129,4 @@ def run(local_rank: int, config: Any):
     #::: } :::#
 
 
-#:::- from_template_common :::#
+#::= from_template_common ::#

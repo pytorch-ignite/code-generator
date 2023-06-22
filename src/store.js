@@ -61,9 +61,10 @@ export function saveConfig(key, value) {
 
 // merges the code from the common and specific files using ejs
 function mergeCode(specificFileText, commonFileText) {
-  const replaced = ejs.render(specificFileText, {
-    from_template_common: commonFileText
-  })
+  const replaced = specificFileText.replace(
+    '#::= from_template_common ::#',
+    commonFileText
+  )
   return replaced
 }
 
