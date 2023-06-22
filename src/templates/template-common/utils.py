@@ -10,11 +10,27 @@ import torch
 import yaml
 from ignite.contrib.engines import common
 from ignite.engine import Engine
+
+#::: if (it.save_training || it.save_evaluation || it.patience || it.terminate_on_nan || it.limit_sec) { :::#
 from ignite.engine.events import Events
+
+#::: } :::#
+#::: if (it.save_training || it.save_evaluation) { :::#
 from ignite.handlers import Checkpoint, DiskSaver, global_step_from_engine
+
+#::: } :::#
+#::: if (it.patience) { :::#
 from ignite.handlers.early_stopping import EarlyStopping
+
+#::: } :::#
+#::: if (it.terminate_on_nan) { :::#
 from ignite.handlers.terminate_on_nan import TerminateOnNan
+
+#::: } :::#
+#::: if (it.limit_sec) { :::#
 from ignite.handlers.time_limit import TimeLimit
+
+#::: } :::#
 from ignite.utils import setup_logger
 
 

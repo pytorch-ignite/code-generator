@@ -1,4 +1,4 @@
-#:::- from_template_common :::#
+#::= from_template_common ::#
 lr: 0.0001
 z_dim: 100
 d_filters: 64

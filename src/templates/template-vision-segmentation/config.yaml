@@ -1,4 +1,4 @@
-#:::- from_template_common :::#
+#::= from_template_common ::#
 lr: 0.007
 accumulation_steps: 4
 num_classes: 21

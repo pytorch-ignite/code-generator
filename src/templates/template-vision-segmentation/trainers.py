@@ -3,7 +3,12 @@ from typing import Any, Dict, Union
 import ignite.distributed as idist
 import torch
 from data import prepare_image_mask
+
+#::: if(it.deterministic) { :::#
+#::: } else { :::#
 from ignite.engine import DeterministicEngine, Engine, Events
+
+#::: } :::#
 from ignite.metrics import Metric
 from torch.cuda.amp import autocast, GradScaler
 from torch.nn import Module

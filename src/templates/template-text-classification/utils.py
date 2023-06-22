@@ -1,4 +1,4 @@
-#:::- from_template_common :::#
+#::= from_template_common ::#
 
 #::: if (it.save_training || it.save_evaluation || it.patience || it.terminate_on_nan || it.limit_sec) { :::#
 

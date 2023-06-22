@@ -1,4 +1,4 @@
-#:::- from_template_common :::#
+#::= from_template_common ::#
 model: bert-base-uncased
 model_dir: /tmp/model
 tokenizer_dir: /tmp/tokenizer
