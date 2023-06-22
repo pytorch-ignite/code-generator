@@ -70,6 +70,7 @@ jobs:
           pip uninstall -y tqdm
           npm install -g pnpm
           pnpm i --frozen-lockfile --color
+          bash scripts/run_code_style.sh install
           # Show all installed dependencies
           pip list
 
