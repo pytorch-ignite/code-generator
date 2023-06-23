@@ -5,8 +5,10 @@ import torch
 from data import prepare_image_mask
 
 #::: if(it.deterministic) { :::#
+from ignite.engine import DeterministicEngine, Events  # usort: skip
+
 #::: } else { :::#
-from ignite.engine import DeterministicEngine, Engine, Events
+from ignite.engine import Engine, Events
 
 #::: } :::#
 from ignite.metrics import Metric
