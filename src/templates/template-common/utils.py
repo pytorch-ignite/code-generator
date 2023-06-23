@@ -16,7 +16,14 @@ from ignite.engine.events import Events
 
 #::: } :::#
 #::: if (it.save_training || it.save_evaluation) { :::#
-from ignite.handlers import Checkpoint, DiskSaver, global_step_from_engine
+from ignite.handlers import (
+    Checkpoint,
+    DiskSaver,
+    global_step_from_engine,
+)  # usort: skip
+
+#::: } else { :::#
+from ignite.handlers import Checkpoint
 
 #::: } :::#
 #::: if (it.patience) { :::#

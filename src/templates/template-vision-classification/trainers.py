@@ -2,14 +2,7 @@ from typing import Any, Union
 
 import ignite.distributed as idist
 import torch
-
-#::: if(it.deterministic) { :::#
-from ignite.engine import DeterministicEngine, Engine, Events  # usort: skip
-
-#::: } else { :::#
-from ignite.engine import Engine, Events
-
-#::: } :::#
+from ignite.engine import DeterministicEngine, Engine, Events
 from torch.cuda.amp import autocast
 from torch.nn import Module
 from torch.optim import Optimizer

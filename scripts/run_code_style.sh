@@ -6,7 +6,7 @@ if [ $1 == "lint" ]; then
     # Check that ./dist-tests/ exists and code is unzipped
     ls ./dist-tests/vision-classification-all/main.py
     ufmt diff .
-    flake8 --select F401 ./dist-tests  # find unused imports
+    flake8 --select F401,F821 ./dist-tests  # find unused imports and non imported objects
 elif [ $1 == "min_lint" ]; then
     ufmt diff .
 elif [ $1 == "fmt" ]; then
