@@ -59,6 +59,15 @@ export function saveConfig(key, value) {
   }
 }
 
+// merges the code from the common and specific files using ejs
+function mergeCode(specificFileText, commonFileText) {
+  const replaced = specificFileText.replace(
+    /#::= from_template_common ::#/g,
+    commonFileText
+  )
+  return replaced
+}
+
 // render the code if there are fetched files for current selected template
 export function genCode() {
   const currentFiles = files[store.config.template]
@@ -78,6 +87,7 @@ export function genCode() {
         )
         // trim `    #`
         .replace(/\s{4}#$/gim, '')
+        .replace(/  # usort: skip/g, '')
     }
     if (isDev) {
       store.code[__DEV_CONFIG_FILE__] =
@@ -98,7 +108,14 @@ export async function fetchTemplates(template) {
     files[template] = {}
     for (const filename of templates[template]) {
       const response = await fetch(`${url}/${template}/${filename}`)
-      files[template][filename] = await response.text()
+      const text_specific = await response.text()
+      // Dynamically fetch the common templates-code, if the file exists in common,
+      // then render the replace_here code tag using ejs template
+      // If the file doesn't exist in common, then it will fetch an empty string
+      // then the code tag is replaced with empty string
+      const res_common = await fetch(`${url}/template-common/${filename}`)
+      const text_common = await res_common.text()
+      files[template][filename] = mergeCode(text_specific, text_common)
     }
 
     // calling genCode explicitly here

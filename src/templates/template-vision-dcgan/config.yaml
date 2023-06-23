@@ -1,56 +1,5 @@
-seed: 666
-data_path: ./
-train_batch_size: 32
-eval_batch_size: 32
-num_workers: 4
-max_epochs: 20
-train_epoch_length: 1000
-eval_epoch_length: 1000
+#::= from_template_common ::#
 lr: 0.0001
-use_amp: false
-debug: false
 z_dim: 100
 d_filters: 64
 g_filters: 64
-
-#::: if (it.dist === 'spawn') { :::#
-# distributed spawn
-nproc_per_node: #:::= it.nproc_per_node :::#
-#::: if (it.nnodes) { :::#
-# distributed multi node spawn
-nnodes: #:::= it.nnodes :::#
-#::: if (it.nnodes > 1) { :::#
-node_rank: 0
-master_addr: #:::= it.master_addr :::#
-master_port: #:::= it.master_port :::#
-#::: } :::#
-#::: } :::#
-#::: } :::#
-
-#::: if (it.filename_prefix) { :::#
-filename_prefix: #:::= it.filename_prefix :::#
-#::: } :::#
-
-#::: if (it.n_saved) { :::#
-n_saved: #:::= it.n_saved :::#
-#::: } :::#
-
-#::: if (it.save_every_iters) { :::#
-save_every_iters: #:::= it.save_every_iters :::#
-#::: } :::#
-
-#::: if (it.patience) { :::#
-patience: #:::= it.patience :::#
-#::: } :::#
-
-#::: if (it.limit_sec) { :::#
-limit_sec: #:::= it.limit_sec :::#
-#::: } :::#
-
-#::: if (it.output_dir) { :::#
-output_dir: #:::= it.output_dir :::#
-#::: } :::#
-
-#::: if (it.log_every_iters) { :::#
-log_every_iters: #:::= it.log_every_iters :::#
-#::: } :::#
