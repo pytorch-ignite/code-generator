@@ -6,7 +6,7 @@
     "build": "vite build",
     "serve": "vite preview",
     "test": "jest --color --runInBand",
-    "test:ci": "start-server-and-test --expect 200 serve http://127.0.0.1:5000 test",
+    "test:ci": "rm -rf ./dist-tests && start-server-and-test --expect 200 serve http://127.0.0.1:5000 test",
     "release": "node scripts/release.js",
     "fmt": "prettier --write . && bash scripts/run_code_style.sh fmt",
     "min_lint": "prettier --check . && bash scripts/run_code_style.sh min_lint",

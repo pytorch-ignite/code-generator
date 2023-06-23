@@ -3,6 +3,8 @@
 set -xeu
 
 if [ $1 == "lint" ]; then
+    # Check that ./dist-tests/ exists and code is unzipped
+    ls ./dist-tests/vision-classification-all/main.py
     ufmt diff .
     flake8 --select F401 ./dist-tests  # find unused imports
 elif [ $1 == "min_lint" ]; then

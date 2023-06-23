@@ -4,7 +4,7 @@ import ignite.distributed as idist
 import torch
 
 #::: if(it.deterministic) { :::#
-from ignite.engine import DeterministicEngine, Events  # usort: skip
+from ignite.engine import DeterministicEngine, Engine, Events  # usort: skip
 
 #::: } else { :::#
 from ignite.engine import Engine, Events
