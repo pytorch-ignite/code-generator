@@ -26,7 +26,7 @@ def setup_trainer(
     loss_fn: Module,
     device: Union[str, torch.device],
     train_sampler: Sampler,
-):
+) -> Union[Engine, DeterministicEngine]:
     prepare_batch = prepare_image_mask
     scaler = GradScaler(enabled=config.use_amp)
 
@@ -70,7 +70,7 @@ def setup_evaluator(
     model: Module,
     metrics: Dict[str, Metric],
     device: Union[str, torch.device],
-):
+) -> Engine:
     prepare_batch = prepare_image_mask
 
     @torch.no_grad()
