@@ -43,7 +43,7 @@ export const store = reactive({
     template: '',
     include_test: false,
     output_dir: './logs',
-    log_every_iters: 2
+    log_every_iters: 10
   }
 })
 
