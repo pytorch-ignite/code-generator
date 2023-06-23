@@ -94,7 +94,7 @@ exports.handler = async function (event, _) {
           `!wget ${zipRes}\n`,
           `!unzip ${template}.zip\n`,
           '!pip install -r requirements.txt\n',
-          '!python main.py\n'
+          '!python main.py config.yaml\n'
         ]
       }
     ]
