@@ -62,7 +62,7 @@ export function saveConfig(key, value) {
 // merges the code from the common and specific files using ejs
 function mergeCode(specificFileText, commonFileText) {
   const replaced = specificFileText.replace(
-    '#::= from_template_common ::#',
+    /#::= from_template_common ::#/g,
     commonFileText
   )
   return replaced
@@ -87,6 +87,7 @@ export function genCode() {
         )
         // trim `    #`
         .replace(/\s{4}#$/gim, '')
+        .replace(/  # usort: skip/g, '')
     }
     if (isDev) {
       store.code[__DEV_CONFIG_FILE__] =
