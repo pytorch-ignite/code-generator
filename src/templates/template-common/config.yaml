@@ -4,8 +4,6 @@ train_batch_size: 32
 eval_batch_size: 32
 num_workers: 4
 max_epochs: 20
-train_epoch_length: 1000
-eval_epoch_length: 1000
 use_amp: false
 debug: false
 
