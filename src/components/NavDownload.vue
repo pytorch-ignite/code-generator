@@ -22,27 +22,6 @@
     </svg>
     <span>Download</span>
   </button>
-  <div
-    class="download-success"
-    v-show="showDownloadMsg"
-    @click="showDownloadMsg = false"
-  ></div>
-  <div class="msg-wrapper" v-show="showDownloadMsg">
-    <div class="msg">
-      <h2>🎉 Your Training Script Has Been Generated! 🎉</h2>
-      <p>
-        Thanks for using Code-Generator! Feel free to reach out to us on
-        <a
-          class="external-links msg-gh"
-          href="https://github.com/pytorch-ignite/code-generator"
-          target="_blank"
-          rel="noopener noreferrer"
-          >GitHub</a
-        >
-        with any feedback, bug report, and feature request.
-      </p>
-    </div>
-  </div>
 </template>
 
 <script>

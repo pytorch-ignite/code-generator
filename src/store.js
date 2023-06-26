@@ -86,6 +86,7 @@ export function genCode() {
         '# THIS FILE APPEARS ONLY IN DEV MODE\n' +
         JSON.stringify(store.config, null, 2)
     }
+    // A new code link should be generated
     store.codeUrl = "";
   }
 }

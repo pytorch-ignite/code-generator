@@ -11,8 +11,8 @@
             <div class="copy-link">
 
                 <button v-if="!linkGenerated" class="copy-link-input generate" @click="generateLink">Generate Link</button>
-                <input v-if="linkGenerated" type="text" class="copy-link-input" value="codeUrl" readonly>
-                <button type="button" class="copy-link-button">
+                <input v-if="linkGenerated" type="text" class="copy-link-input" v-model="codeUrl" readonly>
+                <button type="button" class="copy-link-button" @click="copyURL">
                     <span class="material-icons">content_copy</span>
                 </button>
             </div>
@@ -45,7 +45,7 @@
 
 <script>
 import NavDownload from '../NavDownload.vue';
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import { store, msg } from '../../store'
 
 export default {
@@ -99,8 +99,18 @@ export default {
         const DownloadMsg = () => {
             showDownloadMsg.value = True;
         }
+        const copyURL = (codeUrl) => {
+            try {
+                navigator.clipboard.writeText(codeUrl.value);
+                alert('Copied');
+            } catch ($e) {
+                alert('Cannot copy');
+            }
+        }
+        
+        watch(store.codeUrl, () => {linkGenerated.value = false});
 
-        return {linkGenerated, generateLink, codeUrl, showDownloadMsg, DownloadMsg }
+        return {linkGenerated, generateLink, codeUrl, showDownloadMsg, DownloadMsg, copyURL }
     }
 }
 </script>
