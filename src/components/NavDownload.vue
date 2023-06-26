@@ -73,6 +73,7 @@ export default {
             saveAs(content, `ignite-${store.config.template}.zip`)
           })
           showDownloadMsg.value = true
+          $emit('showDownloadMsg');
         }
       } else {
         msg.showMsg = true
@@ -109,25 +110,5 @@ export default {
   z-index: 10;
   width: 100vw;
   height: 100vh;
-}
-.msg-wrapper {
-  position: fixed;
-  max-width: 38rem;
-  padding: 0 1rem;
-  text-align: center;
-  margin: 20vh auto 100%;
-  inset: 0;
-  z-index: 12;
-}
-.msg {
-  padding: 2rem 1rem;
-  background-color: var(--c-white-light);
-  color: var(--c-text);
-  border-radius: 8px;
-  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.33);
-}
-.msg-gh {
-  margin: 0;
-  color: var(--c-brand-red);
 }
 </style>

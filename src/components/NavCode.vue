@@ -16,9 +16,30 @@
                     <span class="material-icons">content_copy</span>
                 </button>
             </div>
-           <NavDownload/>
+           <NavDownload @showDownloadMsg="DownloadMsg" />
         </div>
     </div>
+    <div
+        class="download-success"
+        v-show="showDownloadMsg"
+        @click="showDownloadMsg = false"
+      ></div>
+    <div class="msg-wrapper" v-show="showDownloadMsg">
+        <div class="msg">
+          <h2>🎉 Your Training Script Has Been Generated! 🎉</h2>
+          <p>
+            Thanks for using Code-Generator! Feel free to reach out to us on
+            <a
+              class="external-links msg-gh"
+              href="https://github.com/pytorch-ignite/code-generator"
+              target="_blank"
+              rel="noopener noreferrer"
+              >GitHub</a
+            >
+            with any feedback, bug report, and feature request.
+          </p>
+        </div>
+      </div>
     </div>
 </template>
 
@@ -33,6 +54,8 @@ export default {
     setup(){
         const linkGenerated = ref(false);
         const codeUrl = ref(null);
+        const showDownloadMsg = ref(false);
+
         const generateLink = async () => {
             if (store.code && Object.keys(store.code).length) {
                 msg.color = 'red'
@@ -47,7 +70,7 @@ export default {
                     // base netlify url + .netlify/functions/function-name
                     // We make a POST request to the function with
                     // the content of store.code in JSON as request body
-                    if (store.url == "") {
+                    if (store.codeUrl == "") {
                         console.log("test")
                         const res = await fetch('/.netlify/functions/colab', {
                             method: 'POST',
@@ -73,8 +96,11 @@ export default {
                 msg.content = 'Choose a template to Open.'
             }
         }
+        const DownloadMsg = () => {
+            showDownloadMsg.value = True;
+        }
 
-        return {linkGenerated, generateLink, codeUrl }
+        return {linkGenerated, generateLink, codeUrl, showDownloadMsg, DownloadMsg }
     }
 }
 </script>
