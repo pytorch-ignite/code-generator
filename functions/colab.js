@@ -105,6 +105,9 @@ exports.handler = async function (event, _) {
   const colabLink = `https://colab.research.google.com/github/${repoOwner}/${repo}/blob/main/nbs/${nbUid}/${nbName}`
   return {
     statusCode: 200,
-    body: colabLink
+    body: {
+      colabLink : colabLink,
+      url: zipRes
+    }
   }
 }

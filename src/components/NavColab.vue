@@ -85,18 +85,21 @@ export default {
           // We make a POST request to the function with
           // the content of store.code in JSON as request body
           colabText.value = 'Opening in Colab'
-          const res = await fetch('/.netlify/functions/colab', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              code: store.code,
-              template: store.config.template
+          if (store.url == ""){
+            const res = await fetch('/.netlify/functions/colab', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                code: store.code,
+                template: store.config.template
+              })
             })
-          })
-          // response body is plain text
-          const colabLink = await res.text()
+            // response body is plain text
+            const colabLink = await res.json().colabLink
+            store.codeUrl = await res.json().url
+          }
           // create a hyperlink element
           const el = document.createElement('a')
           el.setAttribute('href', colabLink)

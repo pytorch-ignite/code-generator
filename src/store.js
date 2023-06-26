@@ -37,14 +37,16 @@ export const msg = reactive({
 // main reactive object
 // store.code - the final rendered code to be included in archive
 // store.config - the internal config to track user input
+// codeUrl - the wget url for integration and local development
 export const store = reactive({
   code: {},
   config: {
     template: '',
     include_test: false,
     output_dir: './logs',
-    log_every_iters: 2
-  }
+    log_every_iters: 2.
+  },
+  codeUrl: ""
 })
 
 /**
@@ -84,6 +86,7 @@ export function genCode() {
         '# THIS FILE APPEARS ONLY IN DEV MODE\n' +
         JSON.stringify(store.config, null, 2)
     }
+    store.codeUrl = "";
   }
 }
 

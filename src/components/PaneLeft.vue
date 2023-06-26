@@ -12,7 +12,7 @@
   </div>
   <div class="left-pane-contexts">
     <div class="download-n-colab">
-      <NavDownload />
+      <NavCode />
       <NavColab />
     </div>
     <KeepAlive>
@@ -30,6 +30,7 @@ import TabLoggers from './TabLoggers.vue'
 import Message from './Message.vue'
 import NavDownload from './NavDownload.vue'
 import NavColab from './NavColab.vue'
+import NavCode from './css/NavCode.vue'
 import { computed, ref } from 'vue'
 import { msg, store } from '../store.js'
 
@@ -41,7 +42,8 @@ export default {
     TabHandlers,
     Message,
     NavDownload,
-    NavColab
+    NavColab,
+    NavCode
   },
   setup() {
     const currentTab = ref('Templates')
