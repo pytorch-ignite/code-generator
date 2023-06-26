@@ -44,9 +44,9 @@
 </template>
 
 <script>
-import NavDownload from '../NavDownload.vue';
+import NavDownload from './NavDownload.vue';
 import {ref, watch} from "vue";
-import { store, msg } from '../../store'
+import { store, msg } from '../store'
 
 export default {
     name: "NavCode",
@@ -71,7 +71,6 @@ export default {
                     // We make a POST request to the function with
                     // the content of store.code in JSON as request body
                     if (store.codeUrl == "") {
-                        console.log("test")
                         const res = await fetch('/.netlify/functions/colab', {
                             method: 'POST',
                             headers: {
@@ -107,7 +106,7 @@ export default {
                 alert('Cannot copy');
             }
         }
-        
+
         watch(store.codeUrl, () => {linkGenerated.value = false});
 
         return {linkGenerated, generateLink, codeUrl, showDownloadMsg, DownloadMsg, copyURL }
