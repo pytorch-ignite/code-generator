@@ -70,6 +70,7 @@ jobs:
           pip uninstall -y tqdm
           npm install -g pnpm
           pnpm i --frozen-lockfile --color
+          bash scripts/run_code_style.sh install
           # Show all installed dependencies
           pip list
 
@@ -81,6 +82,7 @@ jobs:
       - run: pnpm build
       - run: pnpm test:ci
       - run: sh ./scripts/run_tests.sh unzip
+      - run: pnpm lint
 
       - name: 'Run ${{ matrix.template }} ${{ matrix.test }}'
         run: sh ./scripts/run_tests.sh ${{ matrix.test }} ${{ matrix.template }}
@@ -108,5 +110,4 @@ jobs:
       - run: pip install -Uq pip wheel && bash scripts/run_code_style.sh install
       - run: npm install -g pnpm
       - run: pnpm i --frozen-lockfile --color
-      - run: pnpm lint
-      - run: python scripts/check_copies.py
+      - run: pnpm min_lint
