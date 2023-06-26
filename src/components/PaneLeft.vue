@@ -30,7 +30,7 @@ import TabLoggers from './TabLoggers.vue'
 import Message from './Message.vue'
 import NavDownload from './NavDownload.vue'
 import NavColab from './NavColab.vue'
-import NavCode from './css/NavCode.vue'
+import NavCode from './NavCode.vue'
 import { computed, ref } from 'vue'
 import { msg, store } from '../store.js'
 
