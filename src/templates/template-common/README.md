@@ -68,8 +68,7 @@ torchrun \
   --node_rank 0 \
   --master_addr #:::= it.master_addr :::# \
   --master_port #:::= it.master_port :::# \
-  main.py config.yaml \
-  --backend #:::= it.backend :::#
+  main.py config.yaml --backend #:::= it.backend :::#
 ```
 
 - Execute on worker nodes
@@ -81,8 +80,7 @@ torchrun \
   --node_rank <node_rank> \
   --master_addr #:::= it.master_addr :::# \
   --master_port #:::= it.master_port :::# \
-  main.py config.yaml \
-  --backend #:::= it.backend :::#
+  main.py config.yaml --backend #:::= it.backend :::#
 ```
 
 #::: } else { :::#
