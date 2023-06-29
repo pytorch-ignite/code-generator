@@ -128,11 +128,12 @@ python main.py config.yaml --backend #:::= it.backend :::#
 ```yaml
 # config.yaml
 nproc_per_node: #:::= it.nproc_per_node :::#
-nnodes: #:::= it.nnodes :::# 
+nnodes: #:::= it.nnodes :::#
 node_rank: <node_rank>
-master_addr: #:::= it.master_addr :::# 
-master_port: #:::= it.master_port :::# 
+master_addr: #:::= it.master_addr :::#
+master_port: #:::= it.master_port :::#
 ```
+
 ```sh
 python main.py config.yaml --backend #:::= it.backend :::#
 ```
