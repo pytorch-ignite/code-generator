@@ -19,7 +19,7 @@ pip install -r requirements.txt --progress-bar off -U
 |- models.py : helper module with functions to create a model or multiple models
 |- trainers.py : helper module with functions to create trainer and evaluator
 |- utils.py : module with various helper functions
-#::: if (it.template === 'Template-vision-segmentation') { :::#
+#::: if (it.template === 'template-vision-segmentation') { :::#
 |- vis.py : helper module for data visualizations
 #::: } :::#
 |- requirements.txt : dependencies to install with pip
