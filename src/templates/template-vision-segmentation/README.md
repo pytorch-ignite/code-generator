@@ -72,7 +72,7 @@ torchrun \
   --node_rank 0 \
   --master_addr #:::= it.master_addr :::# \
   --master_port #:::= it.master_port :::# \
-  main.py \
+  main.py config.yaml \
   --backend #:::= it.backend :::#
 ```
 
@@ -85,7 +85,7 @@ torchrun \
   --node_rank <node_rank> \
   --master_addr #:::= it.master_addr :::# \
   --master_port #:::= it.master_port :::# \
-  main.py \
+  main.py config.yaml \
   --backend #:::= it.backend :::#
 ```
 
@@ -96,7 +96,7 @@ torchrun \
 ```sh
 torchrun \
   --nproc_per_node #:::= it.nproc_per_node :::# \
-  main.py \
+  main.py config.yaml \
   --backend #:::= it.backend :::#
 ```
 
@@ -112,36 +112,45 @@ torchrun \
 
 - Execute on master node
 
+```yaml
+# config.yaml
+nproc_per_node: #:::= it.nproc_per_node :::#
+nnodes: #:::= it.nnodes :::#
+node_rank: 0
+master_addr: #:::= it.master_addr :::#
+master_port: #:::= it.master_port :::#
+```
+
 ```sh
-python main.py  \
-  --nproc_per_node #:::= it.nproc_per_node :::# \
-  --nnodes #:::= it.nnodes :::# \
-  --node_rank 0 \
-  --master_addr #:::= it.master_addr :::# \
-  --master_port #:::= it.master_port :::# \
-  --backend #:::= it.backend :::#
+python main.py config.yaml --backend #:::= it.backend :::#
 ```
 
 - Execute on worker nodes
 
+```yaml
+# config.yaml
+nproc_per_node: #:::= it.nproc_per_node :::#
+nnodes: #:::= it.nnodes :::#
+node_rank: <node_rank>
+master_addr: #:::= it.master_addr :::#
+master_port: #:::= it.master_port :::#
+```
+
 ```sh
-python main.py  \
-  --nproc_per_node #:::= it.nproc_per_node :::# \
-  --nnodes #:::= it.nnodes :::# \
-  --node_rank <node_rank> \
-  --master_addr #:::= it.master_addr :::# \
-  --master_port #:::= it.master_port :::# \
-  --backend #:::= it.backend :::#
+python main.py config.yaml --backend #:::= it.backend :::#
 ```
 
 #::: } else { :::#
 
 ### Multi GPU Training (`torch.multiprocessing.spawn`)
 
+```yaml
+# config.yaml
+nproc_per_node: #:::= it.nproc_per_node :::#
+```
+
 ```sh
-python main.py  \
-  --nproc_per_node #:::= it.nproc_per_node :::# \
-  --backend #:::= it.backend :::#
+python main.py config.yaml --backend #:::= it.backend :::#
 ```
 
 #::: } :::#
@@ -153,7 +162,7 @@ python main.py  \
 ### 1 GPU Training
 
 ```sh
-python main.py
+python main.py config.yaml
 ```
 
 #::: } :::#
