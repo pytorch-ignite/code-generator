@@ -42,12 +42,12 @@ export default {
             saveAs(content, `ignite-${store.config.template}.zip`)
           })
           showDownloadMsg.value = true;
+          emit('showDownloadMsg', showDownloadMsg)
         }
       } else {
         msg.showMsg = true
         msg.content = 'Choose a template to download.'
       }
-      emit('showDownloadMsg', showDownloadMsg)
     }
     return { downloadProject, showDownloadMsg }
   }
