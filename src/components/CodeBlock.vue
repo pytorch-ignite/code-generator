@@ -124,7 +124,6 @@ div[class*='language-']::before,
   position: absolute;
   top: 0;
   bottom: 0;
-  z-index: 3;
   border-right: 1px solid rgba(0, 0, 0, 0.5);
   padding: 1.25rem 0;
   width: 3.5rem;
@@ -140,7 +139,6 @@ div[class*='language-']::before,
 .line-numbers {
   position: relative;
   font-size: var(--code-font-size);
-  z-index: 4;
   user-select: none;
 }
 

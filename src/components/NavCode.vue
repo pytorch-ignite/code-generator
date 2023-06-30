@@ -1,45 +1,48 @@
 <template>
     <div>
-    <div class="dropdown">
-        <button @click="downloadProject" class="download-button external-links"
-            title="Download the generated code as a zip file">
-            
-            <span>&lt;&gt; Code</span>
-        </button>
-        <div class="dropdown-content">
-            <h1>Local </h1>
-            <div class="copy-link">
+        <div class="dropdown">
+            <button @click="downloadProject" class="download-button external-links"
+                title="Download the generated code as a zip file">
+                
+                <span>&lt;&gt; Code</span>
+            </button>
+            <div class="dropdown-content">
+                <h1>Local </h1>
+                <div class="copy-link">
 
-                <button v-if="!linkGenerated" class="copy-link-input generate" @click="generateLink">Generate Link</button>
-                <input v-if="linkGenerated" type="text" class="copy-link-input" v-model="codeUrl" readonly>
-                <button type="button" class="copy-link-button" @click="copyURL">
-                    <span class="material-icons">content_copy</span>
-                </button>
+                    <button v-if="!linkGenerated" class="copy-link-input generate" @click="generateLink">Generate Link</button>
+                    <input v-if="linkGenerated" type="text" class="copy-link-input" v-model="codeUrl" readonly>
+                    <button type="button" class="copy-link-button" @click="copyURL">
+                        <span class="material-icons">content_copy
+                        </span>
+                    </button>
+                </div>
+            <NavDownload @showDownloadMsg="DownloadMsg"/>
             </div>
-           <NavDownload @showDownloadMsg="DownloadMsg" />
         </div>
-    </div>
-    <div
-        class="download-success"
-        v-show="showDownloadMsg"
-        @click="showDownloadMsg = false"
-      ></div>
-    <div class="msg-wrapper" v-show="showDownloadMsg">
-        <div class="msg">
-          <h2>🎉 Your Training Script Has Been Generated! 🎉</h2>
-          <p>
-            Thanks for using Code-Generator! Feel free to reach out to us on
-            <a
-              class="external-links msg-gh"
-              href="https://github.com/pytorch-ignite/code-generator"
-              target="_blank"
-              rel="noopener noreferrer"
-              >GitHub</a
-            >
-            with any feedback, bug report, and feature request.
-          </p>
+
+        <!-- creating a one-way binding for download success message -->
+        <div
+            class="download-success"
+            v-show="showDownloadMsg"
+            @click="showDownloadMsg=false"
+        ></div>
+        <div class="msg-wrapper" v-show="showDownloadMsg">
+            <div class="msg">
+            <h2>🎉 Your Training Script Has Been Generated! 🎉</h2>
+            <p>
+                Thanks for using Code-Generator! Feel free to reach out to us on
+                <a
+                class="external-links msg-gh"
+                href="https://github.com/pytorch-ignite/code-generator"
+                target="_blank"
+                rel="noopener noreferrer"
+                >GitHub</a
+                >
+                with any feedback, bug report, and feature request.
+            </p>
+            </div>
         </div>
-      </div>
     </div>
 </template>
 
@@ -54,6 +57,7 @@ export default {
     setup(){
         const linkGenerated = ref(false);
         const codeUrl = ref(null);
+        const DownloadMsgUpdate = ref(false);
         const showDownloadMsg = ref(false);
 
         const generateLink = async () => {
@@ -71,7 +75,7 @@ export default {
                     // We make a POST request to the function with
                     // the content of store.code in JSON as request body
                     if (store.codeUrl == "") {
-                        const res = await fetch('/.netlify/functions/colab', {
+                        const res = await fetch('/.netlify/functions/code', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -82,9 +86,9 @@ export default {
                             })
                         })
                         // response body is plain text
-                        store.codeUrl = await res.json().url;
+                        store.codeUrl = await res.text();
                         linkGenerated.value = true;
-                        codeUrl.value = await res.json().url;
+                        codeUrl.value = await res.text();
                     }else{
                         linkGenerated.value = true;
                         codeUrl.value = store.codeUrl;
@@ -95,10 +99,17 @@ export default {
                 msg.content = 'Choose a template to Open.'
             }
         }
+
         const DownloadMsg = () => {
-            showDownloadMsg.value = True;
+            DownloadMsgUpdate.value = true;
         }
-        const copyURL = (codeUrl) => {
+
+        watch(DownloadMsgUpdate, ()=> {
+            showDownloadMsg.value = true;
+            DownloadMsgUpdate.value = false
+        })
+
+        const copyURL = () => {
             try {
                 navigator.clipboard.writeText(codeUrl.value);
                 alert('Copied');
@@ -107,7 +118,10 @@ export default {
             }
         }
 
-        watch(store.codeUrl, () => {linkGenerated.value = false});
+        watch(store.config, () => {
+            linkGenerated.value = false
+            store.codeUrl = ""
+        });
 
         return {linkGenerated, generateLink, codeUrl, showDownloadMsg, DownloadMsg, copyURL }
     }
@@ -149,29 +163,6 @@ export default {
     height: 100vh;
 }
 
-.msg-wrapper {
-    position: fixed;
-    max-width: 38rem;
-    padding: 0 1rem;
-    text-align: center;
-    margin: 20vh auto 100%;
-    inset: 0;
-    z-index: 12;
-}
-
-.msg {
-    padding: 2rem 1rem;
-    background-color: var(--c-white-light);
-    color: var(--c-text);
-    border-radius: 8px;
-    box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.33);
-}
-
-.msg-gh {
-    margin: 0;
-    color: var(--c-brand-red);
-}
-
 /* Dropdown Button */
 .dropbtn {
     background-color: #04AA6D;
@@ -192,10 +183,10 @@ export default {
     display: none;
     position: absolute;
     background-color: #f1f1f1;
-    min-width: 300px;
+    min-width: 30vh;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
-    padding: 20px;
+    padding: 2vh;
 }
 
 /* Links inside the dropdown */
@@ -270,5 +261,39 @@ export default {
 
 .copy-link-button:hover {
     background: #cccccc;
+}
+
+
+.download-success {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(101, 110, 133, 0.8);
+  z-index: 10;
+  width: 100vw;
+  height: 100vh;
+}
+
+.msg-wrapper {
+  position: fixed;
+  max-width: 38rem;
+  padding: 0 1rem;
+  text-align: center;
+  margin: 20vh auto 100%;
+  inset: 0;
+  z-index: 10;
+}
+
+.msg {
+  padding: 2rem 1rem;
+  background-color: var(--c-white-light);
+  color: var(--c-text);
+  border-radius: 8px;
+  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.33);
+}
+
+.msg-gh {
+  margin: 0;
+  color: var(--c-brand-red);
 }
 </style>

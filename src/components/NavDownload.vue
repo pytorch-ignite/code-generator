@@ -1,27 +1,16 @@
 <template>
-  <button
-    @click="downloadProject"
-    class="download-button external-links"
-    title="Download the generated code as a zip file"
-  >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="1.4em"
-      height="1.4em"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class="icons feather feather-download"
-    >
+  <button @click="downloadProject" class="download-button external-links"
+    title="Download the generated code as a zip file">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1.4em" height="1.4em" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="icons feather feather-download">
       <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
       <polyline points="7 10 12 15 17 10"></polyline>
       <line x1="12" y1="15" x2="12" y2="3"></line>
     </svg>
     <span>Download</span>
   </button>
+  
 </template>
 
 <script>
@@ -31,7 +20,8 @@ import { saveAs } from 'file-saver'
 import JSZip from 'jszip'
 
 export default {
-  setup() {
+  emits: ['showDownloadMsg'],
+  setup(props, { emit }) {
     const showDownloadMsg = ref(false)
 
     const downloadProject = () => {
@@ -51,13 +41,13 @@ export default {
           zip.generateAsync({ type: 'blob' }).then((content) => {
             saveAs(content, `ignite-${store.config.template}.zip`)
           })
-          showDownloadMsg.value = true
-          $emit('showDownloadMsg');
+          showDownloadMsg.value = true;
         }
       } else {
         msg.showMsg = true
         msg.content = 'Choose a template to download.'
       }
+      emit('showDownloadMsg', showDownloadMsg)
     }
     return { downloadProject, showDownloadMsg }
   }
@@ -78,16 +68,9 @@ export default {
   border: 1px solid var(--c-brand-red);
   border-radius: 4px;
 }
+
 .download-button span {
   margin-left: 0.25rem;
 }
-.download-success {
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: rgba(101, 110, 133, 0.8);
-  z-index: 10;
-  width: 100vw;
-  height: 100vh;
-}
+
 </style>
