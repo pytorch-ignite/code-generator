@@ -153,16 +153,6 @@ export default {
     margin-left: 0.25rem;
 }
 
-.download-success {
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: rgba(101, 110, 133, 0.8);
-    z-index: 10;
-    width: 100vw;
-    height: 100vh;
-}
-
 /* Dropdown Button */
 .dropbtn {
     background-color: #04AA6D;
