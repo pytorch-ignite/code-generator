@@ -36,7 +36,7 @@ def run(local_rank: int, config: Any):
             len(dataloader_train),
             config.lr,
         ),
-        (config.max_epochs * len(), 0.0),
+        (config.max_epochs * len(dataloader_train), 0.0),
     ]
     lr_scheduler = PiecewiseLinear(optimizer, "lr", milestones_values=milestones_values)
 
