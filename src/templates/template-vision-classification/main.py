@@ -5,9 +5,9 @@ import ignite.distributed as idist
 import yaml
 from data import setup_data
 from ignite.engine import Events
+from ignite.handlers import PiecewiseLinear
 from ignite.metrics import Accuracy, Loss
 from ignite.utils import manual_seed
-from ignite.handlers import PiecewiseLinear
 from models import setup_model
 from torch import nn, optim
 from trainers import setup_evaluator, setup_trainer
@@ -68,7 +68,12 @@ def run(local_rank: int, config: Any):
     # setup ignite handlers
     #::: if (it.save_training || it.save_evaluation) { :::#
     #::: if (it.save_training) { :::#
-    to_save_train = {"model": model, "optimizer": optimizer, "trainer": trainer, "lr_scheduler": lr_scheduler}
+    to_save_train = {
+        "model": model,
+        "optimizer": optimizer,
+        "trainer": trainer,
+        "lr_scheduler": lr_scheduler
+    }
     #::: } else { :::#
     to_save_train = None
     #::: } :::#
