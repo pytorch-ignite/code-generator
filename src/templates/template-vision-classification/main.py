@@ -2,7 +2,6 @@ from pprint import pformat
 from typing import Any
 
 import ignite.distributed as idist
-import yaml
 from data import setup_data
 from ignite.engine import Events
 from ignite.metrics import Accuracy, Loss
