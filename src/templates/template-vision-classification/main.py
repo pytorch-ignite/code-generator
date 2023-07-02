@@ -72,7 +72,7 @@ def run(local_rank: int, config: Any):
         "model": model,
         "optimizer": optimizer,
         "trainer": trainer,
-        "lr_scheduler": lr_scheduler
+        "lr_scheduler": lr_scheduler,
     }
     #::: } else { :::#
     to_save_train = None
