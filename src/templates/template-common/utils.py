@@ -144,12 +144,6 @@ def setup_output_dir(config: Any, rank: int) -> Path:
     return Path(idist.broadcast(config.output_dir, src=0))
 
 
-def write_config_to_output_dir(config: Any) -> None:
-    with open(config.config, "r") as f:
-        cfg = yaml.safe_load(f.read())
-        (config.output_dir / "config-lock.yaml").write_text(yaml.dump(cfg))
-
-
 def setup_logging(config: Any) -> Logger:
     """Setup logger with `ignite.utils.setup_logger()`.
 
