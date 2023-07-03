@@ -1,6 +1,6 @@
 from functools import partial
-from shutil import copy
 from pprint import pformat
+from shutil import copy
 from typing import Any, cast
 
 import ignite.distributed as idist
