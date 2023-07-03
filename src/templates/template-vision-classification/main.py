@@ -5,6 +5,7 @@ import ignite.distributed as idist
 import yaml
 from data import setup_data
 from ignite.engine import Events
+from ignite.handlers import PiecewiseLinear
 from ignite.metrics import Accuracy, Loss
 from ignite.utils import manual_seed
 from models import setup_model
@@ -29,6 +30,15 @@ def run(local_rank: int, config: Any):
     model = idist.auto_model(setup_model(config.model))
     optimizer = idist.auto_optim(optim.Adam(model.parameters(), lr=config.lr))
     loss_fn = nn.CrossEntropyLoss().to(device=device)
+    milestones_values = [
+        (0, 0.0),
+        (
+            len(dataloader_train),
+            config.lr,
+        ),
+        (config.max_epochs * len(dataloader_train), 0.0),
+    ]
+    lr_scheduler = PiecewiseLinear(optimizer, "lr", milestones_values=milestones_values)
 
     # trainer and evaluator
     trainer = setup_trainer(
@@ -53,10 +63,17 @@ def run(local_rank: int, config: Any):
     (config.output_dir / "config-lock.yaml").write_text(yaml.dump(config))
     trainer.logger = evaluator.logger = logger
 
+    trainer.add_event_handler(Events.ITERATION_COMPLETED, lr_scheduler)
+
     # setup ignite handlers
     #::: if (it.save_training || it.save_evaluation) { :::#
     #::: if (it.save_training) { :::#
-    to_save_train = {"model": model, "optimizer": optimizer, "trainer": trainer}
+    to_save_train = {
+        "model": model,
+        "optimizer": optimizer,
+        "trainer": trainer,
+        "lr_scheduler": lr_scheduler,
+    }
     #::: } else { :::#
     to_save_train = None
     #::: } :::#
