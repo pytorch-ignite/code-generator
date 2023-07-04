@@ -6,6 +6,8 @@ import { v4 as uuidv4 } from 'uuid'
 import JSZip from 'jszip'
 
 const nbUid = uuidv4()
+const repoOwner = process.env.VUE_APP_GH_USER
+const repo = process.env.VUE_APP_GH_REPO
 
 // This function is the one Netlify function runs on
 // https://docs.netlify.com/functions/build-with-javascript/#synchronous-function-format
