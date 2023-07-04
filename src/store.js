@@ -44,9 +44,9 @@ export const store = reactive({
     template: '',
     include_test: false,
     output_dir: './logs',
-    log_every_iters: 10.
+    log_every_iters: 10
   },
-  codeUrl: ""
+  codeUrl: ''
 })
 
 /**
@@ -96,7 +96,6 @@ export function genCode() {
         '# THIS FILE APPEARS ONLY IN DEV MODE\n' +
         JSON.stringify(store.config, null, 2)
     }
-   
   }
 }
 

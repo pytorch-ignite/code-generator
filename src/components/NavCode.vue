@@ -1,258 +1,279 @@
 <template>
-    <div>
-        <div class="dropdown">
-            <button @click="downloadProject" class="download-button external-links"
-                title="Download the generated code as a zip file">
-                
-                <span>&lt;&gt; Code</span>
-            </button>
-            <div class="dropdown-content">
-                <h1>Local </h1>
-                <div class="copy-link">
-
-                    <button v-if="!linkGenerated" class="copy-link-input generate" @click="generateLink">Generate Link</button>
-                    <input v-if="linkGenerated" type="text" class="copy-link-input" v-model="codeUrl" readonly>
-                    <button type="button" class="copy-link-button" @click="copyURL">
-                        <span class="material-icons">content_copy
-                        </span>
-                    </button>
-                </div>
-            <NavDownload @showDownloadMsg="DownloadMsg"/>
-            </div>
+  <div>
+    <div class="dropdown">
+      <button
+        @click="downloadProject"
+        class="download-button external-links"
+        title="Download the generated code as a zip file"
+      >
+        <span>&lt;/&gt; Code</span>
+      </button>
+      <div class="dropdown-content">
+        <h1>Local</h1>
+        <div class="copy-link">
+          <button
+            v-if="!linkGenerated"
+            class="copy-link-input generate"
+            @click="generateLink"
+          >
+            Generate Link
+          </button>
+          <input
+            v-if="linkGenerated"
+            type="url"
+            class="copy-link-input generate"
+            v-model="codeUrl"
+            readonly
+          />
+          <button type="button" class="copy-link-button" @click="copyURL">
+            <span class="material-icons">content_copy </span>
+          </button>
         </div>
-
-        <!-- creating a one-way binding for download success message -->
-        <div
-            class="download-success"
-            v-show="showDownloadMsg"
-            @click="showDownloadMsg=false"
-        ></div>
-        <div class="msg-wrapper" v-show="showDownloadMsg">
-            <div class="msg">
-            <h2>🎉 Your Training Script Has Been Generated! 🎉</h2>
-            <p>
-                Thanks for using Code-Generator! Feel free to reach out to us on
-                <a
-                class="external-links msg-gh"
-                href="https://github.com/pytorch-ignite/code-generator"
-                target="_blank"
-                rel="noopener noreferrer"
-                >GitHub</a
-                >
-                with any feedback, bug report, and feature request.
-            </p>
-            </div>
+        <div>
+          <strong>OR</strong>
         </div>
+        <NavDownload @showDownloadMsg="DownloadMsg" />
+      </div>
     </div>
+
+    <!-- creating a one-way binding for download success message -->
+    <div
+      class="download-success"
+      v-show="showDownloadMsg"
+      @click="showDownloadMsg = false"
+    ></div>
+    <div class="msg-wrapper" v-show="showDownloadMsg">
+      <div class="msg">
+        <h2>🎉 Your Training Script Has Been Generated! 🎉</h2>
+        <p>
+          Thanks for using Code-Generator! Feel free to reach out to us on
+          <a
+            class="external-links msg-gh"
+            href="https://github.com/pytorch-ignite/code-generator"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          with any feedback, bug report, and feature request.
+        </p>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import NavDownload from './NavDownload.vue';
-import {ref, watch} from "vue";
+import NavDownload from './NavDownload.vue'
+import { ref, watch } from 'vue'
 import { store, msg } from '../store'
 
 export default {
-    name: "NavCode",
-    components: { NavDownload },
-    setup(){
-        const linkGenerated = ref(false);
-        const codeUrl = ref(null);
-        const DownloadMsgUpdate = ref(false);
-        const showDownloadMsg = ref(false);
+  name: 'NavCode',
+  components: { NavDownload },
+  setup() {
+    const linkGenerated = ref(false)
+    const codeUrl = ref('')
+    const DownloadMsgUpdate = ref(false)
+    const showDownloadMsg = ref(false)
 
-        const generateLink = async () => {
-            if (store.code && Object.keys(store.code).length) {
-                msg.color = 'red'
-                if (!store.config.output_dir) {
-                    msg.showMsg = true
-                    msg.content = `Output directory is required. Please input in Loggers tab.`
-                } else if (!store.config.log_every_iters) {
-                    msg.showMsg = true
-                    msg.content = `Logging interval is required. Please input in Loggers tab.`
-                } else {
-                    // By default, Netlify function url is
-                    // base netlify url + .netlify/functions/function-name
-                    // We make a POST request to the function with
-                    // the content of store.code in JSON as request body
-                    if (store.codeUrl == "") {
-                        const res = await fetch('/.netlify/functions/code', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                code: store.code,
-                                template: store.config.template
-                            })
-                        })
-                        // response body is plain text
-                        store.codeUrl = await res.text();
-                        linkGenerated.value = true;
-                        codeUrl.value = await res.text();
-                    }else{
-                        linkGenerated.value = true;
-                        codeUrl.value = store.codeUrl;
-                    }
-                }
-            } else {
-                msg.showMsg = true
-                msg.content = 'Choose a template to Open.'
+    const generateLink = async () => {
+      if (store.code && Object.keys(store.code).length) {
+        msg.color = 'red'
+        if (!store.config.output_dir) {
+          msg.showMsg = true
+          msg.content = `Output directory is required. Please input in Loggers tab.`
+        } else if (!store.config.log_every_iters) {
+          msg.showMsg = true
+          msg.content = `Logging interval is required. Please input in Loggers tab.`
+        } else {
+          // By default, Netlify function url is
+          // base netlify url + .netlify/functions/function-name
+          // We make a POST request to the function with
+          // the content of store.code in JSON as request body
+          codeUrl.value = 'Generating...'
+          linkGenerated.value = true
+          const res = await fetch(
+            '/.netlify/functions/code',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                code: store.code,
+                template: store.config.template
+              })
             }
+          )
+          //response body is plain text and is of status 200
+          if (res.ok) {
+            store.codeUrl = await res.text()
+            codeUrl = store.codeUrl
+          }
         }
-
-        const DownloadMsg = () => {
-            DownloadMsgUpdate.value = true;
-        }
-
-        watch(DownloadMsgUpdate, ()=> {
-            showDownloadMsg.value = true;
-            DownloadMsgUpdate.value = false
-        })
-
-        const copyURL = () => {
-            try {
-                navigator.clipboard.writeText(codeUrl.value);
-                alert('Copied');
-            } catch ($e) {
-                alert('Cannot copy');
-            }
-        }
-
-        watch(store.config, () => {
-            linkGenerated.value = false
-            store.codeUrl = ""
-        });
-
-        return {linkGenerated, generateLink, codeUrl, showDownloadMsg, DownloadMsg, copyURL }
+      } else {
+        msg.showMsg = true
+        msg.content = 'Choose a template to Open.'
+      }
     }
+
+    const DownloadMsg = () => {
+      DownloadMsgUpdate.value = true
+    }
+
+    watch(DownloadMsgUpdate, () => {
+      showDownloadMsg.value = true
+      DownloadMsgUpdate.value = false
+    })
+
+    const copyURL = () => {
+      try {
+        navigator.clipboard.writeText(codeUrl.value)
+        alert('Copied')
+      } catch ($e) {
+        alert('Cannot copy')
+      }
+    }
+
+    // To have a new wget URL for change in configuration
+    watch(store.config, () => {
+      linkGenerated.value = false
+      codeUrl.value = store.codeUrl = ''
+    })
+
+    return {
+      linkGenerated,
+      codeUrl,
+      showDownloadMsg,
+      DownloadMsg,
+      copyURL,
+      generateLink
+    }
+  }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-.dropdown{
-    align-content: center;
-    text-align: center;
+.dropdown {
+  align-content: center;
+  text-align: center;
 }
 .download-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: none;
-    color: var(--c-text);
-    cursor: pointer;
-    font-family: var(--font-family-base);
-    font-size: 1em;
-    padding: 0.5rem 1rem;
-    border: 1px solid var(--c-brand-red);
-    border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  color: var(--c-text);
+  cursor: pointer;
+  font-family: var(--font-family-base);
+  font-size: 1em;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--c-brand-red);
+  border-radius: 4px;
 }
 
 .download-button span {
-    margin-left: 0.25rem;
+  margin-left: 0.25rem;
 }
 
 /* Dropdown Button */
 .dropbtn {
-    background-color: #04AA6D;
-    color: white;
-    padding: 16px;
-    font-size: 16px;
-    border: none;
+  background-color: #04aa6d;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
 }
 
 /* The container <div> - needed to position the dropdown content */
 .dropdown {
-    position: relative;
-    display: inline-block;
+  position: relative;
+  display: inline-block;
 }
 
 /* Dropdown Content (Hidden by Default) */
 .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f1f1f1;
-    min-width: 30vh;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    z-index: 1;
-    padding: 2vh;
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 30vh;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  padding: 2vh;
 }
 
 /* Links inside the dropdown */
 .dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    border:#de4c2c;
-    
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  border: #de4c2c;
 }
 
 /* Change color of dropdown links on hover */
 .dropdown-content a:hover {
-    background-color: #de4c2c;
-    color: #f1f1f1;
+  background-color: #de4c2c;
+  color: #f1f1f1;
 }
 
 /* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {
-    display: block;
+  display: block;
 }
 
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {
-    background-color: #de4c2c;
+  background-color: #de4c2c;
 }
 
 .copy-link {
-    --height: 36px;
+  --height: 36px;
 
-    display: flex;
-    max-width: 250px;
-    margin: 10%;
-    margin-top: 20%;
+  display: flex;
+  max-width: 250px;
+  margin: 10%;
+  margin-top: 2%;
 }
 
 .generate {
-    background-color: white;
-    border-bottom-color: #3e8e41;
-
+  background-color: white;
+  border-bottom-color: #3e8e41;
+  width: 80%;
 }
 
 .copy-link-input {
-    flex-grow: 1;
-    padding: 0 8px;
-    font-size: 14px;
-    border: 1px solid #de4c2c;
-    border-right: none;
-    outline: none;
+  flex-grow: 0;
+  padding: 0 8px;
+  font-size: 14px;
+  border: 1px solid #de4c2c;
+  border-right: none;
+  outline: none;
 }
 
 .copy-link-input:hover {
-    background: #de4c2c;
-    border: 1px solid #cccccc;
-    color: #f1f1f1;
+  background: #de4c2c;
+  border: 1px solid #cccccc;
+  color: #f1f1f1;
 }
 
 .copy-link-button {
-    flex-shrink: 0;
-    width: var(--height);
-    height: var(--height);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #dddddd;
-    color: #333333;
-    outline: none;
-    border: 1px solid #de4c2c;
-    cursor: pointer;
+  flex-shrink: 0;
+  width: var(--height);
+  height: var(--height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #dddddd;
+  color: #333333;
+  outline: none;
+  border: 1px solid #de4c2c;
+  cursor: pointer;
 }
 
 .copy-link-button:hover {
-    background: #cccccc;
+  background: #cccccc;
 }
-
 
 .download-success {
   position: fixed;

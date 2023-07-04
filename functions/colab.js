@@ -72,7 +72,11 @@ exports.handler = async function (event, _) {
     ]
   }
   // Create the notebook on GitHub
-  await pushToGitHub(Buffer.from(JSON.stringify(nb)).toString('base64'), nbName)
+  await pushToGitHub(
+    Buffer.from(JSON.stringify(nb)).toString('base64'),
+    nbName,
+    nbUid
+  )
 
   const colabLink = `https://colab.research.google.com/github/${repoOwner}/${repo}/blob/main/nbs/${nbUid}/${nbName}`
   return {
