@@ -4,6 +4,7 @@
 
 import { v4 as uuidv4 } from 'uuid'
 import JSZip from 'jszip'
+import { pushToGitHub } from './utils'
 
 const nbUid = uuidv4()
 const repoOwner = process.env.VUE_APP_GH_USER

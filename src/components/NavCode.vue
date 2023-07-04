@@ -107,7 +107,7 @@ export default {
           //response body is plain text and is of status 200
           if (res.ok) {
             store.codeUrl = await res.text()
-            codeUrl = store.codeUrl
+            codeUrl.value = store.codeUrl
           }
         }
       } else {
