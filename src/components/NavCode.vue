@@ -9,7 +9,7 @@
         <span>&lt;/&gt; Code</span>
       </button>
       <div class="dropdown-content">
-        <h1>Local</h1>
+        <h2>Local</h2>
         <div class="copy-link">
           <button
             v-if="!linkGenerated"
@@ -30,9 +30,8 @@
             <span class="material-icons">content_copy </span>
           </button>
         </div>
-        <div>
-          <strong>OR</strong>
-        </div>
+        <strong>OR</strong>
+        <br />
         <NavDownload @showDownloadMsg="DownloadMsg" />
       </div>
     </div>
@@ -133,7 +132,7 @@ export default {
     watch(store.config, () => {
       linkGenerated.value = false
       store.codeUrl = ''
-      linkGenerated.value = false
+      linkGenerating.value = false
     })
 
     return {
@@ -193,10 +192,10 @@ export default {
   display: none;
   position: absolute;
   background-color: #f1f1f1;
-  min-width: 30vh;
+  min-width: 15vw;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
-  padding: 2vh;
+  padding: 0.5vh;
 }
 
 /* Links inside the dropdown */
