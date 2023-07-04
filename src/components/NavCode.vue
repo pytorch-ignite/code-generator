@@ -100,8 +100,8 @@ export default {
               code: store.code,
               template: store.config.template
             })
-          }).then((value) => {
-            store.codeUrl = value.text()
+          }).then(() => {
+            store.codeUrl = res.text()
             codeUrl.value = store.codeUrl
           })
         }
