@@ -16,7 +16,8 @@
             class="copy-link-input generate"
             @click="generateLink"
           >
-            Generate Link
+            <span v-if="!linkGenerating">Generate Link</span>
+            <span v-if="linkGenerating">Generating...</span>
           </button>
           <input
             v-if="linkGenerated"
@@ -70,6 +71,7 @@ export default {
   name: 'NavCode',
   components: { NavDownload },
   setup() {
+    const linkGenerating = ref(false)
     const linkGenerated = ref(false)
     const codeUrl = ref('')
     const DownloadMsgUpdate = ref(false)
@@ -89,8 +91,7 @@ export default {
           // base netlify url + .netlify/functions/function-name
           // We make a POST request to the function with
           // the content of store.code in JSON as request body
-          codeUrl.value = 'Generating...'
-          linkGenerated.value = true
+          linkGenerating.value = true
           const res = await fetch('/.netlify/functions/code', {
             method: 'POST',
             headers: {
@@ -100,10 +101,11 @@ export default {
               code: store.code,
               template: store.config.template
             })
-          }).then((response) => {
-            store.codeUrl = response.text()
-            codeUrl.value = store.codeUrl
           })
+          if (res.ok) {
+            linkGenerated.value = true
+            codeUrl.value = store.codeUrl = await res.text()
+          }
         }
       } else {
         msg.showMsg = true
@@ -114,12 +116,6 @@ export default {
     const DownloadMsg = () => {
       DownloadMsgUpdate.value = true
     }
-
-    watch(DownloadMsgUpdate, () => {
-      showDownloadMsg.value = true
-      DownloadMsgUpdate.value = false
-    })
-
     const copyURL = () => {
       try {
         navigator.clipboard.writeText(codeUrl.value)
@@ -128,17 +124,23 @@ export default {
         alert('Cannot copy')
       }
     }
-
+    // for the download message
+    watch(DownloadMsgUpdate, () => {
+      showDownloadMsg.value = true
+      DownloadMsgUpdate.value = false
+    })
     // To have a new wget URL for change in configuration
     watch(store.config, () => {
       linkGenerated.value = false
-      codeUrl.value = store.codeUrl = ''
+      store.codeUrl = ''
+      linkGenerated.value = false
     })
 
     return {
       linkGenerated,
       codeUrl,
       showDownloadMsg,
+      linkGenerating,
       DownloadMsg,
       copyURL,
       generateLink
