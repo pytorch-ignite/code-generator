@@ -91,24 +91,19 @@ export default {
           // the content of store.code in JSON as request body
           codeUrl.value = 'Generating...'
           linkGenerated.value = true
-          const res = await fetch(
-            '/.netlify/functions/code',
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                code: store.code,
-                template: store.config.template
-              })
-            }
-          )
-          //response body is plain text and is of status 200
-          if (res.ok) {
-            store.codeUrl = await res.text()
+          const res = await fetch('/.netlify/functions/code', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              code: store.code,
+              template: store.config.template
+            })
+          }).then((value) => {
+            store.codeUrl = value.body.text()
             codeUrl.value = store.codeUrl
-          }
+          })
         }
       } else {
         msg.showMsg = true
