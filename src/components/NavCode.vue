@@ -4,12 +4,14 @@
       <button
         @click="downloadProject"
         class="download-button external-links"
-        title="Download the generated code as a zip file"
+        title="Get the code of the template"
       >
-        <span>&lt;/&gt; Code</span>
+      <div>
+        <i class="material-symbols-outlined icon">terminal</i>
+        <span id="code">Code</span>
+      </div>
       </button>
       <div class="dropdown-content">
-        <h2>Local</h2>
         <div class="copy-link">
           <button
             v-if="!linkGenerated"
@@ -30,8 +32,7 @@
             <span class="material-icons">content_copy </span>
           </button>
         </div>
-        <strong>OR</strong>
-        <br />
+        <div class="or">OR</div>
         <NavDownload @showDownloadMsg="DownloadMsg" />
       </div>
     </div>
@@ -117,8 +118,7 @@ export default {
     }
     const copyURL = () => {
       try {
-        navigator.clipboard.writeText(codeUrl.value)
-        alert('Copied')
+        navigator.clipboard.writeText(store.codeUrl)
       } catch ($e) {
         alert('Cannot copy')
       }
@@ -131,7 +131,7 @@ export default {
     // To have a new wget URL for change in configuration
     watch(store.config, () => {
       linkGenerated.value = false
-      store.codeUrl = ''
+      store.codeUrl = codeUrl.value = ''
       linkGenerating.value = false
     })
 
@@ -223,21 +223,35 @@ export default {
   background-color: #de4c2c;
 }
 
+#code{
+  font-size: 1rem;
+}
+
 .copy-link {
   --height: 36px;
-
   display: flex;
   max-width: 250px;
-  margin: 10%;
-  margin-top: 2%;
+  margin-top: 5vh;
 }
 
 .generate {
   background-color: white;
   border-bottom-color: #3e8e41;
   width: 80%;
+  font-size: 1.6vh;
 }
-
+.icon{
+  vertical-align: bottom;
+}
+.or{
+  padding:5%;
+  vertical-align: middle;
+  font-size: 100%;
+}
+.inline-icon {
+  display:inline-flex;
+  vertical-align:bottom;
+}
 .copy-link-input {
   flex-grow: 0;
   padding: 0 8px;

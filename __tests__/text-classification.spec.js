@@ -33,6 +33,7 @@ test('text classification simple', async () => {
   await page.click('text=config.yaml')
 
   const [download] = await Promise.all([
+     page.querySelector('.dropdown-content .copy-link'),
     page.waitForEvent('download'),
     page.click('button:has-text("Download")')
   ])
@@ -86,6 +87,7 @@ test('text classification all', async () => {
   await page.click('text=config.yaml')
 
   const [download] = await Promise.all([
+    page.querySelector('.dropdown-content .copy-link'),
     page.waitForEvent('download'),
     page.click('button:has-text("Download")')
   ])
@@ -108,6 +110,7 @@ test('text classification launch', async () => {
   await page.click('text=config.yaml')
 
   const [download] = await Promise.all([
+    page.querySelector('.dropdown-content .copy-link'),
     page.waitForEvent('download'),
     page.click('button:has-text("Download")')
   ])
@@ -131,6 +134,7 @@ test('text classification spawn', async () => {
   await page.click('text=config.yaml')
 
   const [download] = await Promise.all([
+    page.querySelector('.dropdown-content .copy-link'),
     page.waitForEvent('download'),
     page.click('button:has-text("Download")')
   ])

@@ -4,16 +4,17 @@
 
 import { Octokit } from '@octokit/core'
 
-const repoOwner = process.env.VUE_APP_GH_USER
-const repo = process.env.VUE_APP_GH_REPO
 
 /**
  * Create a file on GitHub with Octokit.
  * @param {string} content
  * @param {string} filename
+ * @param {string} nbUid
+ * @param {string} repoOwner
+ * @param {string} repo
  * @returns download_url
  */
-export async function pushToGitHub(content, filename, nbUid) {
+export async function pushToGitHub(content, filename, nbUid, repoOwner, repo) {
   const octokit = new Octokit({
     auth: process.env.VUE_APP_GH_TOKEN
   })

@@ -33,6 +33,7 @@ test('vision segmentation simple', async () => {
   await page.click('text=config.yaml')
 
   const [download] = await Promise.all([
+    page.querySelector('.dropdown-content .copy-link'),
     page.waitForEvent('download'),
     page.click('button:has-text("Download")')
   ])
@@ -86,6 +87,7 @@ test('vision segmentation all', async () => {
   await page.click('text=config.yaml')
 
   const [download] = await Promise.all([
+    page.querySelector('.dropdown-content .copy-link'),
     page.waitForEvent('download'),
     page.click('button:has-text("Download")')
   ])
@@ -108,6 +110,7 @@ test('vision segmentation launch', async () => {
   await page.click('text=config.yaml')
 
   const [download] = await Promise.all([
+    page.querySelector('.dropdown-content .copy-link'),
     page.waitForEvent('download'),
     page.click('button:has-text("Download")')
   ])
@@ -131,6 +134,7 @@ test('vision segmentation spawn', async () => {
   await page.click('text=config.yaml')
 
   const [download] = await Promise.all([
+    page.querySelector('.dropdown-content .copy-link'),
     page.waitForEvent('download'),
     page.click('button:has-text("Download")')
   ])

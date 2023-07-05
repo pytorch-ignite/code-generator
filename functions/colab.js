@@ -28,7 +28,7 @@ exports.handler = async function (event, _) {
     zip.file(filename, code[filename])
   }
   const content = await zip.generateAsync({ type: 'base64' })
-  const zipRes = await pushToGitHub(content, `${template}.zip`, nbUid)
+  const zipRes = await pushToGitHub(content, `${template}.zip`, nbUid,repoOwner, repo)
 
   const title = template
     .replace('ignite-', '')
@@ -75,7 +75,9 @@ exports.handler = async function (event, _) {
   await pushToGitHub(
     Buffer.from(JSON.stringify(nb)).toString('base64'),
     nbName,
-    nbUid
+    nbUid,
+    repoOwner, 
+    repo
   )
 
   const colabLink = `https://colab.research.google.com/github/${repoOwner}/${repo}/blob/main/nbs/${nbUid}/${nbName}`
