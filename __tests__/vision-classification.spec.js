@@ -32,11 +32,10 @@ test('vision classification simple', async () => {
   await page.click('text=Loggers')
   await page.click('text=config.yaml')
 
-  const [download] = await Promise.all([
-    page.querySelector('.dropdown-content .copy-link'),
-    page.waitForEvent('download'),
-    page.click('button:has-text("Download")')
-  ])
+  await page.getByRole('button', { name: 'terminal Code' }).click()
+  await page.getByRole('button', { name: 'Download Zip' }).click();
+  const downloadPromise = await page.waitForEvent('download');
+  const download = await downloadPromise;
 
   await download.saveAs('./dist-tests/vision-classification-simple.zip')
 })
@@ -86,11 +85,10 @@ test('vision classification all', async () => {
   await page.click('text=Loggers')
   await page.click('text=config.yaml')
 
-  const [download] = await Promise.all([
-    page.querySelector('.dropdown-content .copy-link'),
-    page.waitForEvent('download'),
-    page.click('button:has-text("Download")')
-  ])
+  await page.getByRole('button', { name: 'terminal Code' }).click()
+  await page.getByRole('button', { name: 'Download Zip' }).click();
+  const downloadPromise = await page.waitForEvent('download');
+  const download = await downloadPromise;
 
   await download.saveAs('./dist-tests/vision-classification-all.zip')
 })
@@ -109,11 +107,10 @@ test('vision classification launch', async () => {
   await page.click('text=Loggers')
   await page.click('text=config.yaml')
 
-  const [download] = await Promise.all([
-    page.querySelector('.dropdown-content .copy-link'),
-    page.waitForEvent('download'),
-    page.click('button:has-text("Download")')
-  ])
+  await page.getByRole('button', { name: 'terminal Code' }).click()
+  await page.getByRole('button', { name: 'Download Zip' }).click();
+  const downloadPromise = await page.waitForEvent('download');
+  const download = await downloadPromise;
 
   await download.saveAs('./dist-tests/vision-classification-launch.zip')
 })
@@ -133,11 +130,10 @@ test('vision classification spawn', async () => {
   await page.click('text=Loggers')
   await page.click('text=config.yaml')
 
-  const [download] = await Promise.all([
-    page.querySelector('.dropdown-content .copy-link'),
-    page.waitForEvent('download'),
-    page.click('button:has-text("Download")')
-  ])
+  await page.getByRole('button', { name: 'terminal Code' }).click()
+  await page.getByRole('button', { name: 'Download Zip' }).click();
+  const downloadPromise = await page.waitForEvent('download');
+  const download = await downloadPromise;
 
   await download.saveAs('./dist-tests/vision-classification-spawn.zip')
 })
