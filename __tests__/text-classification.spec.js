@@ -33,9 +33,9 @@ test('text classification simple', async () => {
   await page.click('text=config.yaml')
 
   await page.getByRole('button', { name: 'terminal Code' }).click()
-  await page.getByRole('button', { name: 'Download Zip' }).click();
-  const downloadPromise = await page.waitForEvent('download');
-  const download = await downloadPromise;
+  await page.getByRole('button', { name: 'Download Zip' }).click()
+  const downloadPromise = await page.waitForEvent('download')
+  const download = await downloadPromise
 
   await download.saveAs('./dist-tests/text-classification-simple.zip')
 })
@@ -86,9 +86,9 @@ test('text classification all', async () => {
   await page.click('text=config.yaml')
 
   await page.getByRole('button', { name: 'terminal Code' }).click()
-  await page.getByRole('button', { name: 'Download Zip' }).click();
-  const downloadPromise = await page.waitForEvent('download');
-  const download = await downloadPromise;
+  await page.getByRole('button', { name: 'Download Zip' }).click()
+  const downloadPromise = await page.waitForEvent('download')
+  const download = await downloadPromise
 
   await download.saveAs('./dist-tests/text-classification-all.zip')
 })
@@ -108,9 +108,9 @@ test('text classification launch', async () => {
   await page.click('text=config.yaml')
 
   await page.getByRole('button', { name: 'terminal Code' }).click()
-  await page.getByRole('button', { name: 'Download Zip' }).click();
-  const downloadPromise = await page.waitForEvent('download');
-  const download = await downloadPromise;
+  await page.getByRole('button', { name: 'Download Zip' }).click()
+  const downloadPromise = await page.waitForEvent('download')
+  const download = await downloadPromise
 
   await download.saveAs('./dist-tests/text-classification-launch.zip')
 })
@@ -131,9 +131,9 @@ test('text classification spawn', async () => {
   await page.click('text=config.yaml')
 
   await page.getByRole('button', { name: 'terminal Code' }).click()
-  await page.getByRole('button', { name: 'Download Zip' }).click();
-  const downloadPromise = await page.waitForEvent('download');
-  const download = await downloadPromise;
+  await page.getByRole('button', { name: 'Download Zip' }).click()
+  const downloadPromise = await page.waitForEvent('download')
+  const download = await downloadPromise
 
   await download.saveAs('./dist-tests/text-classification-spawn.zip')
 })

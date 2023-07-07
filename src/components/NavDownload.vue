@@ -21,7 +21,7 @@
       <polyline points="7 10 12 15 17 10"></polyline>
       <line x1="12" y1="15" x2="12" y2="3"></line>
     </svg>
-    <span >Download Zip</span>
+    <span>Download Zip</span>
   </button>
 </template>
 
@@ -80,7 +80,7 @@ export default {
   border: 1px solid var(--c-brand-red);
   border-radius: 4px;
 }
-#download-zip{
+#download-zip {
   font-size: 1.6vh;
 }
 

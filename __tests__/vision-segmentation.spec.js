@@ -33,9 +33,9 @@ test('vision segmentation simple', async () => {
   await page.click('text=config.yaml')
 
   await page.getByRole('button', { name: 'terminal Code' }).click()
-  await page.getByRole('button', { name: 'Download Zip' }).click();
-  const downloadPromise = await page.waitForEvent('download');
-  const download = await downloadPromise;
+  await page.getByRole('button', { name: 'Download Zip' }).click()
+  const downloadPromise = await page.waitForEvent('download')
+  const download = await downloadPromise
 
   await download.saveAs('./dist-tests/vision-segmentation-simple.zip')
 })
@@ -86,9 +86,9 @@ test('vision segmentation all', async () => {
   await page.click('text=config.yaml')
 
   await page.getByRole('button', { name: 'terminal Code' }).click()
-  await page.getByRole('button', { name: 'Download Zip' }).click();
-  const downloadPromise = await page.waitForEvent('download');
-  const download = await downloadPromise;
+  await page.getByRole('button', { name: 'Download Zip' }).click()
+  const downloadPromise = await page.waitForEvent('download')
+  const download = await downloadPromise
 
   await download.saveAs('./dist-tests/vision-segmentation-all.zip')
 })
@@ -108,9 +108,9 @@ test('vision segmentation launch', async () => {
   await page.click('text=config.yaml')
 
   await page.getByRole('button', { name: 'terminal Code' }).click()
-  await page.getByRole('button', { name: 'Download Zip' }).click();
-  const downloadPromise = await page.waitForEvent('download');
-  const download = await downloadPromise;
+  await page.getByRole('button', { name: 'Download Zip' }).click()
+  const downloadPromise = await page.waitForEvent('download')
+  const download = await downloadPromise
 
   await download.saveAs('./dist-tests/vision-segmentation-launch.zip')
 })
@@ -131,9 +131,9 @@ test('vision segmentation spawn', async () => {
   await page.click('text=config.yaml')
 
   await page.getByRole('button', { name: 'terminal Code' }).click()
-  await page.getByRole('button', { name: 'Download Zip' }).click();
-  const downloadPromise = await page.waitForEvent('download');
-  const download = await downloadPromise;
+  await page.getByRole('button', { name: 'Download Zip' }).click()
+  const downloadPromise = await page.waitForEvent('download')
+  const download = await downloadPromise
 
   await download.saveAs('./dist-tests/vision-segmentation-spawn.zip')
 })

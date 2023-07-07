@@ -4,7 +4,6 @@
 
 import { Octokit } from '@octokit/core'
 
-
 /**
  * Create a file on GitHub with Octokit.
  * @param {string} content

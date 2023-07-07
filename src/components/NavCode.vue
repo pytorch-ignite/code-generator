@@ -6,10 +6,10 @@
         class="download-button external-links"
         title="Get the code of the template"
       >
-      <div>
-        <i class="material-symbols-outlined icon">terminal</i>
-        <span id="code">Code</span>
-      </div>
+        <div>
+          <i class="material-symbols-outlined icon">terminal</i>
+          <span id="code">Code</span>
+        </div>
       </button>
       <div class="dropdown-content">
         <div class="copy-link">
@@ -223,7 +223,7 @@ export default {
   background-color: #de4c2c;
 }
 
-#code{
+#code {
   font-size: 1rem;
 }
 
@@ -240,17 +240,17 @@ export default {
   width: 80%;
   font-size: 1.6vh;
 }
-.icon{
+.icon {
   vertical-align: bottom;
 }
-.or{
-  padding:5%;
+.or {
+  padding: 5%;
   vertical-align: middle;
   font-size: 100%;
 }
 .inline-icon {
-  display:inline-flex;
-  vertical-align:bottom;
+  display: inline-flex;
+  vertical-align: bottom;
 }
 .copy-link-input {
   flex-grow: 0;

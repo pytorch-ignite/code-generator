@@ -27,7 +27,13 @@ exports.handler = async function (event, _) {
     zip.file(filename, code[filename])
   }
   const content = await zip.generateAsync({ type: 'base64' })
-  const zipRes = await pushToGitHub(content, `${template}.zip`, nbUid, repoOwner, repo)
+  const zipRes = await pushToGitHub(
+    content,
+    `${template}.zip`,
+    nbUid,
+    repoOwner,
+    repo
+  )
   return {
     statusCode: 200,
     body: zipRes

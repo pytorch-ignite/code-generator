@@ -33,9 +33,9 @@ test('vision dcgan simple', async () => {
   await page.click('text=config.yaml')
 
   await page.getByRole('button', { name: 'terminal Code' }).click()
-  await page.getByRole('button', { name: 'Download Zip' }).click();
-  const downloadPromise = await page.waitForEvent('download');
-  const download = await downloadPromise;
+  await page.getByRole('button', { name: 'Download Zip' }).click()
+  const downloadPromise = await page.waitForEvent('download')
+  const download = await downloadPromise
 
   await download.saveAs('./dist-tests/vision-dcgan-simple.zip')
 })
@@ -86,9 +86,9 @@ test('vision dcgan all', async () => {
   await page.click('text=config.yaml')
 
   await page.getByRole('button', { name: 'terminal Code' }).click()
-  await page.getByRole('button', { name: 'Download Zip' }).click();
-  const downloadPromise = await page.waitForEvent('download');
-  const download = await downloadPromise;
+  await page.getByRole('button', { name: 'Download Zip' }).click()
+  const downloadPromise = await page.waitForEvent('download')
+  const download = await downloadPromise
 
   await download.saveAs('./dist-tests/vision-dcgan-all.zip')
 })
@@ -108,9 +108,9 @@ test('vision dcgan launch', async () => {
   await page.click('text=config.yaml')
 
   await page.getByRole('button', { name: 'terminal Code' }).click()
-  await page.getByRole('button', { name: 'Download Zip' }).click();
-  const downloadPromise = await page.waitForEvent('download');
-  const download = await downloadPromise;
+  await page.getByRole('button', { name: 'Download Zip' }).click()
+  const downloadPromise = await page.waitForEvent('download')
+  const download = await downloadPromise
 
   await download.saveAs('./dist-tests/vision-dcgan-launch.zip')
 })
@@ -131,9 +131,9 @@ test('vision dcgan spawn', async () => {
   await page.click('text=config.yaml')
 
   await page.getByRole('button', { name: 'terminal Code' }).click()
-  await page.getByRole('button', { name: 'Download Zip' }).click();
-  const downloadPromise = await page.waitForEvent('download');
-  const download = await downloadPromise;
+  await page.getByRole('button', { name: 'Download Zip' }).click()
+  const downloadPromise = await page.waitForEvent('download')
+  const download = await downloadPromise
 
   await download.saveAs('./dist-tests/vision-dcgan-spawn.zip')
 })
