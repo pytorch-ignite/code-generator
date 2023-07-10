@@ -48,21 +48,12 @@ def setup_data(config):
     if local_rank > 0:
         idist.barrier()
     #::: } :::#
-
-    dataset_train, dataset_eval = load_dataset(
-        "imdb", split=["train", "test"], cache_dir=config.data_path
-    )
-    tokenizer = AutoTokenizer.from_pretrained(
-        config.model, cache_dir=config.tokenizer_dir, do_lower_case=True
-    )
+    dataset_train, dataset_eval = load_dataset("imdb", split=["train", "test"], cache_dir=config.data_path)
+    tokenizer = AutoTokenizer.from_pretrained(config.model, cache_dir=config.tokenizer_dir, do_lower_case=True)
     train_texts, train_labels = dataset_train["text"], dataset_train["label"]
     test_texts, test_labels = dataset_eval["text"], dataset_eval["label"]
-    dataset_train = TransformerDataset(
-        train_texts, train_labels, tokenizer, config.max_length
-    )
-    dataset_eval = TransformerDataset(
-        test_texts, test_labels, tokenizer, config.max_length
-    )
+    dataset_train = TransformerDataset(train_texts, train_labels, tokenizer, config.max_length)
+    dataset_eval = TransformerDataset(test_texts, test_labels, tokenizer, config.max_length)
     #::: if (it.use_dist) { :::#
     if local_rank == 0:
         idist.barrier()

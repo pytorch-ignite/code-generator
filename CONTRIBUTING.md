@@ -122,6 +122,12 @@ To add a new template,
   bash scripts/run_code_style.sh source_lint
   ```
 
+- To check if generated code complies with a style guide:
+
+  ```sh
+  pnpm test && sh ./scripts/run_tests.sh unzip && pnpm dist_lint
+  ```
+
 _NOTE: Even if you have a half-completed/working PR, sending a PR is still a valid contribution and we can help you finish the PR._
 
 **NOTE : When sending a PR, please kindly check if the changes are required to run in the CI.**

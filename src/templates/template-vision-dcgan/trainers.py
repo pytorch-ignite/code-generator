@@ -23,9 +23,7 @@ def setup_trainer(
 
     real_labels = torch.ones(config.train_batch_size // ws, device=device)
     fake_labels = torch.zeros(config.train_batch_size // ws, device=device)
-    noise = torch.randn(
-        config.train_batch_size // ws, config.z_dim, 1, 1, device=device
-    )
+    noise = torch.randn(config.train_batch_size // ws, config.z_dim, 1, 1, device=device)
 
     def train_function(engine: Union[Engine, DeterministicEngine], batch: Any):
         model_g.train()

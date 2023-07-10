@@ -45,9 +45,7 @@ def run(local_rank: int, config: Any):
     )
 
     config.lr *= idist.get_world_size()
-    optimizer = idist.auto_optim(
-        optim.AdamW(model.parameters(), lr=config.lr, weight_decay=config.weight_decay)
-    )
+    optimizer = idist.auto_optim(optim.AdamW(model.parameters(), lr=config.lr, weight_decay=config.weight_decay))
     loss_fn = nn.BCEWithLogitsLoss().to(device=device)
 
     le = config.num_iters_per_epoch
@@ -56,9 +54,7 @@ def run(local_rank: int, config: Any):
         (le * config.num_warmup_epochs, config.lr),
         (le * config.max_epochs, 0.0),
     ]
-    lr_scheduler = PiecewiseLinear(
-        optimizer, param_name="lr", milestones_values=milestones_values
-    )
+    lr_scheduler = PiecewiseLinear(optimizer, param_name="lr", milestones_values=milestones_values)
 
     # setup metrics to attach to evaluator
     metrics = {
@@ -67,9 +63,7 @@ def run(local_rank: int, config: Any):
     }
 
     # trainer and evaluator
-    trainer = setup_trainer(
-        config, model, optimizer, loss_fn, device, dataloader_train.sampler
-    )
+    trainer = setup_trainer(config, model, optimizer, loss_fn, device, dataloader_train.sampler)
     evaluator = setup_evaluator(config, model, metrics, device)
 
     # setup engines logger with python logging
@@ -98,9 +92,7 @@ def run(local_rank: int, config: Any):
     #::: } else { :::#
     to_save_eval = None
     #::: } :::#
-    ckpt_handler_train, ckpt_handler_eval = setup_handlers(
-        trainer, evaluator, config, to_save_train, to_save_eval
-    )
+    ckpt_handler_train, ckpt_handler_eval = setup_handlers(trainer, evaluator, config, to_save_train, to_save_eval)
     #::: } else if (it.patience || it.terminate_on_nan || it.limit_sec) { :::#
     setup_handlers(trainer, evaluator, config)
     #::: } :::#

@@ -22,15 +22,9 @@ def setup_trainer(
 
     def train_function(engine: Union[Engine, DeterministicEngine], batch: Any):
         input_ids = batch["input_ids"].to(device, non_blocking=True, dtype=torch.long)
-        attention_mask = batch["attention_mask"].to(
-            device, non_blocking=True, dtype=torch.long
-        )
-        token_type_ids = batch["token_type_ids"].to(
-            device, non_blocking=True, dtype=torch.long
-        )
-        labels = (
-            batch["label"].view(-1, 1).to(device, non_blocking=True, dtype=torch.float)
-        )
+        attention_mask = batch["attention_mask"].to(device, non_blocking=True, dtype=torch.long)
+        token_type_ids = batch["token_type_ids"].to(device, non_blocking=True, dtype=torch.long)
+        labels = batch["label"].view(-1, 1).to(device, non_blocking=True, dtype=torch.float)
 
         model.train()
 
@@ -75,15 +69,9 @@ def setup_evaluator(
         model.eval()
 
         input_ids = batch["input_ids"].to(device, non_blocking=True, dtype=torch.long)
-        attention_mask = batch["attention_mask"].to(
-            device, non_blocking=True, dtype=torch.long
-        )
-        token_type_ids = batch["token_type_ids"].to(
-            device, non_blocking=True, dtype=torch.long
-        )
-        labels = (
-            batch["label"].view(-1, 1).to(device, non_blocking=True, dtype=torch.float)
-        )
+        attention_mask = batch["attention_mask"].to(device, non_blocking=True, dtype=torch.long)
+        token_type_ids = batch["token_type_ids"].to(device, non_blocking=True, dtype=torch.long)
+        labels = batch["label"].view(-1, 1).to(device, non_blocking=True, dtype=torch.float)
 
         with autocast(enabled=config.use_amp):
             output = model(input_ids, attention_mask, token_type_ids)
