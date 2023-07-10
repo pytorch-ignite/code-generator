@@ -86,10 +86,12 @@ def setup_trainer(
         engine.state.metrics = metrics
 
         return metrics
-    #
+
     #::: if(it.deterministic) { :::#
+
     trainer = DeterministicEngine(train_function)
     #::: } else { :::#
+
     trainer = Engine(train_function)
     #::: } :::#
 

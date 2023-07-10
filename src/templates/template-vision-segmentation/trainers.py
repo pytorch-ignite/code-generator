@@ -41,10 +41,12 @@ def setup_trainer(
         metric = {"epoch": engine.state.epoch, "train_loss": loss.item()}
         engine.state.metrics = metric
         return metric
-    #
+
     #::: if(it.deterministic) { :::#
+
     trainer = DeterministicEngine(train_function)
     #::: } else { :::#
+
     trainer = Engine(train_function)
     #::: } :::#
 
