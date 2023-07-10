@@ -1,9 +1,13 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   '@iconify/iconify':
     specifier: ^3.1.0
-    version: 3.1.0
+    version: 3.1.1
   '@octokit/core':
     specifier: ^4.2.0
     version: 4.2.0
@@ -426,8 +430,8 @@ packages:
       '@hapi/hoek': 9.2.1
     dev: false
 
-  /@iconify/iconify@3.1.0:
-    resolution: {integrity: sha512-Xyz+N5NSIiHj7G228CvFUcMKBz3BbpUTAuPnK2ariEUM7891F8ysD6Gh8782f3En1U4Qz70F0tzuyF8BhCfTQg==}
+  /@iconify/iconify@3.1.1:
+    resolution: {integrity: sha512-1nemfyD/OJzh9ALepH7YfuuP8BdEB24Skhd8DXWh0hzcOxImbb1ZizSZkpCzAwSZSGcJFmscIBaBQu+yLyWaxQ==}
     dependencies:
       '@iconify/types': 2.0.0
     dev: false
