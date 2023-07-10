@@ -32,6 +32,7 @@
             <span class="material-icons">content_copy </span>
           </button>
         </div>
+        <span class="copy-notification">Copied!</span>
         <div class="or">OR</div>
         <NavDownload @showDownloadMsg="DownloadMsg" />
       </div>
@@ -119,9 +120,20 @@ export default {
     const copyURL = () => {
       try {
         navigator.clipboard.writeText(store.codeUrl)
+        const button = document.querySelector('.copy-link-button');
+        const notification = document.querySelector('.copy-notification');
+
+        button.classList.add('copied');
+        notification.style.display = 'inline';
+
+        setTimeout(function () {
+          button.classList.remove('copied');
+          notification.style.display = 'none';
+        }, 2000);
       } catch ($e) {
         alert('Cannot copy')
       }
+      
     }
     // for the download message
     watch(DownloadMsgUpdate, () => {
@@ -289,6 +301,20 @@ export default {
 
 .copy-link-button:hover {
   background: #cccccc;
+}
+
+.copy-notification {
+  display: none;
+  margin-left: 75%;
+  color:  #ffffff;
+  font-size: 12px;
+  background-color: #de4c2c;
+  padding: 2%;
+  border-radius: 10%;
+}
+
+.copy-link-button.copied + .copy-notification {
+  display: inline;
 }
 
 .download-success {
