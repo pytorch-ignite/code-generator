@@ -37,7 +37,6 @@ def setup_trainer(
             "train_loss": train_loss,
         }
         return {"train_loss": train_loss}
-
     #
     #::: if(it.deterministic) { :::#
     trainer = DeterministicEngine(train_function)

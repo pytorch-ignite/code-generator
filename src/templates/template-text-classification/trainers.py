@@ -46,7 +46,6 @@ def setup_trainer(
         metric = {"train_loss": loss.item()}
         engine.state.metrics = metric
         return metric
-
     #
     #::: if(it.deterministic) { :::#
     trainer = DeterministicEngine(train_function)
