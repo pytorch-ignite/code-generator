@@ -48,6 +48,7 @@ def setup_handlers(
     #::: } :::#
 
     #::: if (it.patience) { :::#
+
     # early stopping
     def score_fn(engine: Engine):
         return engine.state.metrics["mIoU_bg"]

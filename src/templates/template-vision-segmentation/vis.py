@@ -5,9 +5,7 @@ from PIL import Image
 try:
     from image_dataset_viz import render_datapoint
 except ImportError:
-    raise RuntimeError(
-        "Install it via pip install --upgrade git+https://github.com/vfdev-5/ImageDatasetViz.git"
-    )
+    raise RuntimeError("Install it via pip install --upgrade git+https://github.com/vfdev-5/ImageDatasetViz.git")
 
 
 def _getvocpallete(num_cls):
@@ -86,26 +84,20 @@ def make_grid(batch_img, batch_mask, img_denormalize_fn, batch_gt_mask=None):
         mask = render_mask(mask)
 
         out_image[0:h, i * w : (i + 1) * w, :] = img
-        out_image[1 * h : 2 * h, i * w : (i + 1) * w, :] = render_datapoint(
-            img, mask, blend_alpha=0.4
-        )
+        out_image[1 * h : 2 * h, i * w : (i + 1) * w, :] = render_datapoint(img, mask, blend_alpha=0.4)
         out_image[2 * h : 3 * h, i * w : (i + 1) * w, :] = mask
 
         if batch_gt_mask is not None:
             gt_mask = batch_gt_mask[i]
             gt_mask = gt_mask.cpu().numpy()
             gt_mask = render_mask(gt_mask)
-            out_image[3 * h : 4 * h, i * w : (i + 1) * w, :] = render_datapoint(
-                img, gt_mask, blend_alpha=0.4
-            )
+            out_image[3 * h : 4 * h, i * w : (i + 1) * w, :] = render_datapoint(img, gt_mask, blend_alpha=0.4)
             out_image[4 * h : 5 * h, i * w : (i + 1) * w, :] = gt_mask
 
     return out_image
 
 
-def predictions_gt_images_handler(
-    img_denormalize_fn, n_images=None, another_engine=None, prefix_tag=None
-):
+def predictions_gt_images_handler(img_denormalize_fn, n_images=None, another_engine=None, prefix_tag=None):
     def wrapper(engine, logger, event_name):
         batch = engine.state.batch
         output = engine.state.output

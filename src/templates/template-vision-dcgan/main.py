@@ -49,12 +49,8 @@ def run(local_rank: int, config: Any):
     loss_fn = nn.BCELoss().to(device=device)
 
     # optimizers
-    optimizer_d = idist.auto_optim(
-        optim.Adam(model_d.parameters(), lr=config.lr, betas=(0.5, 0.999))
-    )
-    optimizer_g = idist.auto_optim(
-        optim.Adam(model_g.parameters(), lr=config.lr, betas=(0.5, 0.999))
-    )
+    optimizer_d = idist.auto_optim(optim.Adam(model_d.parameters(), lr=config.lr, betas=(0.5, 0.999)))
+    optimizer_g = idist.auto_optim(optim.Adam(model_g.parameters(), lr=config.lr, betas=(0.5, 0.999)))
 
     # trainer and evaluator
     trainer = setup_trainer(
@@ -100,9 +96,7 @@ def run(local_rank: int, config: Any):
     #::: } else { :::#
     to_save_train = None
     #::: } :::#
-    ckpt_handler_train, ckpt_handler_eval = setup_handlers(
-        trainer, evaluator, config, to_save_train, to_save_eval
-    )
+    ckpt_handler_train, ckpt_handler_eval = setup_handlers(trainer, evaluator, config, to_save_train, to_save_eval)
     #::: } else if (it.patience || it.terminate_on_nan || it.limit_sec) { :::#
     setup_handlers(trainer, evaluator, config)
     #::: } :::#

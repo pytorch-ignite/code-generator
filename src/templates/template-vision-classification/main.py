@@ -43,9 +43,7 @@ def run(local_rank: int, config: Any):
     lr_scheduler = PiecewiseLinear(optimizer, "lr", milestones_values=milestones_values)
 
     # trainer and evaluator
-    trainer = setup_trainer(
-        config, model, optimizer, loss_fn, device, dataloader_train.sampler
-    )
+    trainer = setup_trainer(config, model, optimizer, loss_fn, device, dataloader_train.sampler)
     evaluator = setup_evaluator(config, model, device)
 
     # attach metrics to evaluator
@@ -84,9 +82,7 @@ def run(local_rank: int, config: Any):
     #::: } else { :::#
     to_save_eval = None
     #::: } :::#
-    ckpt_handler_train, ckpt_handler_eval = setup_handlers(
-        trainer, evaluator, config, to_save_train, to_save_eval
-    )
+    ckpt_handler_train, ckpt_handler_eval = setup_handlers(trainer, evaluator, config, to_save_train, to_save_eval)
     #::: } else if (it.patience || it.terminate_on_nan || it.limit_sec) { :::#
     setup_handlers(trainer, evaluator, config)
     #::: } :::#
