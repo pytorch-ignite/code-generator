@@ -81,7 +81,6 @@ jobs:
 
       - run: pnpm build
       - run: pnpm test:ci
-        continue-on-error: true
       - run: sh ./scripts/run_tests.sh unzip
       - run: pnpm lint
 

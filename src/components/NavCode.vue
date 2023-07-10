@@ -7,37 +7,90 @@
         title="Get the code of the template"
       >
         <div>
-          <i class="material-symbols-outlined icon">terminal</i>
+          <!-- Icon like in GH -->
+          <span class=".topline">
+            <svg
+              aria-hidden="true"
+              height="16"
+              viewBox="0 0 16 16"
+              version="1.1"
+              width="16"
+              data-view-component="true"
+            >
+              <path
+                d="m11.28 3.22 4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L13.94 8l-3.72-3.72a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215Zm-6.56 0a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042L2.06 8l3.72 3.72a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L.47 8.53a.75.75 0 0 1 0-1.06Z"
+              ></path>
+            </svg>
+          </span>
           <span id="code">Code</span>
+          <span>
+            <svg
+              aria-hidden="true"
+              height="16"
+              viewBox="0 0 16 16"
+              version="1.1"
+              width="16"
+              data-view-component="true"
+            >
+              <path
+                d="m4.427 7.427 3.396 3.396a.25.25 0 0 0 .354 0l3.396-3.396A.25.25 0 0 0 11.396 7H4.604a.25.25 0 0 0-.177.427Z"
+              ></path>
+            </svg>
+          </span>
         </div>
       </button>
       <div class="dropdown-content">
-        <div class="copy-link">
-          <button
-            v-if="!linkGenerated"
-            class="copy-link-input generate"
-            @click="generateLink"
+        <div class="text-bold" style="text-align: left">
+          <svg
+            aria-hidden="true"
+            height="16"
+            viewBox="0 0 16 16"
+            version="1.1"
+            width="16"
+            data-view-component="true"
+            class="octicon octicon-terminal mr-2"
           >
-            <span v-if="!linkGenerating">Generate Link</span>
-            <span v-if="linkGenerating">Generating...</span>
-          </button>
-          <input
-            v-if="linkGenerated"
-            type="url"
-            class="copy-link-input generate"
-            v-model="codeUrl"
-            readonly
-          />
-          <button type="button" class="copy-link-button" @click="copyURL">
-            <span class="material-icons">content_copy </span>
-          </button>
+            <path
+              d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25Zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25ZM7.25 8a.749.749 0 0 1-.22.53l-2.25 2.25a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L5.44 8 3.72 6.28a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215l2.25 2.25c.141.14.22.331.22.53Zm1.5 1.5h3a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1 0-1.5Z"
+            ></path>
+          </svg>
+          Clone
         </div>
-        <span class="copy-notification">Copied!</span>
-        <div class="or">OR</div>
+
+        <div class="text-input-group">
+          <div class="copy-link">
+            <button
+              v-if="!linkGenerated"
+              class="copy-link-input generate"
+              id="text-box"
+              @click="generateLink"
+            >
+              <span v-if="!linkGenerating">Generate Link</span>
+              <span v-if="linkGenerating">Generating...</span>
+            </button>
+            <input
+              v-if="linkGenerated"
+              type="url"
+              class="copy-link-input generate"
+              v-model="codeUrl"
+              readonly
+            />
+            <button
+              type="button"
+              class="copy-link-button"
+              @click="copyURL"
+              id="text-box"
+            >
+              <span class="material-icons">content_copy </span>
+            </button>
+          </div>
+          <span class="copy-notification">Copied!</span>
+          <p id="wget-text">Use wget or paste the link in your browser.</p>
+          <hr class="solid" />
+        </div>
         <NavDownload @showDownloadMsg="DownloadMsg" />
       </div>
     </div>
-
     <!-- creating a one-way binding for download success message -->
     <div
       class="download-success"
@@ -119,21 +172,22 @@ export default {
     }
     const copyURL = () => {
       try {
-        navigator.clipboard.writeText(store.codeUrl)
-        const button = document.querySelector('.copy-link-button');
-        const notification = document.querySelector('.copy-notification');
+        if (codeUrl.value != '') {
+          navigator.clipboard.writeText(store.codeUrl)
+          const button = document.querySelector('.copy-link-button')
+          const notification = document.querySelector('.copy-notification')
 
-        button.classList.add('copied');
-        notification.style.display = 'inline';
+          button.classList.add('copied')
+          notification.style.display = 'inline'
 
-        setTimeout(function () {
-          button.classList.remove('copied');
-          notification.style.display = 'none';
-        }, 2000);
+          setTimeout(function () {
+            button.classList.remove('copied')
+            notification.style.display = 'none'
+          }, 2000)
+        }
       } catch ($e) {
         alert('Cannot copy')
       }
-      
     }
     // for the download message
     watch(DownloadMsgUpdate, () => {
@@ -162,10 +216,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.dropdown {
-  text-align: center;
-}
-
 .download-button {
   display: inline-flex;
   align-items: center;
@@ -188,15 +238,14 @@ export default {
 .dropbtn {
   background-color: #04aa6d;
   color: white;
-  padding: 16px;
-  font-size: 16px;
-  border: none;
+  text-align: center;
 }
 
 /* The container <div> - needed to position the dropdown content */
 .dropdown {
   position: relative;
   display: inline-block;
+  text-align: center;
 }
 
 /* Dropdown Content (Hidden by Default) */
@@ -209,6 +258,8 @@ export default {
   z-index: 1;
   padding: 0.5vh;
   text-align: center; /* Center-align the dropdown content */
+  border: 1px solid var(--c-brand-red);
+  border-radius: 3%;
 }
 
 /* Links inside the dropdown */
@@ -241,30 +292,33 @@ export default {
   font-size: 1rem;
 }
 
-.copy-link {
-  --height: 36px;
-  display: flex;
-  max-width: 250px;
-  margin-top: 5vh;
+.text-input-group {
+  margin-top: 4vh;
 }
 
+.copy-link {
+  --height: 1.6rem;
+  display: flex;
+  max-width: 250px;
+  font-size: 80%;
+  margin-top: 1%;
+}
 .generate {
   background-color: white;
   border-bottom-color: #3e8e41;
   width: 80%;
-  font-size: 14px;
+  font-size: 60%;
+  height: 1.5rem;
+}
+#text-box {
+  font-size: 95%;
+  height: 1.6rem;
+  border-radius: 3%;
 }
 
 .icon {
   vertical-align: bottom;
 }
-
-.or {
-  padding: 5%;
-  vertical-align: middle;
-  font-size: 100%;
-}
-
 .inline-icon {
   display: inline-flex;
   vertical-align: bottom;
@@ -287,8 +341,8 @@ export default {
 
 .copy-link-button {
   flex-shrink: 0;
-  width: var(--height);
-  height: var(--height);
+  width: 2rem;
+  height: 8%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -306,15 +360,16 @@ export default {
 .copy-notification {
   display: none;
   margin-left: 75%;
-  color:  #ffffff;
-  font-size: 12px;
-  background-color: #de4c2c;
+  color: var(--c-white-light);
+  font-size: 0.6rem;
+  background-color: var(--c-brand-red);
   padding: 2%;
   border-radius: 10%;
 }
 
 .copy-link-button.copied + .copy-notification {
-  display: inline;
+  display: block;
+  z-index: 10;
 }
 
 .download-success {
@@ -354,5 +409,15 @@ export default {
   .dropdown-content {
     min-width: 100%; /* Make the dropdown menu full width on smaller screens */
   }
+}
+
+/* Solid border */
+hr.solid {
+  border-top: 1px solid var(--c-brand-red);
+}
+
+#wget-text {
+  font-size: 0.6em;
+  text-align: left;
 }
 </style>
