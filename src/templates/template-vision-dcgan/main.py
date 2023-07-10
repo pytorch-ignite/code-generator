@@ -81,8 +81,9 @@ def run(local_rank: int, config: Any):
     logger.info("Configuration: \n%s", pformat(vars(config)))
     trainer.logger = evaluator.logger = logger
 
-    # setup ignite handlers
     #::: if (it.save_training || it.save_evaluation) { :::#
+
+    # setup ignite handlers
     #::: if (it.save_training) { :::#
     to_save_train = {
         "model_d": model_d,
@@ -107,6 +108,7 @@ def run(local_rank: int, config: Any):
     #::: } :::#
 
     #::: if (it.logger) { :::#
+
     # experiment tracking
     if rank == 0:
         exp_logger = setup_exp_logging(
@@ -163,12 +165,14 @@ def run(local_rank: int, config: Any):
     )
 
     #::: if (it.logger) { :::#
+
     # close logger
     if rank == 0:
         exp_logger.close()
     #::: } :::#
-    #
+
     #::: if (it.save_training || it.save_evaluation) { :::#
+
     # show last checkpoint names
     logger.info(
         "Last training checkpoint name - %s",

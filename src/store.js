@@ -1,9 +1,9 @@
 // @ts-check
 // central store for user input configs and generated codes
 import { reactive, watch } from 'vue'
-import ejs from 'ejs'
 
 import templates from './templates/templates.json'
+import { generateFiles, mergeCode } from './codegen'
 
 // get env variables for template fetching
 // @ts-ignore
@@ -59,36 +59,12 @@ export function saveConfig(key, value) {
   }
 }
 
-// merges the code from the common and specific files using ejs
-function mergeCode(specificFileText, commonFileText) {
-  const replaced = specificFileText.replace(
-    /#::= from_template_common ::#\n/g,
-    commonFileText
-  )
-  return replaced
-}
-
 // render the code if there are fetched files for current selected template
 export function genCode() {
   const currentFiles = files[store.config.template]
   store.code = {} // empty the `store.code` after changing templates
   if (currentFiles && Object.keys(currentFiles).length) {
-    for (const file in currentFiles) {
-      if (!store.config.include_test && file === 'test_all.py') {
-        delete store.code['test_all.py']
-        continue
-      }
-      store.code[file] = ejs
-        .render(
-          // replace `\s(s) or \n(s)#:::\s`
-          // with `#::: `
-          currentFiles[file].replace(/([\s\n]+#:::\s)/gi, '#::: '),
-          store.config
-        )
-        // trim `    #`
-        .replace(/\s{4}#$/gim, '')
-        .replace(/  # usort: skip/g, '')
-    }
+    generateFiles(currentFiles, store)
     if (isDev) {
       store.code[__DEV_CONFIG_FILE__] =
         '# THIS FILE APPEARS ONLY IN DEV MODE\n' +
@@ -130,9 +106,3 @@ export async function fetchTemplates(template) {
 // if that changed, call the genCode function
 // same as watch(() => store.config, () => genCode(), { deep: true })
 watch(store.config, () => genCode())
-
-// ejs options
-ejs.localsName = 'it'
-ejs.delimiter = ':::'
-ejs.openDelimiter = '#'
-ejs.closeDelimiter = '#'
