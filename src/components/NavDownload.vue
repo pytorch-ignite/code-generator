@@ -81,7 +81,7 @@ export default {
   border-radius: 4px;
 }
 #download-zip {
-  font-size: 1.6vh;
+  font-size: 14px;
 }
 
 .download-button span {

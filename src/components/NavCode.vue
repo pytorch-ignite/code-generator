@@ -151,9 +151,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .dropdown {
-  align-content: center;
   text-align: center;
 }
+
 .download-button {
   display: inline-flex;
   align-items: center;
@@ -162,7 +162,7 @@ export default {
   color: var(--c-text);
   cursor: pointer;
   font-family: var(--font-family-base);
-  font-size: 1em;
+  font-size: 14px;
   padding: 0.5rem 1rem;
   border: 1px solid var(--c-brand-red);
   border-radius: 4px;
@@ -196,6 +196,7 @@ export default {
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
   padding: 0.5vh;
+  text-align: center; /* Center-align the dropdown content */
 }
 
 /* Links inside the dropdown */
@@ -205,6 +206,7 @@ export default {
   text-decoration: none;
   display: block;
   border: #de4c2c;
+  text-align: center; /* Center-align the dropdown links */
 }
 
 /* Change color of dropdown links on hover */
@@ -238,20 +240,24 @@ export default {
   background-color: white;
   border-bottom-color: #3e8e41;
   width: 80%;
-  font-size: 1.6vh;
+  font-size: 14px;
 }
+
 .icon {
   vertical-align: bottom;
 }
+
 .or {
   padding: 5%;
   vertical-align: middle;
   font-size: 100%;
 }
+
 .inline-icon {
   display: inline-flex;
   vertical-align: bottom;
 }
+
 .copy-link-input {
   flex-grow: 0;
   padding: 0 8px;
@@ -316,5 +322,11 @@ export default {
 .msg-gh {
   margin: 0;
   color: var(--c-brand-red);
+}
+
+@media screen and (max-width: 768px) {
+  .dropdown-content {
+    min-width: 100%; /* Make the dropdown menu full width on smaller screens */
+  }
 }
 </style>
