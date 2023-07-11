@@ -66,9 +66,7 @@ def run(local_rank: int, config: Any):
     metrics = {"IoU": IoU(cm_metric), "mIoU_bg": mIoU(cm_metric)}
 
     # trainer and evaluator
-    trainer = setup_trainer(
-        config, model, optimizer, loss_fn, device, dataloader_train.sampler
-    )
+    trainer = setup_trainer(config, model, optimizer, loss_fn, device, dataloader_train.sampler)
     evaluator = setup_evaluator(config, model, metrics, device)
 
     # setup engines logger with python logging
@@ -87,8 +85,9 @@ def run(local_rank: int, config: Any):
     else:
         trainer.add_event_handler(Events.ITERATION_STARTED, lr_scheduler)
 
-    # setup ignite handlers
     #::: if (it.save_training || it.save_evaluation) { :::#
+
+    # setup ignite handlers
     #::: if (it.save_training) { :::#
     to_save_train = {
         "model": model,
@@ -104,14 +103,13 @@ def run(local_rank: int, config: Any):
     #::: } else { :::#
     to_save_eval = None
     #::: } :::#
-    ckpt_handler_train, ckpt_handler_eval = setup_handlers(
-        trainer, evaluator, config, to_save_train, to_save_eval
-    )
+    ckpt_handler_train, ckpt_handler_eval = setup_handlers(trainer, evaluator, config, to_save_train, to_save_eval)
     #::: } else if (it.patience || it.terminate_on_nan || it.limit_sec) { :::#
     setup_handlers(trainer, evaluator, config)
     #::: } :::#
 
     #::: if (it.logger) { :::#
+
     # experiment tracking
     if rank == 0:
         exp_logger = setup_exp_logging(config, trainer, optimizer, evaluator)
@@ -177,12 +175,14 @@ def run(local_rank: int, config: Any):
     )
 
     #::: if (it.logger) { :::#
+
     # close logger
     if rank == 0:
         exp_logger.close()
     #::: } :::#
-    #
+
     #::: if (it.save_training || it.save_evaluation) { :::#
+
     # show last checkpoint names
     logger.info(
         "Last training checkpoint name - %s",

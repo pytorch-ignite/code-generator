@@ -49,12 +49,8 @@ def run(local_rank: int, config: Any):
     loss_fn = nn.BCELoss().to(device=device)
 
     # optimizers
-    optimizer_d = idist.auto_optim(
-        optim.Adam(model_d.parameters(), lr=config.lr, betas=(0.5, 0.999))
-    )
-    optimizer_g = idist.auto_optim(
-        optim.Adam(model_g.parameters(), lr=config.lr, betas=(0.5, 0.999))
-    )
+    optimizer_d = idist.auto_optim(optim.Adam(model_d.parameters(), lr=config.lr, betas=(0.5, 0.999)))
+    optimizer_g = idist.auto_optim(optim.Adam(model_g.parameters(), lr=config.lr, betas=(0.5, 0.999)))
 
     # trainer and evaluator
     trainer = setup_trainer(
@@ -81,8 +77,9 @@ def run(local_rank: int, config: Any):
     logger.info("Configuration: \n%s", pformat(vars(config)))
     trainer.logger = evaluator.logger = logger
 
-    # setup ignite handlers
     #::: if (it.save_training || it.save_evaluation) { :::#
+
+    # setup ignite handlers
     #::: if (it.save_training) { :::#
     to_save_train = {
         "model_d": model_d,
@@ -99,14 +96,13 @@ def run(local_rank: int, config: Any):
     #::: } else { :::#
     to_save_train = None
     #::: } :::#
-    ckpt_handler_train, ckpt_handler_eval = setup_handlers(
-        trainer, evaluator, config, to_save_train, to_save_eval
-    )
+    ckpt_handler_train, ckpt_handler_eval = setup_handlers(trainer, evaluator, config, to_save_train, to_save_eval)
     #::: } else if (it.patience || it.terminate_on_nan || it.limit_sec) { :::#
     setup_handlers(trainer, evaluator, config)
     #::: } :::#
 
     #::: if (it.logger) { :::#
+
     # experiment tracking
     if rank == 0:
         exp_logger = setup_exp_logging(
@@ -163,12 +159,14 @@ def run(local_rank: int, config: Any):
     )
 
     #::: if (it.logger) { :::#
+
     # close logger
     if rank == 0:
         exp_logger.close()
     #::: } :::#
-    #
+
     #::: if (it.save_training || it.save_evaluation) { :::#
+
     # show last checkpoint names
     logger.info(
         "Last training checkpoint name - %s",

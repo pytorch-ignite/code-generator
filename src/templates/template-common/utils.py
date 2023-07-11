@@ -16,11 +16,7 @@ from ignite.engine.events import Events
 
 #::: } :::#
 #::: if (it.save_training || it.save_evaluation) { :::#
-from ignite.handlers import (
-    Checkpoint,
-    DiskSaver,
-    global_step_from_engine,
-)  # usort: skip
+from ignite.handlers import Checkpoint, DiskSaver, global_step_from_engine  # usort: skip
 
 #::: } else { :::#
 from ignite.handlers import Checkpoint
@@ -84,9 +80,7 @@ def log_metrics(engine: Engine, tag: str) -> None:
     tag
         a string to add at the start of output.
     """
-    metrics_format = "{0} [{1}/{2}]: {3}".format(
-        tag, engine.state.epoch, engine.state.iteration, engine.state.metrics
-    )
+    metrics_format = "{0} [{1}/{2}]: {3}".format(tag, engine.state.epoch, engine.state.iteration, engine.state.metrics)
     engine.logger.info(metrics_format)
 
 
@@ -175,21 +169,13 @@ def setup_exp_logging(config, trainer, optimizers, evaluators):
     """Setup Experiment Tracking logger from Ignite."""
 
     #::: if (it.logger === 'clearml') { :::#
-    logger = common.setup_clearml_logging(
-        trainer, optimizers, evaluators, config.log_every_iters
-    )
+    logger = common.setup_clearml_logging(trainer, optimizers, evaluators, config.log_every_iters)
     #::: } else if (it.logger === 'mlflow') { :::#
-    logger = common.setup_mlflow_logging(
-        trainer, optimizers, evaluators, config.log_every_iters
-    )
+    logger = common.setup_mlflow_logging(trainer, optimizers, evaluators, config.log_every_iters)
     #::: } else if (it.logger === 'neptune') { :::#
-    logger = common.setup_neptune_logging(
-        trainer, optimizers, evaluators, config.log_every_iters
-    )
+    logger = common.setup_neptune_logging(trainer, optimizers, evaluators, config.log_every_iters)
     #::: } else if (it.logger === 'polyaxon') { :::#
-    logger = common.setup_plx_logging(
-        trainer, optimizers, evaluators, config.log_every_iters
-    )
+    logger = common.setup_plx_logging(trainer, optimizers, evaluators, config.log_every_iters)
     #::: } else if (it.logger === 'tensorboard') { :::#
     logger = common.setup_tb_logging(
         config.output_dir,
@@ -199,13 +185,9 @@ def setup_exp_logging(config, trainer, optimizers, evaluators):
         config.log_every_iters,
     )
     #::: } else if (it.logger === 'visdom') { :::#
-    logger = common.setup_visdom_logging(
-        trainer, optimizers, evaluators, config.log_every_iters
-    )
+    logger = common.setup_visdom_logging(trainer, optimizers, evaluators, config.log_every_iters)
     #::: } else if (it.logger === 'wandb') { :::#
-    logger = common.setup_wandb_logging(
-        trainer, optimizers, evaluators, config.log_every_iters
-    )
+    logger = common.setup_wandb_logging(trainer, optimizers, evaluators, config.log_every_iters)
     #::: } :::#
     return logger
 

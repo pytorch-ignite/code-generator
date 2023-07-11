@@ -88,9 +88,7 @@ def setup_data(config: Namespace):
             "Dataset not found. You can use `download_datasets` from data.py function to download it."
         ) from e
 
-    dataset_eval = VOCSegmentationPIL(
-        root=config.data_path, year="2012", image_set="val", download=False
-    )
+    dataset_eval = VOCSegmentationPIL(root=config.data_path, year="2012", image_set="val", download=False)
 
     val_img_size = 513
     train_img_size = 480
@@ -100,9 +98,7 @@ def setup_data(config: Namespace):
 
     transform_train = A.Compose(
         [
-            A.RandomScale(
-                scale_limit=(0.0, 1.5), interpolation=cv2.INTER_LINEAR, p=1.0
-            ),
+            A.RandomScale(scale_limit=(0.0, 1.5), interpolation=cv2.INTER_LINEAR, p=1.0),
             A.PadIfNeeded(val_img_size, val_img_size, border_mode=cv2.BORDER_CONSTANT),
             A.RandomCrop(train_img_size, train_img_size),
             A.HorizontalFlip(),
@@ -176,7 +172,6 @@ def download_datasets(data_path):
         # Ensure that only rank 0 download the dataset
         idist.barrier()
     #::: } :::#
-
     VOCSegmentation(data_path, image_set="train", download=True)
     VOCSegmentation(data_path, image_set="val", download=True)
     #::: if (it.use_dist) { :::#

@@ -82,7 +82,7 @@ jobs:
       - run: pnpm build
       - run: pnpm test:ci
       - run: sh ./scripts/run_tests.sh unzip
-      - run: pnpm lint
+      - run: pnpm dist_lint
 
       - name: 'Run ${{ matrix.template }} ${{ matrix.test }}'
         run: sh ./scripts/run_tests.sh ${{ matrix.test }} ${{ matrix.template }}
@@ -110,4 +110,4 @@ jobs:
       - run: pip install -Uq pip wheel && bash scripts/run_code_style.sh install
       - run: npm install -g pnpm
       - run: pnpm i --frozen-lockfile --color
-      - run: pnpm min_lint
+      - run: pnpm source_lint

@@ -41,7 +41,8 @@ pnpm dev
 - Run ci tests locally
 
 ```bash
-pnpm test:ci
+pnpm dev &
+pnpm test
 
 sh ./scripts/run_tests.sh unzip
 sh ./scripts/run_tests.sh simple vision-classification

@@ -1,23 +1,18 @@
 import os
 from pprint import pformat
 from shutil import copy
-from typing import Any, cast
+from typing import Any
 
 import ignite.distributed as idist
 from data import setup_data
 from ignite.engine import Events
-from ignite.handlers import LRScheduler, PiecewiseLinear
+from ignite.handlers import PiecewiseLinear
 from ignite.metrics import Accuracy, Loss
 from ignite.utils import manual_seed
 from models import TransformerModel
 from torch import nn, optim
 from trainers import setup_evaluator, setup_trainer
 from utils import *
-
-try:
-    from torch.optim.lr_scheduler import _LRScheduler as PyTorchLRScheduler
-except ImportError:
-    from torch.optim.lr_scheduler import LRScheduler as PyTorchLRScheduler
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"  # remove tokenizer paralleism warning
 
@@ -50,9 +45,7 @@ def run(local_rank: int, config: Any):
     )
 
     config.lr *= idist.get_world_size()
-    optimizer = idist.auto_optim(
-        optim.AdamW(model.parameters(), lr=config.lr, weight_decay=config.weight_decay)
-    )
+    optimizer = idist.auto_optim(optim.AdamW(model.parameters(), lr=config.lr, weight_decay=config.weight_decay))
     loss_fn = nn.BCEWithLogitsLoss().to(device=device)
 
     le = config.num_iters_per_epoch
@@ -61,9 +54,7 @@ def run(local_rank: int, config: Any):
         (le * config.num_warmup_epochs, config.lr),
         (le * config.max_epochs, 0.0),
     ]
-    lr_scheduler = PiecewiseLinear(
-        optimizer, param_name="lr", milestones_values=milestones_values
-    )
+    lr_scheduler = PiecewiseLinear(optimizer, param_name="lr", milestones_values=milestones_values)
 
     # setup metrics to attach to evaluator
     metrics = {
@@ -72,9 +63,7 @@ def run(local_rank: int, config: Any):
     }
 
     # trainer and evaluator
-    trainer = setup_trainer(
-        config, model, optimizer, loss_fn, device, dataloader_train.sampler
-    )
+    trainer = setup_trainer(config, model, optimizer, loss_fn, device, dataloader_train.sampler)
     evaluator = setup_evaluator(config, model, metrics, device)
 
     # setup engines logger with python logging
@@ -83,18 +72,11 @@ def run(local_rank: int, config: Any):
     logger.info("Configuration: \n%s", pformat(vars(config)))
     trainer.logger = evaluator.logger = logger
 
-    if isinstance(lr_scheduler, PyTorchLRScheduler):
-        trainer.add_event_handler(
-            Events.ITERATION_COMPLETED,
-            lambda engine: cast(PyTorchLRScheduler, lr_scheduler).step(),
-        )
-    elif isinstance(lr_scheduler, LRScheduler):
-        trainer.add_event_handler(Events.ITERATION_COMPLETED, lr_scheduler)
-    else:
-        trainer.add_event_handler(Events.ITERATION_STARTED, lr_scheduler)
+    trainer.add_event_handler(Events.ITERATION_COMPLETED, lr_scheduler)
+
+    #::: if (it.save_training || it.save_evaluation) { :::#
 
     # setup ignite handlers
-    #::: if (it.save_training || it.save_evaluation) { :::#
     #::: if (it.save_training) { :::#
     to_save_train = {
         "model": model,
@@ -110,14 +92,13 @@ def run(local_rank: int, config: Any):
     #::: } else { :::#
     to_save_eval = None
     #::: } :::#
-    ckpt_handler_train, ckpt_handler_eval = setup_handlers(
-        trainer, evaluator, config, to_save_train, to_save_eval
-    )
+    ckpt_handler_train, ckpt_handler_eval = setup_handlers(trainer, evaluator, config, to_save_train, to_save_eval)
     #::: } else if (it.patience || it.terminate_on_nan || it.limit_sec) { :::#
     setup_handlers(trainer, evaluator, config)
     #::: } :::#
 
     #::: if (it.logger) { :::#
+
     # experiment tracking
     if rank == 0:
         exp_logger = setup_exp_logging(config, trainer, optimizer, evaluator)
@@ -155,12 +136,14 @@ def run(local_rank: int, config: Any):
     )
 
     #::: if (it.logger) { :::#
+
     # close logger
     if rank == 0:
         exp_logger.close()
     #::: } :::#
-    #
+
     #::: if (it.save_training || it.save_evaluation) { :::#
+
     # show last checkpoint names
     logger.info(
         "Last training checkpoint name - %s",
