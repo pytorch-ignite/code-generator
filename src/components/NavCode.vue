@@ -8,11 +8,11 @@
       >
         <div>
           <!-- Icon like in GH -->
-          <span class=".topline">
+          <span id="topline">
             <svg
               aria-hidden="true"
               height="16"
-              viewBox="0 0 16 16"
+              viewBox="0 0 15 15"
               version="1.1"
               width="16"
               data-view-component="true"
@@ -23,7 +23,7 @@
             </svg>
           </span>
           <span id="code">Code</span>
-          <span>
+          <span id="arrow-drop-down">
             <svg
               aria-hidden="true"
               height="16"
@@ -81,7 +81,7 @@
               @click="copyURL"
               id="text-box"
             >
-              <span class="material-icons">content_copy </span>
+              <span class="material-icons" id="copy-button">content_copy </span>
             </button>
           </div>
           <span class="copy-notification">Copied!</span>
@@ -216,6 +216,20 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+/* Adjusting the top Code button */
+#topline {
+  vertical-align: middle;
+}
+
+#code {
+  font-size: 1rem;
+  vertical-align: unset;
+}
+
+#arrow-drop-down {
+  vertical-align: middle;
+}
+
 .download-button {
   display: inline-flex;
   align-items: center;
@@ -252,7 +266,7 @@ export default {
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: #f1f1f1;
+  background-color: var(--c-white-light);
   min-width: 15vw;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
@@ -268,14 +282,14 @@ export default {
   padding: 12px 16px;
   text-decoration: none;
   display: block;
-  border: #de4c2c;
+  border: var(--c-brand-red);
   text-align: center; /* Center-align the dropdown links */
 }
 
 /* Change color of dropdown links on hover */
 .dropdown-content a:hover {
-  background-color: #de4c2c;
-  color: #f1f1f1;
+  background-color: var(--c-brand-red);
+  color: var(--c-white-light);
 }
 
 /* Show the dropdown menu on hover */
@@ -285,15 +299,12 @@ export default {
 
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {
-  background-color: #de4c2c;
-}
-
-#code {
-  font-size: 1rem;
+  background-color: var(--c-brand-red);
 }
 
 .text-input-group {
   margin-top: 4vh;
+  text-align: -webkit-center;
 }
 
 .copy-link {
@@ -302,16 +313,16 @@ export default {
   max-width: 250px;
   font-size: 80%;
   margin-top: 1%;
+  align-self: center;
 }
 .generate {
-  background-color: white;
-  border-bottom-color: #3e8e41;
+  background-color: #ffffff;
   width: 80%;
   font-size: 60%;
   height: 1.5rem;
 }
 #text-box {
-  font-size: 95%;
+  font-size: 90%;
   height: 1.6rem;
   border-radius: 3%;
 }
@@ -328,13 +339,13 @@ export default {
   flex-grow: 0;
   padding: 0 8px;
   font-size: 14px;
-  border: 1px solid #de4c2c;
+  border: 1px solid var(--c-brand-red);
   border-right: none;
   outline: none;
 }
 
 .copy-link-input:hover {
-  background: #de4c2c;
+  background: var(--c-brand-red);
   border: 1px solid #cccccc;
   color: #f1f1f1;
 }
@@ -349,8 +360,9 @@ export default {
   background: #dddddd;
   color: #333333;
   outline: none;
-  border: 1px solid #de4c2c;
+  border: 1px solid var(--c-brand-red);
   cursor: pointer;
+  font-size: 50%;
 }
 
 .copy-link-button:hover {
@@ -419,5 +431,8 @@ hr.solid {
 #wget-text {
   font-size: 0.6em;
   text-align: left;
+}
+#copy-button {
+  font-size: 1rem;
 }
 </style>
