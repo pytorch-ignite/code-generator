@@ -1,0 +1,9 @@
+seed: 666
+render: true
+gamma: 0.99
+recordings_path: ./recordings
+lr: 0.0003
+max_episodes: 10000
+log_every_episodes: 1
+save_every_episodes: 10
+output_dir: ./logs
