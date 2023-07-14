@@ -37,6 +37,7 @@ export const msg = reactive({
 // main reactive object
 // store.code - the final rendered code to be included in archive
 // store.config - the internal config to track user input
+// codeUrl - the wget url for integration and local development
 export const store = reactive({
   code: {},
   config: {
@@ -44,7 +45,8 @@ export const store = reactive({
     include_test: false,
     output_dir: './logs',
     log_every_iters: 10
-  }
+  },
+  codeUrl: ''
 })
 
 /**

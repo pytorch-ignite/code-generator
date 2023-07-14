@@ -32,12 +32,15 @@ test('text classification simple', async () => {
   await page.click('text=Loggers')
   await page.click('text=config.yaml')
 
-  const [download] = await Promise.all([
-    page.waitForEvent('download'),
-    page.click('button:has-text("Download")')
-  ])
+  await page.getByRole('button', { name: 'Code' }).click()
+  const downloadPromise = await page
+    .waitForEvent('download', { timeout: 2000 })
+    .catch(() => {
+      page.getByRole('button', { name: 'Download Zip' }).click()
+      return page.waitForEvent('download')
+    })
 
-  await download.saveAs('./dist-tests/text-classification-simple.zip')
+  await downloadPromise.saveAs('./dist-tests/text-classification-simple.zip')
 })
 
 test('text classification all', async () => {
@@ -85,12 +88,14 @@ test('text classification all', async () => {
   await page.click('text=Loggers')
   await page.click('text=config.yaml')
 
-  const [download] = await Promise.all([
-    page.waitForEvent('download'),
-    page.click('button:has-text("Download")')
-  ])
-
-  await download.saveAs('./dist-tests/text-classification-all.zip')
+  await page.getByRole('button', { name: 'Code' }).click()
+  const downloadPromise = await page
+    .waitForEvent('download', { timeout: 2000 })
+    .catch(() => {
+      page.getByRole('button', { name: 'Download Zip' }).click()
+      return page.waitForEvent('download')
+    })
+  await downloadPromise.saveAs('./dist-tests/text-classification-all.zip')
 })
 
 test('text classification launch', async () => {
@@ -107,12 +112,15 @@ test('text classification launch', async () => {
   await page.click('text=Loggers')
   await page.click('text=config.yaml')
 
-  const [download] = await Promise.all([
-    page.waitForEvent('download'),
-    page.click('button:has-text("Download")')
-  ])
-
-  await download.saveAs('./dist-tests/text-classification-launch.zip')
+  await page.getByRole('button', { name: 'Code' }).click()
+  await page.getByRole('button', { name: 'Download Zip' }).click()
+  const downloadPromise = await page
+    .waitForEvent('download', { timeout: 2000 })
+    .catch(() => {
+      page.getByRole('button', { name: 'Download Zip' }).click()
+      return page.waitForEvent('download')
+    })
+  await downloadPromise.saveAs('./dist-tests/text-classification-launch.zip')
 })
 
 test('text classification spawn', async () => {
@@ -130,10 +138,13 @@ test('text classification spawn', async () => {
   await page.click('text=Loggers')
   await page.click('text=config.yaml')
 
-  const [download] = await Promise.all([
-    page.waitForEvent('download'),
-    page.click('button:has-text("Download")')
-  ])
-
-  await download.saveAs('./dist-tests/text-classification-spawn.zip')
+  await page.getByRole('button', { name: 'Code' }).click()
+  await page.getByRole('button', { name: 'Download Zip' }).click()
+  const downloadPromise = await page
+    .waitForEvent('download', { timeout: 2000 })
+    .catch(() => {
+      page.getByRole('button', { name: 'Download Zip' }).click()
+      return page.waitForEvent('download')
+    })
+  await downloadPromise.saveAs('./dist-tests/text-classification-spawn.zip')
 })

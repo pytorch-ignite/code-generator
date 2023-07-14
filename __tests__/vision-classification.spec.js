@@ -32,12 +32,17 @@ test('vision classification simple', async () => {
   await page.click('text=Loggers')
   await page.click('text=config.yaml')
 
-  const [download] = await Promise.all([
-    page.waitForEvent('download'),
-    page.click('button:has-text("Download")')
-  ])
+  await page.getByRole('button', { name: 'Code' }).click()
+  await page.getByRole('button', { name: 'Download Zip' }).click()
 
-  await download.saveAs('./dist-tests/vision-classification-simple.zip')
+  const downloadPromise = await page
+    .waitForEvent('download', { timeout: 2000 })
+    .catch(() => {
+      page.getByRole('button', { name: 'Download Zip' }).click()
+      return page.waitForEvent('download')
+    })
+
+  await downloadPromise.saveAs('./dist-tests/vision-classification-simple.zip')
 })
 
 test('vision classification all', async () => {
@@ -85,12 +90,15 @@ test('vision classification all', async () => {
   await page.click('text=Loggers')
   await page.click('text=config.yaml')
 
-  const [download] = await Promise.all([
-    page.waitForEvent('download'),
-    page.click('button:has-text("Download")')
-  ])
-
-  await download.saveAs('./dist-tests/vision-classification-all.zip')
+  await page.getByRole('button', { name: 'Code' }).click()
+  await page.getByRole('button', { name: 'Download Zip' }).click()
+  const downloadPromise = await page
+    .waitForEvent('download', { timeout: 2000 })
+    .catch(() => {
+      page.getByRole('button', { name: 'Download Zip' }).click()
+      return page.waitForEvent('download')
+    })
+  await downloadPromise.saveAs('./dist-tests/vision-classification-all.zip')
 })
 
 test('vision classification launch', async () => {
@@ -107,12 +115,15 @@ test('vision classification launch', async () => {
   await page.click('text=Loggers')
   await page.click('text=config.yaml')
 
-  const [download] = await Promise.all([
-    page.waitForEvent('download'),
-    page.click('button:has-text("Download")')
-  ])
-
-  await download.saveAs('./dist-tests/vision-classification-launch.zip')
+  await page.getByRole('button', { name: 'Code' }).click()
+  await page.getByRole('button', { name: 'Download Zip' }).click()
+  const downloadPromise = await page
+    .waitForEvent('download', { timeout: 2000 })
+    .catch(() => {
+      page.getByRole('button', { name: 'Download Zip' }).click()
+      return page.waitForEvent('download')
+    })
+  await downloadPromise.saveAs('./dist-tests/vision-classification-launch.zip')
 })
 
 test('vision classification spawn', async () => {
@@ -130,10 +141,13 @@ test('vision classification spawn', async () => {
   await page.click('text=Loggers')
   await page.click('text=config.yaml')
 
-  const [download] = await Promise.all([
-    page.waitForEvent('download'),
-    page.click('button:has-text("Download")')
-  ])
-
-  await download.saveAs('./dist-tests/vision-classification-spawn.zip')
+  await page.getByRole('button', { name: 'Code' }).click()
+  await page.getByRole('button', { name: 'Download Zip' }).click()
+  const downloadPromise = await page
+    .waitForEvent('download', { timeout: 2000 })
+    .catch(() => {
+      page.getByRole('button', { name: 'Download Zip' }).click()
+      return page.waitForEvent('download')
+    })
+  await downloadPromise.saveAs('./dist-tests/vision-classification-spawn.zip')
 })
