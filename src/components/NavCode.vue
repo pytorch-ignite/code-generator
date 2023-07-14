@@ -8,7 +8,7 @@
       >
         <div>
           <!-- Icon like in GH -->
-          <span id="topline">
+          <span class="topline">
             <svg
               aria-hidden="true"
               height="16"
@@ -23,7 +23,7 @@
             </svg>
           </span>
           <span id="code">Code</span>
-          <span id="arrow-drop-down">
+          <span class="topline">
             <svg
               aria-hidden="true"
               height="16"
@@ -64,11 +64,11 @@
               @click="copyURL"
               id="text-box"
             >
-              <span class="material-icons" id="copy-button">content_copy </span>
+              <span class="material-icons copy-button">content_copy </span>
             </button>
           </div>
           <span class="copy-notification">Copied!</span>
-          <p id="wget-text">Use wget or paste the link in your browser.</p>
+          <p class="wget-text">Use wget or paste the link in your browser.</p>
           <hr class="solid" />
         </div>
         <NavDownload @showDownloadMsg="DownloadMsg" />
@@ -200,17 +200,12 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 /* Adjusting the top Code button */
-#topline {
+.topline {
   vertical-align: middle;
 }
 
 #code {
   font-size: 1rem;
-  vertical-align: unset;
-}
-
-#arrow-drop-down {
-  vertical-align: middle;
 }
 
 .download-button {
@@ -237,14 +232,6 @@ export default {
   color: white;
   text-align: center;
 }
-
-/* The container <div> - needed to position the dropdown content */
-.dropdown {
-  position: relative;
-  display: inline-block;
-  text-align: center;
-}
-
 /* Dropdown Content (Hidden by Default) */
 .dropdown-content {
   display: none;
@@ -257,22 +244,7 @@ export default {
   text-align: center; /* Center-align the dropdown content */
   border: 1px solid var(--c-brand-red);
   border-radius: 3%;
-}
-
-/* Links inside the dropdown */
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-  border: var(--c-brand-red);
-  text-align: center; /* Center-align the dropdown links */
-}
-
-/* Change color of dropdown links on hover */
-.dropdown-content a:hover {
-  background-color: var(--c-brand-red);
-  color: var(--c-white-light);
+  text-align: -webkit-center;
 }
 
 /* Show the dropdown menu on hover */
@@ -286,17 +258,17 @@ export default {
 }
 
 .text-input-group {
-  margin-top: 4vh;
-  text-align: -webkit-center;
+  margin-top: 2vh;
 }
 
 .copy-link {
   --height: 1.6rem;
   display: flex;
-  max-width: 250px;
+  max-width: 50vw;
   font-size: 80%;
-  margin-top: 1%;
+  margin-top: 8%;
   align-self: center;
+  margin-left: 1.1vw;
 }
 .generate {
   background-color: #ffffff;
@@ -334,17 +306,12 @@ export default {
 }
 
 .copy-link-button {
-  flex-shrink: 0;
   width: 2rem;
   height: 8%;
   display: flex;
-  align-items: center;
-  justify-content: center;
   background: #dddddd;
   color: #333333;
-  outline: none;
   border: 1px solid var(--c-brand-red);
-  cursor: pointer;
   font-size: 50%;
 }
 
@@ -365,6 +332,17 @@ export default {
 .copy-link-button.copied + .copy-notification {
   display: block;
   z-index: 10;
+}
+.copy-button {
+  font-size: 1rem;
+}
+.wget-text {
+  font-size: 0.6em;
+}
+
+/* Solid border */
+hr.solid {
+  border-top: 1px solid var(--c-brand-red);
 }
 
 .download-success {
@@ -398,24 +376,5 @@ export default {
 .msg-gh {
   margin: 0;
   color: var(--c-brand-red);
-}
-
-@media screen and (max-width: 768px) {
-  .dropdown-content {
-    min-width: 100%; /* Make the dropdown menu full width on smaller screens */
-  }
-}
-
-/* Solid border */
-hr.solid {
-  border-top: 1px solid var(--c-brand-red);
-}
-
-#wget-text {
-  font-size: 0.6em;
-  text-align: left;
-}
-#copy-button {
-  font-size: 1rem;
 }
 </style>

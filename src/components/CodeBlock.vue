@@ -139,6 +139,7 @@ div[class*='language-']::before,
 .line-numbers {
   position: relative;
   font-size: var(--code-font-size);
+  -webkit-user-select: none;
   user-select: none;
 }
 
