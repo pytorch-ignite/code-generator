@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   '@iconify/iconify':
     specifier: ^3.1.0
@@ -42,7 +46,7 @@ dependencies:
     version: 3.10.1
   playwright-chromium:
     specifier: ^1.33.0
-    version: 1.35.1
+    version: 1.36.1
   prettier:
     specifier: ^2.5.1
     version: 2.8.8
@@ -2880,17 +2884,17 @@ packages:
       find-up: 4.1.0
     dev: false
 
-  /playwright-chromium@1.35.1:
-    resolution: {integrity: sha512-bPuWIk/DYWtrg10ajcc9cZLo5s9XQrs6JF6wwiieqZ73rCG3PLVEm0RX8fCUzziuEAhYsoL09UNuKSKv7pKz9A==}
+  /playwright-chromium@1.36.1:
+    resolution: {integrity: sha512-V2jBtS5zNUyMajzh6SRiCzafsz/Mg35IroR+SwWhAa1Dqa4juGXDp26AdK7Nj/fAOvwnG+dFDVOVx/ewt9dSxQ==}
     engines: {node: '>=16'}
     hasBin: true
     requiresBuild: true
     dependencies:
-      playwright-core: 1.35.1
+      playwright-core: 1.36.1
     dev: false
 
-  /playwright-core@1.35.1:
-    resolution: {integrity: sha512-pNXb6CQ7OqmGDRspEjlxE49w+4YtR6a3X6mT1hZXeJHWmsEz7SunmvZeiG/+y1yyMZdHnnn73WKYdtV1er0Xyg==}
+  /playwright-core@1.36.1:
+    resolution: {integrity: sha512-7+tmPuMcEW4xeCL9cp9KxmYpQYHKkyjwoXRnoeTowaeNat8PoBMk/HwCYhqkH2fRkshfKEOiVus/IhID2Pg8kg==}
     engines: {node: '>=16'}
     hasBin: true
     dev: false
