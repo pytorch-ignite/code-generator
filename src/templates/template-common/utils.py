@@ -50,24 +50,29 @@ def get_default_parser():
     return parser
 
 
-def setup_config(parser=None):
-    if parser is None:
-        parser = get_default_parser()
+class DotDict(dict):
+    """
+    Dictionary subclass that allows dot notation access to keys.
+    """
 
-    args = parser.parse_args()
-    config_path = args.config
+    def __getattr__(self, attr):
+        value = self.get(attr)
+        if isinstance(value, dict):
+            return DotDict(value)
+        return value
 
+
+def setup_config(config_path, **kwargs):
     with open(config_path, "r") as f:
         config = yaml.safe_load(f.read())
+    for k, v in kwargs.items():
+        if k in config:
+            print(f"Override parameter {k}: {config[k]} -> {v}")
+        else:
+            print(f"{k} parameter not in {config_path}")
+        config[k] = v
 
-    optional_attributes = ["train_epoch_length", "eval_epoch_length"]
-    for attr in optional_attributes:
-        config[attr] = config.get(attr, None)
-
-    for k, v in config.items():
-        setattr(args, k, v)
-
-    return args
+    return DotDict(config)
 
 
 def log_metrics(engine: Engine, tag: str) -> None:

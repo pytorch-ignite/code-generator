@@ -143,7 +143,7 @@ nproc_per_node: #:::= it.nproc_per_node :::#
 ```
 
 ```sh
-python main.py config.yaml --backend #:::= it.backend :::#
+python main.py config.yaml --backend [--override_arg=value] #:::= it.backend :::#
 ```
 
 #::: } :::#
@@ -155,7 +155,7 @@ python main.py config.yaml --backend #:::= it.backend :::#
 ### 1 GPU Training
 
 ```sh
-python main.py config.yaml
+python main.py config.yaml [--override_arg=value]
 ```
 
 #::: } :::#
