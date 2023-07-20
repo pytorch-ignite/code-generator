@@ -38,6 +38,7 @@ test('vision dcgan simple', async () => {
   const downloadPromise = await page
     .waitForEvent('download', { timeout: 2000 })
     .catch(() => {
+      page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download')
     })
@@ -95,6 +96,7 @@ test('vision dcgan all', async () => {
   const downloadPromise = await page
     .waitForEvent('download', { timeout: 2000 })
     .catch(() => {
+      page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download')
     })
@@ -122,6 +124,7 @@ test('vision dcgan launch', async () => {
   const downloadPromise = await page
     .waitForEvent('download', { timeout: 2000 })
     .catch(() => {
+      page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download')
     })
@@ -150,6 +153,7 @@ test('vision dcgan spawn', async () => {
   const downloadPromise = await page
     .waitForEvent('download', { timeout: 2000 })
     .catch(() => {
+      page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download')
     })
