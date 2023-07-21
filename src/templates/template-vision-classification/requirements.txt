@@ -2,6 +2,7 @@ torch>=1.10.2
 torchvision>=0.11.3
 pytorch-ignite>=0.4.8
 pyyaml
+fire
 
 #::: if (['neptune', 'polyaxon'].includes(it.logger)) { :::#
 

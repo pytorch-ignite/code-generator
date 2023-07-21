@@ -4,6 +4,7 @@ pytorch-ignite>=0.4.8
 pyyaml
 transformers
 datasets
+fire
 
 #::: if (['neptune', 'polyaxon'].includes(it.logger)) { :::#
 
