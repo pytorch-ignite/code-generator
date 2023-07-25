@@ -16,7 +16,7 @@ def setup_handlers(
     ckpt_handler_train = ckpt_handler_eval = None
     #::: if (it.save_training || it.save_evaluation) { :::#
     # checkpointing
-    saver = DiskSaver(config.output_dir / "checkpoints", require_empty=False)
+    saver = DiskSaver(config.output_dir + "/checkpoints", require_empty=False)
     #::: if (it.save_training) { :::#
     ckpt_handler_train = Checkpoint(
         to_save_train,
