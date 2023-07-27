@@ -97,6 +97,7 @@ export default {
           })
           // response body is plain text
           const colabLink = await res.text()
+
           // create a hyperlink element
           const el = document.createElement('a')
           el.setAttribute('href', colabLink)

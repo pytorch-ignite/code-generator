@@ -32,12 +32,17 @@ test('vision segmentation simple', async () => {
   await page.click('text=Loggers')
   await page.click('text=config.yaml')
 
-  const [download] = await Promise.all([
-    page.waitForEvent('download'),
-    page.click('button:has-text("Download")')
-  ])
+  await page.getByRole('button', { name: 'Code' }).click()
+  await page.getByRole('button', { name: 'Download Zip' }).click()
 
-  await download.saveAs('./dist-tests/vision-segmentation-simple.zip')
+  const downloadPromise = await page
+    .waitForEvent('download', { timeout: 2000 })
+    .catch(() => {
+      page.getByRole('button', { name: 'Download Zip' }).click()
+      return page.waitForEvent('download')
+    })
+
+  await downloadPromise.saveAs('./dist-tests/vision-segmentation-simple.zip')
 })
 
 test('vision segmentation all', async () => {
@@ -85,12 +90,17 @@ test('vision segmentation all', async () => {
   await page.click('text=Loggers')
   await page.click('text=config.yaml')
 
-  const [download] = await Promise.all([
-    page.waitForEvent('download'),
-    page.click('button:has-text("Download")')
-  ])
+  await page.getByRole('button', { name: 'Code' }).click()
+  await page.getByRole('button', { name: 'Download Zip' }).click()
 
-  await download.saveAs('./dist-tests/vision-segmentation-all.zip')
+  const downloadPromise = await page
+    .waitForEvent('download', { timeout: 2000 })
+    .catch(() => {
+      page.getByRole('button', { name: 'Download Zip' }).click()
+      return page.waitForEvent('download')
+    })
+
+  await downloadPromise.saveAs('./dist-tests/vision-segmentation-all.zip')
 })
 
 test('vision segmentation launch', async () => {
@@ -107,12 +117,17 @@ test('vision segmentation launch', async () => {
   await page.click('text=Loggers')
   await page.click('text=config.yaml')
 
-  const [download] = await Promise.all([
-    page.waitForEvent('download'),
-    page.click('button:has-text("Download")')
-  ])
+  await page.getByRole('button', { name: 'Code' }).click()
+  await page.getByRole('button', { name: 'Download Zip' }).click()
 
-  await download.saveAs('./dist-tests/vision-segmentation-launch.zip')
+  const downloadPromise = await page
+    .waitForEvent('download', { timeout: 2000 })
+    .catch(() => {
+      page.getByRole('button', { name: 'Download Zip' }).click()
+      return page.waitForEvent('download')
+    })
+
+  await downloadPromise.saveAs('./dist-tests/vision-segmentation-launch.zip')
 })
 
 test('vision segmentation spawn', async () => {
@@ -130,10 +145,15 @@ test('vision segmentation spawn', async () => {
   await page.click('text=Loggers')
   await page.click('text=config.yaml')
 
-  const [download] = await Promise.all([
-    page.waitForEvent('download'),
-    page.click('button:has-text("Download")')
-  ])
+  await page.getByRole('button', { name: 'Code' }).click()
+  await page.getByRole('button', { name: 'Download Zip' }).click()
 
-  await download.saveAs('./dist-tests/vision-segmentation-spawn.zip')
+  const downloadPromise = await page
+    .waitForEvent('download', { timeout: 2000 })
+    .catch(() => {
+      page.getByRole('button', { name: 'Download Zip' }).click()
+      return page.waitForEvent('download')
+    })
+
+  await downloadPromise.saveAs('./dist-tests/vision-segmentation-spawn.zip')
 })

@@ -2,47 +2,24 @@
   <button
     @click="downloadProject"
     class="download-button external-links"
+    id="download-zip"
     title="Download the generated code as a zip file"
   >
     <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="1.4em"
-      height="1.4em"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class="icons feather feather-download"
+      aria-hidden="true"
+      height="16"
+      viewBox="0 0 16 16"
+      version="1.1"
+      width="16"
+      data-view-component="true"
+      class="octicon octicon-file-zip mr-2"
     >
-      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-      <polyline points="7 10 12 15 17 10"></polyline>
-      <line x1="12" y1="15" x2="12" y2="3"></line>
+      <path
+        d="M3.5 1.75v11.5c0 .09.048.173.126.217a.75.75 0 0 1-.752 1.298A1.748 1.748 0 0 1 2 13.25V1.75C2 .784 2.784 0 3.75 0h5.586c.464 0 .909.185 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v8.586A1.75 1.75 0 0 1 12.25 15h-.5a.75.75 0 0 1 0-1.5h.5a.25.25 0 0 0 .25-.25V4.664a.25.25 0 0 0-.073-.177L9.513 1.573a.25.25 0 0 0-.177-.073H7.25a.75.75 0 0 1 0 1.5h-.5a.75.75 0 0 1 0-1.5h-3a.25.25 0 0 0-.25.25Zm3.75 8.75h.5c.966 0 1.75.784 1.75 1.75v3a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1-.75-.75v-3c0-.966.784-1.75 1.75-1.75ZM6 5.25a.75.75 0 0 1 .75-.75h.5a.75.75 0 0 1 0 1.5h-.5A.75.75 0 0 1 6 5.25Zm.75 2.25h.5a.75.75 0 0 1 0 1.5h-.5a.75.75 0 0 1 0-1.5ZM8 6.75A.75.75 0 0 1 8.75 6h.5a.75.75 0 0 1 0 1.5h-.5A.75.75 0 0 1 8 6.75ZM8.75 3h.5a.75.75 0 0 1 0 1.5h-.5a.75.75 0 0 1 0-1.5ZM8 9.75A.75.75 0 0 1 8.75 9h.5a.75.75 0 0 1 0 1.5h-.5A.75.75 0 0 1 8 9.75Zm-1 2.5v2.25h1v-2.25a.25.25 0 0 0-.25-.25h-.5a.25.25 0 0 0-.25.25Z"
+      ></path>
     </svg>
-    <span>Download</span>
+    <span>Download Zip</span>
   </button>
-  <div
-    class="download-success"
-    v-show="showDownloadMsg"
-    @click="showDownloadMsg = false"
-  ></div>
-  <div class="msg-wrapper" v-show="showDownloadMsg">
-    <div class="msg">
-      <h2>🎉 Your Training Script Has Been Generated! 🎉</h2>
-      <p>
-        Thanks for using Code-Generator! Feel free to reach out to us on
-        <a
-          class="external-links msg-gh"
-          href="https://github.com/pytorch-ignite/code-generator"
-          target="_blank"
-          rel="noopener noreferrer"
-          >GitHub</a
-        >
-        with any feedback, bug report, and feature request.
-      </p>
-    </div>
-  </div>
 </template>
 
 <script>
@@ -52,7 +29,8 @@ import { saveAs } from 'file-saver'
 import JSZip from 'jszip'
 
 export default {
-  setup() {
+  emits: ['showDownloadMsg'],
+  setup(props, { emit }) {
     const showDownloadMsg = ref(false)
 
     const downloadProject = () => {
@@ -73,6 +51,7 @@ export default {
             saveAs(content, `ignite-${store.config.template}.zip`)
           })
           showDownloadMsg.value = true
+          emit('showDownloadMsg', showDownloadMsg)
         }
       } else {
         msg.showMsg = true
@@ -95,39 +74,19 @@ export default {
   font-family: var(--font-family-base);
   font-size: 1em;
   padding: 0.5rem 1rem;
-  border: 1px solid var(--c-brand-red);
+  border: 10px solid var(--c-brand-red);
   border-radius: 4px;
 }
+#download-zip {
+  border-radius: 0px;
+  padding: 0.5rem 1rem;
+  width: 100%;
+  font-size: 14px;
+  border: none;
+  text-align: left;
+}
+
 .download-button span {
   margin-left: 0.25rem;
-}
-.download-success {
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: rgba(101, 110, 133, 0.8);
-  z-index: 10;
-  width: 100vw;
-  height: 100vh;
-}
-.msg-wrapper {
-  position: fixed;
-  max-width: 38rem;
-  padding: 0 1rem;
-  text-align: center;
-  margin: 20vh auto 100%;
-  inset: 0;
-  z-index: 12;
-}
-.msg {
-  padding: 2rem 1rem;
-  background-color: var(--c-white-light);
-  color: var(--c-text);
-  border-radius: 8px;
-  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.33);
-}
-.msg-gh {
-  margin: 0;
-  color: var(--c-brand-red);
 }
 </style>
