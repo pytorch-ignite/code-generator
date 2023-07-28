@@ -3,11 +3,11 @@
     <h1>Training Options</h1>
     <h2>Argument Parser</h2>
     <FormSelect
-        :label="argparser.description"
-        :options="argparser.options"
-        :saveKey="argparser.name"
-        :defaultV="argparser.default"
-      />
+      :label="argparser.description"
+      :options="argparser.options"
+      :saveKey="argparser.name"
+      :defaultV="argparser.default"
+    />
     <h2 class="training">Deterministic Training</h2>
     <FormCheckbox
       :label="deterministic.description"

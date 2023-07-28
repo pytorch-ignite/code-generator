@@ -39,6 +39,7 @@ from ignite.utils import setup_logger
 
 #::: if (['python-fire'].includes(it.argparser)) { :::#
 
+
 class DotDict(dict):
     """
     Dictionary subclass that allows dot notation access to keys.
@@ -49,6 +50,7 @@ class DotDict(dict):
         if isinstance(value, dict):
             return DotDict(value)
         return value
+
 
 def setup_config(config_path, **kwargs):
     with open(config_path, "r") as f:
@@ -61,8 +63,10 @@ def setup_config(config_path, **kwargs):
         config[k] = v
 
     return DotDict(config)
- 
+
+
 #::: } else { :::#
+
 
 def get_default_parser():
     parser = ArgumentParser()
@@ -75,6 +79,7 @@ def get_default_parser():
         help="DDP backend",
     )
     return parser
+
 
 def setup_config(parser=None):
     if parser is None:
@@ -89,7 +94,10 @@ def setup_config(parser=None):
         setattr(args, k, v)
 
     return args
+
+
 #::: } :::#
+
 
 def log_metrics(engine: Engine, tag: str) -> None:
     """Log `engine.state.metrics` with given `engine` and `tag`.

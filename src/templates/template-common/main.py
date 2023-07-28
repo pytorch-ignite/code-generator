@@ -4,10 +4,12 @@ def main(config_path, output_path="./runs", render_mode=None, **kwargs):
     config_path = Path(config_path)
     assert config_path.exists(), config_path
     config = setup_config(config_path, **kwargs)
+
+
 #::: } else { :::#
 def main():
     config = setup_config()
-#::: } :::#
+    #::: } :::#
     #::: if (it.dist === 'spawn') { :::#
     #::: if (it.nproc_per_node && it.nnodes > 1 && it.master_addr && it.master_port) { :::#
     kwargs_backend = {

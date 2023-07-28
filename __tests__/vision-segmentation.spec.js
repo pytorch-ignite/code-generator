@@ -38,7 +38,6 @@ test('vision segmentation simple', async () => {
   const downloadPromise = await page
     .waitForEvent('download', { timeout: 2000 })
     .catch(() => {
-      
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download')
     })
@@ -97,7 +96,6 @@ test('vision segmentation all', async () => {
   const downloadPromise = await page
     .waitForEvent('download', { timeout: 2000 })
     .catch(() => {
-      
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download')
     })
@@ -125,7 +123,6 @@ test('vision segmentation launch', async () => {
   const downloadPromise = await page
     .waitForEvent('download', { timeout: 2000 })
     .catch(() => {
-      
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download')
     })
@@ -154,7 +151,6 @@ test('vision segmentation spawn', async () => {
   const downloadPromise = await page
     .waitForEvent('download', { timeout: 2000 })
     .catch(() => {
-      
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download')
     })

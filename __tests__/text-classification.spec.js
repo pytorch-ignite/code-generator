@@ -143,7 +143,6 @@ test('text classification spawn', async () => {
   const downloadPromise = await page
     .waitForEvent('download', { timeout: 2000 })
     .catch(() => {
-      
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download')
     })
