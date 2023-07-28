@@ -143,7 +143,7 @@ nproc_per_node: #:::= it.nproc_per_node :::#
 ```
 
 ```sh
-python main.py config.yaml --backend [--override_arg=value] #:::= it.backend :::#
+python main.py config.yaml --backend #:::= it.backend :::# [--override_arg=value] 
 ```
 
 #::: } :::#

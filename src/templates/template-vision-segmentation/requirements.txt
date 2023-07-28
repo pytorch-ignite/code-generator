@@ -4,7 +4,11 @@ pytorch-ignite>=0.4.8
 pyyaml
 albumentations>=1.3.0
 image_dataset_viz
-fire
+#::: if (['python-fire'].includes(it.argparser)) { :::#
+
+#:::= it.argparser :::#
+
+#::: } :::#
 
 #::: if (['neptune', 'polyaxon'].includes(it.logger)) { :::#
 

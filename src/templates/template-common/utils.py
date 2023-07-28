@@ -37,18 +37,7 @@ from ignite.handlers.time_limit import TimeLimit
 from ignite.utils import setup_logger
 
 
-def get_default_parser():
-    parser = ArgumentParser()
-    parser.add_argument("config", type=Path, help="Config file path")
-    parser.add_argument(
-        "--backend",
-        default=None,
-        choices=["nccl", "gloo"],
-        type=str,
-        help="DDP backend",
-    )
-    return parser
-
+#::: if (['python-fire'].includes(it.argparser)) { :::#
 
 class DotDict(dict):
     """
@@ -61,7 +50,6 @@ class DotDict(dict):
             return DotDict(value)
         return value
 
-
 def setup_config(config_path, **kwargs):
     with open(config_path, "r") as f:
         config = yaml.safe_load(f.read())
@@ -73,7 +61,35 @@ def setup_config(config_path, **kwargs):
         config[k] = v
 
     return DotDict(config)
+ 
+#::: } else { :::#
 
+def get_default_parser():
+    parser = ArgumentParser()
+    parser.add_argument("config", type=Path, help="Config file path")
+    parser.add_argument(
+        "--backend",
+        default=None,
+        choices=["nccl", "gloo"],
+        type=str,
+        help="DDP backend",
+    )
+    return parser
+
+def setup_config(parser=None):
+    if parser is None:
+        parser = get_default_parser()
+        args = parser.parse_args()
+    config_path = args.config
+    optional_attributes = ["train_epoch_length", "eval_epoch_length"]
+    for attr in optional_attributes:
+        config[attr] = config.get(attr, None)
+
+    for k, v in config.items():
+        setattr(args, k, v)
+
+    return args
+#::: } :::#
 
 def log_metrics(engine: Engine, tag: str) -> None:
     """Log `engine.state.metrics` with given `engine` and `tag`.
@@ -162,7 +178,7 @@ def setup_logging(config: Any) -> Logger:
         name=f"{green}[ignite]{reset}",
         level=logging.DEBUG if config.debug else logging.INFO,
         format="%(name)s: %(message)s",
-        filepath=f"{config.output_dir}/training-info.log",
+        filepath=config.output_dir / "training-info.log",
     )
     return logger
 
