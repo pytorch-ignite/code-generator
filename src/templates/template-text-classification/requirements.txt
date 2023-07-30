@@ -4,7 +4,7 @@ pytorch-ignite>=0.4.8
 pyyaml
 transformers
 datasets
-#::: if (['python-fire'].includes(it.argparser)) { :::#
+#::: if (['fire'].includes(it.argparser)) { :::#
 #:::= it.argparser :::#
 #::: } :::#
 

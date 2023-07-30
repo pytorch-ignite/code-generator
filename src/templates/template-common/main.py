@@ -1,5 +1,5 @@
 # main entrypoint
-#::: if (['python-fire'].includes(it.argparser)) { :::#
+#::: if (['fire'].includes(it.argparser)) { :::#
 def main(config_path, output_path="./runs", render_mode=None, **kwargs):
     config_path = Path(config_path)
     assert config_path.exists(), config_path
@@ -31,7 +31,7 @@ def main():
 
 
 if __name__ == "__main__":
-    #::: if (['python-fire'].includes(it.argparser)) { :::#
+    #::: if (['fire'].includes(it.argparser)) { :::#
     fire.Fire(main)
     #::: } else { :::#
     main()

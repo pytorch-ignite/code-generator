@@ -2,7 +2,7 @@ torch>=1.10.2
 torchvision>=0.11.3
 pytorch-ignite>=0.4.8
 pyyaml
-#::: if (['python-fire'].includes(it.argparser)) { :::#
+#::: if (['fire'].includes(it.argparser)) { :::#
 #:::= it.argparser :::#
 #::: } :::#
 

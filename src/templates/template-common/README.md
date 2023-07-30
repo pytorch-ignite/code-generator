@@ -143,7 +143,7 @@ nproc_per_node: #:::= it.nproc_per_node :::#
 ```
 
 ```sh
-#::: if (['python-fire'].includes(it.argparser)) { :::#
+#::: if (['fire'].includes(it.argparser)) { :::#
 python main.py config.yaml --backend #:::= it.backend :::#  [--override_arg=value]
 #::: } else { :::#
 python main.py config.yaml --backend #:::= it.backend :::#
@@ -159,7 +159,7 @@ python main.py config.yaml --backend #:::= it.backend :::#
 ### 1 GPU Training
 
 ```sh
-#::: if (['python-fire'].includes(it.argparser)) { :::#
+#::: if (['fire'].includes(it.argparser)) { :::#
 python main.py config.yaml [--override_arg=value]
 #::: } else { :::#
 python main.py config.yaml

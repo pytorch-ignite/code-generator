@@ -4,7 +4,7 @@ pytorch-ignite>=0.4.8
 pyyaml
 albumentations>=1.3.0
 image_dataset_viz
-#::: if (['python-fire'].includes(it.argparser)) { :::#
+#::: if (['fire'].includes(it.argparser)) { :::#
 
 #:::= it.argparser :::#
 
