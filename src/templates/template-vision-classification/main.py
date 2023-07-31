@@ -11,9 +11,12 @@ from models import setup_model
 from torch import nn, optim
 from trainers import setup_evaluator, setup_trainer
 from utils import *
+
 #::: if (['fire'].includes(it.argparser)) { :::#
 import fire
+
 #::: } :::#
+
 
 def run(local_rank: int, config: Any):
     # make a certain seed
