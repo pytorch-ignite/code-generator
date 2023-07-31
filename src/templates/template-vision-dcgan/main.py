@@ -12,9 +12,10 @@ from torch import nn, optim
 from trainers import setup_evaluator, setup_trainer
 from utils import *
 
-#::: if (it.
-# ) { :::#
+#::: if (['fire'].includes(it.argparser)) { :::#
 import fire
+
+#::: } :::#
 
 
 FAKE_IMG_FNAME = "fake_sample_epoch_{:04d}.png"

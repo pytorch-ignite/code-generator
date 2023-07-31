@@ -55,6 +55,7 @@ class DotDict(dict):
 def setup_config(config_path, **kwargs):
     with open(config_path, "r") as f:
         config = yaml.safe_load(f.read())
+
     for k, v in kwargs.items():
         if k in config:
             print(f"Override parameter {k}: {config[k]} -> {v}")
@@ -86,6 +87,10 @@ def setup_config(parser=None):
         parser = get_default_parser()
         args = parser.parse_args()
     config_path = args.config
+
+    with open(config_path, "r") as f:
+        config = yaml.safe_load(f.read())
+
     optional_attributes = ["train_epoch_length", "eval_epoch_length"]
     for attr in optional_attributes:
         config[attr] = config.get(attr, None)
