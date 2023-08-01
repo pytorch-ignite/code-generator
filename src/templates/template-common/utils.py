@@ -37,7 +37,7 @@ from ignite.handlers.time_limit import TimeLimit
 from ignite.utils import setup_logger
 
 
-#::: if (['fire'].includes(it.argparser)) { :::#
+#::: if ((it.argparser == 'fire')) { :::#
 
 
 class DotDict(dict):

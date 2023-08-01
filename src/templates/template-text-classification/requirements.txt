@@ -4,8 +4,10 @@ pytorch-ignite>=0.4.8
 pyyaml
 transformers
 datasets
-#::: if (['fire'].includes(it.argparser)) { :::#
+
+#::: if ((it.argparser == 'fire')) { :::#
 #:::= it.argparser :::#
+
 #::: } :::#
 
 #::: if (['neptune', 'polyaxon'].includes(it.logger)) { :::#
