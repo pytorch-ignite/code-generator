@@ -12,6 +12,8 @@ from models import setup_model
 from torch import nn, optim
 from torch.optim.lr_scheduler import LambdaLR
 from trainers import setup_evaluator, setup_trainer
+
+from vis import predictions_gt_images_handler
 from utils import *
 
 #::: if (!(it.argparser == 'fire')) { :::#
@@ -21,7 +23,6 @@ from shutil import copy
 import fire
 
 #::: } :::#
-from vis import predictions_gt_images_handler
 
 
 try:
