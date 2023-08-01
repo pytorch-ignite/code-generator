@@ -82,6 +82,7 @@ jobs:
       - run: pnpm build
       - run: pnpm test:ci
       - run: sh ./scripts/run_tests.sh unzip
+      - run: pnpm fmt
       - run: pnpm dist_lint
 
       - name: 'Run ${{ matrix.template }} ${{ matrix.test }}'
