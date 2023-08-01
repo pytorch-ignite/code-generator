@@ -1,6 +1,11 @@
 import os
 from pprint import pformat
+
+#::: if (!(it.argparser == 'fire')) { :::#
+from shutil import copy
 from typing import Any
+
+#::: } :::#
 
 import ignite.distributed as idist
 from data import setup_data
@@ -26,9 +31,15 @@ def run(local_rank: int, config: Any):
     # create output folder and copy config file to output dir
     config.output_dir = setup_output_dir(config, rank)
     if rank == 0:
+        #::: if ((it.argparser == 'fire')) { :::#
         with open(f"{config.output_dir}/config-lock.yaml", "a+") as f:
             for key, value in config.items():
                 f.write(f"{key}: {value}\n")
+
+        #::: } else { :::#
+        copy(config.config, f" config.output_dir  /config-lock.yaml")
+
+        #::: } :::#
 
     # donwload datasets and create dataloaders
     dataloader_train, dataloader_eval = setup_data(config)
