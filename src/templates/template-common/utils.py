@@ -85,7 +85,9 @@ def get_default_parser():
 def setup_config(parser=None):
     if parser is None:
         parser = get_default_parser()
-        args = parser.parse_args()
+
+    args = parser.parse_args()
+
     config_path = args.config
 
     with open(config_path, "r") as f:
