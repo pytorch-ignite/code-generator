@@ -1,11 +1,6 @@
 from functools import partial
 from pprint import pformat
-
-#::: if (!(it.argparser == 'fire')) { :::#
-from shutil import copy
 from typing import Any, cast
-
-#::: } :::#
 
 import ignite.distributed as idist
 from data import denormalize, setup_data
@@ -19,11 +14,15 @@ from torch.optim.lr_scheduler import LambdaLR
 from trainers import setup_evaluator, setup_trainer
 from utils import *
 
-#::: if ((it.argparser == 'fire')) { :::#
+#::: if (!(it.argparser == 'fire')) { :::#
+from shutil import copy
+
+#::: } else { :::#
 import fire
-from vis import predictions_gt_images_handler
 
 #::: } :::#
+from vis import predictions_gt_images_handler
+
 
 try:
     from torch.optim.lr_scheduler import LRScheduler as PyTorchLRScheduler

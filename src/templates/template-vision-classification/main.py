@@ -1,10 +1,5 @@
 from pprint import pformat
-
-#::: if (!(it.argparser == 'fire')) { :::#
-from shutil import copy
 from typing import Any
-
-#::: } :::#
 
 import ignite.distributed as idist
 from data import setup_data
@@ -17,7 +12,10 @@ from torch import nn, optim
 from trainers import setup_evaluator, setup_trainer
 from utils import *
 
-#::: if ((it.argparser == 'fire')) { :::#
+#::: if (!(it.argparser == 'fire')) { :::#
+from shutil import copy
+
+#::: } else { :::#
 import fire
 
 #::: } :::#

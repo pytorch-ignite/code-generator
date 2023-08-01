@@ -1,11 +1,6 @@
 import os
 from pprint import pformat
-
-#::: if (!(it.argparser == 'fire')) { :::#
-from shutil import copy
 from typing import Any
-
-#::: } :::#
 
 import ignite.distributed as idist
 from data import setup_data
@@ -17,8 +12,14 @@ from models import TransformerModel
 from torch import nn, optim
 from trainers import setup_evaluator, setup_trainer
 from utils import *
+
+#::: if (!(it.argparser == 'fire')) { :::#
+from shutil import copy
+
+#::: } else { :::#
 import fire
 
+#::: } :::#
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"  # remove tokenizer paralleism warning
 
