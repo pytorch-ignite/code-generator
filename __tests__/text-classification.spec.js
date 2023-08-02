@@ -39,7 +39,7 @@ test('text classification simple', async () => {
       page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download')
-    }).click()
+    })
 
   await downloadPromise.saveAs('./dist-tests/text-classification-simple.zip')
 })
@@ -96,7 +96,7 @@ test('text classification all', async () => {
       page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download')
-    }).click()
+    })
   await downloadPromise.saveAs('./dist-tests/text-classification-all.zip')
 })
 
@@ -122,7 +122,7 @@ test('text classification launch', async () => {
       page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download')
-    }).click()
+    })
   await downloadPromise.saveAs('./dist-tests/text-classification-launch.zip')
 })
 
@@ -149,6 +149,6 @@ test('text classification spawn', async () => {
       page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download')
-    }).click()
+    })
   await downloadPromise.saveAs('./dist-tests/text-classification-spawn.zip')
 })
