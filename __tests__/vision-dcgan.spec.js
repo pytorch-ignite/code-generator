@@ -41,7 +41,7 @@ test('vision dcgan simple', async () => {
       page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download')
-    })
+    }).click()
   await downloadPromise.saveAs('./dist-tests/vision-dcgan-simple.zip')
 })
 
@@ -99,7 +99,7 @@ test('vision dcgan all', async () => {
       page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download')
-    })
+    }).click()
 
   await downloadPromise.saveAs('./dist-tests/vision-dcgan-all.zip')
 })
@@ -127,7 +127,7 @@ test('vision dcgan launch', async () => {
       page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download')
-    })
+    }).click()
 
   await downloadPromise.saveAs('./dist-tests/vision-dcgan-launch.zip')
 })
@@ -156,6 +156,6 @@ test('vision dcgan spawn', async () => {
       page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download')
-    })
+    }).click()
   await downloadPromise.saveAs('./dist-tests/vision-dcgan-spawn.zip')
 })
