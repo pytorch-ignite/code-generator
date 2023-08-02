@@ -5,6 +5,11 @@ pyyaml
 albumentations>=1.3.0
 image_dataset_viz
 
+#::: if ((it.argparser == 'fire')) { :::#
+#:::= it.argparser :::#
+
+#::: } :::#
+
 #::: if (['neptune', 'polyaxon'].includes(it.logger)) { :::#
 
 #:::= it.logger + '-client' :::#

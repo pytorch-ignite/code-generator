@@ -1,5 +1,12 @@
 {
   "training": {
+    "argparser": {
+      "name": "argparser",
+      "type": "array",
+      "description": "Select the argument parser for training",
+      "options": ["argparse", "fire"],
+      "default": "argparse"
+    },
     "deterministic": {
       "name": "deterministic",
       "type": "checkbox",
