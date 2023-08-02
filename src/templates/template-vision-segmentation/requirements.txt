@@ -11,11 +11,9 @@ image_dataset_viz
 #::: } :::#
 
 #::: if (['neptune', 'polyaxon'].includes(it.logger)) { :::#
-
 #:::= it.logger + '-client' :::#
 
 #::: } else { :::#
-
 #:::= it.logger :::#
 
 #::: } :::#
