@@ -40,13 +40,16 @@ test('vision dcgan simple', async () => {
     .waitForEvent('download', { timeout: 2000 })
     .catch(() => {
       page.getByRole('button', { name: 'Code' }).click()
-      page.getByRole('button', { name: 'Download Zip' }).click()
-      return page.waitForEvent('download', { timeout: 2000 }).catch(() => {
+      page.getByRole('button', { name: 'Download Zip' }).click().then(()=>{return page.waitForEvent('download', { timeout: 2000 })})
+      .catch(() => {
         page.getByRole('button', { name: 'Code' }).click()
         page.getByRole('button', { name: 'Download Zip' }).click()
         return page.waitForEvent('download', { timeout: 2000 })
       })
+      
     })
+
+
   await downloadPromise.saveAs('./dist-tests/vision-dcgan-simple.zip')
 })
 
@@ -102,13 +105,16 @@ test('vision dcgan all', async () => {
     .waitForEvent('download', { timeout: 2000 })
     .catch(() => {
       page.getByRole('button', { name: 'Code' }).click()
-      page.getByRole('button', { name: 'Download Zip' }).click()
-      return page.waitForEvent('download', { timeout: 2000 }).catch(() => {
+      page.getByRole('button', { name: 'Download Zip' }).click().then(()=>{return page.waitForEvent('download', { timeout: 2000 })})
+      .catch(() => {
         page.getByRole('button', { name: 'Code' }).click()
         page.getByRole('button', { name: 'Download Zip' }).click()
         return page.waitForEvent('download', { timeout: 2000 })
       })
+      
     })
+
+
 
   await downloadPromise.saveAs('./dist-tests/vision-dcgan-all.zip')
 })
@@ -134,13 +140,16 @@ test('vision dcgan launch', async () => {
     .waitForEvent('download', { timeout: 2000 })
     .catch(() => {
       page.getByRole('button', { name: 'Code' }).click()
-      page.getByRole('button', { name: 'Download Zip' }).click()
-      return page.waitForEvent('download', { timeout: 2000 }).catch(() => {
+      page.getByRole('button', { name: 'Download Zip' }).click().then(()=>{return page.waitForEvent('download', { timeout: 2000 })})
+      .catch(() => {
         page.getByRole('button', { name: 'Code' }).click()
         page.getByRole('button', { name: 'Download Zip' }).click()
         return page.waitForEvent('download', { timeout: 2000 })
       })
+      
     })
+
+
 
   await downloadPromise.saveAs('./dist-tests/vision-dcgan-launch.zip')
 })
@@ -167,12 +176,15 @@ test('vision dcgan spawn', async () => {
     .waitForEvent('download', { timeout: 2000 })
     .catch(() => {
       page.getByRole('button', { name: 'Code' }).click()
-      page.getByRole('button', { name: 'Download Zip' }).click()
-      return page.waitForEvent('download', { timeout: 2000 }).catch(() => {
+      page.getByRole('button', { name: 'Download Zip' }).click().then(()=>{return page.waitForEvent('download', { timeout: 2000 })})
+      .catch(() => {
         page.getByRole('button', { name: 'Code' }).click()
         page.getByRole('button', { name: 'Download Zip' }).click()
         return page.waitForEvent('download', { timeout: 2000 })
       })
+      
     })
+
+
   await downloadPromise.saveAs('./dist-tests/vision-dcgan-spawn.zip')
 })
