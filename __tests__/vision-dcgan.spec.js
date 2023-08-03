@@ -24,7 +24,6 @@ afterEach(async () => {
   await context.close()
 })
 
-
 test('vision dcgan simple', async () => {
   await page.selectOption('select', 'template-vision-dcgan')
 
@@ -33,23 +32,20 @@ test('vision dcgan simple', async () => {
   await page.click('text=Loggers')
   await page.click('text=config.yaml')
 
-  await page.getByRole('button', { name: 'Code' }).click()
-  await page.getByRole('button', { name: 'Download Zip' }).click()
-
+  page.getByRole('button', { name: 'Code' }).click()
+  page.getByRole('button', { name: 'Download Zip' }).click()
   const downloadPromise = await page
     .waitForEvent('download', { timeout: 2000 })
     .catch(() => {
       page.getByRole('button', { name: 'Code' }).click()
-      page.getByRole('button', { name: 'Download Zip' }).click().then(()=>{return page.waitForEvent('download', { timeout: 2000 })})
-      .catch(() => {
-        page.getByRole('button', { name: 'Code' }).click()
-        page.getByRole('button', { name: 'Download Zip' }).click()
-        return page.waitForEvent('download', { timeout: 2000 })
-      })
-      
+      page.getByRole('button', { name: 'Download Zip' }).click()
+      return page.waitForEvent('download', { timeout: 2000 })
     })
-
-
+    .catch(() => {
+      page.getByRole('button', { name: 'Code' }).click()
+      page.getByRole('button', { name: 'Download Zip' }).click()
+      return page.waitForEvent('download', { timeout: 2000 })
+    })
   await downloadPromise.saveAs('./dist-tests/vision-dcgan-simple.zip')
 })
 
@@ -101,21 +97,20 @@ test('vision dcgan all', async () => {
   await page.getByRole('button', { name: 'Code' }).click()
   await page.getByRole('button', { name: 'Download Zip' }).click()
 
+  page.getByRole('button', { name: 'Code' }).click()
+  page.getByRole('button', { name: 'Download Zip' }).click()
   const downloadPromise = await page
     .waitForEvent('download', { timeout: 2000 })
     .catch(() => {
       page.getByRole('button', { name: 'Code' }).click()
-      page.getByRole('button', { name: 'Download Zip' }).click().then(()=>{return page.waitForEvent('download', { timeout: 2000 })})
-      .catch(() => {
-        page.getByRole('button', { name: 'Code' }).click()
-        page.getByRole('button', { name: 'Download Zip' }).click()
-        return page.waitForEvent('download', { timeout: 2000 })
-      })
-      
+      page.getByRole('button', { name: 'Download Zip' }).click()
+      return page.waitForEvent('download', { timeout: 2000 })
     })
-
-
-
+    .catch(() => {
+      page.getByRole('button', { name: 'Code' }).click()
+      page.getByRole('button', { name: 'Download Zip' }).click()
+      return page.waitForEvent('download', { timeout: 2000 })
+    })
   await downloadPromise.saveAs('./dist-tests/vision-dcgan-all.zip')
 })
 
@@ -136,20 +131,20 @@ test('vision dcgan launch', async () => {
   await page.getByRole('button', { name: 'Code' }).click()
   await page.getByRole('button', { name: 'Download Zip' }).click()
 
+  page.getByRole('button', { name: 'Code' }).click()
+  page.getByRole('button', { name: 'Download Zip' }).click()
   const downloadPromise = await page
     .waitForEvent('download', { timeout: 2000 })
     .catch(() => {
       page.getByRole('button', { name: 'Code' }).click()
-      page.getByRole('button', { name: 'Download Zip' }).click().then(()=>{return page.waitForEvent('download', { timeout: 2000 })})
-      .catch(() => {
-        page.getByRole('button', { name: 'Code' }).click()
-        page.getByRole('button', { name: 'Download Zip' }).click()
-        return page.waitForEvent('download', { timeout: 2000 })
-      })
-      
+      page.getByRole('button', { name: 'Download Zip' }).click()
+      return page.waitForEvent('download', { timeout: 2000 })
     })
-
-
+    .catch(() => {
+      page.getByRole('button', { name: 'Code' }).click()
+      page.getByRole('button', { name: 'Download Zip' }).click()
+      return page.waitForEvent('download', { timeout: 2000 })
+    })
 
   await downloadPromise.saveAs('./dist-tests/vision-dcgan-launch.zip')
 })
@@ -172,19 +167,19 @@ test('vision dcgan spawn', async () => {
   await page.getByRole('button', { name: 'Code' }).click()
   await page.getByRole('button', { name: 'Download Zip' }).click()
 
+  page.getByRole('button', { name: 'Code' }).click()
+  page.getByRole('button', { name: 'Download Zip' }).click()
   const downloadPromise = await page
     .waitForEvent('download', { timeout: 2000 })
     .catch(() => {
       page.getByRole('button', { name: 'Code' }).click()
-      page.getByRole('button', { name: 'Download Zip' }).click().then(()=>{return page.waitForEvent('download', { timeout: 2000 })})
-      .catch(() => {
-        page.getByRole('button', { name: 'Code' }).click()
-        page.getByRole('button', { name: 'Download Zip' }).click()
-        return page.waitForEvent('download', { timeout: 2000 })
-      })
-      
+      page.getByRole('button', { name: 'Download Zip' }).click()
+      return page.waitForEvent('download', { timeout: 2000 })
     })
-
-
+    .catch(() => {
+      page.getByRole('button', { name: 'Code' }).click()
+      page.getByRole('button', { name: 'Download Zip' }).click()
+      return page.waitForEvent('download', { timeout: 2000 })
+    })
   await downloadPromise.saveAs('./dist-tests/vision-dcgan-spawn.zip')
 })
