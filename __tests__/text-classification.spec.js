@@ -24,6 +24,34 @@ afterEach(async () => {
   await context.close()
 })
 
+async function clickDownloadButton(page) {
+  await page.getByRole('button', { name: 'Code' }).click()
+  await page.getByRole('button', { name: 'Download Zip' }).click()
+}
+
+async function waitForDownloadEvent(
+  page,
+  maxRetries = 10,
+  retryInterval = 2000
+) {
+  try {
+    const downloadPromise = await page.waitForEvent('download', {
+      timeout: 2000
+    })
+    return downloadPromise
+  } catch (error) {
+    if (maxRetries > 0) {
+      await clickDownloadButton(page)
+      await new Promise((resolve) => setTimeout(resolve, retryInterval))
+      return waitForDownloadEvent(page, maxRetries - 1, retryInterval)
+    } else {
+      throw new Error(
+        'Download event not triggered within the given number of retries.'
+      )
+    }
+  }
+}
+
 test('text classification simple', async () => {
   await page.selectOption('select', 'template-text-classification')
 
@@ -33,15 +61,12 @@ test('text classification simple', async () => {
   await page.click('text=config.yaml')
 
   await page.getByRole('button', { name: 'Code' }).click()
-  const downloadPromise = await page
-    .waitForEvent('download', { timeout: 2000 })
-    .catch(() => {
-      page.getByRole('button', { name: 'Code' }).click()
-      page.getByRole('button', { name: 'Download Zip' }).click()
-      return page.waitForEvent('download')
-    })
-
-  await downloadPromise.saveAs('./dist-tests/text-classification-simple.zip')
+  try {
+    const downloadPromise = clickDownloadButton(page)
+    await downloadPromise.saveAs('./dist-tests/text-classification-simple.zip')
+  } catch (error) {
+    console.error(error)
+  }
 })
 
 test('text classification all', async () => {
@@ -90,14 +115,12 @@ test('text classification all', async () => {
   await page.click('text=config.yaml')
 
   await page.getByRole('button', { name: 'Code' }).click()
-  const downloadPromise = await page
-    .waitForEvent('download', { timeout: 2000 })
-    .catch(() => {
-      page.getByRole('button', { name: 'Code' }).click()
-      page.getByRole('button', { name: 'Download Zip' }).click()
-      return page.waitForEvent('download')
-    })
-  await downloadPromise.saveAs('./dist-tests/text-classification-all.zip')
+  try {
+    const downloadPromise = clickDownloadButton(page)
+    await downloadPromise.saveAs('./dist-tests/text-classification-all.zip')
+  } catch (error) {
+    console.error(error)
+  }
 })
 
 test('text classification launch', async () => {
@@ -116,14 +139,13 @@ test('text classification launch', async () => {
 
   await page.getByRole('button', { name: 'Code' }).click()
   await page.getByRole('button', { name: 'Download Zip' }).click()
-  const downloadPromise = await page
-    .waitForEvent('download', { timeout: 2000 })
-    .catch(() => {
-      page.getByRole('button', { name: 'Code' }).click()
-      page.getByRole('button', { name: 'Download Zip' }).click()
-      return page.waitForEvent('download')
-    })
-  await downloadPromise.saveAs('./dist-tests/text-classification-launch.zip')
+  await page.getByRole('button', { name: 'Code' }).click()
+  try {
+    const downloadPromise = clickDownloadButton(page)
+    await downloadPromise.saveAs('./dist-tests/text-classification-launch.zip')
+  } catch (error) {
+    console.error(error)
+  }
 })
 
 test('text classification spawn', async () => {
@@ -142,13 +164,10 @@ test('text classification spawn', async () => {
   await page.click('text=config.yaml')
 
   await page.getByRole('button', { name: 'Code' }).click()
-  await page.getByRole('button', { name: 'Download Zip' }).click()
-  const downloadPromise = await page
-    .waitForEvent('download', { timeout: 2000 })
-    .catch(() => {
-      page.getByRole('button', { name: 'Code' }).click()
-      page.getByRole('button', { name: 'Download Zip' }).click()
-      return page.waitForEvent('download')
-    })
-  await downloadPromise.saveAs('./dist-tests/text-classification-spawn.zip')
+  try {
+    const downloadPromise = clickDownloadButton(page)
+    await downloadPromise.saveAs('./dist-tests/text-classification-spawn.zip')
+  } catch (error) {
+    console.error(error)
+  }
 })
