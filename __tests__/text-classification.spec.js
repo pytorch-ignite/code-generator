@@ -24,6 +24,16 @@ afterEach(async () => {
   await context.close()
 })
 
+async function retry(fn, retries, delay) {
+  try {
+    return await fn(retries)
+  } catch (err) {
+    if (retries <= 0) throw err
+    await new Promise((resolve) => setTimeout(resolve, delay))
+    return await retry(fn, retries - 1, delay)
+  }
+}
+
 test('text classification simple', async () => {
   await page.selectOption('select', 'template-text-classification')
 
@@ -34,18 +44,17 @@ test('text classification simple', async () => {
 
   await page.getByRole('button', { name: 'Code' }).click()
   await page.getByRole('button', { name: 'Download Zip' }).click()
-  const downloadPromise = await page
-    .waitForEvent('download', { timeout: 2000 })
-    .catch(() => {
-      page.getByRole('button', { name: 'Code' }).click()
-      page.getByRole('button', { name: 'Download Zip' }).click()
+  const downloadPromise = await retry(
+    async (retries) => {
+      if (retries < 10) {
+        page.getByRole('button', { name: 'Code' }).click()
+        page.getByRole('button', { name: 'Download Zip' }).click()
+      }
       return page.waitForEvent('download', { timeout: 2000 })
-    })
-    .catch(() => {
-      page.getByRole('button', { name: 'Code' }).click()
-      page.getByRole('button', { name: 'Download Zip' }).click()
-      return page.waitForEvent('download', { timeout: 2000 })
-    })
+    },
+    10,
+    1000
+  )
 
   await downloadPromise.saveAs('./dist-tests/text-classification-simple.zip')
 })
@@ -97,18 +106,17 @@ test('text classification all', async () => {
 
   await page.getByRole('button', { name: 'Code' }).click()
   await page.getByRole('button', { name: 'Download Zip' }).click()
-  const downloadPromise = await page
-    .waitForEvent('download', { timeout: 2000 })
-    .catch(() => {
-      page.getByRole('button', { name: 'Code' }).click()
-      page.getByRole('button', { name: 'Download Zip' }).click()
+  const downloadPromise = await retry(
+    async (retries) => {
+      if (retries < 10) {
+        page.getByRole('button', { name: 'Code' }).click()
+        page.getByRole('button', { name: 'Download Zip' }).click()
+      }
       return page.waitForEvent('download', { timeout: 2000 })
-    })
-    .catch(() => {
-      page.getByRole('button', { name: 'Code' }).click()
-      page.getByRole('button', { name: 'Download Zip' }).click()
-      return page.waitForEvent('download', { timeout: 2000 })
-    })
+    },
+    10,
+    1000
+  )
   await downloadPromise.saveAs('./dist-tests/text-classification-all.zip')
 })
 
@@ -128,18 +136,17 @@ test('text classification launch', async () => {
 
   await page.getByRole('button', { name: 'Code' }).click()
   await page.getByRole('button', { name: 'Download Zip' }).click()
-  const downloadPromise = await page
-    .waitForEvent('download', { timeout: 2000 })
-    .catch(() => {
-      page.getByRole('button', { name: 'Code' }).click()
-      page.getByRole('button', { name: 'Download Zip' }).click()
+  const downloadPromise = await retry(
+    async (retries) => {
+      if (retries < 10) {
+        page.getByRole('button', { name: 'Code' }).click()
+        page.getByRole('button', { name: 'Download Zip' }).click()
+      }
       return page.waitForEvent('download', { timeout: 2000 })
-    })
-    .catch(() => {
-      page.getByRole('button', { name: 'Code' }).click()
-      page.getByRole('button', { name: 'Download Zip' }).click()
-      return page.waitForEvent('download', { timeout: 2000 })
-    })
+    },
+    10,
+    1000
+  )
 
   await downloadPromise.saveAs('./dist-tests/text-classification-launch.zip')
 })
@@ -161,17 +168,16 @@ test('text classification spawn', async () => {
 
   await page.getByRole('button', { name: 'Code' }).click()
   await page.getByRole('button', { name: 'Download Zip' }).click()
-  const downloadPromise = await page
-    .waitForEvent('download', { timeout: 2000 })
-    .catch(() => {
-      page.getByRole('button', { name: 'Code' }).click()
-      page.getByRole('button', { name: 'Download Zip' }).click()
+  const downloadPromise = await retry(
+    async (retries) => {
+      if (retries < 10) {
+        page.getByRole('button', { name: 'Code' }).click()
+        page.getByRole('button', { name: 'Download Zip' }).click()
+      }
       return page.waitForEvent('download', { timeout: 2000 })
-    })
-    .catch(() => {
-      page.getByRole('button', { name: 'Code' }).click()
-      page.getByRole('button', { name: 'Download Zip' }).click()
-      return page.waitForEvent('download', { timeout: 2000 })
-    })
+    },
+    10,
+    1000
+  )
   await downloadPromise.saveAs('./dist-tests/text-classification-spawn.zip')
 })
