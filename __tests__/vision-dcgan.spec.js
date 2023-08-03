@@ -93,7 +93,7 @@ test('vision dcgan all', async () => {
 
   await page.click('text=Loggers')
   await page.click('text=config.yaml')
-  
+
   page.getByRole('button', { name: 'Code' }).click()
   page.getByRole('button', { name: 'Download Zip' }).click()
   const downloadPromise = await page
@@ -171,10 +171,10 @@ test('vision dcgan spawn', async () => {
       page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 2000 }).catch(() => {
-      page.getByRole('button', { name: 'Code' }).click()
-      page.getByRole('button', { name: 'Download Zip' }).click()
-      return page.waitForEvent('download', { timeout: 2000 })
-    })
+        page.getByRole('button', { name: 'Code' }).click()
+        page.getByRole('button', { name: 'Download Zip' }).click()
+        return page.waitForEvent('download', { timeout: 2000 })
+      })
     })
   await downloadPromise.saveAs('./dist-tests/vision-dcgan-spawn.zip')
 })
