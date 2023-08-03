@@ -129,7 +129,6 @@ test('vision dcgan launch', async () => {
   await page.getByRole('button', { name: 'Download Zip' }).click()
 
   page.getByRole('button', { name: 'Code' }).click()
-  page.getByRole('button', { name: 'Download Zip' }).click()
   const downloadPromise = await page
     .waitForEvent('download', { timeout: 2000 })
     .catch(() => {
@@ -164,7 +163,6 @@ test('vision dcgan spawn', async () => {
   await page.getByRole('button', { name: 'Download Zip' }).click()
 
   page.getByRole('button', { name: 'Code' }).click()
-  page.getByRole('button', { name: 'Download Zip' }).click()
   const downloadPromise = await page
     .waitForEvent('download', { timeout: 2000 })
     .catch(() => {
