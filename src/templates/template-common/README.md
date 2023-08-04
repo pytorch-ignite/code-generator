@@ -145,6 +145,10 @@ nproc_per_node: #:::= it.nproc_per_node :::#
 ```sh
 #::: if ((it.argparser == 'fire')) { :::#
 python main.py config.yaml --backend #:::= it.backend :::#  [--override_arg=value]
+
+#::: } else if ((it.argparser == 'hydra')) { :::#
+python main.py [++override_arg=value]
+
 #::: } else { :::#
 python main.py config.yaml --backend #:::= it.backend :::#
 #::: } :::#
@@ -161,8 +165,13 @@ python main.py config.yaml --backend #:::= it.backend :::#
 ```sh
 #::: if ((it.argparser == 'fire')) { :::#
 python main.py config.yaml [--override_arg=value]
+
+#::: } else if ((it.argparser == 'hydra')) { :::#
+python main.py [++override_arg=value]
+
 #::: } else { :::#
 python main.py config.yaml
+
 #::: } :::#
 ```
 
