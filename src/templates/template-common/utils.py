@@ -36,6 +36,22 @@ from ignite.handlers.time_limit import TimeLimit
 #::: } :::#
 from ignite.utils import setup_logger
 
+#::: if ((it.argparser == 'hydra')) { :::#
+from omegaconf import DictConfig, OmegaConf
+
+
+def setup_config(config):
+    optional_attributes = ["output_dir", "train_epoch_length", "eval_epoch_length"]
+    for attr in optional_attributes:
+        if attr == "output_dir":
+            OmegaConf.update(config, attr, Path(config.get(attr, "./")), force_add=True)
+        if config.get(attr, None) == None:
+            OmegaConf.update(config, attr, None, force_add=True)
+    return config
+
+
+#::: } :::#
+
 
 #::: if ((it.argparser == 'fire')) { :::#
 
@@ -66,7 +82,7 @@ def setup_config(config_path, **kwargs):
     return DotDict(config)
 
 
-#::: } else { :::#
+#::: } else if ((it.argparser == 'argparse')) { :::#
 
 
 def get_default_parser():

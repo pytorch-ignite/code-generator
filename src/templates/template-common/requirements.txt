@@ -6,6 +6,10 @@ pyyaml
 #::: if ((it.argparser == 'fire')) { :::#
 #:::= it.argparser :::#
 
+#::: } else if ((it.argparser == 'hydra')) { :::#
+#:::= it.argparser + '-core'  :::#
+omegaconf
+
 #::: } :::#
 
 #::: if (['neptune', 'polyaxon'].includes(it.logger)) { :::#

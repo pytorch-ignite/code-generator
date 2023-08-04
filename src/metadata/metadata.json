@@ -4,7 +4,7 @@
       "name": "argparser",
       "type": "array",
       "description": "Select the argument parser for training",
-      "options": ["argparse", "fire"],
+      "options": ["argparse", "fire", "hydra"],
       "default": "argparse"
     },
     "deterministic": {

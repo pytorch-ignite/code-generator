@@ -10,6 +10,12 @@ image_dataset_viz
 
 #::: } :::#
 
+#::: if ((it.argparser == 'hydra')) { :::#
+#:::= it.argparser + '-core'  :::#
+omegaconf
+
+#::: } :::#
+
 #::: if (['neptune', 'polyaxon'].includes(it.logger)) { :::#
 
 #:::= it.logger + '-client' :::#

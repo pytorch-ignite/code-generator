@@ -12,11 +12,19 @@ from torch import nn, optim
 from trainers import setup_evaluator, setup_trainer
 from utils import *
 
-#::: if (!(it.argparser == 'fire')) { :::#
+#::: if ((it.argparser == 'argparse')) { :::#
 from shutil import copy
 
-#::: } else { :::#
+#::: } :::#
+
+#::: if ((it.argparser == 'fire')) { :::#
 import fire
+import hydra
+
+#::: } :::#
+
+#::: if ((it.argparser == 'hydra')) { :::#
+from omegaconf import DictConfig, OmegaConf
 
 #::: } :::#
 
@@ -26,6 +34,7 @@ def run(local_rank: int, config: Any):
     rank = idist.get_rank()
     manual_seed(config.seed + rank)
 
+    #::: if ((it.argparser != 'hydra')) { :::#
     # create output folder and copy config file to output dir
     config.output_dir = setup_output_dir(config, rank)
     if rank == 0:
@@ -34,10 +43,13 @@ def run(local_rank: int, config: Any):
             for key, value in config.items():
                 f.write(f"{key}: {value}\n")
 
-        #::: } else { :::#
+        #::: } :::#
+
+        #::: if ((it.argparser == 'argparse')) { :::#
         copy(config.config, f" config.output_dir  /config-lock.yaml")
 
         #::: } :::#
+    #::: } :::#
 
     # donwload datasets and create dataloaders
     dataloader_train, dataloader_eval = setup_data(config)

@@ -6,6 +6,12 @@ def main(config_path, output_path="./runs", render_mode=None, **kwargs):
     config = setup_config(config_path, **kwargs)
 
 
+#::: } else if ((it.argparser == 'hydra')) { :::#
+@hydra.main(version_base=None, config_path=".", config_name="config")
+def main(cfg: DictConfig):
+    config = setup_config(cfg)
+
+
 #::: } else { :::#
 def main():
     config = setup_config()
