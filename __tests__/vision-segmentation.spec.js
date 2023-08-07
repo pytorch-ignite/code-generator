@@ -39,12 +39,12 @@ test('vision segmentation simple', async () => {
     .catch(async () => {
       await page.getByRole('button', { name: 'Code' }).click()
       await page.getByRole('button', { name: 'Download Zip' }).click()
-      return await page.waitForEvent('download', { timeout: 2000 })
+      return page.waitForEvent('download', { timeout: 2000 })
     })
     .catch(async () => {
       await page.getByRole('button', { name: 'Code' }).click()
       await page.getByRole('button', { name: 'Download Zip' }).click()
-      return await page.waitForEvent('download', { timeout: 2000 })
+      return page.waitForEvent('download', { timeout: 2000 })
     })
   await downloadPromise.saveAs('./dist-tests/vision-segmentation-simple.zip')
 })
@@ -101,12 +101,12 @@ test('vision segmentation all', async () => {
     .catch(async () => {
       await page.getByRole('button', { name: 'Code' }).click()
       await page.getByRole('button', { name: 'Download Zip' }).click()
-      return await page.waitForEvent('download', { timeout: 2000 })
+      return page.waitForEvent('download', { timeout: 2000 })
     })
     .catch(async () => {
       await page.getByRole('button', { name: 'Code' }).click()
       await page.getByRole('button', { name: 'Download Zip' }).click()
-      return await page.waitForEvent('download', { timeout: 2000 })
+      return page.waitForEvent('download', { timeout: 2000 })
     })
 
   await downloadPromise.saveAs('./dist-tests/vision-segmentation-all.zip')
@@ -165,12 +165,12 @@ test('vision segmentation spawn', async () => {
     .catch(async () => {
       await page.getByRole('button', { name: 'Code' }).click()
       await page.getByRole('button', { name: 'Download Zip' }).click()
-      return await page.waitForEvent('download', { timeout: 2000 })
+      return page.waitForEvent('download', { timeout: 2000 })
     })
     .catch(async () => {
       await page.getByRole('button', { name: 'Code' }).click()
       await page.getByRole('button', { name: 'Download Zip' }).click()
-      return await page.waitForEvent('download', { timeout: 2000 })
+      return page.waitForEvent('download', { timeout: 2000 })
     })
 
   await downloadPromise.saveAs('./dist-tests/vision-segmentation-spawn.zip')
