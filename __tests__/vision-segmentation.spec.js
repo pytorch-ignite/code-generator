@@ -110,16 +110,6 @@ test('vision segmentation all', async () => {
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 3000 })
     })
-    .catch(() => {
-      page.getByRole('button', { name: 'Code' }).click()
-      page.getByRole('button', { name: 'Download Zip' }).click()
-      return page.waitForEvent('download', { timeout: 3000 })
-    })
-    .catch(() => {
-      page.getByRole('button', { name: 'Code' }).click()
-      page.getByRole('button', { name: 'Download Zip' }).click()
-      return page.waitForEvent('download', { timeout: 3000 })
-    })
 
   await downloadPromise.saveAs('./dist-tests/vision-segmentation-all.zip')
 })
@@ -148,16 +138,6 @@ test('vision segmentation launch', async () => {
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 3000 })
     })
-    .catch(() => {
-      page.getByRole('button', { name: 'Code' }).click()
-      page.getByRole('button', { name: 'Download Zip' }).click()
-      return page.waitForEvent('download', { timeout: 3000 })
-    })
-    .catch(() => {
-      page.getByRole('button', { name: 'Code' }).click()
-      page.getByRole('button', { name: 'Download Zip' }).click()
-      return page.waitForEvent('download', { timeout: 3000 })
-    })
   await downloadPromise.saveAs('./dist-tests/vision-segmentation-launch.zip')
 })
 
@@ -181,16 +161,6 @@ test('vision segmentation spawn', async () => {
 
   const downloadPromise = await page
     .waitForEvent('download', { timeout: 3000 })
-    .catch(() => {
-      page.getByRole('button', { name: 'Code' }).click()
-      page.getByRole('button', { name: 'Download Zip' }).click()
-      return page.waitForEvent('download', { timeout: 3000 })
-    })
-    .catch(() => {
-      page.getByRole('button', { name: 'Code' }).click()
-      page.getByRole('button', { name: 'Download Zip' }).click()
-      return page.waitForEvent('download', { timeout: 3000 })
-    })
     .catch(() => {
       page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
