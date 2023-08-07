@@ -160,7 +160,7 @@ test('vision segmentation spawn', async () => {
 
   await page.getByRole('button', { name: 'Code' }).click()
   await page.getByRole('button', { name: 'Download Zip' }).click()
-   const downloadPromise = await page
+  const downloadPromise = await page
     .waitForEvent('download', { timeout: 2000 })
     .catch(async () => {
       await page.getByRole('button', { name: 'Code' }).click()
