@@ -38,14 +38,17 @@ test('text classification simple', async () => {
   const downloadPromise = await page
     .waitForEvent('download', { timeout: 1000 })
     .catch(() => {
+      page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 1000 })
     })
     .catch(() => {
+      page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 1000 })
     })
     .catch(() => {
+      page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 1000 })
     })
@@ -104,14 +107,17 @@ test('text classification all', async () => {
   const downloadPromise = await page
     .waitForEvent('download', { timeout: 1000 })
     .catch(() => {
+      page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 1000 })
     })
     .catch(() => {
+      page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 1000 })
     })
     .catch(() => {
+      page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 1000 })
     })
@@ -138,14 +144,17 @@ test('text classification launch', async () => {
   const downloadPromise = await page
     .waitForEvent('download', { timeout: 1000 })
     .catch(() => {
+      page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 1000 })
     })
     .catch(() => {
+      page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 1000 })
     })
     .catch(() => {
+      page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 1000 })
     })
@@ -174,14 +183,17 @@ test('text classification spawn', async () => {
   const downloadPromise = await page
     .waitForEvent('download', { timeout: 1000 })
     .catch(() => {
+      page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 1000 })
     })
     .catch(() => {
+      page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 1000 })
     })
     .catch(() => {
+      page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 1000 })
     })

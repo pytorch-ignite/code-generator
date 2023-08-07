@@ -38,14 +38,17 @@ test('vision classification simple', async () => {
   const downloadPromise = await page
     .waitForEvent('download', { timeout: 1000 })
     .catch(() => {
+      page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 1000 })
     })
     .catch(() => {
+      page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 1000 })
     })
     .catch(() => {
+      page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 1000 })
     })
@@ -104,14 +107,17 @@ test('vision classification all', async () => {
   const downloadPromise = await page
     .waitForEvent('download', { timeout: 1000 })
     .catch(() => {
+      page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 1000 })
     })
     .catch(() => {
+      page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 1000 })
     })
     .catch(() => {
+      page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 1000 })
     })
@@ -138,14 +144,17 @@ test('vision classification launch', async () => {
   const downloadPromise = await page
     .waitForEvent('download', { timeout: 1000 })
     .catch(() => {
+      page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 1000 })
     })
     .catch(() => {
+      page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 1000 })
     })
     .catch(() => {
+      page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 1000 })
     })
@@ -173,14 +182,17 @@ test('vision classification spawn', async () => {
   const downloadPromise = await page
     .waitForEvent('download', { timeout: 1000 })
     .catch(() => {
+      page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 1000 })
     })
     .catch(() => {
+      page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 1000 })
     })
     .catch(() => {
+      page.getByRole('button', { name: 'Code' }).click()
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 1000 })
     })
