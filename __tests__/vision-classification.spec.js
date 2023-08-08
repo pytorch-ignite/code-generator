@@ -37,7 +37,7 @@ test('vision classification simple', async () => {
   const downloadPromise = await page
     .waitForEvent('download', { timeout: 2000 })
     .catch(async () => {
-      await page.getByRole('button', { name: 'Code' }).click()
+      await page.getByRole('button', { name: 'Code' }).hover()
       await page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 2000 })
     })
@@ -95,7 +95,7 @@ test('vision classification all', async () => {
   const downloadPromise = await page
     .waitForEvent('download', { timeout: 2000 })
     .catch(async () => {
-      await page.getByRole('button', { name: 'Code' }).click()
+      await page.getByRole('button', { name: 'Code' }).hover()
       await page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 2000 })
     })
@@ -121,7 +121,7 @@ test('vision classification launch', async () => {
   const downloadPromise = await page
     .waitForEvent('download', { timeout: 2000 })
     .catch(async () => {
-      await page.getByRole('button', { name: 'Code' }).click()
+      await page.getByRole('button', { name: 'Code' }).hover()
       await page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 2000 })
     })
@@ -148,7 +148,7 @@ test('vision classification spawn', async () => {
   const downloadPromise = await page
     .waitForEvent('download', { timeout: 2000 })
     .catch(async () => {
-      await page.getByRole('button', { name: 'Code' }).click()
+      await page.getByRole('button', { name: 'Code' }).hover()
       await page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 2000 })
     })
