@@ -80,7 +80,7 @@ jobs:
           pip install tqdm
 
       - run: pnpm build
-      - run: pnpm test:ci
+      - run: pnpm test:ci ${{ matrix.template }}
       - run: sh ./scripts/run_tests.sh unzip
       - run: pnpm dist_lint
 
