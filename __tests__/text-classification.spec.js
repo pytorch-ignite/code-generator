@@ -51,6 +51,16 @@ test('text classification simple', async () => {
       await page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 2000 })
     })
+    .catch(async () => {
+      await page.getByRole('button', { name: 'Code' }).click()
+      await page
+        .getByText(
+          'Generate Linkcontent_copy Copied!Use wget or paste the link in your browser.Down'
+        )
+        .hover()
+      await page.getByRole('button', { name: 'Download Zip' }).click()
+      return page.waitForEvent('download', { timeout: 2000 })
+    })
 
   await downloadPromise.saveAs('./dist-tests/text-classification-simple.zip')
 })
@@ -119,6 +129,16 @@ test('text classification all', async () => {
       await page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 2000 })
     })
+    .catch(async () => {
+      await page.getByRole('button', { name: 'Code' }).click()
+      await page
+        .getByText(
+          'Generate Linkcontent_copy Copied!Use wget or paste the link in your browser.Down'
+        )
+        .hover()
+      await page.getByRole('button', { name: 'Download Zip' }).click()
+      return page.waitForEvent('download', { timeout: 2000 })
+    })
   await downloadPromise.saveAs('./dist-tests/text-classification-all.zip')
 })
 
@@ -145,6 +165,16 @@ test('text classification launch', async () => {
   await page.getByRole('button', { name: 'Download Zip' }).click()
   const downloadPromise = await page
     .waitForEvent('download', { timeout: 2000 })
+    .catch(async () => {
+      await page.getByRole('button', { name: 'Code' }).click()
+      await page
+        .getByText(
+          'Generate Linkcontent_copy Copied!Use wget or paste the link in your browser.Down'
+        )
+        .hover()
+      await page.getByRole('button', { name: 'Download Zip' }).click()
+      return page.waitForEvent('download', { timeout: 2000 })
+    })
     .catch(async () => {
       await page.getByRole('button', { name: 'Code' }).click()
       await page
@@ -183,6 +213,16 @@ test('text classification spawn', async () => {
   await page.getByRole('button', { name: 'Download Zip' }).click()
   const downloadPromise = await page
     .waitForEvent('download', { timeout: 2000 })
+    .catch(async () => {
+      await page.getByRole('button', { name: 'Code' }).click()
+      await page
+        .getByText(
+          'Generate Linkcontent_copy Copied!Use wget or paste the link in your browser.Down'
+        )
+        .hover()
+      await page.getByRole('button', { name: 'Download Zip' }).click()
+      return page.waitForEvent('download', { timeout: 2000 })
+    })
     .catch(async () => {
       await page.getByRole('button', { name: 'Code' }).click()
       await page
