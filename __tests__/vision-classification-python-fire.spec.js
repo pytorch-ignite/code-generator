@@ -24,13 +24,16 @@ afterEach(async () => {
   await context.close()
 })
 
-test('vision-segmentation simple', async () => {
-  await page.selectOption('select', 'template-vision-segmentation')
+test('vision-classification simple python-fire', async () => {
+  await page.selectOption('select', 'template-vision-classification')
 
   await page.waitForSelector('text=README.md')
 
   await page.click('text=Loggers')
   await page.click('text=config.yaml')
+
+  await page.getByText('Training', { exact: true }).click()
+  await page.getByRole('combobox', { name: 'Select the argument parser for training' }).selectOption('fire')
 
   // TODO: simplify the downloadPromise calls
   // Here we are trying to wait for 2 seconds before clicking on the `Code` and `Download Zip` button
@@ -52,17 +55,19 @@ test('vision-segmentation simple', async () => {
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 2000 })
     })
-  await downloadPromise.saveAs('./dist-tests/vision-segmentation-simple.zip')
+
+  await downloadPromise.saveAs('./dist-tests/vision-classification-simple-python-fire.zip')
 })
 
-test('vision-segmentation all', async () => {
-  await page.selectOption('select', 'template-vision-segmentation')
+test('vision-classification all python-fire', async () => {
+  await page.selectOption('select', 'template-vision-classification')
 
   await page.check('#include_test-checkbox')
   expect(await page.isChecked('#include_test-checkbox')).toBeTruthy()
 
   await page.waitForSelector('text=README.md')
   await page.click('text=Training')
+  await page.getByRole('combobox', { name: 'Select the argument parser for training' }).selectOption('fire')
 
   await page.check('#deterministic-checkbox')
   expect(await page.isChecked('#deterministic-checkbox')).toBeTruthy()
@@ -117,15 +122,15 @@ test('vision-segmentation all', async () => {
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 2000 })
     })
-
-  await downloadPromise.saveAs('./dist-tests/vision-segmentation-all.zip')
+  await downloadPromise.saveAs('./dist-tests/vision-classification-all-python-fire.zip')
 })
 
-test('vision-segmentation launch', async () => {
-  await page.selectOption('select', 'template-vision-segmentation')
+test('vision-classification launch python-fire', async () => {
+  await page.selectOption('select', 'template-vision-classification')
 
   await page.waitForSelector('text=README.md')
   await page.click('text=Training')
+  await page.getByRole('combobox', { name: 'Select the argument parser for training' }).selectOption('fire')
 
   await page.check('#use_dist-checkbox')
   expect(await page.isChecked('#use_dist-checkbox')).toBeTruthy()
@@ -152,14 +157,15 @@ test('vision-segmentation launch', async () => {
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 2000 })
     })
-  await downloadPromise.saveAs('./dist-tests/vision-segmentation-launch.zip')
+  await downloadPromise.saveAs('./dist-tests/vision-classification-launch-python-fire.zip')
 })
 
-test('vision-segmentation spawn', async () => {
-  await page.selectOption('select', 'template-vision-segmentation')
+test('vision-classification spawn python-fire', async () => {
+  await page.selectOption('select', 'template-vision-classification')
 
   await page.waitForSelector('text=README.md')
   await page.click('text=Training')
+  await page.getByRole('combobox', { name: 'Select the argument parser for training' }).selectOption('fire')
 
   await page.check('#use_dist-checkbox')
   expect(await page.isChecked('#use_dist-checkbox')).toBeTruthy()
@@ -187,6 +193,5 @@ test('vision-segmentation spawn', async () => {
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 2000 })
     })
-
-  await downloadPromise.saveAs('./dist-tests/vision-segmentation-spawn.zip')
+  await downloadPromise.saveAs('./dist-tests/vision-classification-spawn-python-fire.zip')
 })
