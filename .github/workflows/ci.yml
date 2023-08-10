@@ -81,7 +81,7 @@ jobs:
 
       - run: pnpm build
 
-      - name: pnpm test:ci ${{ matrix.test }}
+      - name: pnpm test:ci ${{ matrix.template }}
         env:
           NPM_CONFIG: ${{ matrix.test }}
         run: pnpm test:ci

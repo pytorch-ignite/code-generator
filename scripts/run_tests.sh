@@ -15,7 +15,7 @@ unzip_all() {
 }
 
 run_simple() {
-  for dir in $(find ./dist-tests/$1-simple -type d)
+  for dir in $(find ./dist-tests/$1-simple-argparser -type d)
   do
     cd $dir
     python main.py ../../src/tests/ci-configs/$1-simple.yaml
@@ -24,7 +24,7 @@ run_simple() {
 }
 
 run_all() {
-  for dir in $(find ./dist-tests/$1-all -type d)
+  for dir in $(find ./dist-tests/$1-all-argparser -type d)
   do
     cd $dir
     pytest -vra --color=yes --tb=short test_*.py
@@ -34,7 +34,7 @@ run_all() {
 }
 
 run_launch() {
-  for dir in $(find ./dist-tests/$1-launch -type d)
+  for dir in $(find ./dist-tests/$1-launch-argparser -type d)
   do
     cd $dir
     torchrun --nproc_per_node 2 main.py ../../src/tests/ci-configs/$1-launch.yaml --backend gloo
@@ -43,7 +43,7 @@ run_launch() {
 }
 
 run_spawn() {
-  for dir in $(find ./dist-tests/$1-spawn -type d)
+  for dir in $(find ./dist-tests/$1-spawn-argparser -type d)
   do
     cd $dir
     python main.py ../../src/tests/ci-configs/$1-spawn.yaml --backend gloo
