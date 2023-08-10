@@ -33,7 +33,7 @@ test('vision classification simple', async () => {
   await page.click('text=config.yaml')
 
   // TODO: simplify the downloadPromise calls
-  // Here we are tring to wait for 2 seconds before clicking on the `Code` and `Download Zip` button
+  // Here we are trying to wait for 2 seconds before clicking on the `Code` and `Download Zip` button
   const downloadPromise = await page
     .waitForEvent('download', { timeout: 2000 })
     .catch(() => {
