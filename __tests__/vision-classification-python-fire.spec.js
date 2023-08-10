@@ -33,7 +33,9 @@ test('vision-classification simple python-fire', async () => {
   await page.click('text=config.yaml')
 
   await page.getByText('Training', { exact: true }).click()
-  await page.getByRole('combobox', { name: 'Select the argument parser for training' }).selectOption('fire')
+  await page
+    .getByRole('combobox', { name: 'Select the argument parser for training' })
+    .selectOption('fire')
 
   // TODO: simplify the downloadPromise calls
   // Here we are trying to wait for 2 seconds before clicking on the `Code` and `Download Zip` button
@@ -56,7 +58,9 @@ test('vision-classification simple python-fire', async () => {
       return page.waitForEvent('download', { timeout: 2000 })
     })
 
-  await downloadPromise.saveAs('./dist-tests/vision-classification-simple-python-fire.zip')
+  await downloadPromise.saveAs(
+    './dist-tests/vision-classification-simple-python-fire.zip'
+  )
 })
 
 test('vision-classification all python-fire', async () => {
@@ -67,7 +71,9 @@ test('vision-classification all python-fire', async () => {
 
   await page.waitForSelector('text=README.md')
   await page.click('text=Training')
-  await page.getByRole('combobox', { name: 'Select the argument parser for training' }).selectOption('fire')
+  await page
+    .getByRole('combobox', { name: 'Select the argument parser for training' })
+    .selectOption('fire')
 
   await page.check('#deterministic-checkbox')
   expect(await page.isChecked('#deterministic-checkbox')).toBeTruthy()
@@ -122,7 +128,9 @@ test('vision-classification all python-fire', async () => {
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 2000 })
     })
-  await downloadPromise.saveAs('./dist-tests/vision-classification-all-python-fire.zip')
+  await downloadPromise.saveAs(
+    './dist-tests/vision-classification-all-python-fire.zip'
+  )
 })
 
 test('vision-classification launch python-fire', async () => {
@@ -130,7 +138,9 @@ test('vision-classification launch python-fire', async () => {
 
   await page.waitForSelector('text=README.md')
   await page.click('text=Training')
-  await page.getByRole('combobox', { name: 'Select the argument parser for training' }).selectOption('fire')
+  await page
+    .getByRole('combobox', { name: 'Select the argument parser for training' })
+    .selectOption('fire')
 
   await page.check('#use_dist-checkbox')
   expect(await page.isChecked('#use_dist-checkbox')).toBeTruthy()
@@ -157,7 +167,9 @@ test('vision-classification launch python-fire', async () => {
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 2000 })
     })
-  await downloadPromise.saveAs('./dist-tests/vision-classification-launch-python-fire.zip')
+  await downloadPromise.saveAs(
+    './dist-tests/vision-classification-launch-python-fire.zip'
+  )
 })
 
 test('vision-classification spawn python-fire', async () => {
@@ -165,7 +177,9 @@ test('vision-classification spawn python-fire', async () => {
 
   await page.waitForSelector('text=README.md')
   await page.click('text=Training')
-  await page.getByRole('combobox', { name: 'Select the argument parser for training' }).selectOption('fire')
+  await page
+    .getByRole('combobox', { name: 'Select the argument parser for training' })
+    .selectOption('fire')
 
   await page.check('#use_dist-checkbox')
   expect(await page.isChecked('#use_dist-checkbox')).toBeTruthy()
@@ -193,5 +207,7 @@ test('vision-classification spawn python-fire', async () => {
       page.getByRole('button', { name: 'Download Zip' }).click()
       return page.waitForEvent('download', { timeout: 2000 })
     })
-  await downloadPromise.saveAs('./dist-tests/vision-classification-spawn-python-fire.zip')
+  await downloadPromise.saveAs(
+    './dist-tests/vision-classification-spawn-python-fire.zip'
+  )
 })
