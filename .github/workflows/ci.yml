@@ -83,7 +83,7 @@ jobs:
 
       - name: pnpm test:ci ${{ matrix.template }}
         env:
-          NPM_CONFIG: ${{ matrix.test }}
+          NPM_CONFIG: ${{ matrix.template }}
         run: pnpm test:ci
 
       - run: sh ./scripts/run_tests.sh unzip
