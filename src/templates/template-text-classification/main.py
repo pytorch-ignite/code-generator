@@ -38,7 +38,7 @@ def run(local_rank: int, config: Any):
                 f.write(f"{key}: {value}\n")
 
         #::: } else { :::#
-        copy(config.config, f" config.output_dir  /config-lock.yaml")
+        copy(config.config, f"{config.output_dir}/config-lock.yaml")
 
         #::: } :::#
 
