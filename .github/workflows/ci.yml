@@ -80,7 +80,12 @@ jobs:
           pip install tqdm
 
       - run: pnpm build
-      - run: pnpm test:ci
+
+      - name: pnpm test:ci ${{ matrix.test }}
+        env:
+          NPM_CONFIG: ${{ matrix.test }}
+        run: pnpm test:ci
+
       - run: sh ./scripts/run_tests.sh unzip
       - run: pnpm fmt
       - run: pnpm dist_lint
