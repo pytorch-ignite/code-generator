@@ -35,14 +35,11 @@ for (const name of parser) {
     await page.click('text=config.yaml')
     await page.getByText('Training', { exact: true }).click()
 
-    if (name == 'python-fire') {
-      await page.getByText('Training', { exact: true }).click()
-      await page
-        .getByRole('combobox', {
-          name: 'Select the argument parser for training'
-        })
-        .selectOption('fire')
-    }
+    await page
+      .getByRole('combobox', {
+        name: 'Select the argument parser for training'
+      })
+      .selectOption(name)
     // TODO: simplify the downloadPromise calls
     // Here we are trying to wait for 2 seconds before clicking on the `Code` and `Download Zip` button
     const downloadPromise = await page
@@ -76,13 +73,11 @@ for (const name of parser) {
 
     await page.waitForSelector('text=README.md')
     await page.click('text=Training')
-    if (name == 'python-fire') {
-      await page
-        .getByRole('combobox', {
-          name: 'Select the argument parser for training'
-        })
-        .selectOption('fire')
-    }
+    await page
+      .getByRole('combobox', {
+        name: 'Select the argument parser for training'
+      })
+      .selectOption(name)
     await page.check('#deterministic-checkbox')
     expect(await page.isChecked('#deterministic-checkbox')).toBeTruthy()
 
@@ -149,13 +144,11 @@ for (const name of parser) {
 
     await page.waitForSelector('text=README.md')
     await page.click('text=Training')
-    if (name == 'python-fire') {
-      await page
-        .getByRole('combobox', {
-          name: 'Select the argument parser for training'
-        })
-        .selectOption('fire')
-    }
+    await page
+      .getByRole('combobox', {
+        name: 'Select the argument parser for training'
+      })
+      .selectOption(name)
     await page.check('#use_dist-checkbox')
     expect(await page.isChecked('#use_dist-checkbox')).toBeTruthy()
 
@@ -191,13 +184,11 @@ for (const name of parser) {
 
     await page.waitForSelector('text=README.md')
     await page.click('text=Training')
-    if (name == 'python-fire') {
-      await page
-        .getByRole('combobox', {
-          name: 'Select the argument parser for training'
-        })
-        .selectOption('fire')
-    }
+    await page
+      .getByRole('combobox', {
+        name: 'Select the argument parser for training'
+      })
+      .selectOption(name)
     await page.check('#use_dist-checkbox')
     expect(await page.isChecked('#use_dist-checkbox')).toBeTruthy()
 
