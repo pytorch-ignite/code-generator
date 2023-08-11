@@ -24,7 +24,7 @@ afterEach(async () => {
   await context.close()
 })
 
-const parser = ['argparser', 'python-fire']
+const parser = ['argparse', 'python-fire']
 for (const name of parser) {
   test(`vision-dcgan simple ${name}`, async () => {
     await page.selectOption('select', 'template-vision-dcgan')
