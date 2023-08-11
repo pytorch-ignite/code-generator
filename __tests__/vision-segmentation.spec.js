@@ -33,6 +33,8 @@ for (const name of parser) {
 
     await page.click('text=Loggers')
     await page.click('text=config.yaml')
+    await page.getByText('Training', { exact: true }).click()
+ 
     if (name == 'python-fire') {
       await page.getByText('Training', { exact: true }).click()
       await page
