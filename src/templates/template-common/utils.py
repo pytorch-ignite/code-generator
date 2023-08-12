@@ -67,6 +67,9 @@ def setup_config(config_path, **kwargs):
             print(f"{k} parameter not in {config_path}")
         config[k] = v
 
+    if config.get("backend", None) == None:
+        config["backend"] = None
+
     return DotDict(config)
 
 
