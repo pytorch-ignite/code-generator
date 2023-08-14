@@ -1,9 +1,9 @@
 # main entrypoint
 #::: if ((it.argparser == 'fire')) { :::#
-def main(config_path, **kwargs):
+def main(config_path, backend=None, **kwargs):
     config_path = Path(config_path)
     assert config_path.exists(), config_path
-    config = setup_config(config_path, **kwargs)
+    config = setup_config(config_path, backend, **kwargs)
 
 
 #::: } else { :::#

@@ -56,7 +56,7 @@ class DotDict(dict):
         return value
 
 
-def setup_config(config_path, **kwargs):
+def setup_config(config_path, backend, **kwargs):
     with open(config_path, "r") as f:
         config = yaml.safe_load(f.read())
 
@@ -67,8 +67,7 @@ def setup_config(config_path, **kwargs):
             print(f"{k} parameter not in {config_path}")
         config[k] = v
 
-    if config.get("backend", None) == None:
-        config["backend"] = None
+    config["backend"] = backend
 
     return DotDict(config)
 
