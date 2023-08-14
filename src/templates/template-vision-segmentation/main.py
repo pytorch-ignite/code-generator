@@ -23,12 +23,12 @@ from shutil import copy
 
 #::: if ((it.argparser == 'fire')) { :::#
 import fire
-import hydra
 
 #::: } :::#
 
 #::: if ((it.argparser == 'hydra')) { :::#
-from omegaconf import DictConfig, OmegaConf
+import hydra
+from omegaconf import DictConfig
 
 #::: } :::#
 
