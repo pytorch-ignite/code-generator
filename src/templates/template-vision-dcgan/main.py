@@ -47,10 +47,8 @@ def run(local_rank: int, config: Any):
             for key, value in config.items():
                 f.write(f"{key}: {value}\n")
 
-        #::: } :::#
-
-        #::: if ((it.argparser == 'hydra')) { :::#
-        copy(config.config, f" config.output_dir  /config-lock.yaml")
+        #::: } else { :::#
+        copy(config.config, f"{config.output_dir}/config-lock.yaml")
 
         #::: } :::#
     #::: } :::#

@@ -1,5 +1,9 @@
 import logging
+
+#::: if ((it.argparser == 'argparse')) { :::#
 from argparse import ArgumentParser
+
+#::: } :::#
 from datetime import datetime
 from logging import Logger
 from pathlib import Path
@@ -8,6 +12,11 @@ from typing import Any, Mapping, Optional, Union
 import ignite.distributed as idist
 import torch
 import yaml
+
+#::: if ((it.argparser == 'fire')) { :::#
+from easydict import EasyDict as edict
+
+#::: } :::#
 from ignite.contrib.engines import common
 from ignite.engine import Engine
 
@@ -56,19 +65,7 @@ def setup_config(config):
 #::: if ((it.argparser == 'fire')) { :::#
 
 
-class DotDict(dict):
-    """
-    Dictionary subclass that allows dot notation access to keys.
-    """
-
-    def __getattr__(self, attr):
-        value = self.get(attr)
-        if isinstance(value, dict):
-            return DotDict(value)
-        return value
-
-
-def setup_config(config_path, **kwargs):
+def setup_config(config_path, backend, **kwargs):
     with open(config_path, "r") as f:
         config = yaml.safe_load(f.read())
 
@@ -79,7 +76,13 @@ def setup_config(config_path, **kwargs):
             print(f"{k} parameter not in {config_path}")
         config[k] = v
 
-    return DotDict(config)
+    optional_attributes = ["train_epoch_length", "eval_epoch_length"]
+    for attr in optional_attributes:
+        config[attr] = config.get(attr, None)
+
+    config["backend"] = backend
+
+    return edict(config)
 
 
 #::: } else if ((it.argparser == 'argparse')) { :::#

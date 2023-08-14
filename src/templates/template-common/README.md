@@ -68,7 +68,11 @@ torchrun \
   --node_rank 0 \
   --master_addr #:::= it.master_addr :::# \
   --master_port #:::= it.master_port :::# \
-  main.py config.yaml --backend #:::= it.backend :::#
+  main.py config.yaml --backend #:::= it.backend :::# \
+  #::: if ((it.argparser == 'fire')) { :::#
+  [--override_arg=value]
+
+  #::: } :::#
 ```
 
 - Execute on worker nodes
@@ -80,7 +84,11 @@ torchrun \
   --node_rank <node_rank> \
   --master_addr #:::= it.master_addr :::# \
   --master_port #:::= it.master_port :::# \
-  main.py config.yaml --backend #:::= it.backend :::#
+  main.py config.yaml --backend #:::= it.backend :::# \
+  #::: if ((it.argparser == 'fire')) { :::#
+  [--override_arg=value]
+
+  #::: } :::#
 ```
 
 #::: } else { :::#
@@ -90,7 +98,11 @@ torchrun \
 ```sh
 torchrun \
   --nproc_per_node #:::= it.nproc_per_node :::# \
-  main.py config.yaml --backend #:::= it.backend :::#
+  main.py config.yaml --backend #:::= it.backend :::# \
+  #::: if ((it.argparser == 'fire')) { :::#
+  [--override_arg=value]
+
+  #::: } :::#
 ```
 
 #::: } :::#
@@ -115,7 +127,11 @@ master_port: #:::= it.master_port :::#
 ```
 
 ```sh
+#::: if ((it.argparser == 'fire')) { :::#
+python main.py config.yaml --backend #:::= it.backend :::# [--override_arg=value]
+#::: } else { :::#
 python main.py config.yaml --backend #:::= it.backend :::#
+#::: } :::#
 ```
 
 - Execute on worker nodes
@@ -130,7 +146,12 @@ master_port: #:::= it.master_port :::#
 ```
 
 ```sh
+
+#::: if ((it.argparser == 'fire')) { :::#
+python main.py config.yaml --backend #:::= it.backend :::# [--override_arg=value]
+#::: } else { :::#
 python main.py config.yaml --backend #:::= it.backend :::#
+#::: } :::#
 ```
 
 #::: } else { :::#

@@ -2,9 +2,9 @@ torch>=1.10.2
 torchvision>=0.11.3
 pytorch-ignite>=0.4.8
 pyyaml
-
 #::: if ((it.argparser == 'fire')) { :::#
 #:::= it.argparser :::#
+easydict
 
 #::: } else if ((it.argparser == 'hydra')) { :::#
 #:::= it.argparser + '-core'  :::#
@@ -13,11 +13,9 @@ omegaconf
 #::: } :::#
 
 #::: if (['neptune', 'polyaxon'].includes(it.logger)) { :::#
-
 #:::= it.logger + '-client' :::#
 
 #::: } else { :::#
-
 #:::= it.logger :::#
 
 #::: } :::#

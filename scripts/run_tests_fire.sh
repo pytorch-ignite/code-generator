@@ -14,8 +14,8 @@ unzip_all() {
   done
 }
 
-run_simple() {
-  for dir in $(find ./dist-tests/$1-simple-argparse -type d)
+run_simple_fire() {
+  for dir in $(find ./dist-tests/$1-simple-fire -type d)
   do
     cd $dir
     python main.py ../../src/tests/ci-configs/$1-simple.yaml
@@ -23,8 +23,8 @@ run_simple() {
   done
 }
 
-run_all() {
-  for dir in $(find ./dist-tests/$1-all-argparse -type d)
+run_all_fire() {
+  for dir in $(find ./dist-tests/$1-all-fire -type d)
   do
     cd $dir
     pytest -vra --color=yes --tb=short test_*.py
@@ -33,8 +33,8 @@ run_all() {
   done
 }
 
-run_launch() {
-  for dir in $(find ./dist-tests/$1-launch-argparse -type d)
+run_launch_fire() {
+  for dir in $(find ./dist-tests/$1-launch-fire -type d)
   do
     cd $dir
     torchrun --nproc_per_node 2 main.py ../../src/tests/ci-configs/$1-launch.yaml --backend gloo
@@ -42,8 +42,8 @@ run_launch() {
   done
 }
 
-run_spawn() {
-  for dir in $(find ./dist-tests/$1-spawn-argparse -type d)
+run_spawn_fire() {
+  for dir in $(find ./dist-tests/$1-spawn-fire -type d)
   do
     cd $dir
     python main.py ../../src/tests/ci-configs/$1-spawn.yaml --backend gloo
@@ -54,11 +54,11 @@ run_spawn() {
 if [ $1 = "unzip" ]; then
   unzip_all
 elif [ $1 = "simple" ]; then
-  run_simple $2
+  run_simple_fire $2
 elif [ $1 = "all" ]; then
-  run_all $2
+  run_all_fire $2
 elif [ $1 = "launch" ]; then
-  run_launch $2
+  run_launch_fire $2
 elif [ $1 = "spawn" ]; then
-  run_spawn $2
+  run_spawn_fire $2
 fi
