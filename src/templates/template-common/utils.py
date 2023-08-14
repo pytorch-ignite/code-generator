@@ -13,8 +13,10 @@ import ignite.distributed as idist
 import torch
 import yaml
 
-#::: } else { :::#
+#::: if ((it.argparser == 'fire')) { :::#
 from easydict import EasyDict as edict
+
+#::: } :::#
 from ignite.contrib.engines import common
 from ignite.engine import Engine
 
