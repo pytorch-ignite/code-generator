@@ -89,7 +89,7 @@ jobs:
       - run: sh ./scripts/run_tests.sh unzip
       - run: pnpm dist_lint ${{ matrix.template }}
 
-      - name: 'Run ${{ matrix.template }} ${{ matrix.test }}'
+      - name: 'Run ${{ matrix.template }} ${{ matrix.test }} - ArgParse'
         run: sh ./scripts/run_tests.sh ${{ matrix.test }} ${{ matrix.template }}
 
       - name: 'Run ${{ matrix.template }} ${{ matrix.test }} - Python Fire'
