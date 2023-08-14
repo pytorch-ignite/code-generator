@@ -3,9 +3,6 @@ import logging
 #::: if ((it.argparser == 'argparse')) { :::#
 from argparse import ArgumentParser
 
-#::: } else { :::#
-from easydict import EasyDict as edict
-
 #::: } :::#
 from datetime import datetime
 from logging import Logger
@@ -15,6 +12,9 @@ from typing import Any, Mapping, Optional, Union
 import ignite.distributed as idist
 import torch
 import yaml
+
+#::: } else { :::#
+from easydict import EasyDict as edict
 from ignite.contrib.engines import common
 from ignite.engine import Engine
 
