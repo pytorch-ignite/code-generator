@@ -68,11 +68,15 @@ torchrun \
   --node_rank 0 \
   --master_addr #:::= it.master_addr :::# \
   --master_port #:::= it.master_port :::# \
-  main.py config.yaml --backend #:::= it.backend :::# \
   #::: if ((it.argparser == 'fire')) { :::#
+  main.py config.yaml --backend #:::= it.backend :::# \
   [--override_arg=value]
-
+  #::: } else if ((it.argparser == 'hydra')){ :::#
+  main.py config.yaml --config-dir=[dir-path] \ --config-name=[config-name] ++backend= #:::= it.backend :::# ++override_arg=[value] 
+  #::: } else { :::#
+  main.py config.yaml --backend #:::= it.backend :::# 
   #::: } :::#
+
 ```
 
 - Execute on worker nodes
@@ -84,10 +88,13 @@ torchrun \
   --node_rank <node_rank> \
   --master_addr #:::= it.master_addr :::# \
   --master_port #:::= it.master_port :::# \
-  main.py config.yaml --backend #:::= it.backend :::# \
   #::: if ((it.argparser == 'fire')) { :::#
+  main.py config.yaml --backend #:::= it.backend :::# \
   [--override_arg=value]
-
+  #::: } else if ((it.argparser == 'hydra')){ :::#
+  main.py config.yaml --config-dir=[dir-path] \ --config-name=[config-name] ++backend= #:::= it.backend :::# ++override_arg=[value] 
+  #::: } else { :::#
+  main.py config.yaml --backend #:::= it.backend :::# 
   #::: } :::#
 ```
 
@@ -98,7 +105,7 @@ torchrun \
 ```sh
 torchrun \
   --nproc_per_node #:::= it.nproc_per_node :::# \
-  main.py config.yaml --backend #:::= it.backend :::# \
+  main.py config.yaml --backend=#:::= it.backend :::# \
   #::: if ((it.argparser == 'fire')) { :::#
   [--override_arg=value]
 
@@ -128,7 +135,9 @@ master_port: #:::= it.master_port :::#
 
 ```sh
 #::: if ((it.argparser == 'fire')) { :::#
-python main.py config.yaml --backend #:::= it.backend :::# [--override_arg=value]
+python main.py config.yaml --backend #:::= it.backend :::# --override_arg=[value]
+#::: } else if ((it.argparser == 'hydra')){ :::#
+python main.py config.yaml --config-dir=[dir-path] --config-name=[config-name] ++backend= #:::= it.backend :::# ++override_arg=[value] 
 #::: } else { :::#
 python main.py config.yaml --backend #:::= it.backend :::#
 #::: } :::#
@@ -149,6 +158,8 @@ master_port: #:::= it.master_port :::#
 
 #::: if ((it.argparser == 'fire')) { :::#
 python main.py config.yaml --backend #:::= it.backend :::# [--override_arg=value]
+#::: } else if ((it.argparser == 'hydra')){ :::#
+python main.py config.yaml --config-dir=[dir-path] --config-name=[config-name] ++backend=#:::= it.backend :::# ++override_arg=[value] 
 #::: } else { :::#
 python main.py config.yaml --backend #:::= it.backend :::#
 #::: } :::#
@@ -168,7 +179,7 @@ nproc_per_node: #:::= it.nproc_per_node :::#
 python main.py config.yaml --backend #:::= it.backend :::#  [--override_arg=value]
 
 #::: } else if ((it.argparser == 'hydra')) { :::#
-python main.py [++override_arg=value]
+python main.py --config-dir=[dir-path] --config-name=[config-name] ++override_arg=[value]
 
 #::: } else { :::#
 python main.py config.yaml --backend #:::= it.backend :::#
@@ -188,7 +199,7 @@ python main.py config.yaml --backend #:::= it.backend :::#
 python main.py config.yaml [--override_arg=value]
 
 #::: } else if ((it.argparser == 'hydra')) { :::#
-python main.py [++override_arg=value]
+python main.py --config-dir=[dir-path] --config-name=[config-name] ++override_arg=[value]
 
 #::: } else { :::#
 python main.py config.yaml

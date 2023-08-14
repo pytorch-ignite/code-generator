@@ -18,7 +18,7 @@ run_simple_hydra() {
   for dir in $(find ./dist-tests/$1-simple-hydra -type d)
   do
     cd $dir
-    python main.py ../../src/tests/ci-configs/$1-simple.yaml
+    python main.py --config-dir=../../src/tests/ci-configs --config-name=$1-simple.yaml 
     cd $CWD
   done
 }
@@ -28,7 +28,7 @@ run_all_hydra() {
   do
     cd $dir
     pytest -vra --color=yes --tb=short test_*.py
-    python main.py ../../src/tests/ci-configs/$1-all.yaml
+    python main.py --config-dir=../../src/tests/ci-configs --config-name=$1-all.yaml
     cd $CWD
   done
 }
@@ -37,7 +37,7 @@ run_launch_hydra() {
   for dir in $(find ./dist-tests/$1-launch-hydra -type d)
   do
     cd $dir
-    torchrun --nproc_per_node 2 main.py ../../src/tests/ci-configs/$1-launch.yaml --backend gloo
+    torchrun --nproc_per_node 2 main.py --config-dir=../../src/tests/ci-configs --config-name=$1-launch.yaml ++backend='gloo'
     cd $CWD
   done
 }
@@ -46,7 +46,7 @@ run_spawn_hydra() {
   for dir in $(find ./dist-tests/$1-spawn-hydra -type d)
   do
     cd $dir
-    python main.py ../../src/tests/ci-configs/$1-spawn.yaml --backend gloo
+    python main.py --config-dir=../../src/tests/ci-configs --config-name=$1-spawn.yaml ++backend='gloo'
     cd $CWD
   done
 }
