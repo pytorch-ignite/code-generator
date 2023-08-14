@@ -12,7 +12,7 @@ from typing import Any, Mapping, Optional, Union
 import ignite.distributed as idist
 import torch
 
-#::: if ((!it.argparser == 'hydra')) { :::#
+#::: if ((it.argparser != 'hydra')) { :::#
 import yaml
 
 #::: } :::#
@@ -50,7 +50,7 @@ from ignite.handlers.time_limit import TimeLimit
 from ignite.utils import setup_logger
 
 #::: if ((it.argparser == 'hydra')) { :::#
-from omegaconf import DictConfig
+from omegaconf import OmegaConf
 
 
 def setup_config(config):
