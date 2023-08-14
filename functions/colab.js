@@ -49,8 +49,12 @@ exports.handler = async function (event, _) {
     '!python main.py config.yaml\n'
   ]
 
-  if(title === 'Template Vision Segmentation'){
-    commands.splice(3, 0, '!python -c "from data import download_datasets; download_datasets(\'./\')"')
+  if (title === 'Template Vision Segmentation') {
+    commands.splice(
+      3,
+      0,
+      '!python -c "from data import download_datasets; download_datasets(\'./\')"\n'
+    )
   }
   const nb = {
     nbformat: 4,
@@ -78,7 +82,7 @@ exports.handler = async function (event, _) {
         metadata: {},
         execution_count: null,
         outputs: [],
-        source: commands,
+        source: commands
       }
     ]
   }
