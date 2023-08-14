@@ -13,10 +13,6 @@ import ignite.distributed as idist
 import torch
 import yaml
 
-#::: if ((it.argparser == 'fire')) { :::#
-from omegaconf import DictConfig
-
-#::: } :::#
 from ignite.contrib.engines import common
 from ignite.engine import Engine
 
@@ -45,8 +41,8 @@ from ignite.handlers.time_limit import TimeLimit
 #::: } :::#
 from ignite.utils import setup_logger
 
-
 #::: if ((it.argparser == 'fire')) { :::#
+from omegaconf import DictConfig
 
 
 def setup_config(config_path, backend, **kwargs):
