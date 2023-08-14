@@ -14,7 +14,7 @@ import torch
 import yaml
 
 #::: if ((it.argparser == 'fire')) { :::#
-from easydict import EasyDict as edict
+from omegaconf import DictConfig
 
 #::: } :::#
 from ignite.contrib.engines import common
@@ -66,7 +66,7 @@ def setup_config(config_path, backend, **kwargs):
 
     config["backend"] = backend
 
-    return edict(config)
+    return DictConfig(config)
 
 
 #::: } else { :::#
