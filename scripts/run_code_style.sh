@@ -10,6 +10,8 @@ if [ $1 == "dist_lint" ]; then
     ls ./dist-tests/$TEMP-all-argparse/main.py
     # for python-fire
     ls ./dist-tests/$TEMP-all-fire/main.py
+    # for hydra
+    ls ./dist-tests/$TEMP-all-hydra/main.py
 
     # Comment dist-tests in .gitignore to make black running on ./dist-tests folder
     sed -i "s/dist-tests/# dist-tests/g" .gitignore
