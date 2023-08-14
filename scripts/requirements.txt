@@ -10,3 +10,5 @@ datasets
 tensorboard
 fire 
 easydict
+hydra-core
+omegaconf

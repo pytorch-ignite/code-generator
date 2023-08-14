@@ -24,7 +24,7 @@ afterEach(async () => {
   await context.close()
 })
 
-const parser = ['argparse', 'fire']
+const parser = ['argparse', 'fire', 'hydra']
 for (const name of parser) {
   test(`text-classification simple ${name}`, async () => {
     await page.selectOption('select', 'template-text-classification')
