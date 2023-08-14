@@ -4,6 +4,7 @@ pytorch-ignite>=0.4.8
 pyyaml
 #::: if ((it.argparser == 'fire')) { :::#
 #:::= it.argparser :::#
+easydict
 
 #::: } :::#
 

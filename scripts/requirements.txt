@@ -9,3 +9,4 @@ transformers
 datasets
 tensorboard
 fire 
+easydict

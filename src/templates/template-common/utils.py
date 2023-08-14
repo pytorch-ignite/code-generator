@@ -3,6 +3,9 @@ import logging
 #::: if ((it.argparser == 'argparse')) { :::#
 from argparse import ArgumentParser
 
+#::: } else { :::#
+from easydict import EasyDict as edict
+
 #::: } :::#
 from datetime import datetime
 from logging import Logger
@@ -44,18 +47,6 @@ from ignite.utils import setup_logger
 #::: if ((it.argparser == 'fire')) { :::#
 
 
-class DotDict(dict):
-    """
-    Dictionary subclass that allows dot notation access to keys.
-    """
-
-    def __getattr__(self, attr):
-        value = self.get(attr)
-        if isinstance(value, dict):
-            return DotDict(value)
-        return value
-
-
 def setup_config(config_path, backend, **kwargs):
     with open(config_path, "r") as f:
         config = yaml.safe_load(f.read())
@@ -67,9 +58,13 @@ def setup_config(config_path, backend, **kwargs):
             print(f"{k} parameter not in {config_path}")
         config[k] = v
 
+    optional_attributes = ["train_epoch_length", "eval_epoch_length"]
+    for attr in optional_attributes:
+        config[attr] = config.get(attr, None)
+
     config["backend"] = backend
 
-    return DotDict(config)
+    return edict(config)
 
 
 #::: } else { :::#
