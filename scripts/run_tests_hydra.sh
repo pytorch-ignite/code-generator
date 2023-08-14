@@ -14,7 +14,7 @@ unzip_all() {
   done
 }
 
-run_simple_fire() {
+run_simple_hydra() {
   for dir in $(find ./dist-tests/$1-simple-hydra -type d)
   do
     cd $dir
@@ -23,7 +23,7 @@ run_simple_fire() {
   done
 }
 
-run_all_fire() {
+run_all_hydra() {
   for dir in $(find ./dist-tests/$1-all-hydra -type d)
   do
     cd $dir
@@ -33,7 +33,7 @@ run_all_fire() {
   done
 }
 
-run_launch_fire() {
+run_launch_hydra() {
   for dir in $(find ./dist-tests/$1-launch-hydra -type d)
   do
     cd $dir
@@ -42,7 +42,7 @@ run_launch_fire() {
   done
 }
 
-run_spawn_fire() {
+run_spawn_hydra() {
   for dir in $(find ./dist-tests/$1-spawn-hydra -type d)
   do
     cd $dir
@@ -54,11 +54,11 @@ run_spawn_fire() {
 if [ $1 = "unzip" ]; then
   unzip_all
 elif [ $1 = "simple" ]; then
-  run_simple_fire $2
+  run_simple_hydra $2
 elif [ $1 = "all" ]; then
-  run_all_fire $2
+  run_all_hydra $2
 elif [ $1 = "launch" ]; then
-  run_launch_fire $2
+  run_launch_hydra $2
 elif [ $1 = "spawn" ]; then
-  run_spawn_fire $2
+  run_spawn_hydra $2
 fi
