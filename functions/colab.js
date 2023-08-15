@@ -42,17 +42,6 @@ exports.handler = async function (event, _) {
     .map((v) => v[0].toUpperCase() + v.slice(1))
     .join(' ')
   // notebook cell structure
-  let common_nb_commands = {
-    cell_type: 'code',
-    metadata: {},
-    execution_count: null,
-    outputs: [],
-    source: [
-      `!wget ${zipRes}\n`,
-      `!unzip ${template}.zip\n`,
-      '!pip install -r requirements.txt'
-    ]
-  }
 
   let specific_commands = []
 
@@ -89,7 +78,17 @@ exports.handler = async function (event, _) {
         'Please, run the cell below to execute your code.'
       ]
     },
-    common_nb_commands
+    {
+      cell_type: 'code',
+      metadata: {},
+      execution_count: null,
+      outputs: [],
+      source: [
+        `!wget ${zipRes}\n`,
+        `!unzip ${template}.zip\n`,
+        '!pip install -r requirements.txt'
+      ]
+    }
   ]
 
   if (specific_commands.length > 0) {
