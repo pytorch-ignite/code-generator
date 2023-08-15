@@ -80,10 +80,10 @@ exports.handler = async function (event, _) {
     create_nb_cell(md_cell, 'markdown'),
     create_nb_cell(common_nb_commands, 'code')
   ]
-  if(specific_commands.length > 0){
+  if (specific_commands.length > 0) {
     nb_commands.push(create_nb_cell(specific_commands, 'code'))
   }
-  nb_commands.push(execution_nb_commands, 'code')
+  nb_commands.push(create_nb_cell(execution_nb_commands, 'code'))
 
   const nb = {
     nbformat: 4,
