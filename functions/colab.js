@@ -43,14 +43,14 @@ exports.handler = async function (event, _) {
     .join(' ')
   // notebook cell structure
 
-  function create_nb_cell(source_array, cell_type){
-    if(source_array.length > 0){
+  function create_nb_cell(source_array, cell_type) {
+    if (source_array.length > 0) {
       return {
         cell_type: cell_type,
         metadata: {},
         execution_count: null,
         outputs: [],
-        source: source_array,
+        source: source_array
       }
     }
   }
@@ -74,18 +74,16 @@ exports.handler = async function (event, _) {
     '!pip install -r requirements.txt'
   ]
 
-  const specific_nb_commands = specific_commands.length > 0 ? specific_commands : null
+  const execution_nb_commands = ['!python main.py config.yaml']
 
-  const execution_nb_commands = [
-    '!python main.py config.yaml'
-  ]
-
-  const nb_commands = [
+  let nb_commands = [
     create_nb_cell(md_cell, 'markdown'),
-    create_nb_cell(common_nb_commands, 'code'),
-    create_nb_cell(specific_nb_commands, 'code'),
-    create_nb_cell(execution_nb_commands, 'code')
+    create_nb_cell(common_nb_commands, 'code')
   ]
+  if(specific_commands.length > 0){
+    nb_commands.push(create_nb_cell(specific_commands, 'code'))
+  }
+  nb_commands.push(execution_nb_commands, 'code')
 
   const nb = {
     nbformat: 4,
