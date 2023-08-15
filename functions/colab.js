@@ -93,7 +93,7 @@ exports.handler = async function (event, _) {
   ]
 
   if (specific_commands.length > 0) {
-    nb_commands.push(specific_commands)
+    nb_commands.push(specific_nb_commands)
   }
 
   nb_commands.push(execution_nb_commands)
