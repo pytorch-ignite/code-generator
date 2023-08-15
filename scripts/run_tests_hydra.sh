@@ -42,7 +42,7 @@ run_spawn_hydra() {
   done
 }
 
-elif [ $1 = "simple" ]; then
+if [ $1 = "simple" ]; then
   run_simple_hydra $2
 elif [ $1 = "all" ]; then
   run_all_hydra $2
