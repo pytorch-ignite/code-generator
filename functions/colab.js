@@ -43,6 +43,18 @@ exports.handler = async function (event, _) {
     .join(' ')
   // notebook cell structure
 
+  function create_nb_cell(source_array, cell_type){
+    if(source_array.length > 0){
+      return {
+        cell_type: cell_type,
+        metadata: {},
+        execution_count: null,
+        outputs: [],
+        source: source_array,
+      }
+    }
+  }
+
   let specific_commands = []
 
   if (title === 'Template Vision Segmentation') {
@@ -51,51 +63,29 @@ exports.handler = async function (event, _) {
     )
   }
 
-  let specific_nb_commands = {
-    cell_type: 'code',
-    metadata: {},
-    execution_count: null,
-    outputs: [],
-    source: specific_commands
-  }
-
-  let execution_nb_commands = {
-    cell_type: 'code',
-    metadata: {},
-    execution_count: null,
-    outputs: [],
-    source: ['!python main.py config.yaml']
-  }
-
-  var nb_commands = [
-    {
-      cell_type: 'markdown',
-      metadata: {},
-      execution_count: null,
-      outputs: [],
-      source: [
-        `# ${title} by PyTorch-Ignite Code-Generator\n\n`,
-        'Please, run the cell below to execute your code.'
-      ]
-    },
-    {
-      cell_type: 'code',
-      metadata: {},
-      execution_count: null,
-      outputs: [],
-      source: [
-        `!wget ${zipRes}\n`,
-        `!unzip ${template}.zip\n`,
-        '!pip install -r requirements.txt'
-      ]
-    }
+  const md_cell = [
+    `# ${title} by PyTorch-Ignite Code-Generator\n\n`,
+    'Please, run the cell below to execute your code.'
   ]
 
-  if (specific_commands.length > 0) {
-    nb_commands.push(specific_nb_commands)
-  }
+  const common_nb_commands = [
+    `!wget ${zipRes}\n`,
+    `!unzip ${template}.zip\n`,
+    '!pip install -r requirements.txt'
+  ]
 
-  nb_commands.push(execution_nb_commands)
+  const specific_nb_commands = specific_commands.length > 0 ? specific_commands : null
+
+  const execution_nb_commands = [
+    '!python main.py config.yaml'
+  ]
+
+  const nb_commands = [
+    create_nb_cell(md_cell, 'markdown'),
+    create_nb_cell(common_nb_commands, 'code'),
+    create_nb_cell(specific_nb_commands, 'code'),
+    create_nb_cell(execution_nb_commands, 'code')
+  ]
 
   const nb = {
     nbformat: 4,
