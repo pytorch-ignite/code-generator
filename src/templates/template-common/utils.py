@@ -208,7 +208,7 @@ def setup_logging(config: Any) -> Logger:
     """
     green = "\033[32m"
     reset = "\033[0m"
-    
+
     file_path = config.output_dir / "training-info.log"
 
     #::: if ((it.argparser == 'hydra')) :::#
@@ -217,7 +217,7 @@ def setup_logging(config: Any) -> Logger:
         config.output_dir.mkdir(parents=True, exist_ok=True)
     if not file_path.exists():
         file_path.touch()
-    
+
     #::: } :::#
 
     logger = setup_logger(
