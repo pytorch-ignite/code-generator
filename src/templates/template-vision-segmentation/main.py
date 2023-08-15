@@ -16,11 +16,6 @@ from trainers import setup_evaluator, setup_trainer
 from vis import predictions_gt_images_handler
 from utils import *
 
-#::: if ((it.argparser == 'argparse')) { :::#
-from shutil import copy
-
-#::: } :::#
-
 #::: if ((it.argparser == 'fire')) { :::#
 import fire
 
