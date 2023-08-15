@@ -49,7 +49,7 @@ from omegaconf import OmegaConf
 
 
 def setup_config(config):
-    optional_attributes = ["output_dir", "backend", "train_epoch_length", "eval_epoch_length"]
+    optional_attributes = ["output_dir", "train_epoch_length", "eval_epoch_length"]
     for attr in optional_attributes:
         if attr == "output_dir":
             OmegaConf.update(config, attr, Path(config.get(attr, "./")), force_add=True)
@@ -208,23 +208,11 @@ def setup_logging(config: Any) -> Logger:
     """
     green = "\033[32m"
     reset = "\033[0m"
-
-    file_path = config.output_dir / "training-info.log"
-
-    #::: if ((it.argparser == 'hydra')) :::#
-    # Hydra works differently for config storage and so we need to check logs dir
-    if not config.output_dir.exists():
-        config.output_dir.mkdir(parents=True, exist_ok=True)
-    if not file_path.exists():
-        file_path.touch()
-
-    #::: } :::#
-
     logger = setup_logger(
         name=f"{green}[ignite]{reset}",
         level=logging.DEBUG if config.debug else logging.INFO,
         format="%(name)s: %(message)s",
-        filepath=file_path,
+        filepath=config.output_dir / "training-info.log",
     )
     return logger
 
