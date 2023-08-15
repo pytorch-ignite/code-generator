@@ -42,11 +42,17 @@ exports.handler = async function (event, _) {
     .map((v) => v[0].toUpperCase() + v.slice(1))
     .join(' ')
   // notebook cell structure
-  let common_commands = [
-    `!wget ${zipRes}\n`,
-    `!unzip ${template}.zip\n`,
-    '!pip install -r requirements.txt'
-  ]
+  let common_nb_commands = {
+    cell_type: 'code',
+    metadata: {},
+    execution_count: null,
+    outputs: [],
+    source: [
+      `!wget ${zipRes}\n`,
+      `!unzip ${template}.zip\n`,
+      '!pip install -r requirements.txt'
+    ]
+  }
 
   let specific_commands = []
 
@@ -56,7 +62,41 @@ exports.handler = async function (event, _) {
     )
   }
 
-  let execution_command = ['!python main.py config.yaml']
+  let specific_nb_commands = {
+    cell_type: 'code',
+    metadata: {},
+    execution_count: null,
+    outputs: [],
+    source: specific_commands
+  }
+
+  let execution_nb_commands = {
+    cell_type: 'code',
+    metadata: {},
+    execution_count: null,
+    outputs: [],
+    source: ['!python main.py config.yaml']
+  }
+
+  var nb_commands = [
+    {
+      cell_type: 'markdown',
+      metadata: {},
+      execution_count: null,
+      outputs: [],
+      source: [
+        `# ${title} by PyTorch-Ignite Code-Generator\n\n`,
+        'Please, run the cell below to execute your code.'
+      ]
+    },
+    common_nb_commands
+  ]
+
+  if (specific_commands.length > 0) {
+    nb_commands.push(specific_commands)
+  }
+
+  nb_commands.push(execution_nb_commands)
 
   const nb = {
     nbformat: 4,
@@ -68,39 +108,7 @@ exports.handler = async function (event, _) {
       },
       accelerator: 'GPU'
     },
-    cells: [
-      {
-        cell_type: 'markdown',
-        metadata: {},
-        execution_count: null,
-        outputs: [],
-        source: [
-          `# ${title} by PyTorch-Ignite Code-Generator\n\n`,
-          'Please, run the cell below to execute your code.'
-        ]
-      },
-      {
-        cell_type: 'code',
-        metadata: {},
-        execution_count: null,
-        outputs: [],
-        source: common_commands
-      },
-      {
-        cell_type: 'code',
-        metadata: {},
-        execution_count: null,
-        outputs: [],
-        source: specific_commands
-      },
-      {
-        cell_type: 'code',
-        metadata: {},
-        execution_count: null,
-        outputs: [],
-        source: execution_command
-      }
-    ]
+    cells: nb_commands
   }
   // Create the notebook on GitHub
   await pushToGitHub(
