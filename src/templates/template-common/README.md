@@ -188,3 +188,7 @@ python main.py config.yaml
 ```
 
 #::: } :::#
+
+#::: if ((it.argparser == 'fire')) { :::#
+Note: We use Python-Fire as the default argument parser here. For more information refer the [docs](https://github.com/google/python-fire/blob/master/docs/guide.md)
+#::: } :::#
