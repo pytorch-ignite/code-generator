@@ -42,20 +42,22 @@ exports.handler = async function (event, _) {
     .map((v) => v[0].toUpperCase() + v.slice(1))
     .join(' ')
   // notebook cell structure
-  let commands = [
+  let common_commands = [
     `!wget ${zipRes}\n`,
     `!unzip ${template}.zip\n`,
-    '!pip install -r requirements.txt\n',
-    '!python main.py config.yaml\n'
+    '!pip install -r requirements.txt'
   ]
 
+  let specific_commands = []
+
   if (title === 'Template Vision Segmentation') {
-    commands.splice(
-      3,
-      0,
-      '!python -c "from data import download_datasets; download_datasets(\'./\')"\n'
+    specific_commands.push(
+      '!python -c "from data import download_datasets; download_datasets(\'./\')"'
     )
   }
+
+  let execution_command = ['!python main.py config.yaml']
+
   const nb = {
     nbformat: 4,
     nbformat_minor: 0,
@@ -82,7 +84,21 @@ exports.handler = async function (event, _) {
         metadata: {},
         execution_count: null,
         outputs: [],
-        source: commands
+        source: common_commands
+      },
+      {
+        cell_type: 'code',
+        metadata: {},
+        execution_count: null,
+        outputs: [],
+        source: specific_commands
+      },
+      {
+        cell_type: 'code',
+        metadata: {},
+        execution_count: null,
+        outputs: [],
+        source: execution_command
       }
     ]
   }
