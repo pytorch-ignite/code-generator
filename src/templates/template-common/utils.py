@@ -49,7 +49,7 @@ from omegaconf import OmegaConf
 
 
 def setup_config(config):
-    optional_attributes = ["output_dir", "train_epoch_length", "eval_epoch_length"]
+    optional_attributes = ["output_dir", "backend" "train_epoch_length", "eval_epoch_length"]
     for attr in optional_attributes:
         if attr == "output_dir":
             OmegaConf.update(config, attr, Path(config.get(attr, "./")), force_add=True)

@@ -34,21 +34,21 @@ def run(local_rank: int, config: Any):
     rank = idist.get_rank()
     manual_seed(config.seed + rank)
 
-    #::: if ((it.argparser != 'hydra')) { :::#
     # create output folder and copy config file to output dir
     config.output_dir = setup_output_dir(config, rank)
     if rank == 0:
-        #::: if ((it.argparser == 'fire')) { :::#
         with open(f"{config.output_dir}/config-lock.yaml", "a+") as f:
+            #::: if ((['fire', 'hydra'].includes(it.argparser))) { :::#
             for key, value in config.items():
                 if value is not None:
                     f.write(f"{key}: {value}\n")
 
-        #::: } else { :::#
-        copy(config.config, f"{config.output_dir}/config-lock.yaml")
+            #::: } else { :::#
+            for key, value in vars(config).items():
+                if value is not None:
+                    f.write(f"{key}: {value}\n")
 
-        #::: } :::#
-    #::: } :::#
+            #::: } :::#
 
     # donwload datasets and create dataloaders
     dataloader_train, dataloader_eval = setup_data(config)
