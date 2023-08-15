@@ -16,11 +16,6 @@ import torch
 import yaml
 
 #::: } :::#
-
-#::: if ((it.argparser == 'fire')) { :::#
-from omegaconf import DictConfig
-
-#::: } :::#
 from ignite.contrib.engines import common
 from ignite.engine import Engine
 
@@ -67,6 +62,7 @@ def setup_config(config):
 
 
 #::: if ((it.argparser == 'fire')) { :::#
+from omegaconf import DictConfig
 
 
 def setup_config(config_path, backend, **kwargs):

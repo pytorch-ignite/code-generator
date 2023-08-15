@@ -72,9 +72,9 @@ torchrun \
   main.py config.yaml --backend #:::= it.backend :::# \
   [--override_arg=value]
   #::: } else if ((it.argparser == 'hydra')){ :::#
-  main.py config.yaml --config-dir=[dir-path] \ --config-name=[config-name] ++backend= #:::= it.backend :::# ++override_arg=[value] 
+  main.py config.yaml --config-dir=[dir-path] \ --config-name=[config-name] ++backend= #:::= it.backend :::# ++override_arg=[value]
   #::: } else { :::#
-  main.py config.yaml --backend #:::= it.backend :::# 
+  main.py config.yaml --backend #:::= it.backend :::#
   #::: } :::#
 
 ```
@@ -92,9 +92,9 @@ torchrun \
   main.py config.yaml --backend #:::= it.backend :::# \
   [--override_arg=value]
   #::: } else if ((it.argparser == 'hydra')){ :::#
-  main.py config.yaml --config-dir=[dir-path] \ --config-name=[config-name] ++backend= #:::= it.backend :::# ++override_arg=[value] 
+  main.py config.yaml --config-dir=[dir-path] \ --config-name=[config-name] ++backend= #:::= it.backend :::# ++override_arg=[value]
   #::: } else { :::#
-  main.py config.yaml --backend #:::= it.backend :::# 
+  main.py config.yaml --backend #:::= it.backend :::#
   #::: } :::#
 ```
 
@@ -137,7 +137,7 @@ master_port: #:::= it.master_port :::#
 #::: if ((it.argparser == 'fire')) { :::#
 python main.py config.yaml --backend #:::= it.backend :::# --override_arg=[value]
 #::: } else if ((it.argparser == 'hydra')){ :::#
-python main.py config.yaml --config-dir=[dir-path] --config-name=[config-name] ++backend= #:::= it.backend :::# ++override_arg=[value] 
+python main.py config.yaml --config-dir=[dir-path] --config-name=[config-name] ++backend= #:::= it.backend :::# ++override_arg=[value]
 #::: } else { :::#
 python main.py config.yaml --backend #:::= it.backend :::#
 #::: } :::#
@@ -159,7 +159,7 @@ master_port: #:::= it.master_port :::#
 #::: if ((it.argparser == 'fire')) { :::#
 python main.py config.yaml --backend #:::= it.backend :::# [--override_arg=value]
 #::: } else if ((it.argparser == 'hydra')){ :::#
-python main.py config.yaml --config-dir=[dir-path] --config-name=[config-name] ++backend=#:::= it.backend :::# ++override_arg=[value] 
+python main.py config.yaml --config-dir=[dir-path] --config-name=[config-name] ++backend=#:::= it.backend :::# ++override_arg=[value]
 #::: } else { :::#
 python main.py config.yaml --backend #:::= it.backend :::#
 #::: } :::#
@@ -207,4 +207,8 @@ python main.py config.yaml
 #::: } :::#
 ```
 
+#::: } :::#
+
+#::: if ((it.argparser == 'fire')) { :::#
+Note: We use Python-Fire as the default argument parser here. For more information refer the [docs](https://github.com/google/python-fire/blob/master/docs/guide.md)
 #::: } :::#

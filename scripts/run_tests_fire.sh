@@ -4,15 +4,6 @@ set -xeu
 
 CWD=$(pwd)
 
-unzip_all() {
-  for dir in $(find ./dist-tests -type f -iname \*.zip)
-  do
-    echo $dir
-    echo ${dir%.*}
-    unzip $dir -d ${dir%.*}
-    rm -rf $dir
-  done
-}
 
 run_simple_fire() {
   for dir in $(find ./dist-tests/$1-simple-fire -type d)
@@ -51,9 +42,7 @@ run_spawn_fire() {
   done
 }
 
-if [ $1 = "unzip" ]; then
-  unzip_all
-elif [ $1 = "simple" ]; then
+if [ $1 = "simple" ]; then
   run_simple_fire $2
 elif [ $1 = "all" ]; then
   run_all_fire $2

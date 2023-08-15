@@ -4,15 +4,6 @@ set -xeu
 
 CWD=$(pwd)
 
-unzip_all() {
-  for dir in $(find ./dist-tests -type f -iname \*.zip)
-  do
-    echo $dir
-    echo ${dir%.*}
-    unzip $dir -d ${dir%.*}
-    rm -rf $dir
-  done
-}
 
 run_simple_hydra() {
   for dir in $(find ./dist-tests/$1-simple-hydra -type d)
@@ -51,8 +42,6 @@ run_spawn_hydra() {
   done
 }
 
-if [ $1 = "unzip" ]; then
-  unzip_all
 elif [ $1 = "simple" ]; then
   run_simple_hydra $2
 elif [ $1 = "all" ]; then
