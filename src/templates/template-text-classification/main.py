@@ -35,7 +35,7 @@ def run(local_rank: int, config: Any):
         #::: if ((it.argparser == 'fire')) { :::#
         with open(f"{config.output_dir}/config-lock.yaml", "a+") as f:
             for key, value in config.items():
-                if value != None:
+                if value is not None:
                     f.write(f"{key}: {value}\n")
 
         #::: } else { :::#
