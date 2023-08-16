@@ -47,6 +47,8 @@ def run(local_rank: int, config: Any):
     # donwload datasets and create dataloaders
     dataloader_train, dataloader_eval = setup_data(config)
 
+    config.num_iters_per_epoch = len(dataloader_train)
+
     # model, optimizer, loss function, device
     device = idist.device()
     model = idist.auto_model(
@@ -63,14 +65,12 @@ def run(local_rank: int, config: Any):
     optimizer = idist.auto_optim(optim.AdamW(model.parameters(), lr=config.lr, weight_decay=config.weight_decay))
     loss_fn = nn.BCEWithLogitsLoss().to(device=device)
 
-    le = len(dataloader_train)
-    
+    le = config.num_iters_per_epoch
     milestones_values = [
         (0, 0.0),
         (le * config.num_warmup_epochs, config.lr),
         (le * config.max_epochs, 0.0),
     ]
-    
     lr_scheduler = PiecewiseLinear(optimizer, param_name="lr", milestones_values=milestones_values)
 
     # setup metrics to attach to evaluator
