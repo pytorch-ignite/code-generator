@@ -4,6 +4,7 @@ pytorch-ignite>=0.4.8
 pyyaml
 transformers
 datasets
+omegaconf
 
 #::: if ((it.argparser == 'fire')) { :::#
 #:::= it.argparser :::#
@@ -12,7 +13,6 @@ datasets
 
 #::: if ((it.argparser == 'hydra')) { :::#
 #:::= it.argparser + '-core'  :::#
-omegaconf
 
 #::: } :::#
 
