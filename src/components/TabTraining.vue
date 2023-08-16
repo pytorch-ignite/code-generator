@@ -71,6 +71,7 @@ export default {
   components: { FormCheckbox, FormInput, FormRadio, FormSelect },
   setup() {
     const {
+      argparser,
       deterministic,
       backend,
       torchrun,
@@ -87,7 +88,7 @@ export default {
       saveConfig(deterministic.name, isDeterministic.value)
     })
     return {
-      ...training,
+      argparser,
       store,
       deterministic,
       backend,
