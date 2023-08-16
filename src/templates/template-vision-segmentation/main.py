@@ -34,9 +34,9 @@ def run(local_rank: int, config: Any):
     manual_seed(config.seed + rank)
 
     # create output folder and copy config file to output dir
-    config.output_dir = setup_output_dir(config, rank)
+    output_dir = setup_output_dir(config, rank)
     if rank == 0:
-        with open(f"{config.output_dir}/config-lock.yaml", "a+") as f:
+        with open(f"{output_dir}/config-lock.yaml", "a+") as f:
             #::: if ((it.argparser == 'fire')) { :::#
             for key, value in config.items():
                 if value is not None:
@@ -48,6 +48,9 @@ def run(local_rank: int, config: Any):
                     f.write(f"{key}: {value}\n")
 
         #::: } :::#
+
+    config.output_dir = setup_output_dir(config, rank)
+
     # donwload datasets and create dataloaders
     dataloader_train, dataloader_eval = setup_data(config)
     le = len(dataloader_train)

@@ -1,6 +1,6 @@
 <template>
   <div class="tab training">
-    <h1>Training Options</h1>
+    <h1>Configuraion Options</h1>
     <h2>Argument Parser</h2>
     <FormSelect
       :label="argparser.description"
@@ -71,6 +71,7 @@ export default {
   components: { FormCheckbox, FormInput, FormRadio, FormSelect },
   setup() {
     const {
+      argparser,
       deterministic,
       backend,
       torchrun,
@@ -87,7 +88,7 @@ export default {
       saveConfig(deterministic.name, isDeterministic.value)
     })
     return {
-      ...training,
+      argparser,
       store,
       deterministic,
       backend,
