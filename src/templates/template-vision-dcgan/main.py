@@ -42,7 +42,7 @@ def run(local_rank: int, config: Any):
                     f.write(f"{key}: {value}\n")
 
         #::: } :::#
-    
+
     config.output_dir = setup_output_dir(config, rank)
 
     # donwload datasets and create dataloaders
