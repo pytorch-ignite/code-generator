@@ -168,9 +168,9 @@ def setup_output_dir(config: Any, rank: int) -> Path:
         name = f"{now}-backend-{config.backend}-lr-{config.lr}"
         path = Path(config.output_dir, name)
         path.mkdir(parents=True, exist_ok=True)
-        output_dir = path.as_posix()
+        config.output_dir = path.as_posix()
 
-    return Path(idist.broadcast(output_dir, src=0))
+    return Path(idist.broadcast(config.output_dir, src=0))
 
 
 def setup_logging(config: Any) -> Logger:
