@@ -43,7 +43,6 @@ from ignite.handlers.time_limit import TimeLimit
 
 #::: } :::#
 from ignite.utils import setup_logger
-from omegaconf import DictConfig
 
 #::: if ((it.argparser == 'hydra')) { :::#
 from omegaconf import OmegaConf
@@ -63,6 +62,7 @@ def setup_config(config):
 
 
 #::: if ((it.argparser == 'fire')) { :::#
+from omegaconf import DictConfig
 
 
 def setup_config(config_path, backend, **kwargs):
@@ -86,6 +86,7 @@ def setup_config(config_path, backend, **kwargs):
 
 
 #::: } else if ((it.argparser == 'argparse')) { :::#
+from omegaconf import DictConfig
 
 
 def get_default_parser():
