@@ -1,6 +1,6 @@
 <template>
   <div class="tab training">
-    <h1>Training Options</h1>
+    <h1>Configuraion Options</h1>
     <h2>Argument Parser</h2>
     <FormSelect
       :label="argparser.description"
