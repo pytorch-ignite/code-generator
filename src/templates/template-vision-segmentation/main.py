@@ -40,16 +40,16 @@ def run(local_rank: int, config: Any):
         with open(f"{config.output_dir}/config-lock.yaml", "a+") as f:
             #::: if ((it.argparser == 'fire')) { :::#
             for key, value in config.items():
-                if key == 'output_dir':
-                    # To store actual output_dir in config-lock.yaml 
+                if key == "output_dir":
+                    # To store actual output_dir in config-lock.yaml
                     f.write(f"{key}: {output_dir}\n")
                 elif value is not None:
                     f.write(f"{key}: {value}\n")
 
             #::: } else { :::#
             for key, value in vars(config).items():
-                if key == 'output_dir':
-                    # To store actual output_dir in config-lock.yaml 
+                if key == "output_dir":
+                    # To store actual output_dir in config-lock.yaml
                     f.write(f"{key}: {output_dir}\n")
                 elif value is not None:
                     f.write(f"{key}: {value}\n")
