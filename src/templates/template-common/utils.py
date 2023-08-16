@@ -43,6 +43,7 @@ from ignite.handlers.time_limit import TimeLimit
 
 #::: } :::#
 from ignite.utils import setup_logger
+from omegaconf import DictConfig
 
 #::: if ((it.argparser == 'hydra')) { :::#
 from omegaconf import OmegaConf
@@ -62,7 +63,6 @@ def setup_config(config):
 
 
 #::: if ((it.argparser == 'fire')) { :::#
-from omegaconf import DictConfig
 
 
 def setup_config(config_path, backend, **kwargs):
@@ -116,10 +116,10 @@ def setup_config(parser=None):
     for attr in optional_attributes:
         config[attr] = config.get(attr, None)
 
-    for k, v in config.items():
-        setattr(args, k, v)
+    for k, v in vars(args).items():
+        config[k] = v
 
-    return args
+    return DictConfig(config)
 
 
 #::: } :::#
@@ -188,9 +188,9 @@ def setup_output_dir(config: Any, rank: int) -> Path:
         name = f"{now}-backend-{config.backend}-lr-{config.lr}"
         path = Path(config.output_dir, name)
         path.mkdir(parents=True, exist_ok=True)
-        output_dir = path.as_posix()
+        config.output_dir = path.as_posix()
 
-    return Path(idist.broadcast(output_dir, src=0))
+    return Path(idist.broadcast(str(config.output_dir), src=0))
 
 
 def setup_logging(config: Any) -> Logger:
