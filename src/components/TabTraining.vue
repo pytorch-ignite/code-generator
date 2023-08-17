@@ -11,14 +11,15 @@
     <ul>
       <li>
         <a href="https://docs.python.org/3/library/argparse.html">Argparse</a> -
-        is python built-in tool to handler cmd arguments
+        is a python built-in tool to handle command-line arguments
       </li>
       <li>
         <a
           href="https://github.com/google/python-fire/blob/master/docs/guide.md"
           >Python Fire</a
         >
-        - is a helpful tool for developing and debugging python code
+        - is a Python library that will turn any Python component into a command
+        line interface
       </li>
     </ul>
     <FormSelect
