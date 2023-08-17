@@ -1,4 +1,9 @@
 import logging
+
+#::: if ((it.argparser == 'argparse')) { :::#
+from argparse import ArgumentParser
+
+#::: } :::#
 from datetime import datetime
 from logging import Logger
 from pathlib import Path
@@ -61,7 +66,6 @@ def setup_config(config_path, backend, **kwargs):
 
 
 #::: } else { :::#
-from argparse import ArgumentParser
 
 
 def get_default_parser():
