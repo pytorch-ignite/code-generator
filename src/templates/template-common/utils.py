@@ -173,7 +173,7 @@ def setup_output_dir(config: Any, rank: int) -> Path:
     return Path(idist.broadcast(str(config.output_dir), src=0))
 
 
-def setup_config_saving(config, output_dir):
+def setup_config_saving(config, output_dir, rank):
     """To setup config-lock.yaml in logs/<output_dir> for reproducing results"""
     if rank == 0:
         with open(f"{config.output_dir}/config-lock.yaml", "a+") as f:
