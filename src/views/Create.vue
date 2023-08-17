@@ -46,6 +46,18 @@ export default {
       store.config.include_test = false
       store.config.output_dir = './logs'
       store.config.log_every_iters = 2
+      store.config.dist = 'torchrun'
+      store.config.nproc_per_node = 2
+      store.config.nnodes = 1
+      store.config.master_addr = '127.0.0.1'
+      store.config.logger = 'tensorboard'
+      store.config.save_training = true
+      store.config.save_evaluation = true
+      store.config.patience = 3
+      store.config.filename_prefix = 'training'
+      store.config.save_every_iters = 1000
+      store.config.n_saved = 2
+      store.config.master_port = 8080
     })
   }
 }
