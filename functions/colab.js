@@ -44,13 +44,13 @@ exports.handler = async function (event, _) {
   // notebook cell structure
 
   function create_nb_cell(source_array, cell_type) {
-      return {
-        cell_type: cell_type,
-        metadata: {},
-        execution_count: null,
-        outputs: [],
-        source: source_array
-      }
+    return {
+      cell_type: cell_type,
+      metadata: {},
+      execution_count: null,
+      outputs: [],
+      source: source_array
+    }
   }
 
   let specific_commands = []
