@@ -1,20 +1,3 @@
-torch>=1.10.2
-torchvision>=0.11.3
-pytorch-ignite>=0.4.8
-pyyaml
 transformers
 datasets
-
-#::: if (['neptune', 'polyaxon'].includes(it.logger)) { :::#
-
-#:::= it.logger + '-client' :::#
-
-#::: } else { :::#
-
-#:::= it.logger :::#
-
-#::: } :::#
-
-#::: if (it.include_test) { :::#
-pytest
-#::: } :::#
+#::= from_template_common ::#
