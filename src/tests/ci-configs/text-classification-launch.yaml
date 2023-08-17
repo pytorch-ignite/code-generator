@@ -1,4 +1,4 @@
-seed: 666
+seed: 777
 data_path: ~/data
 train_batch_size: 2
 eval_batch_size: 2
