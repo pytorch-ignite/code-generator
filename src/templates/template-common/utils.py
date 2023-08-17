@@ -1,6 +1,6 @@
 import logging
 
-#::: if ((it.argparser == 'argparse')) { :::#
+#::: if ((!it.argparser == 'fire')) { :::#
 from argparse import ArgumentParser
 
 #::: } :::#
