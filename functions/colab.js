@@ -74,14 +74,14 @@ exports.handler = async function (event, _) {
 
   const execution_nb_commands = ['!python main.py config.yaml']
 
-  let nb_commands = [
+  let nb_cells = [
     create_nb_cell(md_cell, 'markdown'),
     create_nb_cell(common_nb_commands, 'code')
   ]
   if (specific_commands.length > 0) {
-    nb_commands.push(create_nb_cell(specific_commands, 'code'))
+    nb_cells.push(create_nb_cell(specific_commands, 'code'))
   }
-  nb_commands.push(create_nb_cell(execution_nb_commands, 'code'))
+  nb_cells.push(create_nb_cell(execution_nb_commands, 'code'))
 
   const nb = {
     nbformat: 4,
@@ -93,7 +93,7 @@ exports.handler = async function (event, _) {
       },
       accelerator: 'GPU'
     },
-    cells: nb_commands
+    cells: nb_cells
   }
   // Create the notebook on GitHub
   await pushToGitHub(
