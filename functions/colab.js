@@ -44,7 +44,6 @@ exports.handler = async function (event, _) {
   // notebook cell structure
 
   function create_nb_cell(source_array, cell_type) {
-    if (source_array.length > 0) {
       return {
         cell_type: cell_type,
         metadata: {},
@@ -52,7 +51,6 @@ exports.handler = async function (event, _) {
         outputs: [],
         source: source_array
       }
-    }
   }
 
   let specific_commands = []
