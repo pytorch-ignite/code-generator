@@ -1,9 +1,4 @@
 import logging
-
-#::: if ((!it.argparser == 'fire')) { :::#
-from argparse import ArgumentParser
-
-#::: } :::#
 from datetime import datetime
 from logging import Logger
 from pathlib import Path
@@ -66,6 +61,7 @@ def setup_config(config_path, backend, **kwargs):
 
 
 #::: } else { :::#
+from argparse import ArgumentParser
 
 
 def get_default_parser():
@@ -182,7 +178,7 @@ def setup_config_saving(config):
             for key, value in config.items():
                 if key == "output_dir":
                     # To store actual output_dir in config-lock.yaml
-                    f.write(f"{key}: {output_dir.parent}\n")
+                    f.write(f"{key}: {value.parent}\n")
                 elif value is not None:
                     f.write(f"{key}: {value}\n")
 
