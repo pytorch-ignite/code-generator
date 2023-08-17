@@ -34,16 +34,9 @@ def run(local_rank: int, config: Any):
     manual_seed(config.seed + rank)
 
     # create output folder and copy config file to output dir
-    output_dir = config.output_dir
+    main_output_dir = config.output_dir
     config.output_dir = setup_output_dir(config, rank)
-    if rank == 0:
-        with open(f"{config.output_dir}/config-lock.yaml", "a+") as f:
-            for key, value in config.items():
-                if key == "output_dir":
-                    # To store actual output_dir in config-lock.yaml
-                    f.write(f"{key}: {output_dir}\n")
-                elif value is not None:
-                    f.write(f"{key}: {value}\n")
+    setup_config_saving(config, main_output_dir)
 
     # donwload datasets and create dataloaders
     dataloader_train, dataloader_eval = setup_data(config)
