@@ -42,7 +42,6 @@ export default {
       store.config.include_test = false
       store.config.output_dir = './logs'
       store.config.log_every_iters = 2
-      store.config.dist = 'torchrun'
       store.config.nproc_per_node = 2
       store.config.nnodes = 1
       store.config.master_addr = '127.0.0.1'

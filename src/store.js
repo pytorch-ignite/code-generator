@@ -45,7 +45,6 @@ export const store = reactive({
     include_test: false,
     output_dir: './logs',
     log_every_iters: 10,
-    dist: 'torchrun',
     nproc_per_node: 2,
     nnodes: 1,
     master_addr: '127.0.0.1',
