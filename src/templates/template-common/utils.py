@@ -175,7 +175,7 @@ def setup_output_dir(config: Any, rank: int) -> Path:
 
 def save_config(config):
     """Save configuration to config-lock.yaml for result reproducibility."""
-    with open(f"{config.output_dir}/config-lock.yaml", "a+") as f:
+    with open(f"{config.output_dir}/config-lock.yaml", "w+") as f:
         for key, value in config.items():
             if value is not None:
                 f.write(f"{key}: {value}\n")
