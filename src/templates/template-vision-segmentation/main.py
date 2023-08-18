@@ -35,10 +35,10 @@ def run(local_rank: int, config: Any):
 
     # create output folder and copy config file to output dir
     config.output_dir = setup_output_dir(config, rank)
-   
+
     if rank == 0:
         save_config(config)
-        
+
     # donwload datasets and create dataloaders
     dataloader_train, dataloader_eval = setup_data(config)
     le = len(dataloader_train)
