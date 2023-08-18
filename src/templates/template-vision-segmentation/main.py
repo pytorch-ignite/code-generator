@@ -30,7 +30,7 @@ def run(local_rank: int, config: Any):
     # create output folder and copy config file to output dir
     config.output_dir = setup_output_dir(config, rank)
     if rank == 0:
-        copy(config.config, f"{config.output_dir}/config-lock.yaml")
+        save_config(config, config.output_dir)
 
     # donwload datasets and create dataloaders
     dataloader_train, dataloader_eval = setup_data(config)

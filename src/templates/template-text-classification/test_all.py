@@ -4,10 +4,12 @@ from typing import Iterable
 
 import ignite.distributed as idist
 import pytest
+import yaml
 from data import setup_data
 from torch import nn, optim
 from torch.functional import Tensor
 from torch.utils.data import DataLoader
+from utils import save_config
 
 
 def set_up():
@@ -45,3 +47,6 @@ def test_setup_data():
     assert isinstance(eval_batch["attention_mask"], Tensor)
     assert isinstance(eval_batch["token_type_ids"], Tensor)
     assert isinstance(eval_batch["label"], Tensor)
+
+
+#::= from_template_common ::#

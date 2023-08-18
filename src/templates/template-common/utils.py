@@ -35,6 +35,7 @@ from ignite.handlers.time_limit import TimeLimit
 
 #::: } :::#
 from ignite.utils import setup_logger
+from omegaconf import DictConfig
 
 
 def get_default_parser():
@@ -64,10 +65,7 @@ def setup_config(parser=None):
     for attr in optional_attributes:
         config[attr] = config.get(attr, None)
 
-    for k, v in config.items():
-        setattr(args, k, v)
-
-    return args
+    return DictConfig(config)
 
 
 def log_metrics(engine: Engine, tag: str) -> None:
@@ -136,6 +134,14 @@ def setup_output_dir(config: Any, rank: int) -> Path:
         config.output_dir = path.as_posix()
 
     return Path(idist.broadcast(config.output_dir, src=0))
+
+
+def save_config(config, output_dir):
+    """Save configuration to config-lock.yaml for result reproducibility."""
+    with open(f"{output_dir}/config-lock.yaml", "w+") as f:
+        for key, value in config.items():
+            if value is not None:
+                f.write(f"{key}: {value}\n")
 
 
 def setup_logging(config: Any) -> Logger:

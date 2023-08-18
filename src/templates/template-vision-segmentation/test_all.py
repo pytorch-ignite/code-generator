@@ -2,9 +2,11 @@ import os
 from argparse import Namespace
 
 import pytest
+import yaml
 from data import setup_data
 from torch import Tensor
 from torch.utils.data.dataloader import DataLoader
+from utils import save_config
 
 
 @pytest.mark.skipif(os.getenv("RUN_SLOW_TESTS", 0) == 0, reason="Skip slow tests")
@@ -26,3 +28,6 @@ def test_setup_data():
     assert isinstance(eval_batch["mask"], Tensor)
     assert eval_batch["image"].ndim == 4
     assert eval_batch["mask"].ndim == 3
+
+
+#::= from_template_common ::#

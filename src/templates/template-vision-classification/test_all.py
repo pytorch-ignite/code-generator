@@ -5,10 +5,12 @@ from typing import Iterable
 import ignite.distributed as idist
 import pytest
 import torch
+import yaml
 from data import setup_data
 from torch import nn, optim, Tensor
 from torch.utils.data.dataloader import DataLoader
 from trainers import setup_evaluator
+from utils import save_config
 
 
 def set_up():
@@ -48,3 +50,6 @@ def test_setup_evaluator():
     evaluator = setup_evaluator(config, model, device)
     evaluator.run([batch, batch])
     assert isinstance(evaluator.state.output, tuple)
+
+
+#::= from_template_common ::#

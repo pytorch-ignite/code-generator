@@ -5,11 +5,13 @@ from typing import Iterable
 import ignite.distributed as idist
 import pytest
 import torch
+import yaml
 from data import setup_data
 from models import Discriminator, Generator
 from torch import nn, optim, Tensor
 from torch.utils.data.dataloader import DataLoader
 from trainers import setup_trainer
+from utils import save_config
 
 
 def set_up():
@@ -62,3 +64,6 @@ def test_setup_trainer():
     trainer = setup_trainer(config, model, model, optimizer, optimizer, loss_fn, device, None)
     trainer.run([batch, batch])
     assert isinstance(trainer.state.output, dict)
+
+
+#::= from_template_common ::#
