@@ -1,6 +1,5 @@
 import os
 from pprint import pformat
-from shutil import copy
 from typing import Any
 
 import ignite.distributed as idist
@@ -69,7 +68,7 @@ def run(local_rank: int, config: Any):
     # setup engines logger with python logging
     # print training configurations
     logger = setup_logging(config)
-    logger.info("Configuration: \n%s", pformat(vars(config)))
+    logger.info("Configuration: \n%s", pformat(config))
     trainer.logger = evaluator.logger = logger
 
     trainer.add_event_handler(Events.ITERATION_COMPLETED, lr_scheduler)
