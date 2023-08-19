@@ -6,7 +6,6 @@ import { v4 as uuidv4 } from 'uuid'
 import JSZip from 'jszip'
 import { pushToGitHub } from './utils'
 
-const nbUid = uuidv4()
 const repoOwner = process.env.VUE_APP_GH_USER
 const repo = process.env.VUE_APP_GH_REPO
 
@@ -14,6 +13,7 @@ const repo = process.env.VUE_APP_GH_REPO
 // https://docs.netlify.com/functions/build-with-javascript/#synchronous-function-format
 exports.handler = async function (event, _) {
   // event is a JSON object
+  const nbUid = uuidv4()
   const data = JSON.parse(event.body)
   const zip = new JSZip()
   const code = data.code
