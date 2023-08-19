@@ -69,6 +69,7 @@ export default {
   setup() {
     const showDownloadMsg = ref(false)
     const colabText = ref('Open in Colab')
+    const new_colab_link = ref('')
 
     const downloadProject = async () => {
       if (store.code && Object.keys(store.code).length) {
@@ -97,10 +98,11 @@ export default {
           })
           // response body is plain text
           const colabLink = await res.text()
+          new_colab_link.value = colabLink
 
           // create a hyperlink element
           const el = document.createElement('a')
-          el.setAttribute('href', colabLink)
+          el.setAttribute('href', new_colab_link.value)
           el.setAttribute('target', '_blank')
           el.setAttribute('rel', 'noopener noreferrer')
           el.click()
