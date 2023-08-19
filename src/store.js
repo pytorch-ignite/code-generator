@@ -34,29 +34,28 @@ export const msg = reactive({
   color: 'red'
 })
 
+// default configs for the templates
+export const default_config = {
+  template: '',
+  include_test: false,
+  output_dir: './logs',
+  log_every_iters: 10,
+  logger: 'tensorboard',
+  save_training: true,
+  save_evaluation: true,
+  patience: 3,
+  filename_prefix: 'training',
+  save_every_iters: 1000,
+  n_saved: 2
+}
+
 // main reactive object
 // store.code - the final rendered code to be included in archive
 // store.config - the internal config to track user input
 // codeUrl - the wget url for integration and local development
 export const store = reactive({
   code: {},
-  config: {
-    template: '',
-    include_test: false,
-    output_dir: './logs',
-    log_every_iters: 10,
-    nproc_per_node: 2,
-    nnodes: 1,
-    master_addr: '127.0.0.1',
-    logger: 'tensorboard',
-    save_training: true,
-    save_evaluation: true,
-    patience: 3,
-    filename_prefix: 'training',
-    save_every_iters: 1000,
-    n_saved: 2,
-    master_port: 8080
-  },
+  config: default_config,
   codeUrl: ''
 })
 
