@@ -19,7 +19,7 @@ import SplitPane from '../components/PaneSplit.vue'
 import PaneRight from '../components/PaneRight.vue'
 import PaneLeft from '../components/PaneLeft.vue'
 import Footer from '../components/Footer.vue'
-import { defineAsyncComponent, onUnmounted } from 'vue'
+import { onUnmounted } from 'vue'
 import { default_config, store } from '../store'
 
 export default {
