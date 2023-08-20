@@ -111,7 +111,7 @@ export default {
       }
       colabText.value = 'Open in Colab'
     }
-    // watch(store.config, () => downloadProject)
+
     return { downloadProject, showDownloadMsg, colabText }
   }
 }
