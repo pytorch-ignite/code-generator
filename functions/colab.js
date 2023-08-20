@@ -1,10 +1,4 @@
-// Below imports are defined in
-// `external_node_modules` of [functions] in netlify.toml
-// They are required for this function to run
-
-import { v5 as uuidv5 } from 'uuid'
-import JSZip from 'jszip'
-import { pushToGitHub } from './utils'
+import { pushToGitHub, getZip_Uid } from './utils'
 
 const repoOwner = process.env.VUE_APP_GH_USER
 const repo = process.env.VUE_APP_GH_REPO
@@ -14,29 +8,9 @@ const repo = process.env.VUE_APP_GH_REPO
 exports.handler = async function (event, _) {
   // event is a JSON object
   const data = JSON.parse(event.body)
-  const zip = new JSZip()
-  const code = data.code
-  let hash = ''
   const template = `ignite-${data.template}`
   const nbName = `${template}.ipynb`
-
-  // As usual from Download component,
-  // we will zip the files and
-  // generate a base64 format for pushing to GitHub
-  // with Octokit.
-  for (const filename in code) {
-    hash += code[filename]
-    zip.file(filename, code[filename])
-  }
-  const nbUid = uuidv5(hash, uuidv5.URL)
-  const content = await zip.generateAsync({ type: 'base64' })
-  const zipRes = await pushToGitHub(
-    content,
-    `${template}.zip`,
-    nbUid,
-    repoOwner,
-    repo
-  )
+  const { zipRes, nbUid } = await getZip_Uid(data)
 
   const title = template
     .replace('ignite-', '')
@@ -101,9 +75,7 @@ exports.handler = async function (event, _) {
   await pushToGitHub(
     Buffer.from(JSON.stringify(nb)).toString('base64'),
     nbName,
-    nbUid,
-    repoOwner,
-    repo
+    nbUid
   )
 
   const colabLink = `https://colab.research.google.com/github/${repoOwner}/${repo}/blob/main/nbs/${nbUid}/${nbName}`
