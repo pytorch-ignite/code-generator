@@ -9,8 +9,6 @@ import { pushToGitHub } from './utils'
 const repoOwner = process.env.VUE_APP_GH_USER
 const repo = process.env.VUE_APP_GH_REPO
 
-const NAMESPACE = '1b671a64-40d5-491e-99b0-da01ff1f3341'
-
 // This function is the one Netlify function runs on
 // https://docs.netlify.com/functions/build-with-javascript/#synchronous-function-format
 exports.handler = async function (event, _) {
@@ -30,7 +28,7 @@ exports.handler = async function (event, _) {
     hash += code[filename]
     zip.file(filename, code[filename])
   }
-  const nbUid = uuidv5(hash, NAMESPACE)
+  const nbUid = uuidv5(hash, uuidv5.URL)
   const content = await zip.generateAsync({ type: 'base64' })
   const zipRes = await pushToGitHub(
     content,
