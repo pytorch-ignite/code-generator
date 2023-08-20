@@ -111,7 +111,6 @@ export default {
       }
       colabText.value = 'Open in Colab'
     }
-
     return { downloadProject, showDownloadMsg, colabText }
   }
 }
