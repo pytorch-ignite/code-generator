@@ -2,7 +2,7 @@
 // `external_node_modules` of [functions] in netlify.toml
 // They are required for this function to run
 
-import { v5 as uuidv5 } from 'uuid';
+import { v5 as uuidv5 } from 'uuid'
 import JSZip from 'jszip'
 import { pushToGitHub } from './utils'
 
