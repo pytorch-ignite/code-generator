@@ -20,7 +20,7 @@ import PaneRight from '../components/PaneRight.vue'
 import PaneLeft from '../components/PaneLeft.vue'
 import Footer from '../components/Footer.vue'
 import { onUnmounted } from 'vue'
-import { store } from '../store'
+import { default_config, store } from '../store'
 
 export default {
   components: {
@@ -42,10 +42,9 @@ export default {
       // since we delete each property,
       // it is better to reassign the initial values
       // which are defined in store.js
-      store.config.template = ''
-      store.config.include_test = false
-      store.config.output_dir = './logs'
-      store.config.log_every_iters = 2
+      for (const key in default_config) {
+        store.config[key] = default_config[key]
+      }
     })
   }
 }
