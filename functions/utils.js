@@ -44,21 +44,18 @@ export async function pushToGitHub(content, filename, nbUid) {
 export async function getZip_Uid(data) {
   const zip = new JSZip()
   const code = data.code
-  let hash = ''
   const template = `ignite-${data.template}`
 
   // As usual from Download component,
   // we will zip the files and
   // generate a base64 format for pushing to GitHub
   // with Octokit.
-  // we generate a hash for unique code identification and
-  // zip generation
   for (const filename in code) {
-    hash += code[filename]
     zip.file(filename, code[filename])
   }
-  const nbUid = uuidv5(hash, uuidv5.URL)
   const content = await zip.generateAsync({ type: 'base64' })
+  // we generate an unique id from the zipped content for pushing to github
+  const nbUid = uuidv5(content, uuidv5.URL)
   const zipRes = await pushToGitHub(content, `${template}.zip`, nbUid)
   return {
     zipRes: zipRes,
