@@ -4,7 +4,6 @@ from typing import Iterable
 
 import ignite.distributed as idist
 import pytest
-import yaml
 from data import setup_data
 from omegaconf import OmegaConf
 from torch import nn, optim

@@ -2,7 +2,6 @@ import os
 from argparse import Namespace
 
 import pytest
-import yaml
 from data import setup_data
 from omegaconf import OmegaConf
 from torch import Tensor
