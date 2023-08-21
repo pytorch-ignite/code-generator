@@ -1,5 +1,9 @@
 import logging
+
+#::: if ((it.argparser == 'argparse')) { :::#
 from argparse import ArgumentParser
+
+#::: } :::#
 from datetime import datetime
 from logging import Logger
 from pathlib import Path
@@ -37,6 +41,9 @@ from ignite.utils import setup_logger
 from omegaconf import DictConfig, OmegaConf
 
 
+#::: if ((it.argparser == 'argparse')) { :::#
+
+
 def get_default_parser():
     parser = ArgumentParser()
     parser.add_argument("config", type=Path, help="Config file path")
@@ -62,6 +69,9 @@ def setup_config(parser=None):
     config.backend = args.backend
 
     return DictConfig(config)
+
+
+#::: } :::#
 
 
 def log_metrics(engine: Engine, tag: str) -> None:
