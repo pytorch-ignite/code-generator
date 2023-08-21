@@ -22,9 +22,9 @@ def run(local_rank: int, config: Any):
     manual_seed(config.seed + rank)
 
     # create output folder and copy config file to output dir
-    output_dir = setup_output_dir(config, rank)
+    config.output_dir = setup_output_dir(config, rank)
     if rank == 0:
-        save_config(config, output_dir)
+        save_config(config, config.output_dir)
 
     # donwload datasets and create dataloaders
     dataloader_train, dataloader_eval = setup_data(config)

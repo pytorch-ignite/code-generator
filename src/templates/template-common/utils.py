@@ -7,7 +7,6 @@ from typing import Any, Mapping, Optional, Union
 
 import ignite.distributed as idist
 import torch
-import yaml
 from ignite.contrib.engines import common
 from ignite.engine import Engine
 
@@ -58,10 +57,9 @@ def setup_config(parser=None):
     args = parser.parse_args()
     config_path = args.config
 
-    with open(config_path, "r") as f:
-        config = yaml.safe_load(f.read())
+    config = OmegaConf.load(config_path)
 
-    config["backend"] = args.backend
+    config.backend = args.backend
 
     return DictConfig(config)
 

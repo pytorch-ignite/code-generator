@@ -7,6 +7,7 @@ import pytest
 import torch
 import yaml
 from data import setup_data
+from omegaconf import OmegaConf
 from torch import nn, optim, Tensor
 from torch.utils.data.dataloader import DataLoader
 from trainers import setup_evaluator

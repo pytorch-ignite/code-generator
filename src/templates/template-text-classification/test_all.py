@@ -6,6 +6,7 @@ import ignite.distributed as idist
 import pytest
 import yaml
 from data import setup_data
+from omegaconf import OmegaConf
 from torch import nn, optim
 from torch.functional import Tensor
 from torch.utils.data import DataLoader

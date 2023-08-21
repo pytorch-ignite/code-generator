@@ -8,6 +8,7 @@ import torch
 import yaml
 from data import setup_data
 from models import Discriminator, Generator
+from omegaconf import OmegaConf
 from torch import nn, optim, Tensor
 from torch.utils.data.dataloader import DataLoader
 from trainers import setup_trainer
