@@ -92,7 +92,8 @@ export default {
             },
             body: JSON.stringify({
               code: store.code,
-              template: store.config.template
+              template: store.config.template,
+              config: store.config
             })
           })
           // response body is plain text
