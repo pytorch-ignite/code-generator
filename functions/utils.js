@@ -14,8 +14,6 @@ const repo = process.env.VUE_APP_GH_REPO
  * @param {string} content
  * @param {string} filename
  * @param {string} nbUid
- * @param {string} repoOwner
- * @param {string} repo
  * @returns download_url
  */
 export async function pushToGitHub(content, filename, nbUid) {
@@ -53,9 +51,11 @@ export async function getZip_Uid(data) {
   for (const filename in code) {
     zip.file(filename, code[filename])
   }
+  // since the generated zip varies every time even with the same code
+  // it can't be used to generate a UUID
   const content = await zip.generateAsync({ type: 'base64' })
-  // we generate an unique id from the zipped content for pushing to github
-  const nbUid = uuidv5(content, uuidv5.URL)
+  // we generate an unique id form the current config for pushing to github
+  const nbUid = uuidv5(JSON.stringify(data.config), uuidv5.URL)
   const zipRes = await pushToGitHub(content, `${template}.zip`, nbUid)
   return {
     zipRes: zipRes,
