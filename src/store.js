@@ -38,6 +38,7 @@ export const msg = reactive({
 export const default_config = {
   template: '',
   include_test: false,
+  argparser: 'argparse',
   output_dir: './logs',
   log_every_iters: 10,
   logger: 'tensorboard',
