@@ -124,7 +124,7 @@
       "name": "log_every_iters",
       "type": "number",
       "description": "Logging interval for training statistics",
-      "default": 2
+      "default": 10
     },
     "logger": {
       "name": "logger",
