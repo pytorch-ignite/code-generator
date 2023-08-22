@@ -54,8 +54,8 @@ export async function getZip_Uid(data) {
   // since the generated zip varies every time even with the same code
   // it can't be used to generate a UUID
   const content = await zip.generateAsync({ type: 'base64' })
-  // we generate an unique id form the current config for pushing to github
-  const nbUid = uuidv5(JSON.stringify(data.config), uuidv5.URL)
+  // we generate an unique id from the current config for pushing to github
+  const nbUid = uuidv5(data.config, uuidv5.URL)
   const zipRes = await pushToGitHub(content, `${template}.zip`, nbUid)
   return {
     zipRes: zipRes,
