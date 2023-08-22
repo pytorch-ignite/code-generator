@@ -90,10 +90,10 @@ jobs:
       - run: pnpm dist_lint ${{ matrix.template }}
 
       - name: 'Run ${{ matrix.template }} ${{ matrix.test }}'
-        run: sh ./scripts/run_tests.sh ${{ matrix.test }} ${{ matrix.template }}
+        run: sh ./scripts/run_tests.sh ${{ matrix.test }} ${{ matrix.template }} argparse
 
       - name: 'Run ${{ matrix.template }} ${{ matrix.test }} - Python Fire'
-        run: sh ./scripts/run_tests_fire.sh ${{ matrix.test }} ${{ matrix.template }}
+        run: sh ./scripts/run_tests.sh ${{ matrix.test }} ${{ matrix.template }} fire
 
   lint:
     runs-on: ubuntu-latest
