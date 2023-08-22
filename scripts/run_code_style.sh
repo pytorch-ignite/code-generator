@@ -4,7 +4,11 @@ set -xeu
 
 if [ $1 == "dist_lint" ]; then
     # Check that ./dist-tests/ exists and code is unzipped
-    ls ./dist-tests/vision-classification-all/main.py
+    TEMP=${2:-vision-classification}
+
+    # for argparse
+    ls ./dist-tests/$TEMP-all-argparse/main.py
+    
     # Comment dist-tests in .gitignore to make black running on ./dist-tests folder
     sed -i "s/dist-tests/# dist-tests/g" .gitignore
 
