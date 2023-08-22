@@ -38,10 +38,27 @@ from ignite.handlers.time_limit import TimeLimit
 
 #::: } :::#
 from ignite.utils import setup_logger
-from omegaconf import DictConfig, OmegaConf
+from omegaconf import OmegaConf
+
+#::: if ((it.argparser == 'fire')) { :::#
 
 
-#::: if ((it.argparser == 'argparse')) { :::#
+def setup_config(config_path, backend, **kwargs):
+    config = OmegaConf.load(config_path)
+
+    for k, v in kwargs.items():
+        if k in config:
+            print(f"Override parameter {k}: {config[k]} -> {v}")
+        else:
+            print(f"{k} parameter not in {config_path}")
+        config[k] = v
+
+    config.backend = backend
+
+    return config
+
+
+#::: } else { :::#
 
 
 def get_default_parser():
@@ -62,13 +79,14 @@ def setup_config(parser=None):
         parser = get_default_parser()
 
     args = parser.parse_args()
+
     config_path = args.config
 
     config = OmegaConf.load(config_path)
 
     config.backend = args.backend
 
-    return DictConfig(config)
+    return config
 
 
 #::: } :::#

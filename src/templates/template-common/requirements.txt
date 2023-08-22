@@ -3,13 +3,15 @@ torchvision>=0.11.3
 pytorch-ignite>=0.4.8
 pyyaml
 omegaconf
+#::: if ((it.argparser == 'fire')) { :::#
+#:::= it.argparser :::#
+
+#::: } :::#
 
 #::: if (['neptune', 'polyaxon'].includes(it.logger)) { :::#
-
 #:::= it.logger + '-client' :::#
 
 #::: } else { :::#
-
 #:::= it.logger :::#
 
 #::: } :::#

@@ -13,6 +13,14 @@
         <a href="https://docs.python.org/3/library/argparse.html">Argparse</a> -
         is a python built-in tool to handle command-line arguments
       </li>
+      <li>
+        <a
+          href="https://github.com/google/python-fire/blob/master/docs/guide.md"
+          >Python Fire</a
+        >
+        - transforms Python functions into user-friendly command-line tools,
+        ideal for DL experimentation.
+      </li>
     </ul>
     <FormSelect
       :label="argparser.description"
@@ -100,6 +108,7 @@ export default {
       saveConfig(deterministic.name, isDeterministic.value)
     })
     return {
+      argparser,
       store,
       argparser,
       deterministic,

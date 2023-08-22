@@ -12,6 +12,12 @@ from torch import nn, optim
 from trainers import setup_evaluator, setup_trainer
 from utils import *
 
+#::: if ((it.argparser == 'fire')) { :::#
+import fire
+
+#::: } :::#
+
+
 FAKE_IMG_FNAME = "fake_sample_epoch_{:04d}.png"
 REAL_IMG_FNAME = "real_sample_epoch_{:04d}.png"
 
@@ -23,6 +29,7 @@ def run(local_rank: int, config: Any):
 
     # create output folder and copy config file to output dir
     config.output_dir = setup_output_dir(config, rank)
+
     if rank == 0:
         save_config(config, config.output_dir)
 

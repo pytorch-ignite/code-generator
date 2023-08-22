@@ -92,6 +92,9 @@ jobs:
       - name: 'Run ${{ matrix.template }} ${{ matrix.test }}'
         run: sh ./scripts/run_tests.sh ${{ matrix.test }} ${{ matrix.template }}
 
+      - name: 'Run ${{ matrix.template }} ${{ matrix.test }} - Python Fire'
+        run: sh ./scripts/run_tests_fire.sh ${{ matrix.test }} ${{ matrix.template }}
+
   lint:
     runs-on: ubuntu-latest
     steps:
