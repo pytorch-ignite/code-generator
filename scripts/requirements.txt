@@ -8,4 +8,5 @@ pytest
 transformers
 datasets
 tensorboard
+fire 
 omegaconf

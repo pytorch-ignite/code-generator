@@ -5,10 +5,18 @@ set -xeu
 if [ $1 == "dist_lint" ]; then
     # Check that ./dist-tests/ exists and code is unzipped
     TEMP=${2:-vision-classification}
+    ARGPARSE=${3:-argparse}
 
     # for argparse
-    ls ./dist-tests/$TEMP-all-argparse/main.py
+    if [ "$ARGPARSE" == "argparse" ]; then 
+        ls ./dist-tests/$TEMP-all-argparse/main.py
+    fi
     
+    # for python-fire
+    if [ "$ARGPARSE" == "fire" ]; then 
+        ls ./dist-tests/$TEMP-all-fire/main.py
+    fi
+
     # Comment dist-tests in .gitignore to make black running on ./dist-tests folder
     sed -i "s/dist-tests/# dist-tests/g" .gitignore
 
