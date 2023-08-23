@@ -96,7 +96,6 @@ jobs:
         run: |
           pnpm dist_lint ${{ matrix.template }} fire
           sh ./scripts/run_tests.sh ${{ matrix.test }} ${{ matrix.template }} fire
-          
 
   lint:
     runs-on: ubuntu-latest
