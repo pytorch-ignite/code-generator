@@ -108,7 +108,6 @@ export default {
       saveConfig(deterministic.name, isDeterministic.value)
     })
     return {
-      argparser,
       store,
       argparser,
       deterministic,
