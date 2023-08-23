@@ -6,6 +6,9 @@ omegaconf
 #::: if ((it.argparser == 'fire')) { :::#
 #:::= it.argparser :::#
 
+#::: } else if ((it.argparser == 'hydra')) { :::#
+#:::= it.argparser + '-core'  :::#
+
 #::: } :::#
 
 #::: if (['neptune', 'polyaxon'].includes(it.logger)) { :::#

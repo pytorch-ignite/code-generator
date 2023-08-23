@@ -18,6 +18,12 @@ import fire
 
 #::: } :::#
 
+#::: if ((it.argparser == 'hydra')) { :::#
+import hydra
+from omegaconf import DictConfig
+
+#::: } :::#
+
 os.environ["TOKENIZERS_PARALLELISM"] = "false"  # remove tokenizer paralleism warning
 
 

@@ -21,6 +21,12 @@ import fire
 
 #::: } :::#
 
+#::: if ((it.argparser == 'hydra')) { :::#
+import hydra
+from omegaconf import DictConfig
+
+#::: } :::#
+
 
 try:
     from torch.optim.lr_scheduler import LRScheduler as PyTorchLRScheduler

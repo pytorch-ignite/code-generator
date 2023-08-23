@@ -9,4 +9,5 @@ transformers
 datasets
 tensorboard
 fire 
+hydra-core
 omegaconf

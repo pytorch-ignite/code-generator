@@ -17,6 +17,12 @@ import fire
 
 #::: } :::#
 
+#::: if ((it.argparser == 'hydra')) { :::#
+import hydra
+from omegaconf import DictConfig
+
+#::: } :::#
+
 
 FAKE_IMG_FNAME = "fake_sample_epoch_{:04d}.png"
 REAL_IMG_FNAME = "real_sample_epoch_{:04d}.png"

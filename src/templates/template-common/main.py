@@ -6,10 +6,17 @@ def main(config_path, backend=None, **kwargs):
     config = setup_config(config_path, backend, **kwargs)
 
 
+#::: } else if ((it.argparser == 'hydra')) { :::#
+@hydra.main(version_base=None, config_path=".", config_name="config")
+def main(cfg: DictConfig):
+    config = setup_config(cfg)
+
+
 #::: } else { :::#
 def main():
     config = setup_config()
-    #::: } :::#
+#::: } :::#
+        
     #::: if (it.dist === 'spawn') { :::#
     #::: if (it.nproc_per_node && it.nnodes > 1 && it.master_addr && it.master_port) { :::#
     spawn_kwargs = {

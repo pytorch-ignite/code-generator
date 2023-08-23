@@ -60,6 +60,50 @@ def setup_config(config_path, backend, **kwargs):
 
 #::: } else { :::#
 
+#::: if ((it.argparser == 'hydra')) { :::#
+from omegaconf import OmegaConf
+
+
+def setup_config(config):
+    optional_attributes = ["output_dir", "backend", "train_epoch_length", "eval_epoch_length", "num_iters_per_epoch"]
+    for attr in optional_attributes:
+        if attr == "output_dir":
+            OmegaConf.update(config, attr, Path(config.get(attr, "./")), force_add=True)
+        if config.get(attr, None) == None:
+            OmegaConf.update(config, attr, None, force_add=True)
+    return config
+
+
+#::: } :::#
+
+
+#::: if ((it.argparser == 'fire')) { :::#
+from omegaconf import DictConfig
+
+
+def setup_config(config_path, backend, **kwargs):
+    with open(config_path, "r") as f:
+        config = yaml.safe_load(f.read())
+
+    for k, v in kwargs.items():
+        if k in config:
+            print(f"Override parameter {k}: {config[k]} -> {v}")
+        else:
+            print(f"{k} parameter not in {config_path}")
+        config[k] = v
+
+    optional_attributes = ["train_epoch_length", "eval_epoch_length"]
+    for attr in optional_attributes:
+        config[attr] = config.get(attr, None)
+
+    config["backend"] = backend
+
+    return DictConfig(config)
+
+
+#::: } else { :::#
+from argparse import ArgumentParser
+
 
 def get_default_parser():
     parser = ArgumentParser()
@@ -79,6 +123,7 @@ def setup_config(parser=None):
         parser = get_default_parser()
 
     args = parser.parse_args()
+
     config_path = args.config
 
     config = OmegaConf.load(config_path)
@@ -156,7 +201,21 @@ def setup_output_dir(config: Any, rank: int) -> Path:
         path.mkdir(parents=True, exist_ok=True)
         config.output_dir = path.as_posix()
 
-    return Path(idist.broadcast(config.output_dir, src=0))
+    return Path(idist.broadcast(str(config.output_dir), src=0))
+
+
+def setup_config_saving(config):
+    """To setup config-lock.yaml in logs/<output_dir> for reproducing results"""
+    rank = idist.get_rank()
+
+    if rank == 0:
+        with open(f"{config.output_dir}/config-lock.yaml", "a+") as f:
+            for key, value in config.items():
+                if key == "output_dir":
+                    # To store actual output_dir in config-lock.yaml
+                    f.write(f"{key}: {value.parent}\n")
+                elif value is not None:
+                    f.write(f"{key}: {value}\n")
 
 
 def save_config(config, output_dir):

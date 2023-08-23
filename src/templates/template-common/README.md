@@ -68,11 +68,16 @@ torchrun \
   --node_rank 0 \
   --master_addr #:::= it.master_addr :::# \
   --master_port #:::= it.master_port :::# \
-  main.py config.yaml --backend #:::= it.backend :::# \
   #::: if ((it.argparser == 'fire')) { :::#
+  main.py config.yaml --backend #:::= it.backend :::# \
   [--override_arg=value]
-
+  #::: } else if ((it.argparser == 'hydra')){ :::#
+  main.py  --config-dir=[dir-path] \
+  --config-name=[config-name] ++backend= #:::= it.backend :::# ++override_arg=[value]
+  #::: } else { :::#
+  main.py config.yaml --backend #:::= it.backend :::#
   #::: } :::#
+
 ```
 
 - Execute on worker nodes
@@ -84,10 +89,15 @@ torchrun \
   --node_rank <node_rank> \
   --master_addr #:::= it.master_addr :::# \
   --master_port #:::= it.master_port :::# \
-  main.py config.yaml --backend #:::= it.backend :::# \
   #::: if ((it.argparser == 'fire')) { :::#
+  main.py config.yaml --backend #:::= it.backend :::# \
   [--override_arg=value]
-
+  #::: } else if ((it.argparser == 'hydra')){ :::#
+  main.py --config-dir=[dir-path] \
+  --config-name=[config-name] ++backend= #:::= it.backend :::# \
+  ++override_arg=[value]
+  #::: } else { :::#
+  main.py config.yaml --backend #:::= it.backend :::#
   #::: } :::#
 ```
 
@@ -98,10 +108,15 @@ torchrun \
 ```sh
 torchrun \
   --nproc_per_node #:::= it.nproc_per_node :::# \
-  main.py config.yaml --backend #:::= it.backend :::# \
   #::: if ((it.argparser == 'fire')) { :::#
+  main.py config.yaml --backend #:::= it.backend :::# \
   [--override_arg=value]
-
+  #::: } else if ((it.argparser == 'hydra')){ :::#
+  main.py --config-dir=[dir-path] \
+  --config-name=[config-name] ++backend= #:::= it.backend :::# \
+  ++override_arg=[value]
+  #::: } else { :::#
+  main.py config.yaml --backend #:::= it.backend :::#
   #::: } :::#
 ```
 
@@ -128,7 +143,9 @@ master_port: #:::= it.master_port :::#
 
 ```sh
 #::: if ((it.argparser == 'fire')) { :::#
-python main.py config.yaml --backend #:::= it.backend :::# [--override_arg=value]
+python main.py config.yaml --backend #:::= it.backend :::# --override_arg=[value]
+#::: } else if ((it.argparser == 'hydra')){ :::#
+python main.py --config-dir=[dir-path] --config-name=[config-name] ++backend= #:::= it.backend :::# ++override_arg=[value]
 #::: } else { :::#
 python main.py config.yaml --backend #:::= it.backend :::#
 #::: } :::#
@@ -149,6 +166,8 @@ master_port: #:::= it.master_port :::#
 
 #::: if ((it.argparser == 'fire')) { :::#
 python main.py config.yaml --backend #:::= it.backend :::# [--override_arg=value]
+#::: } else if ((it.argparser == 'hydra')){ :::#
+python main.py --config-dir=[dir-path] --config-name=[config-name] ++backend=#:::= it.backend :::# ++override_arg=[value]
 #::: } else { :::#
 python main.py config.yaml --backend #:::= it.backend :::#
 #::: } :::#
@@ -166,6 +185,10 @@ nproc_per_node: #:::= it.nproc_per_node :::#
 ```sh
 #::: if ((it.argparser == 'fire')) { :::#
 python main.py config.yaml --backend #:::= it.backend :::#  [--override_arg=value]
+
+#::: } else if ((it.argparser == 'hydra')) { :::#
+python main.py --config-dir=[dir-path] --config-name=[config-name] ++override_arg=[value]
+
 #::: } else { :::#
 python main.py config.yaml --backend #:::= it.backend :::#
 #::: } :::#
@@ -182,8 +205,13 @@ python main.py config.yaml --backend #:::= it.backend :::#
 ```sh
 #::: if ((it.argparser == 'fire')) { :::#
 python main.py config.yaml [--override_arg=value]
+
+#::: } else if ((it.argparser == 'hydra')) { :::#
+python main.py --config-dir=[dir-path] --config-name=[config-name] ++override_arg=[value]
+
 #::: } else { :::#
 python main.py config.yaml
+
 #::: } :::#
 ```
 
@@ -192,5 +220,9 @@ python main.py config.yaml
 #::: if ((it.argparser == 'fire')) { :::#
 
 Note: We use Python-Fire as the default argument parser here. For more information refer the [docs](https://github.com/google/python-fire/blob/master/docs/guide.md)
+
+#::: } else if ((it.argparser == 'hydra')) { :::#
+
+Note: We use Hydra with [OmegaConfig](https://omegaconf.readthedocs.io/en/2.3_branch/) as the default argument parser here. For more information refer the [docs](https://hydra.cc)
 
 #::: } :::#

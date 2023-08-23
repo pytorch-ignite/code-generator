@@ -17,6 +17,12 @@ import fire
 
 #::: } :::#
 
+#::: if ((it.argparser == 'hydra')) { :::#
+import hydra
+from omegaconf import DictConfig
+
+#::: } :::#
+
 
 def run(local_rank: int, config: Any):
     # make a certain seed
