@@ -1,6 +1,33 @@
 <template>
   <div class="tab training">
     <h1>Training Options</h1>
+
+    We are using yaml files to set up the training configuration (see
+    config.yaml). Additional arguments given to the main script can be parsed
+    using one of the tools provided below:
+
+    <h2>Argument Parser</h2>
+
+    <ul>
+      <li>
+        <a href="https://docs.python.org/3/library/argparse.html">Argparse</a> -
+        is a python built-in tool to handle command-line arguments
+      </li>
+      <li>
+        <a
+          href="https://github.com/google/python-fire/blob/master/docs/guide.md"
+          >Python Fire</a
+        >
+        - transforms Python functions into user-friendly command-line tools,
+        ideal for DL experimentation.
+      </li>
+    </ul>
+    <FormSelect
+      :label="argparser.description"
+      :options="argparser.options"
+      :saveKey="argparser.name"
+      :defaultV="argparser.default"
+    />
     <h2 class="training">Deterministic Training</h2>
     <FormCheckbox
       :label="deterministic.description"
@@ -64,6 +91,7 @@ export default {
   components: { FormCheckbox, FormInput, FormRadio, FormSelect },
   setup() {
     const {
+      argparser,
       deterministic,
       backend,
       torchrun,
@@ -81,6 +109,7 @@ export default {
     })
     return {
       store,
+      argparser,
       deterministic,
       backend,
       torchrun,

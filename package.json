@@ -5,7 +5,7 @@
     "dev": "vite --port 5000",
     "build": "vite build",
     "serve": "vite preview",
-    "test": "rm -rf ./dist-tests && jest --color --runInBand",
+    "test": "rm -rf ./dist-tests && jest --color --runInBand -t ${NPM_CONFIG:=''}",
     "test:ci": "start-server-and-test --expect 200 serve http://127.0.0.1:5000 test",
     "release": "node scripts/release.js",
     "fmt": "prettier --write . && bash scripts/run_code_style.sh fmt",
@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@iconify/iconify": "^3.1.0",
-    "@octokit/core": "^4.2.0",
+    "@octokit/core": "^5.0.0",
     "@types/ejs": "^3.1.0",
     "@types/file-saver": "^2.0.5",
     "@types/jest": "^27.4.0",

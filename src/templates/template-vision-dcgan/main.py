@@ -1,5 +1,4 @@
 from pprint import pformat
-from shutil import copy
 from typing import Any
 
 import ignite.distributed as idist
@@ -13,6 +12,12 @@ from torch import nn, optim
 from trainers import setup_evaluator, setup_trainer
 from utils import *
 
+#::: if ((it.argparser == 'fire')) { :::#
+import fire
+
+#::: } :::#
+
+
 FAKE_IMG_FNAME = "fake_sample_epoch_{:04d}.png"
 REAL_IMG_FNAME = "real_sample_epoch_{:04d}.png"
 
@@ -25,7 +30,7 @@ def run(local_rank: int, config: Any):
     # create output folder and copy config file to output dir
     config.output_dir = setup_output_dir(config, rank)
     if rank == 0:
-        copy(config.config, f"{config.output_dir}/config-lock.yaml")
+        save_config(config, config.output_dir)
 
     # donwload datasets and create dataloaders
     dataloader_train, dataloader_eval, num_channels = setup_data(config)
@@ -74,7 +79,7 @@ def run(local_rank: int, config: Any):
     # setup engines logger with python logging
     # print training configurations
     logger = setup_logging(config)
-    logger.info("Configuration: \n%s", pformat(vars(config)))
+    logger.info("Configuration: \n%s", pformat(config))
     trainer.logger = evaluator.logger = logger
 
     #::: if (it.save_training || it.save_evaluation) { :::#

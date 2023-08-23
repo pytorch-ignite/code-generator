@@ -1,5 +1,12 @@
 {
   "training": {
+    "argparser": {
+      "name": "argparser",
+      "type": "array",
+      "description": "Select the argument parser for training",
+      "options": ["argparse", "fire"],
+      "default": "argparse"
+    },
     "deterministic": {
       "name": "deterministic",
       "type": "checkbox",
@@ -117,7 +124,7 @@
       "name": "log_every_iters",
       "type": "number",
       "description": "Logging interval for training statistics",
-      "default": 2
+      "default": 10
     },
     "logger": {
       "name": "logger",

@@ -1,5 +1,9 @@
 import logging
+
+#::: if ((it.argparser == 'argparse')) { :::#
 from argparse import ArgumentParser
+
+#::: } :::#
 from datetime import datetime
 from logging import Logger
 from pathlib import Path
@@ -7,7 +11,6 @@ from typing import Any, Mapping, Optional, Union
 
 import ignite.distributed as idist
 import torch
-import yaml
 from ignite.contrib.engines import common
 from ignite.engine import Engine
 
@@ -35,6 +38,27 @@ from ignite.handlers.time_limit import TimeLimit
 
 #::: } :::#
 from ignite.utils import setup_logger
+from omegaconf import OmegaConf
+
+#::: if ((it.argparser == 'fire')) { :::#
+
+
+def setup_config(config_path, backend, **kwargs):
+    config = OmegaConf.load(config_path)
+
+    for k, v in kwargs.items():
+        if k in config:
+            print(f"Override parameter {k}: {config[k]} -> {v}")
+        else:
+            print(f"{k} parameter not in {config_path}")
+        config[k] = v
+
+    config.backend = backend
+
+    return config
+
+
+#::: } else { :::#
 
 
 def get_default_parser():
@@ -57,17 +81,14 @@ def setup_config(parser=None):
     args = parser.parse_args()
     config_path = args.config
 
-    with open(config_path, "r") as f:
-        config = yaml.safe_load(f.read())
+    config = OmegaConf.load(config_path)
 
-    optional_attributes = ["train_epoch_length", "eval_epoch_length"]
-    for attr in optional_attributes:
-        config[attr] = config.get(attr, None)
+    config.backend = args.backend
 
-    for k, v in config.items():
-        setattr(args, k, v)
+    return config
 
-    return args
+
+#::: } :::#
 
 
 def log_metrics(engine: Engine, tag: str) -> None:
@@ -136,6 +157,12 @@ def setup_output_dir(config: Any, rank: int) -> Path:
         config.output_dir = path.as_posix()
 
     return Path(idist.broadcast(config.output_dir, src=0))
+
+
+def save_config(config, output_dir):
+    """Save configuration to config-lock.yaml for result reproducibility."""
+    with open(f"{output_dir}/config-lock.yaml", "w") as f:
+        OmegaConf.save(config, f)
 
 
 def setup_logging(config: Any) -> Logger:

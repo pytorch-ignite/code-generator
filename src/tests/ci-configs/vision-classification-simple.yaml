@@ -1,4 +1,4 @@
-seed: 666
+seed: 777
 data_path: ~/data
 train_batch_size: 2
 eval_batch_size: 2
@@ -12,3 +12,7 @@ debug: false
 model: resnet18
 output_dir: ./logs
 log_every_iters: 2
+filename_prefix: training
+n_saved: 2
+save_every_iters: 1000
+patience: 3
