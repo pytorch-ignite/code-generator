@@ -108,7 +108,7 @@ elif [ $1 = "all" ]; then
     run_all_fire $2
   fi
 elif [ $1 = "launch" ]; then
-if [ $3 = "argparse" ]; then 
+  if [ $3 = "argparse" ]; then 
     run_launch $2
   elif [ $3 = "fire" ]; then 
     run_launch_fire $2
