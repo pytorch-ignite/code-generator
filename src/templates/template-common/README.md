@@ -73,7 +73,7 @@ torchrun \
   [--override_arg=value]
   #::: } else if ((it.argparser == 'hydra')){ :::#
   main.py  --config-dir=[dir-path] \
-  --config-name=[config-name] ++backend= #:::= it.backend :::# ++override_arg=[value]
+  --config-name=[config-name] ++backend= #:::= it.backend :::# override_arg=[value]
   #::: } else { :::#
   main.py config.yaml --backend #:::= it.backend :::#
   #::: } :::#

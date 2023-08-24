@@ -171,7 +171,7 @@ def setup_output_dir(config: Any, rank: int) -> Path:
         path.mkdir(parents=True, exist_ok=True)
         config.output_dir = path.as_posix()
 
-    return Path(idist.broadcast(str(config.output_dir), src=0))
+    return Path(idist.broadcast(config.output_dir, src=0))
 
 
 def setup_config_saving(config):
