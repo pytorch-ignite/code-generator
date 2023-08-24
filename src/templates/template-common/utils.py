@@ -62,7 +62,7 @@ def setup_config(config_path, backend, **kwargs):
 
 
 def setup_config(config):
-    optional_attributes = ["output_dir", "backend"]
+    optional_attributes = ["output_dir", "backend", "num_iters_per_epoch"]
 
     for attr in optional_attributes:
         if attr == "output_dir":
@@ -171,21 +171,7 @@ def setup_output_dir(config: Any, rank: int) -> Path:
         path.mkdir(parents=True, exist_ok=True)
         config.output_dir = path.as_posix()
 
-    return Path(idist.broadcast(config.output_dir, src=0))
-
-
-def setup_config_saving(config):
-    """To setup config-lock.yaml in logs/<output_dir> for reproducing results"""
-    rank = idist.get_rank()
-
-    if rank == 0:
-        with open(f"{config.output_dir}/config-lock.yaml", "a+") as f:
-            for key, value in config.items():
-                if key == "output_dir":
-                    # To store actual output_dir in config-lock.yaml
-                    f.write(f"{key}: {value.parent}\n")
-                elif value is not None:
-                    f.write(f"{key}: {value}\n")
+    return Path(idist.broadcast(str(config.output_dir), src=0))
 
 
 def save_config(config, output_dir):
