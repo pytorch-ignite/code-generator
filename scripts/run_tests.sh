@@ -92,6 +92,46 @@ run_spawn_fire() {
   done
 }
 
+# Hydra test functions
+
+run_simple_hydra() {
+  for dir in $(find ./dist-tests/$1-simple-hydra -type d)
+  do
+    cd $dir
+    python main.py --config-dir=../../src/tests/ci-configs --config-name=$1-simple.yaml 
+    cd $CWD
+  done
+}
+
+run_all_hydra() {
+  for dir in $(find ./dist-tests/$1-all-hydra -type d)
+  do
+    cd $dir
+    pytest -vra --color=yes --tb=short test_*.py
+    python main.py --config-dir=../../src/tests/ci-configs --config-name=$1-all.yaml
+    cd $CWD
+  done
+}
+
+run_launch_hydra() {
+  for dir in $(find ./dist-tests/$1-launch-hydra -type d)
+  do
+    cd $dir
+    torchrun --nproc_per_node 2 main.py --config-dir=../../src/tests/ci-configs --config-name=$1-launch.yaml ++backend='gloo'
+    cd $CWD
+  done
+}
+
+run_spawn_hydra() {
+  for dir in $(find ./dist-tests/$1-spawn-hydra -type d)
+  do
+    cd $dir
+    python main.py --config-dir=../../src/tests/ci-configs --config-name=$1-spawn.yaml ++backend='gloo'
+    cd $CWD
+  done
+}
+
+
 
 if [ $1 = "unzip" ]; then
   unzip_all
@@ -100,23 +140,31 @@ elif [ $1 = "simple" ]; then
     run_simple $2
   elif [ $3 = "fire" ]; then 
     run_simple_fire $2
-  fi
+  elif [ $3 = "hydra" ]; then 
+    run_simple_hydra $2
+  fi  
 elif [ $1 = "all" ]; then
   if [ $3 = "argparse" ]; then 
     run_all $2
   elif [ $3 = "fire" ]; then 
     run_all_fire $2
+  elif [ $3 = "hydra" ]; then 
+    run_all_hydra $2
   fi
 elif [ $1 = "launch" ]; then
   if [ $3 = "argparse" ]; then 
     run_launch $2
   elif [ $3 = "fire" ]; then 
     run_launch_fire $2
+  elif [ $3 = "hydra" ]; then 
+    run_launch_hydra $2
   fi
 elif [ $1 = "spawn" ]; then
   if [ $3 = "argparse" ]; then 
     run_spawn $2
   elif [ $3 = "fire" ]; then 
     run_spawn_fire $2
+  elif [ $3 = "hydra" ]; then 
+    run_spawn_hydra $2
   fi
 fi

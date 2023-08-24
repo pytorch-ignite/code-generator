@@ -10,16 +10,24 @@
 
     <ul>
       <li>
-        <a href="https://docs.python.org/3/library/argparse.html">Argparse</a> -
-        is a python built-in tool to handle command-line arguments
+        <a href="https://docs.python.org/3/library/argparse.html" id="arg"
+          >Argparse</a
+        >
+        - is a python built-in tool to handle command-line arguments
       </li>
       <li>
         <a
           href="https://github.com/google/python-fire/blob/master/docs/guide.md"
+          id="arg"
           >Python Fire</a
         >
         - transforms Python functions into user-friendly command-line tools,
         ideal for DL experimentation.
+      </li>
+      <li>
+        <a href="https://hydra.cc" id="arg">Hydra</a>
+        - Simplifying deep learning experiments through flexible configuration
+        management
       </li>
     </ul>
     <FormSelect
@@ -133,5 +141,9 @@ function saveDistributed(key, value) {
 <style scoped>
 .training {
   margin-bottom: 0;
+}
+
+#arg {
+  font-weight: bold;
 }
 </style>

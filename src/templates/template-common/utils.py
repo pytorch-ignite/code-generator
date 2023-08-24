@@ -58,14 +58,12 @@ def setup_config(config_path, backend, **kwargs):
     return config
 
 
-#::: } else { :::#
-
-#::: if ((it.argparser == 'hydra')) { :::#
-from omegaconf import OmegaConf
+#::: } else if ((it.argparser == 'hydra')) { :::#
 
 
 def setup_config(config):
-    optional_attributes = ["output_dir", "backend", "train_epoch_length", "eval_epoch_length", "num_iters_per_epoch"]
+    optional_attributes = ["output_dir", "backend"]
+
     for attr in optional_attributes:
         if attr == "output_dir":
             OmegaConf.update(config, attr, Path(config.get(attr, "./")), force_add=True)
@@ -74,35 +72,7 @@ def setup_config(config):
     return config
 
 
-#::: } :::#
-
-
-#::: if ((it.argparser == 'fire')) { :::#
-from omegaconf import DictConfig
-
-
-def setup_config(config_path, backend, **kwargs):
-    with open(config_path, "r") as f:
-        config = yaml.safe_load(f.read())
-
-    for k, v in kwargs.items():
-        if k in config:
-            print(f"Override parameter {k}: {config[k]} -> {v}")
-        else:
-            print(f"{k} parameter not in {config_path}")
-        config[k] = v
-
-    optional_attributes = ["train_epoch_length", "eval_epoch_length"]
-    for attr in optional_attributes:
-        config[attr] = config.get(attr, None)
-
-    config["backend"] = backend
-
-    return DictConfig(config)
-
-
-#::: } else { :::#
-from argparse import ArgumentParser
+#::: } else if ((it.argparser == 'argparse')) { :::#
 
 
 def get_default_parser():

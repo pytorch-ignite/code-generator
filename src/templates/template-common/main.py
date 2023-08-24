@@ -15,8 +15,8 @@ def main(cfg: DictConfig):
 #::: } else { :::#
 def main():
     config = setup_config()
-#::: } :::#
-        
+    #::: } :::#
+
     #::: if (it.dist === 'spawn') { :::#
     #::: if (it.nproc_per_node && it.nnodes > 1 && it.master_addr && it.master_port) { :::#
     spawn_kwargs = {

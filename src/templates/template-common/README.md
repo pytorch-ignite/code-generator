@@ -95,7 +95,7 @@ torchrun \
   #::: } else if ((it.argparser == 'hydra')){ :::#
   main.py --config-dir=[dir-path] \
   --config-name=[config-name] ++backend= #:::= it.backend :::# \
-  ++override_arg=[value]
+  override_arg=[value]
   #::: } else { :::#
   main.py config.yaml --backend #:::= it.backend :::#
   #::: } :::#
@@ -114,7 +114,7 @@ torchrun \
   #::: } else if ((it.argparser == 'hydra')){ :::#
   main.py --config-dir=[dir-path] \
   --config-name=[config-name] ++backend= #:::= it.backend :::# \
-  ++override_arg=[value]
+  override_arg=[value]
   #::: } else { :::#
   main.py config.yaml --backend #:::= it.backend :::#
   #::: } :::#
@@ -145,7 +145,7 @@ master_port: #:::= it.master_port :::#
 #::: if ((it.argparser == 'fire')) { :::#
 python main.py config.yaml --backend #:::= it.backend :::# --override_arg=[value]
 #::: } else if ((it.argparser == 'hydra')){ :::#
-python main.py --config-dir=[dir-path] --config-name=[config-name] ++backend= #:::= it.backend :::# ++override_arg=[value]
+python main.py --config-dir=[dir-path] --config-name=[config-name] ++backend= #:::= it.backend :::# override_arg=[value]
 #::: } else { :::#
 python main.py config.yaml --backend #:::= it.backend :::#
 #::: } :::#
@@ -167,7 +167,7 @@ master_port: #:::= it.master_port :::#
 #::: if ((it.argparser == 'fire')) { :::#
 python main.py config.yaml --backend #:::= it.backend :::# [--override_arg=value]
 #::: } else if ((it.argparser == 'hydra')){ :::#
-python main.py --config-dir=[dir-path] --config-name=[config-name] ++backend=#:::= it.backend :::# ++override_arg=[value]
+python main.py --config-dir=[dir-path] --config-name=[config-name] ++backend=#:::= it.backend :::# override_arg=[value]
 #::: } else { :::#
 python main.py config.yaml --backend #:::= it.backend :::#
 #::: } :::#
@@ -187,7 +187,7 @@ nproc_per_node: #:::= it.nproc_per_node :::#
 python main.py config.yaml --backend #:::= it.backend :::#  [--override_arg=value]
 
 #::: } else if ((it.argparser == 'hydra')) { :::#
-python main.py --config-dir=[dir-path] --config-name=[config-name] ++override_arg=[value]
+python main.py --config-dir=[dir-path] --config-name=[config-name] override_arg=[value]
 
 #::: } else { :::#
 python main.py config.yaml --backend #:::= it.backend :::#
@@ -207,7 +207,7 @@ python main.py config.yaml --backend #:::= it.backend :::#
 python main.py config.yaml [--override_arg=value]
 
 #::: } else if ((it.argparser == 'hydra')) { :::#
-python main.py --config-dir=[dir-path] --config-name=[config-name] ++override_arg=[value]
+python main.py --config-dir=[dir-path] --config-name=[config-name] override_arg=[value]
 
 #::: } else { :::#
 python main.py config.yaml
