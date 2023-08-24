@@ -52,9 +52,9 @@ exports.handler = async function (event, _) {
   let execution_nb_commands = []
 
   if (argparser == 'hydra') {
-    specific_commands.push('!python main.py')
+    execution_nb_commands.push('!python main.py')
   } else {
-    specific_commands.push('!python main.py config.yaml')
+    execution_nb_commands.push('!python main.py config.yaml')
   }
 
   let nb_cells = [
