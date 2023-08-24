@@ -48,7 +48,14 @@ exports.handler = async function (event, _) {
     '!pip install -r requirements.txt'
   ]
 
-  const execution_nb_commands = ['!python main.py config.yaml']
+  let argparser = data.argparser
+  let execution_nb_commands = []
+
+  if (argparser == 'hydra') {
+    specific_commands.push('!python main.py')
+  } else {
+    specific_commands.push('!python main.py config.yaml')
+  }
 
   let nb_cells = [
     create_nb_cell(md_cell, 'markdown'),
