@@ -1,5 +1,3 @@
 #::= from_template_common ::#
 torchrl
-swig
-gymnasium[box2d]
 moviepy

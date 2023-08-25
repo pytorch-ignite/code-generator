@@ -17,13 +17,13 @@ from a2c_model_env import make_a2c_models, make_collector, make_loss, make_optim
 def main():
     config = setup_config()
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    config.device = device
+    config.device = f"{device}"
 
     rank = idist.get_rank()
     manual_seed(config.seed + rank)
     config.output_dir = setup_output_dir(config, rank)
     if rank == 0:
-        copy(config.config, f"{config.output_dir}/config-lock.yaml")
+        save_config(config, config.output_dir)
 
     actor, critic = make_a2c_models(config)
     actor = actor.to(device)
