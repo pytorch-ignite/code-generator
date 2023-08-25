@@ -1,11 +1,5 @@
 #::= from_template_common ::#
-
 torchrl
 swig
 gymnasium[box2d]
 moviepy
-
-# for colab:
-# !pip install -q swig
-# !pip install gymnasium[box2d]
-# !pip install torchrl

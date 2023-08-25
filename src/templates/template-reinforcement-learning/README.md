@@ -4,4 +4,32 @@
 
 This is the Reinforcement Learning template by Code-Generator using OpenAI Gym for the environment CarRacing-v2.
 
-#::= from_template_common ::#
+## Getting Started
+
+Install the dependencies with `pip`:
+
+```sh
+pip install -r requirements.txt --progress-bar off -U
+```
+
+### Code structure
+
+```
+|
+|- README.md
+|
+|- a2c.py : main script to run
+|- a2c_model_env.py : Utility functions for the reinforcement learning template for various tasks
+|- utils.py : module with various helper functions
+|- requirements.txt : dependencies to install with pip
+|
+|- config_a2c.yaml : global configuration YAML file
+```
+
+## Training
+
+### 1 GPU Training
+
+```sh
+python a2c.py config_a2c.yaml
+```
