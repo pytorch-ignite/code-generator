@@ -48,10 +48,10 @@ exports.handler = async function (event, _) {
     '!pip install -r requirements.txt'
   ]
 
-  let argparser = data.argparser
+  const argparser = data.argparser.toString().toUpperCase()
   let execution_nb_commands = []
 
-  if (argparser == 'hydra') {
+  if (argparser === 'HYDRA') {
     execution_nb_commands.push('!python main.py')
   } else {
     execution_nb_commands.push('!python main.py config.yaml')
