@@ -43,5 +43,13 @@
     "utils.py",
     "test_all.py",
     "requirements.txt"
+  ],
+  "template-reinforcement-learning": [
+    "README.md",
+    "config_a2c.yaml",
+    "a2c_model_env.py",
+    "a2c.py",
+    "utils.py",
+    "requirements.txt"
   ]
 }
