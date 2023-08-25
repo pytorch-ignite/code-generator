@@ -50,7 +50,6 @@ exports.handler = async function (event, _) {
 
   const argparser = data.argparser
   const execution_nb_commands = [
-    `#${argparser}`,
     `!python main.py ${argparser === 'hydra' ? '' : 'config.yaml'}`
   ]
 
