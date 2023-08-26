@@ -21,9 +21,9 @@ def setup_trainer(
 ) -> Union[Engine, DeterministicEngine]:
     ws = idist.get_world_size()
 
-    real_labels = torch.ones(config.train_batch_size // ws, device=device)
-    fake_labels = torch.zeros(config.train_batch_size // ws, device=device)
-    noise = torch.randn(config.train_batch_size // ws, config.z_dim, 1, 1, device=device)
+    real_labels = torch.ones(config.batch_size // ws, device=device)
+    fake_labels = torch.zeros(config.batch_size // ws, device=device)
+    noise = torch.randn(config.batch_size // ws, config.z_dim, 1, 1, device=device)
 
     def train_function(engine: Union[Engine, DeterministicEngine], batch: Any):
         model_g.train()

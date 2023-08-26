@@ -124,7 +124,7 @@ def setup_data(config: Namespace):
     dataloader_train = idist.auto_dataloader(
         dataset_train,
         shuffle=True,
-        batch_size=config.train_batch_size,
+        batch_size=config.batch_size,
         num_workers=config.num_workers,
         drop_last=True,
     )
