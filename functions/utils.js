@@ -21,9 +21,10 @@ export async function pushToGitHub(content, filename, nbUid) {
     auth: process.env.VUE_APP_GH_TOKEN
   })
   try {
-    let res = ""
     try{
-      res = await octokit.request(
+      // first try the GET request to check if the zip/ipynb already exists
+      // if it already exists, then return the same url
+      const res = await octokit.request(
         'GET /repos/{owner}/{repo}/contents/{path}',
         {
           owner: repoOwner,
@@ -32,11 +33,12 @@ export async function pushToGitHub(content, filename, nbUid) {
         }
       )
       console.log("RES IS: ")
-      console.log(res)
       return res.data.download_url
     } catch(err) {
+      // if the url doesn't exist, then create a new url for that specific nbUid
+      // push to github and return the download url
       if(err.name == 'RequestError'){
-        res = await octokit.request(
+        const res = await octokit.request(
           'PUT /repos/{owner}/{repo}/contents/{path}',
           {
             owner: repoOwner,
@@ -46,8 +48,7 @@ export async function pushToGitHub(content, filename, nbUid) {
             content: content
           }
         )
-        console.log("RES IS: ")
-        console.log(res)
+        console.log("RES Request Error is: ")
         return res.data.content.download_url
       }
       else {
