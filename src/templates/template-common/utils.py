@@ -62,6 +62,7 @@ def setup_config(config_path, backend, **kwargs):
 
 
 def setup_config(config):
+    
     OmegaConf.set_struct(config, True)
 
     config.backend = config.get("backend", None)
@@ -69,7 +70,7 @@ def setup_config(config):
     return config
 
 
-#::: } else if ((it.argparser == 'argparse')) { :::#
+#::: } else { :::#
 
 
 def get_default_parser():
