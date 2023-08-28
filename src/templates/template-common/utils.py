@@ -195,7 +195,6 @@ def setup_logging(config: Any) -> Logger:
     logger = setup_logger(
         name=f"{green}[ignite]{reset}",
         level=logging.DEBUG if config.debug else logging.INFO,
-        format="%(name)s: %(message)s",
         filepath=config.output_dir / "training-info.log",
     )
     return logger

@@ -27,7 +27,7 @@ def test_setup_data():
         model="bert-base-uncased",
         tokenizer_dir="/tmp/tokenizer",
         max_length=1,
-        train_batch_size=1,
+        batch_size=1,
         eval_batch_size=1,
         num_workers=1,
     )

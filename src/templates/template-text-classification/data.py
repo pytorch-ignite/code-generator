@@ -61,7 +61,7 @@ def setup_data(config):
 
     dataloader_train = idist.auto_dataloader(
         dataset_train,
-        batch_size=config.train_batch_size,
+        batch_size=config.batch_size,
         num_workers=config.num_workers,
         shuffle=True,
         drop_last=True,
