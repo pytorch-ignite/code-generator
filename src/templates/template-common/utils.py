@@ -62,12 +62,9 @@ def setup_config(config_path, backend, **kwargs):
 
 
 def setup_config(config):
-    # To add a new attr in config from within the script
-    optional_attributes = ["backend", "num_iters_per_epoch"]
+    OmegaConf.set_struct(conf, True)
 
-    for attr in optional_attributes:
-        if config.get(attr, None) == None:
-            OmegaConf.update(config, attr, None, force_add=True)
+    config.backend = config.get("backend", None)
 
     return config
 

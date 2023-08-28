@@ -40,6 +40,14 @@ def main():
 if __name__ == "__main__":
     #::: if ((it.argparser == 'fire')) { :::#
     fire.Fire(main)
+
+    #::: } else if if ((it.argparser == 'hydra')){ :::#
+    sys.argv.append("hydra.run.dir=.")
+    sys.argv.append("hydra.output_subdir=null")
+    sys.argv.append("hydra/job_logging=stdout")
+    main()
+
     #::: } else { :::#
     main()
+
     #::: } :::#
