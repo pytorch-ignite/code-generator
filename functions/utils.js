@@ -31,6 +31,8 @@ export async function pushToGitHub(content, filename, nbUid) {
           path: `nbs/${nbUid}/${filename}`
         }
       )
+      console.log("RES IS: ")
+      console.log(res)
       return res.data.download_url
     } catch(err) {
       if(err.name == 'RequestError'){
@@ -44,6 +46,8 @@ export async function pushToGitHub(content, filename, nbUid) {
             content: content
           }
         )
+        console.log("RES IS: ")
+        console.log(res)
         return res.data.content.download_url
       }
       else {
