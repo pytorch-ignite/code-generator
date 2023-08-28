@@ -26,9 +26,7 @@ export async function pushToGitHub(content, filename, nbUid) {
       {
         owner: repoOwner,
         repo: repo,
-        path: `nbs/${nbUid}/${filename}`,
-        message: `nb: add ${nbUid}`,
-        content: content
+        path: `nbs/${nbUid}/${filename}`
       }
     )
     console.log(res)
