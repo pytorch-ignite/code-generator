@@ -33,11 +33,12 @@ export async function pushToGitHub(content, filename, nbUid) {
         }
       )
       console.log("RES IS: ")
+      console.log(res)
       return res.data.download_url
     } catch(err) {
       // if the url doesn't exist, then create a new url for that specific nbUid
       // push to github and return the download url
-      if(err.name == 'RequestError'){
+      if(err.status == '404'){
         const res = await octokit.request(
           'PUT /repos/{owner}/{repo}/contents/{path}',
           {
@@ -49,10 +50,11 @@ export async function pushToGitHub(content, filename, nbUid) {
           }
         )
         console.log("RES Request Error is: ")
+        console.log(res)
         return res.data.content.download_url
       }
       else {
-        throw err
+        console.error(err)
       }
     }
    } catch (e) {
