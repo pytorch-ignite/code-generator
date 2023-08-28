@@ -22,7 +22,7 @@ export async function pushToGitHub(content, filename, nbUid) {
   })
   try {
     const res = await octokit.request(
-      'PUT /repos/{owner}/{repo}/contents/{path}',
+      'GET /repos/{owner}/{repo}/contents/{path}',
       {
         owner: repoOwner,
         repo: repo,
@@ -31,8 +31,23 @@ export async function pushToGitHub(content, filename, nbUid) {
         content: content
       }
     )
-    return res.data.content.download_url
-  } catch (e) {
+    if(res.status === '404'){
+      const res2 = await octokit.request(
+        'PUT /repos/{owner}/{repo}/contents/{path}',
+        {
+          owner: repoOwner,
+          repo: repo,
+          path: `nbs/${nbUid}/${filename}`,
+          message: `nb: add ${nbUid}`,
+          content: content
+        }
+      )
+      return res2.data.content.download_url
+    }
+    else{
+      return `https://raw.githubusercontent.com/pytorch-ignite/nbs/main/nbs/${nbUid}/${filename}`
+    }
+   } catch (e) {
     console.error(e)
   }
 }
