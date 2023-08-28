@@ -29,7 +29,8 @@ export async function pushToGitHub(content, filename, nbUid) {
         path: `nbs/${nbUid}/${filename}`
       }
     )
-    console.log(`res: ${res}`)
+    console.log("Res is: ")
+    console.log(res)
     if(res.status === '404'){
       const res2 = await octokit.request(
         'PUT /repos/{owner}/{repo}/contents/{path}',
@@ -41,7 +42,9 @@ export async function pushToGitHub(content, filename, nbUid) {
           content: content
         }
       )
+      console.log("Res2 is: ")
       console.log(`res2: ${res2}`)
+      console.log("URL IS: ")
       console.log(`res2 download url: ${res2.content.download_url}`)
       return res2.data.content.download_url
     }
