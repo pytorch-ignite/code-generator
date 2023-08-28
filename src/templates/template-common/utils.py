@@ -62,7 +62,7 @@ def setup_config(config_path, backend, **kwargs):
 
 
 def setup_config(config):
-    OmegaConf.set_struct(conf, True)
+    OmegaConf.set_struct(config, True)
 
     config.backend = config.get("backend", None)
 
