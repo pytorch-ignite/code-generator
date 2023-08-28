@@ -1,6 +1,6 @@
 seed: 777
 data_path: ~/data
-train_batch_size: 4
+batch_size: 4
 eval_batch_size: 4
 num_workers: 1
 max_epochs: 2

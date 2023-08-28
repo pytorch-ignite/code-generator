@@ -10,7 +10,7 @@ def setup_data(config: Any):
 
     Parameters
     ----------
-    config: needs to contain `data_path`, `train_batch_size`, `eval_batch_size`, and `num_workers`
+    config: needs to contain `data_path`, `batch_size`, `eval_batch_size`, and `num_workers`
     """
     #::: if (it.use_dist) { :::#
     local_rank = idist.get_local_rank()
@@ -59,7 +59,7 @@ def setup_data(config: Any):
 
     dataloader_train = idist.auto_dataloader(
         dataset_train,
-        batch_size=config.train_batch_size,
+        batch_size=config.batch_size,
         shuffle=True,
         num_workers=config.num_workers,
     )

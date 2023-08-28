@@ -39,7 +39,7 @@ def run(local_rank: int, config: Any):
     device = idist.device()
 
     fixed_noise = torch.randn(
-        config.train_batch_size // idist.get_world_size(),
+        config.batch_size // idist.get_world_size(),
         config.z_dim,
         1,
         1,

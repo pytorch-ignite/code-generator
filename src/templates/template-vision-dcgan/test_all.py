@@ -26,7 +26,7 @@ def set_up():
 
 @pytest.mark.skipif(os.getenv("RUN_SLOW_TESTS", 0) == 0, reason="Skip slow tests")
 def test_setup_data():
-    config = Namespace(data_path="~/data", train_batch_size=1, eval_batch_size=1, num_workers=0)
+    config = Namespace(data_path="~/data", batch_size=1, eval_batch_size=1, num_workers=0)
     dataloader_train, dataloader_eval, _ = setup_data(config)
 
     assert isinstance(dataloader_train, DataLoader)
@@ -60,7 +60,7 @@ def test_models():
 
 def test_setup_trainer():
     model, optimizer, device, loss_fn, batch = set_up()
-    config = Namespace(use_amp=False, train_batch_size=2, z_dim=100)
+    config = Namespace(use_amp=False, batch_size=2, z_dim=100)
     trainer = setup_trainer(config, model, model, optimizer, optimizer, loss_fn, device, None)
     trainer.run([batch, batch])
     assert isinstance(trainer.state.output, dict)
