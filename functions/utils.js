@@ -21,35 +21,34 @@ export async function pushToGitHub(content, filename, nbUid) {
     auth: process.env.VUE_APP_GH_TOKEN
   })
   try {
-    const res = await octokit.request(
-      'GET /repos/{owner}/{repo}/contents/{path}',
-      {
-        owner: repoOwner,
-        repo: repo,
-        path: `nbs/${nbUid}/${filename}`
-      }
-    )
-    console.log("Res is: ")
-    console.log(res)
-    if(res.status === '404'){
-      const res2 = await octokit.request(
-        'PUT /repos/{owner}/{repo}/contents/{path}',
+    let res = ""
+    try{
+      res = await octokit.request(
+        'GET /repos/{owner}/{repo}/contents/{path}',
         {
           owner: repoOwner,
           repo: repo,
-          path: `nbs/${nbUid}/${filename}`,
-          message: `nb: add ${nbUid}`,
-          content: content
+          path: `nbs/${nbUid}/${filename}`
         }
       )
-      console.log("Res2 is: ")
-      console.log(`res2: ${res2}`)
-      console.log("URL IS: ")
-      console.log(`res2 download url: ${res2.content.download_url}`)
-      return res2.data.content.download_url
-    }
-    else{
-      return `https://raw.githubusercontent.com/pytorch-ignite/nbs/main/nbs/${nbUid}/${filename}`
+      return res.data.download_url
+    } catch(err) {
+      if(err.name == 'RequestError'){
+        res = await octokit.request(
+          'PUT /repos/{owner}/{repo}/contents/{path}',
+          {
+            owner: repoOwner,
+            repo: repo,
+            path: `nbs/${nbUid}/${filename}`,
+            message: `nb: add ${nbUid}`,
+            content: content
+          }
+        )
+        return res.data.content.download_url
+      }
+      else {
+        throw err
+      }
     }
    } catch (e) {
     console.error(e)
