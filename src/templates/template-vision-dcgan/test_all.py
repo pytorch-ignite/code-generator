@@ -1,5 +1,7 @@
 import os
+import tempfile
 from argparse import Namespace
+from pathlib import Path
 from typing import Iterable
 
 import ignite.distributed as idist
@@ -11,7 +13,7 @@ from omegaconf import OmegaConf
 from torch import nn, optim, Tensor
 from torch.utils.data.dataloader import DataLoader
 from trainers import setup_trainer
-from utils import save_config, setup_output_dir
+from utils import save_config
 
 
 def set_up():

@@ -1,12 +1,14 @@
 import os
+import tempfile
 from argparse import Namespace
+from pathlib import Path
 
 import pytest
 from data import setup_data
 from omegaconf import OmegaConf
 from torch import Tensor
 from torch.utils.data.dataloader import DataLoader
-from utils import save_config, setup_output_dir
+from utils import save_config
 
 
 @pytest.mark.skipif(os.getenv("RUN_SLOW_TESTS", 0) == 0, reason="Skip slow tests")
