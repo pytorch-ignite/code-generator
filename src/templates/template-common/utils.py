@@ -148,6 +148,7 @@ def resume_from(
 
 
 def setup_output_dir(config: Any, rank: int) -> Path:
+    """Create output folder."""
     output_dir = config.output_dir
     if rank == 0:
         now = datetime.now().strftime("%Y%m%d-%H%M%S")
