@@ -10,7 +10,7 @@ from omegaconf import OmegaConf
 from torch import nn, optim, Tensor
 from torch.utils.data.dataloader import DataLoader
 from trainers import setup_evaluator
-from utils import save_config
+from utils import save_config, setup_output_dir
 
 
 def set_up():

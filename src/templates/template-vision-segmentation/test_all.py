@@ -6,7 +6,7 @@ from data import setup_data
 from omegaconf import OmegaConf
 from torch import Tensor
 from torch.utils.data.dataloader import DataLoader
-from utils import save_config
+from utils import save_config, setup_output_dir
 
 
 @pytest.mark.skipif(os.getenv("RUN_SLOW_TESTS", 0) == 0, reason="Skip slow tests")

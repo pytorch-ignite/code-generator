@@ -9,7 +9,7 @@ from omegaconf import OmegaConf
 from torch import nn, optim
 from torch.functional import Tensor
 from torch.utils.data import DataLoader
-from utils import save_config
+from utils import save_config, setup_output_dir
 
 
 def set_up():
