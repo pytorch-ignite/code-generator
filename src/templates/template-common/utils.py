@@ -154,15 +154,21 @@ def setup_output_dir(config: Any, rank: int) -> Path:
         name = f"{now}-backend-{config.backend}-lr-{config.lr}"
         path = Path(config.output_dir, name)
         path.mkdir(parents=True, exist_ok=True)
-        config.output_dir = path.as_posix()
+        config.sub_output_dir = path.as_posix()
 
-    return Path(idist.broadcast(config.output_dir, src=0))
+    return Path(idist.broadcast(config.sub_output_dir, src=0))
 
 
-def save_config(config, output_dir):
+def save_config(config: Any, sub_output_dir: Path):
     """Save configuration to config-lock.yaml for result reproducibility."""
-    with open(f"{output_dir}/config-lock.yaml", "w") as f:
-        OmegaConf.save(config, f)
+    saved_config = config.copy()
+    
+    # Delete the sub_output_dir from saved in the config-lock.yaml
+    del saved_config["sub_output_dir"]
+    
+    with open(f"{sub_output_dir}/config-lock.yaml", "w") as f:
+        OmegaConf.save(saved_config, f)
+
 
 
 def setup_logging(config: Any) -> Logger:
@@ -171,7 +177,7 @@ def setup_logging(config: Any) -> Logger:
     Parameters
     ----------
     config
-        config object. config has to contain `verbose` and `output_dir` attribute.
+        config object. config has to contain `verbose` and `sub_output_dir` attribute.
 
     Returns
     -------
@@ -183,7 +189,7 @@ def setup_logging(config: Any) -> Logger:
     logger = setup_logger(
         name=f"{green}[ignite]{reset}",
         level=logging.DEBUG if config.debug else logging.INFO,
-        filepath=config.output_dir / "training-info.log",
+        filepath=config.sub_output_dir / "training-info.log",
     )
     return logger
 
@@ -204,7 +210,7 @@ def setup_exp_logging(config, trainer, optimizers, evaluators):
     logger = common.setup_plx_logging(trainer, optimizers, evaluators, config.log_every_iters)
     #::: } else if (it.logger === 'tensorboard') { :::#
     logger = common.setup_tb_logging(
-        config.output_dir,
+        config.sub_output_dir,
         trainer,
         optimizers,
         evaluators,

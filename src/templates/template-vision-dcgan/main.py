@@ -28,9 +28,9 @@ def run(local_rank: int, config: Any):
     manual_seed(config.seed + rank)
 
     # create output folder and copy config file to output dir
-    config.output_dir = setup_output_dir(config, rank)
+    config.sub_output_dir = setup_output_dir(config, rank)
     if rank == 0:
-        save_config(config, config.output_dir)
+        save_config(config, config.sub_output_dir)
 
     # donwload datasets and create dataloaders
     dataloader_train, dataloader_eval, num_channels = setup_data(config)
@@ -131,14 +131,14 @@ def run(local_rank: int, config: Any):
     @trainer.on(Events.EPOCH_COMPLETED)
     def save_fake_example(engine):
         fake = model_g(fixed_noise)
-        path = config.output_dir / FAKE_IMG_FNAME.format(engine.state.epoch)
+        path = config.sub_output_dir / FAKE_IMG_FNAME.format(engine.state.epoch)
         vutils.save_image(fake.detach(), path, normalize=True)
 
     # adding handlers using `trainer.on` decorator API
     @trainer.on(Events.EPOCH_COMPLETED)
     def save_real_example(engine):
         img, y = engine.state.batch
-        path = config.output_dir / REAL_IMG_FNAME.format(engine.state.epoch)
+        path = config.sub_output_dir / REAL_IMG_FNAME.format(engine.state.epoch)
         vutils.save_image(img, path, normalize=True)
 
     # run evaluation at every training epoch end
