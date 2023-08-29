@@ -12,6 +12,8 @@ from torch import nn, optim
 from trainers import setup_evaluator, setup_trainer
 from utils import *
 
+import sys
+
 #::: if ((it.argparser == 'fire')) { :::#
 import fire
 
@@ -20,7 +22,6 @@ import fire
 #::: if ((it.argparser == 'hydra')) { :::#
 import hydra
 from omegaconf import DictConfig
-import sys
 
 #::: } :::#
 
