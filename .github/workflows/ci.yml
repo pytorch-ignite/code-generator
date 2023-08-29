@@ -30,11 +30,6 @@ jobs:
             vision-segmentation
           ]
         test: [all, simple, launch, spawn]
-        exclude:
-          - template: vision-classification
-            test: launch
-          - template: vision-segmentation
-            test: launch
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
