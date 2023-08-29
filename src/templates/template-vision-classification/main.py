@@ -1,3 +1,7 @@
+#::: if ((it.argparser == 'hydra')) { :::#
+import sys
+
+#::: } :::#
 from pprint import pformat
 from typing import Any
 
@@ -11,10 +15,7 @@ from models import setup_model
 from torch import nn, optim
 from trainers import setup_evaluator, setup_trainer
 from utils import *
-#::: if ((it.argparser == 'hydra')) { :::#
-import sys
 
-#::: } :::#
 #::: if ((it.argparser == 'fire')) { :::#
 import fire
 
