@@ -162,13 +162,12 @@ def setup_output_dir(config: Any, rank: int) -> Path:
 def save_config(config: Any, sub_output_dir: Path):
     """Save configuration to config-lock.yaml for result reproducibility."""
     saved_config = config.copy()
-    
+
     # Delete the sub_output_dir from saved in the config-lock.yaml
     del saved_config["sub_output_dir"]
-    
+
     with open(f"{sub_output_dir}/config-lock.yaml", "w") as f:
         OmegaConf.save(saved_config, f)
-
 
 
 def setup_logging(config: Any) -> Logger:
