@@ -2,9 +2,15 @@ def test_save_config():
     with open("./config.yaml", "r") as f:
         config = OmegaConf.load(f)
 
-    save_config(config, "./")
+    # Add backend to config (similar to setup_config)
+    config.backend = None
 
-    with open("./config-lock.yaml", "r") as f:
-        test_config = OmegaConf.load(f)
+    with tempfile.TemporaryDirectory() as output_dir:
+        output_dir = Path(output_dir)
 
-    assert config == test_config
+        save_config(config, output_dir)
+
+        with open(output_dir / "config-lock.yaml", "r") as f:
+            test_config = OmegaConf.load(f)
+
+        assert config == test_config

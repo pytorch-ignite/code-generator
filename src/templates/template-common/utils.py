@@ -149,14 +149,14 @@ def resume_from(
 
 def setup_output_dir(config: Any, rank: int) -> Path:
     """Create output folder."""
+    output_dir = config.output_dir
     if rank == 0:
         now = datetime.now().strftime("%Y%m%d-%H%M%S")
         name = f"{now}-backend-{config.backend}-lr-{config.lr}"
         path = Path(config.output_dir, name)
         path.mkdir(parents=True, exist_ok=True)
-        config.output_dir = path.as_posix()
-
-    return Path(idist.broadcast(config.output_dir, src=0))
+        output_dir = path.as_posix()
+    return Path(idist.broadcast(output_dir, src=0))
 
 
 def save_config(config, output_dir):
