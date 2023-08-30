@@ -223,6 +223,6 @@ Note: We use Python-Fire as the default argument parser here. For more informati
 
 #::: } else if ((it.argparser == 'hydra')) { :::#
 
-Note: We use Hydra with [OmegaConfig](https://omegaconf.readthedocs.io/en/2.3_branch/) as the default argument parser here. For more information refer the [docs](https://hydra.cc)
+Note: We use Hydra with [OmegaConfig](https://omegaconf.readthedocs.io/en/2.3_branch/) as the default argument parser here. For more information check the [Hydra docs](https://hydra.cc)
 
 #::: } :::#
