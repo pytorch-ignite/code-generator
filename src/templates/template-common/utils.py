@@ -58,6 +58,17 @@ def setup_config(config_path, backend, **kwargs):
     return config
 
 
+#::: } else if ((it.argparser == 'hydra')) { :::#
+
+
+def setup_config(config):
+    OmegaConf.set_struct(config, False)
+
+    config.backend = config.get("backend", None)
+
+    return config
+
+
 #::: } else { :::#
 
 
@@ -79,6 +90,7 @@ def setup_config(parser=None):
         parser = get_default_parser()
 
     args = parser.parse_args()
+
     config_path = args.config
 
     config = OmegaConf.load(config_path)

@@ -1,4 +1,9 @@
 import os
+
+#::: if ((it.argparser == 'hydra')) { :::#
+import sys
+
+#::: } :::#
 from pprint import pformat
 from typing import Any
 
@@ -15,6 +20,12 @@ from utils import *
 
 #::: if ((it.argparser == 'fire')) { :::#
 import fire
+
+#::: } :::#
+
+#::: if ((it.argparser == 'hydra')) { :::#
+import hydra
+from omegaconf import DictConfig
 
 #::: } :::#
 
