@@ -181,7 +181,7 @@ def setup_logging(config: Any) -> Logger:
     green = "\033[32m"
     reset = "\033[0m"
     logger = setup_logger(
-        name=f"{green}[ignite]{reset}",
+        name=f"{green}[{datetime.now().strftime('%Y%m%d-%H:%M:%S')}]{reset}",
         level=logging.DEBUG if config.debug else logging.INFO,
         filepath=config.output_dir / "training-info.log",
     )
