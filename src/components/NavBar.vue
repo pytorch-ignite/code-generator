@@ -11,7 +11,9 @@
         <span class="pname">Code Generator</span>
       </RouterLink>
     </h1>
-    <div class="left-side-badges">
+    <div class="right-side-badges">
+      <NavIgniteDocs />
+      <NavIgniteWebsite />
       <NavHelp />
       <NavGitHub />
       <NavTwitter />
@@ -24,7 +26,6 @@
       >
         v{{ version }}@{{ currentCommit.slice(0, 7) }}
       </a>
-      <NavIgniteWebsite />
     </div>
   </nav>
 </template>
@@ -36,6 +37,7 @@ import NavDownload from './NavDownload.vue'
 import NavColab from './NavColab.vue'
 import NavGitHub from './NavGitHub.vue'
 import NavIgniteWebsite from './NavIgniteWebsite.vue'
+import NavIgniteDocs from './NavIgniteDocs.vue'
 import NavTwitter from './NavTwitter.vue'
 import NavHelp from './NavHelp.vue'
 
@@ -47,7 +49,8 @@ export default {
     NavGitHub,
     NavIgniteWebsite,
     NavTwitter,
-    NavHelp
+    NavHelp,
+    NavIgniteDocs
   },
   setup() {
     const currentCommit = __COMMIT__ // from vite.config.js
@@ -76,10 +79,10 @@ h1 img {
   justify-content: space-between;
   border-bottom: 1px solid var(--c-white-dark);
 }
-.left-side-badges {
+.right-side-badges {
   display: flex;
-  align-items: center;
-  font-size: 0.9em;
+  align-items: right;
+  font-size: 0.95em;
 }
 /* media queries */
 @media (max-width: 915px) {
