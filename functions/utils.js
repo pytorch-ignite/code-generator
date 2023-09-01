@@ -80,7 +80,7 @@ export async function getZip_Uid(data) {
   // for (const filename in code) {
   //   fullCode += code[filename]
   // }
-  const nbUid = uuidv5(JSON.stringify(store), uuidv5.URL)
+  const nbUid = uuidv5(JSON.stringify(data.config), uuidv5.URL)
   const endTime = Date.now()
   const timeTaken = endTime - startTime
   console.log("The total time taken was: " + timeTaken + "milliseconds")
