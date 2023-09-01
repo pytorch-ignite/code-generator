@@ -70,7 +70,6 @@ export async function getZip_Uid(data) {
   // generate a base64 format for pushing to GitHub
   // with Octokit.
   for (const filename in code) {
-    fullCode += code[filename]
     zip.file(filename, code[filename])
   }
   // since the generated zip varies every time even with the same code
@@ -78,10 +77,10 @@ export async function getZip_Uid(data) {
   const content = await zip.generateAsync({ type: 'base64' })
   // we generate an unique id from the current config for pushing to github
   const startTime = Date.now()
-  for (const filename in code) {
-    fullCode += code[filename]
-  }
-  const nbUid = uuidv5(fullCode, uuidv5.URL)
+  // for (const filename in code) {
+  //   fullCode += code[filename]
+  // }
+  const nbUid = uuidv5(JSON.stringify(store), uuidv5.URL)
   const endTime = Date.now()
   const timeTaken = endTime - startTime
   console.log("The total time taken was: " + timeTaken + "milliseconds")
