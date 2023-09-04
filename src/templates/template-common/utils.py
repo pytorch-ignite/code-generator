@@ -90,11 +90,8 @@ def setup_config(parser=None):
         parser = get_default_parser()
 
     args = parser.parse_args()
-
     config_path = args.config
-
     config = OmegaConf.load(config_path)
-
     config.backend = args.backend
 
     return config
