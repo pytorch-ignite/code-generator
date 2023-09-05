@@ -14,6 +14,7 @@
     <div class="download-n-colab">
       <NavCode />
       <NavColab />
+      <NavNebari />
     </div>
     <KeepAlive>
       <component :is="currentTabComponent" />
@@ -31,6 +32,7 @@ import Message from './Message.vue'
 import NavDownload from './NavDownload.vue'
 import NavColab from './NavColab.vue'
 import NavCode from './NavCode.vue'
+import NavNebari from './NavNebari.vue'
 import { computed, ref } from 'vue'
 import { msg, store } from '../store.js'
 
@@ -43,7 +45,8 @@ export default {
     Message,
     NavDownload,
     NavColab,
-    NavCode
+    NavCode,
+    NavNebari
   },
   setup() {
     const currentTab = ref('Templates')
