@@ -26,6 +26,7 @@
       >
         v{{ version }}@{{ currentCommit.slice(0, 7) }}
       </a>
+      <NavContributors />
     </div>
   </nav>
 </template>
@@ -40,6 +41,7 @@ import NavIgniteWebsite from './NavIgniteWebsite.vue'
 import NavIgniteDocs from './NavIgniteDocs.vue'
 import NavTwitter from './NavTwitter.vue'
 import NavHelp from './NavHelp.vue'
+import NavContributors from './NavContributors.vue'
 
 export default {
   components: {
@@ -50,7 +52,8 @@ export default {
     NavIgniteWebsite,
     NavTwitter,
     NavHelp,
-    NavIgniteDocs
+    NavIgniteDocs,
+    NavContributors
   },
   setup() {
     const currentCommit = __COMMIT__ // from vite.config.js
