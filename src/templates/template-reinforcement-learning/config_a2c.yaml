@@ -1,0 +1,37 @@
+# task and env
+frame_skip: 2
+num_envs: 1
+reward_scaling: 1.0
+from_pixels: True
+render_mode: rgb_array
+continuous: False
+pixels_only: True
+
+# collector:
+frames_per_batch: 64
+total_frames: 1_000_000
+max_frames_per_traj: -1
+
+# logger:
+log_interval: 10000
+
+# optim:
+lr: 0.0005
+weight_decay: 0.0
+lr_scheduler: True
+
+# loss:
+gamma: 0.99
+gae_lambda: 0.95
+critic_coef: 0.5
+entropy_coef: 0.01
+loss_critic_type: l2
+
+seed: 666
+render: true
+recordings_path: ./recordings
+max_episodes: 10000
+log_every_episodes: 50
+save_every_episodes: 50
+output_dir: ./logs
+debug: false

@@ -37,6 +37,13 @@ exports.handler = async function (event, _) {
     )
   }
 
+  if (title === 'Template Reinforcement Learning') {
+    specific_commands.push(
+      '!pip install swig\n',
+      '!pip install gymnasium[box2d]'
+    )
+  }
+
   const md_cell = [
     `# ${title} by PyTorch-Ignite Code-Generator\n\n`,
     'Please, run the cell below to execute your code.'
