@@ -37,8 +37,9 @@
       <div class="dropdown-content">
         <div class="text-box-nebari" id="nebari-text">
           <span class="sub-text">
-            <a href="https://www.nebari.dev/"><strong>Nebari</strong></a
-            >: open source data science platform
+            <a href="https://www.nebari.dev/">
+              <strong>Nebari</strong>: open source data science platform
+            </a>
           </span>
         </div>
         <hr class="solid" />
@@ -57,7 +58,7 @@
         <hr class="solid" />
         <div class="text-input-group">
           <div class="text-box-nebari">
-            <h5 class="form-label">Nebari HubURL</h5>
+            <h5 class="form-label">Nebari URL</h5>
             <input
               v-model="hubUrl"
               @input="validateHubUrl"
