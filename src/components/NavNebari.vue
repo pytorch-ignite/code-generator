@@ -35,6 +35,13 @@
         </div>
       </button>
       <div class="dropdown-content">
+        <div class="text-box-nebari" id="nebari-text">
+          <span class="sub-text">
+            <a href="https://www.nebari.dev/"><strong>Nebari</strong></a
+            >: open source data science platform
+          </span>
+        </div>
+        <hr class="solid" />
         <div class="text-box-nebari">
           <h5 class="requirement-label">Requirement</h5>
           <p class="sub-text">
@@ -46,7 +53,8 @@
           </p>
           <pre class="code-snippet">pip install jupyterlab-github</pre>
         </div>
-        <hr data-v-479f5bb0="" class="solid" />
+
+        <hr class="solid" />
         <div class="text-input-group">
           <div class="text-box-nebari">
             <h5 class="form-label">Nebari HubURL</h5>
@@ -165,8 +173,9 @@ export default {
               code: store.code,
               template: store.config.template,
               config: store.config,
-              nebariInstanceLink: hubUrl,
-              userName: userName
+              argparser: store.config.argparser,
+              nebariInstanceLink: hubUrl.value,
+              userName: userName.value
             })
           })
           if (res.ok) {
@@ -175,6 +184,12 @@ export default {
               .then(() => {
                 linkGenerated.value = true
               })
+            // create a hyperlink element
+            const el = document.createElement('a')
+            el.setAttribute('href', nebariCodeUrl.value)
+            el.setAttribute('target', '_blank')
+            el.setAttribute('rel', 'noopener noreferrer')
+            el.click()
           }
         }
       } else {
@@ -231,7 +246,9 @@ export default {
 #code {
   font-size: 1rem;
 }
-
+#nebari-text {
+  margin: 1vh;
+}
 .nebari-button {
   display: inline-flex;
   align-items: center;
@@ -289,6 +306,7 @@ export default {
 /* Requirement Text CSS */
 .requirement-label {
   margin-bottom: 0%;
+  margin-top: 1vh;
 }
 .sub-text {
   font-size: 0.8rem;
@@ -313,6 +331,7 @@ export default {
 .text-input-group-generate {
   margin-top: 2vh;
   text-align: center;
+  font-size: larger;
 }
 
 .copy-link-input:hover {
@@ -323,6 +342,7 @@ export default {
 
 #text-box {
   border-radius: 5px;
+  font-size: large;
 }
 .copy-button-nebari {
   font-size: 1rem;
@@ -344,5 +364,9 @@ export default {
 }
 .copy-button-nebari {
   font-size: 1rem;
+}
+/* Solid border */
+hr.solid {
+  border-top: 1px dotted var(--c-brand-red);
 }
 </style>

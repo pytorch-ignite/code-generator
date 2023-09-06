@@ -13,7 +13,7 @@ exports.handler = async function (event, _) {
   // event is a JSON object
   const data = JSON.parse(event.body)
   const template = `ignite-${data.template}`
-  const nebariInstanceLink = getRootUrlWithoutTrailingSlash(
+  const nebariInstanceLink = await getRootUrlWithoutTrailingSlash(
     data.nebariInstanceLink
   )
   const userName = data.userName

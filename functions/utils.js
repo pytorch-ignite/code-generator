@@ -57,6 +57,11 @@ export async function pushToGitHub(content, filename, nbUid) {
   }
 }
 
+/**
+ * Create a file on GitHub with Octokit.
+ * @param {JSON} data
+ * @returns zipRes, nbUid
+ */
 // This function is the one Netlify function runs on
 // https://docs.netlify.com/functions/build-with-javascript/#synchronous-function-format
 export async function getZip_Uid(data) {
@@ -85,10 +90,14 @@ export async function getZip_Uid(data) {
   }
 }
 
-export function getRootUrlWithoutTrailingSlash(url) {
+/**
+ * Create a file on GitHub with Octokit.
+ * @param {string} url
+ * @returns {string} rootUrl
+ */
+export async function getRootUrlWithoutTrailingSlash(url) {
   // Use the URL constructor to parse the input URL
   const parsedUrl = new URL(url)
-
   // Get the origin (root) part of the URL without a trailing slash
   const rootUrl = parsedUrl.origin.toString()
 
