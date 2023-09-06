@@ -62,7 +62,7 @@
             <input
               v-model="hubUrl"
               @input="validateHubUrl"
-              placeholder="https://myjupyterhub.org"
+              placeholder="https://nebari.yourdomain.dev"
               aria-label="JupyterHub URL"
             />
             <p v-if="hubUrl != '' && !isValidHubUrl" class="error-text">
