@@ -180,11 +180,8 @@ export default {
             })
           })
           if (res.ok) {
-            nebariCodeUrl.value = store.nebariCodeUrl = await res
-              .text()
-              .then(() => {
-                linkGenerated.value = true
-              })
+            linkGenerated.value = true
+            nebariCodeUrl.value = store.nebariCodeUrl = await res.text()
             // create a hyperlink element
             const el = document.createElement('a')
             el.setAttribute('href', nebariCodeUrl.value)

@@ -95,7 +95,7 @@ export async function getZip_Uid(data) {
  * @param {string} url
  * @returns {string} rootUrl
  */
-export async function getRootUrlWithoutTrailingSlash(url) {
+export function getRootUrlWithoutTrailingSlash(url) {
   // Use the URL constructor to parse the input URL
   const parsedUrl = new URL(url)
   // Get the origin (root) part of the URL without a trailing slash
