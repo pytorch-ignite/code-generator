@@ -91,7 +91,7 @@ export async function getZip_Uid(data) {
 }
 
 /**
- * Create a file on GitHub with Octokit.
+ * Extracts the root URL from a given URL, excluding trailing slashes.
  * @param {string} url
  * @returns {string} rootUrl
  */
