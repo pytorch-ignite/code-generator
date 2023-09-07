@@ -316,6 +316,7 @@ export default {
 }
 .text-box-nebari-details {
   width: 95%;
+  height: 3vh;
 }
 
 .copy-link-input:hover {
@@ -327,7 +328,7 @@ export default {
 #text-box {
   border-radius: 5px;
   width: 98%;
-  height: 5vh;
+  height: 4vh;
   display: block;
   font-size: large;
   max-height: 40px;
