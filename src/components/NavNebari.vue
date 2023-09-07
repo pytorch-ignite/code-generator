@@ -334,7 +334,7 @@ export default {
   max-height: 40px;
   margin: 2.8vh;
   margin-top: 3vh;
-  margin-bottom: 3vh;
+  margin-bottom: 2vh;
 }
 .copy-button-nebari {
   font-size: 1rem;
