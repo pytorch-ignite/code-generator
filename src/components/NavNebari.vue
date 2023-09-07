@@ -179,15 +179,13 @@ export default {
             el.setAttribute('target', '_blank')
             el.setAttribute('rel', 'noopener noreferrer')
             el.click()
-            res.then(() => {
-              linkGenerated.value = false
-            })
           }
         }
       } else {
         msg.showMsg = true
         msg.content = 'Choose a template to Open.'
       }
+      linkGenerating.value = false
     }
 
     const copiedCommand = ref(false)
