@@ -43,7 +43,7 @@
           </span>
         </div>
         <hr class="solid" />
-        <div class="text-box-nebari">
+        <div class="text-box-nebari" id="nebari-text">
           <h5 class="requirement-label">Requirement</h5>
           <p class="sub-text">
             Please install
@@ -52,11 +52,20 @@
             >
             extension on your Nebari instance.
           </p>
-          <pre class="code-snippet">pip install jupyterlab-github</pre>
+          <pre class="code-snippet">pip install jupyterlab-github <span
+              class="material-icons copy-button-nebari copy-link-button-nebari"
+              @click="copyCommand"
+              ><span v-if="!copiedCommand">
+              content_copy
+              </span>
+              <span v-else>
+              check
+              </span>
+            </span></pre>
         </div>
 
         <hr class="solid" />
-        <div class="text-input-group">
+        <div class="text-input-group" id="nebari-text">
           <div class="text-box-nebari">
             <h5 class="form-label">Nebari URL</h5>
             <input
@@ -64,6 +73,7 @@
               @input="validateHubUrl"
               placeholder="https://nebari.yourdomain.dev"
               aria-label="JupyterHub URL"
+              class="text-box-nebari-details"
             />
             <p v-if="hubUrl != '' && !isValidHubUrl" class="error-text">
               Enter a valid Nebari instance URL
@@ -76,21 +86,22 @@
               placeholder="username"
               aria-label="Nebari Username"
               @input="validUserName"
+              class="text-box-nebari-details"
             />
             <p v-if="userName != '' && !isValidUserName" class="error-text">
               Enter a valid Nebari username
             </p>
           </div>
         </div>
-        <div class="text-input-group-generate">
+        <div class="text-input-group-generate" id="open-in-nebari">
           <button
             v-if="!linkGenerated"
             class="copy-link-input generate"
             id="text-box"
             @click="generateLink"
           >
-            <span v-if="!linkGenerating">Generate Nebari Link</span>
-            <span v-if="linkGenerating">Generating...</span>
+            <span v-if="!linkGenerating">Open in Nebari</span>
+            <span v-if="linkGenerating">Generating Link...</span>
           </button>
           <button
             type="button"
@@ -140,7 +151,7 @@ export default {
       }
     }
     const validUserName = () => {
-      isValidUserName.value = /^[0-9a-zA-Z_.-]+$/.test(userName.value)
+      isValidUserName.value = /^[0-9a-zA-Z_@.-]+$/.test(userName.value)
     }
     const generateLink = async () => {
       if (store.code && Object.keys(store.code).length) {
@@ -216,6 +227,18 @@ export default {
         alert('Cannot copy')
       }
     }
+    const copiedCommand = ref(false)
+    const copyCommand = () => {
+      try {
+        navigator.clipboard.writeText('pip install jupyterlab-github')
+        copiedCommand.value = true
+        setTimeout(function () {
+          copiedCommand.value = false
+        }, 2000)
+      } catch ($e) {
+        alert('Cannot copy')
+      }
+    }
 
     return {
       userName,
@@ -225,10 +248,12 @@ export default {
       nebariCodeUrl,
       isValidHubUrl,
       isValidUserName,
+      copiedCommand,
       copyURL,
       generateLink,
       validateHubUrl,
-      validUserName
+      validUserName,
+      copyCommand
     }
   }
 }
@@ -245,7 +270,7 @@ export default {
   font-size: 1rem;
 }
 #nebari-text {
-  margin: 1vh;
+  margin: 1.5vh;
 }
 .nebari-button {
   display: inline-flex;
@@ -272,7 +297,7 @@ export default {
   background-color: var(--c-white-light);
   min-width: 15vw;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
+  z-index: 100;
   padding: 0.5vh;
   text-align: center;
   /* Center-align the dropdown content */
@@ -289,7 +314,6 @@ export default {
 .text-input-group {
   margin-top: 2vh;
   display: block;
-  padding-left: 12%;
 }
 .text-input-group .form-label {
   margin: 0;
@@ -331,6 +355,9 @@ export default {
   text-align: center;
   font-size: larger;
 }
+.text-box-nebari-details {
+  width: 95%;
+}
 
 .copy-link-input:hover {
   background: var(--c-brand-red);
@@ -340,7 +367,11 @@ export default {
 
 #text-box {
   border-radius: 5px;
+  width: 98%;
+  height: 5vh;
+  display: block;
   font-size: large;
+  max-height: 40px;
 }
 .copy-button-nebari {
   font-size: 1rem;
@@ -363,6 +394,11 @@ export default {
 .copy-button-nebari {
   font-size: 1rem;
 }
+
+#open-in-nebari {
+  text-align: inherit;
+}
+
 /* Solid border */
 hr.solid {
   border-top: 1px dotted var(--c-brand-red);
