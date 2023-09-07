@@ -1,11 +1,7 @@
 <template>
   <div>
     <div class="dropdown">
-      <button
-        @click="downloadProject"
-        class="nebari-button external-links"
-        title="Open in Nebari server instance"
-      >
+      <button @click="downloadProject" class="nebari-button external-links">
         <div>
           <!-- Icon like in GH -->
           <span class="topline">
@@ -37,7 +33,7 @@
       <div class="dropdown-content">
         <div class="text-box-nebari" id="nebari-text">
           <span class="sub-text">
-            <a href="https://www.nebari.dev/">
+            <a href="https://www.nebari.dev/" target="_blank">
               <strong>Nebari</strong>: open source data science platform
             </a>
           </span>
@@ -47,7 +43,9 @@
           <h5 class="requirement-label">Requirement</h5>
           <p class="sub-text">
             Please install
-            <a href="https://github.com/jupyterlab/jupyterlab-github"
+            <a
+              href="https://github.com/jupyterlab/jupyterlab-github"
+              target="_blank"
               >JupyterLab-GitHub</a
             >
             extension on your Nebari instance.
@@ -94,29 +92,12 @@
           </div>
         </div>
         <div class="text-input-group-generate" id="open-in-nebari">
-          <button
-            v-if="!linkGenerated"
-            class="copy-link-input generate"
-            id="text-box"
-            @click="generateLink"
-          >
-            <span v-if="!linkGenerating">Open in Nebari</span>
+          <button class="copy-link-input generate" id="text-box">
+            <span v-if="!linkGenerating" @click="generateLink"
+              >Open in Nebari</span
+            >
             <span v-if="linkGenerating">Generating Link...</span>
           </button>
-          <button
-            type="button"
-            class="copy-link-input generate"
-            id="text-box"
-            @click="copyURL"
-            v-if="linkGenerated"
-          >
-            <span
-              class="material-icons copy-button-nebari copy-link-button-nebari"
-              >content_copy
-            </span>
-            <span class="copy-link-nebari">Copy Nebari Link</span>
-          </button>
-          <span class="copy-notification-nebari">Copied!</span>
         </div>
       </div>
     </div>
@@ -191,7 +172,6 @@ export default {
             })
           })
           if (res.ok) {
-            linkGenerated.value = true
             nebariCodeUrl.value = store.nebariCodeUrl = await res.text()
             // create a hyperlink element
             const el = document.createElement('a')
@@ -199,6 +179,9 @@ export default {
             el.setAttribute('target', '_blank')
             el.setAttribute('rel', 'noopener noreferrer')
             el.click()
+            res.then(() => {
+              linkGenerated.value = false
+            })
           }
         }
       } else {
@@ -206,27 +189,7 @@ export default {
         msg.content = 'Choose a template to Open.'
       }
     }
-    const copyURL = () => {
-      try {
-        if (nebariCodeUrl.value != '') {
-          navigator.clipboard.writeText(store.nebariCodeUrl)
-          const button = document.querySelector('.copy-link-button-nebari')
-          const notification = document.querySelector(
-            '.copy-notification-nebari'
-          )
 
-          button.classList.add('copied')
-          notification.style.display = 'inline'
-
-          setTimeout(function () {
-            button.classList.remove('copied')
-            notification.style.display = 'none'
-          }, 2000)
-        }
-      } catch ($e) {
-        alert('Cannot copy')
-      }
-    }
     const copiedCommand = ref(false)
     const copyCommand = () => {
       try {
@@ -244,12 +207,10 @@ export default {
       userName,
       hubUrl,
       linkGenerating,
-      linkGenerated,
       nebariCodeUrl,
       isValidHubUrl,
       isValidUserName,
       copiedCommand,
-      copyURL,
       generateLink,
       validateHubUrl,
       validUserName,
@@ -377,19 +338,6 @@ export default {
   font-size: 1rem;
   vertical-align: sub;
   margin-right: 0.1rem;
-}
-.copy-notification-nebari {
-  display: none;
-  margin-left: 75%;
-  color: var(--c-white-light);
-  font-size: 0.6rem;
-  background-color: var(--c-brand-red);
-  padding: 2%;
-  border-radius: 10%;
-}
-.copy-link-button-nebari.copied + .copy-notification-nebari {
-  display: block;
-  z-index: 10;
 }
 .copy-button-nebari {
   font-size: 1rem;
