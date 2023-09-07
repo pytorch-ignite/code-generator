@@ -92,7 +92,7 @@
           </div>
         </div>
         <div class="text-input-group-generate" id="open-in-nebari">
-          <button class="copy-link-input generate" id="text-box">
+          <button class="copy-link-input generate" id="nebari-bottom-button">
             <span v-if="!linkGenerating" @click="generateLink"
               >Open in Nebari</span
             >
@@ -257,7 +257,7 @@ export default {
   min-width: 15vw;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 100;
-  padding: 0.5vh;
+  padding: 1.5vh;
   text-align: center;
   /* Center-align the dropdown content */
   border: 1px solid var(--c-brand-red);
@@ -325,13 +325,16 @@ export default {
   color: #f1f1f1;
 }
 
-#text-box {
+#nebari-bottom-button {
   border-radius: 5px;
-  width: 98%;
+  width: 80%;
   height: 4vh;
   display: block;
   font-size: large;
   max-height: 40px;
+  margin: 2.8vh;
+  margin-top: 3vh;
+  margin-bottom: 3vh;
 }
 .copy-button-nebari {
   font-size: 1rem;
