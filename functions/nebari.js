@@ -1,4 +1,9 @@
-import { pushToGitHub, getZip_Uid, getNbCells } from './utils'
+import {
+  pushToGitHub,
+  getZip_Uid,
+  getRootUrlWithoutTrailingSlash,
+  getNbCells
+} from './utils'
 
 const repoOwner = process.env.VUE_APP_GH_USER
 const repo = process.env.VUE_APP_GH_REPO
@@ -9,9 +14,14 @@ exports.handler = async function (event, _) {
   // event is a JSON object
   const data = JSON.parse(event.body)
   const template = `ignite-${data.template}`
+  const nebariInstanceLink = getRootUrlWithoutTrailingSlash(
+    data.nebariInstanceLink
+  )
+  const argparser = data.argparser
+  const userName = data.userName
   const nbName = `${template}.ipynb`
   const { zipRes, nbUid } = await getZip_Uid(data)
-  const argparser = data.argparser
+
   const title = template
     .replace('ignite-', '')
     .split('-')
@@ -28,9 +38,10 @@ exports.handler = async function (event, _) {
     nbUid
   )
 
-  const colabLink = `https://colab.research.google.com/github/${repoOwner}/${repo}/blob/main/nbs/${nbUid}/${nbName}`
+  const nebariLink = `${nebariInstanceLink}/user/${userName}/lab/tree/GitHub%3A${repoOwner}/${repo}/nbs/${nbUid}/${nbName}`
+
   return {
     statusCode: 200,
-    body: colabLink
+    body: nebariLink
   }
 }
