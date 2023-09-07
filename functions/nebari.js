@@ -1,7 +1,8 @@
 import {
   pushToGitHub,
   getZip_Uid,
-  getRootUrlWithoutTrailingSlash
+  getRootUrlWithoutTrailingSlash,
+  getNbCells
 } from './utils'
 
 const repoOwner = process.env.VUE_APP_GH_USER
@@ -16,6 +17,7 @@ exports.handler = async function (event, _) {
   const nebariInstanceLink = getRootUrlWithoutTrailingSlash(
     data.nebariInstanceLink
   )
+  const argparser = data.argparser
   const userName = data.userName
   const nbName = `${template}.ipynb`
   const { zipRes, nbUid } = await getZip_Uid(data)
@@ -25,67 +27,10 @@ exports.handler = async function (event, _) {
     .split('-')
     .map((v) => v[0].toUpperCase() + v.slice(1))
     .join(' ')
-  // notebook cell structure
 
-  function create_nb_cell(source_array, cell_type) {
-    return {
-      cell_type: cell_type,
-      metadata: {},
-      execution_count: null,
-      outputs: [],
-      source: source_array
-    }
-  }
+  // get notebook cell structure
+  const nb = getNbCells(title, zipRes, argparser, template)
 
-  let specific_commands = []
-
-  if (title === 'Template Vision Segmentation') {
-    specific_commands.push(
-      '!python -c "from data import download_datasets; download_datasets(\'./\')"'
-    )
-  }
-
-  const md_cell = [
-    `# ${title} by PyTorch-Ignite Code-Generator\n\n`,
-    'Please, run the cell below to execute your code.'
-  ]
-
-  const common_nb_commands = [
-    `!wget ${zipRes}\n`,
-    `!unzip ${template}.zip\n`,
-    '!pip install -r requirements.txt'
-  ]
-
-  const argparser = data.argparser
-  const execution_nb_commands = [
-    `!python main.py ${
-      argparser === 'hydra'
-        ? '#--config-dir=/content/ --config-name=config.yaml'
-        : 'config.yaml'
-    }`
-  ]
-
-  let nb_cells = [
-    create_nb_cell(md_cell, 'markdown'),
-    create_nb_cell(common_nb_commands, 'code')
-  ]
-  if (specific_commands.length > 0) {
-    nb_cells.push(create_nb_cell(specific_commands, 'code'))
-  }
-  nb_cells.push(create_nb_cell(execution_nb_commands, 'code'))
-
-  const nb = {
-    nbformat: 4,
-    nbformat_minor: 0,
-    metadata: {
-      kernelspec: {
-        display_name: 'Python 3',
-        name: 'python3'
-      },
-      accelerator: 'GPU'
-    },
-    cells: nb_cells
-  }
   // Create the notebook on GitHub
   await pushToGitHub(
     Buffer.from(JSON.stringify(nb)).toString('base64'),
