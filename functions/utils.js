@@ -153,11 +153,12 @@ export function getNbCells(title, zipRes, argparser, template, nebari = false) {
 
   // To have seperate folder in Nebari server for downloading and executing files
   if (nebari) {
-    common_nb_commands.unshift('%cd {cur_dir[0]}')
-    common_nb_commands.unshift(
-      'cur_dir = !mkdir pytorch-ignite-template-`date "+%Y%m%d-%H%M%S"` && cd $_ && echo $PWD'
-    )
-    execution_nb_commands.unshift('%cd {cur_dir[0]}')
+    common_nb_commands = [
+      'cur_dir = !mkdir pytorch-ignite-template-`date "+%Y%m%d-%H%M%S"` && cd $_ && echo $PWD',
+      `%cd {cur_dir[0]}`,
+      ...common_nb_commands
+    ]
+    execution_nb_commands = [`%cd {cur_dir[0]}`, ...execution_nb_commands]
   }
 
   let nb_cells = [
