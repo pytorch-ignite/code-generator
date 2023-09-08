@@ -29,8 +29,8 @@ exports.handler = async function (event, _) {
     .join(' ')
 
   // get notebook cell structure
-  const nb = getNbCells(title, zipRes, argparser, template, nebari=true)
-  
+  const nb = getNbCells(title, zipRes, argparser, template, (nebari = true))
+
   // Updating UUID for nebari-test-fix
   const nbUid_nebari = nbUid + '-nebari'
 

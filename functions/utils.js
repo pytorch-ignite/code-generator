@@ -113,7 +113,7 @@ export function getRootUrlWithoutTrailingSlash(url) {
  * @param {boolean} nebari
  * @returns {JSON} nb
  */
-export function getNbCells(title, zipRes, argparser, template, nebari=false) {
+export function getNbCells(title, zipRes, argparser, template, nebari = false) {
   function create_nb_cell(source_array, cell_type) {
     return {
       cell_type: cell_type,
@@ -154,10 +154,12 @@ export function getNbCells(title, zipRes, argparser, template, nebari=false) {
   // To have seperate folder in Nebari server for downloading and executing files
   if (nebari) {
     common_nb_commands.unshift('%cd {cur_dir[0]}')
-    common_nb_commands.unshift('cur_dir = !mkdir pytorch-ignite-template-`date "+%Y%m%d-%H%M%S"` && cd $_ && echo $PWD')
+    common_nb_commands.unshift(
+      'cur_dir = !mkdir pytorch-ignite-template-`date "+%Y%m%d-%H%M%S"` && cd $_ && echo $PWD'
+    )
     execution_nb_commands.unshift('%cd {cur_dir[0]}')
   }
- 
+
   let nb_cells = [
     create_nb_cell(md_cell, 'markdown'),
     create_nb_cell(common_nb_commands, 'code')
