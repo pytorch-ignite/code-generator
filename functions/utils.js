@@ -110,9 +110,10 @@ export function getRootUrlWithoutTrailingSlash(url) {
  * @param {string} zipRes
  * @param {string} argparser
  * @param {string} template
+ * @param {boolean} nebari
  * @returns {JSON} nb
  */
-export function getNbCells(title, zipRes, argparser, template) {
+export function getNbCells(title, zipRes, argparser, template, nebari=false) {
   function create_nb_cell(source_array, cell_type) {
     return {
       cell_type: cell_type,
@@ -136,13 +137,13 @@ export function getNbCells(title, zipRes, argparser, template) {
     'Please, run the cell below to execute your code.'
   ]
 
-  const common_nb_commands = [
+  let common_nb_commands = [
     `!wget ${zipRes}\n`,
     `!unzip ${template}.zip\n`,
     '!pip install -r requirements.txt'
   ]
 
-  const execution_nb_commands = [
+  let execution_nb_commands = [
     `!python main.py ${
       argparser === 'hydra'
         ? '#--config-dir=/content/ --config-name=config.yaml'
@@ -150,6 +151,13 @@ export function getNbCells(title, zipRes, argparser, template) {
     }`
   ]
 
+  // To have seperate folder in Nebari server for downloading and executing files
+  if (nebari) {
+    common_nb_commands.unshift('%cd {cur_dir[0]}')
+    common_nb_commands.unshift('cur_dir = !mkdir pytorch-ignite-template-`date "+%Y%m%d-%H%M%S"` && cd $_ && echo $PWD')
+    execution_nb_commands.unshift('%cd {cur_dir[0]}')
+  }
+ 
   let nb_cells = [
     create_nb_cell(md_cell, 'markdown'),
     create_nb_cell(common_nb_commands, 'code')

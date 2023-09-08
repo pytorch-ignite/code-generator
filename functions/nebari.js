@@ -29,16 +29,19 @@ exports.handler = async function (event, _) {
     .join(' ')
 
   // get notebook cell structure
-  const nb = getNbCells(title, zipRes, argparser, template)
+  const nb = getNbCells(title, zipRes, argparser, template, nebari=true)
+  
+  // Updating UUID for nebari-test-fix
+  const nbUid_nebari = nbUid + '-nebari'
 
   // Create the notebook on GitHub
   await pushToGitHub(
     Buffer.from(JSON.stringify(nb)).toString('base64'),
     nbName,
-    nbUid
+    nbUid_nebari
   )
 
-  const nebariLink = `${nebariInstanceLink}/user/${userName}/lab/tree/GitHub%3A${repoOwner}/${repo}/nbs/${nbUid}/${nbName}`
+  const nebariLink = `${nebariInstanceLink}/user/${userName}/lab/tree/GitHub%3A${repoOwner}/${repo}/nbs/${nbUid_nebari}/${nbName}`
 
   return {
     statusCode: 200,
