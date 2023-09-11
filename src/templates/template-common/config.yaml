@@ -1,7 +1,7 @@
 seed: 777
 data_path: ./
-batch_size: 32
-eval_batch_size: 32
+batch_size: 512
+eval_batch_size: 1024
 num_workers: 4
 max_epochs: 20
 use_amp: false

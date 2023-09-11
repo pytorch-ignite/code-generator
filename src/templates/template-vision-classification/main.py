@@ -44,18 +44,23 @@ def run(local_rank: int, config: Any):
     # donwload datasets and create dataloaders
     dataloader_train, dataloader_eval = setup_data(config)
 
-    # model, optimizer, loss function, device
+    # model, optimizer, loss function, device, lr_scheduler
     device = idist.device()
     model = idist.auto_model(setup_model(config.model))
-    optimizer = idist.auto_optim(optim.Adam(model.parameters(), lr=config.lr))
+    optimizer = idist.auto_optim(
+        optim.SGD(
+            model.parameters(), lr=config.lr, momentum=config.momentum, weight_decay=config.weight_decay, nesterov=True
+        )
+    )
     loss_fn = nn.CrossEntropyLoss().to(device=device)
+    le = len(dataloader_train)
     milestones_values = [
         (0, 0.0),
         (
-            len(dataloader_train),
+            le * config.num_warmup_epochs,
             config.lr,
         ),
-        (config.max_epochs * len(dataloader_train), 0.0),
+        (config.max_epochs * le, 0.0),
     ]
     lr_scheduler = PiecewiseLinear(optimizer, "lr", milestones_values=milestones_values)
 
