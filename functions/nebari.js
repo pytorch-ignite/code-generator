@@ -4,11 +4,7 @@ import {
   getRootUrlWithoutTrailingSlash,
   getNbCells
 } from './utils'
-import { execSync } from 'child_process'
 
-const commit = JSON.stringify(
-  execSync('git rev-parse HEAD', { encoding: 'utf-8' })
-)
 const repoOwner = process.env.VUE_APP_GH_USER
 const repo = process.env.VUE_APP_GH_REPO
 
@@ -36,7 +32,7 @@ exports.handler = async function (event, _) {
   const nb = getNbCells(title, zipRes, argparser, template, (nebari = true))
 
   // Updating UUID for nebari-test-fix
-  const nbUid_nebari = nbUid + '-nebari' + -commit
+  const nbUid_nebari = nbUid + '-nebari'
 
   // Create the notebook on GitHub
   await pushToGitHub(
