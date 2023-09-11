@@ -4,10 +4,13 @@ import {
   getRootUrlWithoutTrailingSlash,
   getNbCells
 } from './utils'
+import { execSync } from 'child_process'
 
+const commit = JSON.stringify(
+  execSync('git rev-parse HEAD', { encoding: 'utf-8' })
+)
 const repoOwner = process.env.VUE_APP_GH_USER
 const repo = process.env.VUE_APP_GH_REPO
-const commit = __COMMIT__ /* from vite.config.js */
 
 // This function is the one Netlify function runs on
 // https://docs.netlify.com/functions/build-with-javascript/#synchronous-function-format
