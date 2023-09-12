@@ -5,9 +5,14 @@
 import { Octokit } from '@octokit/core'
 import JSZip from 'jszip'
 import { v5 as uuidv5 } from 'uuid'
+import { execSync } from 'child_process'
 
 const repoOwner = process.env.VUE_APP_GH_USER
 const repo = process.env.VUE_APP_GH_REPO
+const commit = JSON.stringify(
+  execSync('git rev-parse HEAD', { encoding: 'utf-8' })
+)
+const isPRBuild = process.env.PR_BUILD === 'true'
 
 /**
  * Create a file on GitHub with Octokit.
@@ -82,8 +87,11 @@ export async function getZip_Uid(data) {
   // it can't be used to generate a UUID
   const content = await zip.generateAsync({ type: 'base64' })
   // we generate an unique id from the current config for pushing to github
-  const nbUid = uuidv5(fullCode, uuidv5.URL)
+  let nbUid = uuidv5(fullCode, uuidv5.URL)
   const zipRes = await pushToGitHub(content, `${template}.zip`, nbUid)
+  if (isPRBuild) {
+    nbUid = nbUid + '-' + commit
+  }
   return {
     zipRes: zipRes,
     nbUid: nbUid
