@@ -5,13 +5,10 @@
 import { Octokit } from '@octokit/core'
 import JSZip from 'jszip'
 import { v5 as uuidv5 } from 'uuid'
-import { execSync } from 'child_process'
+import { commit } from '../src/store'
 
 const repoOwner = process.env.VUE_APP_GH_USER
 const repo = process.env.VUE_APP_GH_REPO
-const commit = JSON.stringify(
-  execSync('git rev-parse HEAD', { encoding: 'utf-8' })
-)
 const isPRBuild = process.env.PR_BUILD === 'true'
 
 /**

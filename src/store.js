@@ -11,7 +11,7 @@ const isProd = import.meta.env.PROD
 // @ts-ignore
 const isDev = import.meta.env.DEV
 // @ts-ignore
-const commit = __COMMIT__ /* from vite.config.js */
+export const commit = __COMMIT__ /* from vite.config.js */
 
 // set url for template fetching
 // this only works in production and local mode
