@@ -5,11 +5,11 @@
 import { Octokit } from '@octokit/core'
 import JSZip from 'jszip'
 import { v5 as uuidv5 } from 'uuid'
-import { commit } from '../src/store'
 
 const repoOwner = process.env.VUE_APP_GH_USER
 const repo = process.env.VUE_APP_GH_REPO
-const isPRBuild = process.env.PR_BUILD === 'true'
+const isPRBuild = process.env.PULL_REQUEST
+const commit = process.env.COMMIT_REF
 
 /**
  * Create a file on GitHub with Octokit.
