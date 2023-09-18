@@ -8,7 +8,7 @@ import { v5 as uuidv5 } from 'uuid'
 
 const repoOwner = process.env.VUE_APP_GH_USER
 const repo = process.env.VUE_APP_GH_REPO
-const isPRBuild = process.env.PULL_REQUEST
+const isPRBuild = process.env.PR_BUILD === 'true'
 const commit = process.env.COMMIT_REF
 
 /**
