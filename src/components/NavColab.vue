@@ -94,7 +94,8 @@ export default {
               code: store.code,
               template: store.config.template,
               config: store.config,
-              argparser: store.config.argparser
+              argparser: store.config.argparser,
+              commit: store.commit
             })
           })
           // response body is plain text

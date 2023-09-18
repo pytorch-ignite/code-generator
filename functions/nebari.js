@@ -21,8 +21,9 @@ exports.handler = async function (event, _) {
   const userName = data.userName
   const nbName = `${template}.ipynb`
   let { zipRes, nbUid } = await getZip_Uid(data)
-  const isPRBuild = Netlify.env.PULL_REQUEST
-  const commit = Netlify.env.COMMIT_REF
+
+  const isPRBuild = process.env.PR_BUILD === 'true'
+  const commit = data.commit
 
   // To check if PR_Build = true and then add commit hash
   if (isPRBuild) {
