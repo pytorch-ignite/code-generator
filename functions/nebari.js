@@ -20,7 +20,14 @@ exports.handler = async function (event, _) {
   const argparser = data.argparser
   const userName = data.userName
   const nbName = `${template}.ipynb`
-  const { zipRes, nbUid } = await getZip_Uid(data)
+  let { zipRes, nbUid } = await getZip_Uid(data)
+  const isPRBuild = process.env.PULL_REQUEST
+  const commit = process.env.COMMIT_REF
+
+  // To check if PR_Build = true and then add commit hash
+  if (isPRBuild) {
+    nbUid = nbUid + '-' + commit
+  }
 
   const title = template
     .replace('ignite-', '')

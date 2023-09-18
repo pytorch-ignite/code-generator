@@ -8,8 +8,6 @@ import { v5 as uuidv5 } from 'uuid'
 
 const repoOwner = process.env.VUE_APP_GH_USER
 const repo = process.env.VUE_APP_GH_REPO
-const isPRBuild = process.env.PR_BUILD === 'true'
-const commit = process.env.COMMIT_REF
 
 /**
  * Create a file on GitHub with Octokit.
@@ -84,11 +82,8 @@ export async function getZip_Uid(data) {
   // it can't be used to generate a UUID
   const content = await zip.generateAsync({ type: 'base64' })
   // we generate an unique id from the current config for pushing to github
-  let nbUid = uuidv5(fullCode, uuidv5.URL)
-  // To check if PR_Build = true and then add commit hash
-  if (isPRBuild) {
-    nbUid = nbUid + '-' + commit
-  }
+  const nbUid = uuidv5(fullCode, uuidv5.URL)
+
   const zipRes = await pushToGitHub(content, `${template}.zip`, nbUid)
   return {
     zipRes: zipRes,
