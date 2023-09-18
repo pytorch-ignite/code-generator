@@ -27,7 +27,7 @@ exports.handler = async function (event, _) {
 
   // To check if PR_Build = true and then add commit hash
   if (isPRBuild) {
-    nbUid = nbUid + '-' + commit
+    nbUid = nbUid + '-' + commit[16]
   }
 
   const title = template
