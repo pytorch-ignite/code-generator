@@ -1,10 +1,10 @@
-seed: 777 # random seed
-data_path: ./ # input data path 
-batch_size: 32 # train batch size
-eval_batch_size: 32 # evaluation batch size
-num_workers: 4 # number of subprocesses to use for data loading
-max_epochs: 20 # number of maximum epochs
-use_amp: false # use AMP (Automatic Mixed Precision)
+seed: 777  # random seed
+data_path: ./  # input data path 
+batch_size: 32  # train batch size
+eval_batch_size: 32  # evaluation batch size
+num_workers: 4  # number of subprocesses to use for data loading
+max_epochs: 20  # number of maximum epochs
+use_amp: false  # use AMP (Automatic Mixed Precision)
 debug: false
 train_epoch_length: null
 eval_epoch_length: null
