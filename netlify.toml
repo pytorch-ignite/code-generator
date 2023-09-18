@@ -1,10 +1,11 @@
 [build]
   publish = "./dist"
-  command = "COMMIT_REF=$(git rev-parse HEAD) && npx pnpm i --frozen-lockfile --store=node_modules/.pnpm-store && npx pnpm run build"
+  command = "npx pnpm i --frozen-lockfile --store=node_modules/.pnpm-store && npx pnpm run build"
 
 [build.environment]
   NODE_VERSION = "18"
   PYTHON_VERSION = "3.8"
+  COMMIT_REF = __COMMIT__
 
 [dev]
   publish = "dist/"
