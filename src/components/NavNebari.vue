@@ -166,6 +166,7 @@ export default {
               code: store.code,
               template: store.config.template,
               config: store.config,
+              commit: store.commit,
               argparser: store.config.argparser,
               nebariInstanceLink: hubUrl.value,
               userName: userName.value

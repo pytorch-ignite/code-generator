@@ -11,6 +11,7 @@ exports.handler = async function (event, _) {
   const template = `ignite-${data.template}`
   const nbName = `${template}.ipynb`
   const { zipRes, nbUid } = await getZip_Uid(data)
+
   const argparser = data.argparser
   const title = template
     .replace('ignite-', '')

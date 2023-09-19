@@ -57,7 +57,8 @@ export const default_config = {
 export const store = reactive({
   code: {},
   config: default_config,
-  codeUrl: ''
+  codeUrl: '',
+  commit: commit
 })
 
 /**

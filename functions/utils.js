@@ -82,7 +82,16 @@ export async function getZip_Uid(data) {
   // it can't be used to generate a UUID
   const content = await zip.generateAsync({ type: 'base64' })
   // we generate an unique id from the current config for pushing to github
-  const nbUid = uuidv5(fullCode, uuidv5.URL)
+  let nbUid = uuidv5(fullCode, uuidv5.URL)
+
+  const isPRBuild = process.env.PR_BUILD === 'true'
+  const commit_sub = data.commit.substring(0, 15)
+
+  // To check if PR_Build = true and then add commit hash[16 characters]
+  if (isPRBuild) {
+    nbUid = nbUid + '-' + commit_sub
+  }
+
   const zipRes = await pushToGitHub(content, `${template}.zip`, nbUid)
   return {
     zipRes: zipRes,
