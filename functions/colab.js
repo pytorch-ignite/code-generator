@@ -13,11 +13,11 @@ exports.handler = async function (event, _) {
   let { zipRes, nbUid } = await getZip_Uid(data)
 
   const isPRBuild = process.env.PR_BUILD === 'true'
-  const commit = data.commit
+  const commit = data.commit.substring(0,15)
 
   // To check if PR_Build = true and then add commit hash
   if (isPRBuild) {
-    nbUid = nbUid + '-' + commit[16]
+    nbUid = nbUid + '-' + commit
   }
 
   const argparser = data.argparser
