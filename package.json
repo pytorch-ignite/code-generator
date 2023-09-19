@@ -1,6 +1,6 @@
 {
   "name": "@pytorch-ignite/code-generator",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "scripts": {
     "dev": "vite --port 5000",
     "build": "vite build",
