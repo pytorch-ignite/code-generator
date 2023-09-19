@@ -1,3 +1,105 @@
+# [0.4.0](https://github.com/pytorch-ignite/code-generator/compare/v0.2.0...v0.4.0) (2023-09-19)
+
+### Bug Fixes
+
+- feat: show `txt` file extension for text files by @afzal442 in https://github.com/pytorch-ignite/code-generator/pull/179
+- feat: add 404 not found page by @afzal442 in https://github.com/pytorch-ignite/code-generator/pull/178
+- fix(404): navbar not cover 404 content anymore by @rwiteshbera in https://github.com/pytorch-ignite/code-generator/pull/184
+- Removed idist.barrier() where needed by @sayantan1410 in https://github.com/pytorch-ignite/code-generator/pull/194
+- Added configuration for local rank for all the templates by @sayantan1410 in https://github.com/pytorch-ignite/code-generator/pull/197
+- Replaced torch.distributed.launch with torchrun by @sayantan1410 in https://github.com/pytorch-ignite/code-generator/pull/206
+- Update ci.yml by @vfdev-5 in https://github.com/pytorch-ignite/code-generator/pull/220
+- Fixed open in colab issue with netlify functions by @vfdev-5 in https://github.com/pytorch-ignite/code-generator/pull/223
+- Update CI to use pnpm v7 by @theory-in-progress in https://github.com/pytorch-ignite/code-generator/pull/235
+- Update lock file by @theory-in-progress in https://github.com/pytorch-ignite/code-generator/pull/236
+- Fix LRScheduler issue of PyTorch by @theory-in-progress in https://github.com/pytorch-ignite/code-generator/pull/241
+- Fix open in colab by @vfdev-5 in https://github.com/pytorch-ignite/code-generator/pull/263
+- Improve vision classification by @theory-in-progress in https://github.com/pytorch-ignite/code-generator/pull/268
+- replace seed 666 -> 777 by @vfdev-5 in https://github.com/pytorch-ignite/code-generator/pull/287
+- Fix for "open in colab" opens the same zip after updates by @theory-in-progress in https://github.com/pytorch-ignite/code-generator/pull/295
+- Changed default `log_every_iters` to 10 to stay consistent with `defaut_config` by @theory-in-progress in https://github.com/pytorch-ignite/code-generator/pull/299
+- Try to enable "launch" for vision-classification/segmentation by @vfdev-5 in https://github.com/pytorch-ignite/code-generator/pull/304
+- Fix bug "Open in Colab" returning "undefined" by @theory-in-progress in https://github.com/pytorch-ignite/code-generator/pull/305
+- Fix the output_dir logic and bugs for reproducibility by @guptaaryan16 in https://github.com/pytorch-ignite/code-generator/pull/307
+- Fix command errors in Nebari server run for templates by @guptaaryan16 in https://github.com/pytorch-ignite/code-generator/pull/317
+
+### New Features
+
+- Added Gloo as a backend option by @sayantan1410 in https://github.com/pytorch-ignite/code-generator/pull/203
+- Added code structure to README and fixed remaining torch.dist.launch by @vfdev-5 in https://github.com/pytorch-ignite/code-generator/pull/226
+- Added docker folder with Dockerfile for local development by @vfdev-5 in https://github.com/pytorch-ignite/code-generator/pull/237
+- Added pip list to report python packages versions by @vfdev-5 in https://github.com/pytorch-ignite/code-generator/pull/240
+- Merge common and specific code-templates by @theory-in-progress in https://github.com/pytorch-ignite/code-generator/pull/260
+- Added optional attributes by @theory-in-progress in https://github.com/pytorch-ignite/code-generator/pull/264
+- Updated output config file to be same as config file by @theory-in-progress in https://github.com/pytorch-ignite/code-generator/pull/267
+- Added pyproject.toml and more code formatting and checks by @vfdev-5 in https://github.com/pytorch-ignite/code-generator/pull/274
+- Wget option Added along with a new dropdown menu by @guptaaryan16 in https://github.com/pytorch-ignite/code-generator/pull/265
+- Added Manual dataset download by @theory-in-progress in https://github.com/pytorch-ignite/code-generator/pull/286
+- Add common template for requirements.txt in all templates by @guptaaryan16 in https://github.com/pytorch-ignite/code-generator/pull/288
+- Add more options to the global config by @theory-in-progress in https://github.com/pytorch-ignite/code-generator/pull/289
+- Change default Namespace to Omegaconf and new method to save config-lock.yaml for reproducibility by @guptaaryan16 in https://github.com/pytorch-ignite/code-generator/pull/292
+- Updated UI for ArgParser options in TrainingTab.vue by @guptaaryan16 in https://github.com/pytorch-ignite/code-generator/pull/298
+- Introducing Python-Fire in the Code-Generator as a config management system by @guptaaryan16 in https://github.com/pytorch-ignite/code-generator/pull/300
+- Updated logger format by @vfdev-5 in https://github.com/pytorch-ignite/code-generator/pull/303
+- Added Hydra support as an option in ArgParse UI by @guptaaryan16 in https://github.com/pytorch-ignite/code-generator/pull/302
+- Added pytorch-ignite docs nav bar button by @vfdev-5 in https://github.com/pytorch-ignite/code-generator/pull/310
+- Added "Contributors" widget and button by @vfdev-5 in https://github.com/pytorch-ignite/code-generator/pull/311
+- PR to improve the hash function for uuid by @theory-in-progress in https://github.com/pytorch-ignite/code-generator/pull/312
+- Introduce Nebari support in code generator by @guptaaryan16 in https://github.com/pytorch-ignite/code-generator/pull/314
+- Add commit hash to the getZipUid function for PR Builds by @guptaaryan16 in https://github.com/pytorch-ignite/code-generator/pull/319
+
+### Maintainence
+
+- Replaced static image with gif on Home page. by @vfdev-5 in https://github.com/pytorch-ignite/code-generator/pull/169
+- chore: add google analytics by @ydcjeff in https://github.com/pytorch-ignite/code-generator/pull/172
+- ci: split workflow into several jobs, exclude launch for vision tasks by @trsvchn in https://github.com/pytorch-ignite/code-generator/pull/175
+- chore: bump dev deps by @ydcjeff in https://github.com/pytorch-ignite/code-generator/pull/181
+- Configure Renovate by @renovate in https://github.com/pytorch-ignite/code-generator/pull/182
+- chore(deps): update all non-major dependencies by @renovate in https://github.com/pytorch-ignite/code-generator/pull/187
+- chore(deps): update dependency execa to v6 by @renovate in https://github.com/pytorch-ignite/code-generator/pull/189
+- chore(deps): update all non-major dependencies by @renovate in https://github.com/pytorch-ignite/code-generator/pull/188
+- chore(deps): update all non-major dependencies by @renovate in https://github.com/pytorch-ignite/code-generator/pull/190
+- chore(deps): update all non-major dependencies by @renovate in https://github.com/pytorch-ignite/code-generator/pull/191
+- chore(deps): update all non-major dependencies by @renovate in https://github.com/pytorch-ignite/code-generator/pull/192
+- chore(deps): update dependency @vitejs/plugin-vue to v2 by @renovate in https://github.com/pytorch-ignite/code-generator/pull/193
+- chore(deps): update all non-major dependencies by @renovate in https://github.com/pytorch-ignite/code-generator/pull/196
+- chore(deps): update all non-major dependencies by @renovate in https://github.com/pytorch-ignite/code-generator/pull/198
+- chore(deps): update all non-major dependencies by @renovate in https://github.com/pytorch-ignite/code-generator/pull/200
+- chore(deps): update actions/setup-node action to v3 by @renovate in https://github.com/pytorch-ignite/code-generator/pull/209
+- chore(deps): update actions/checkout action to v3 by @renovate in https://github.com/pytorch-ignite/code-generator/pull/210
+- chore(deps): update actions/setup-python action to v3 by @renovate in https://github.com/pytorch-ignite/code-generator/pull/211
+- chore(deps): update actions/cache action to v3 by @renovate in https://github.com/pytorch-ignite/code-generator/pull/212
+- fix(deps): update dependency @iconify/iconify to v3 by @renovate in https://github.com/pytorch-ignite/code-generator/pull/224
+- fix(deps): update dependency start-server-and-test to v2 by @renovate in https://github.com/pytorch-ignite/code-generator/pull/229
+- chore(deps): bump playwright-chromium from 1.33.0 to 1.35.1 by @dependabot in https://github.com/pytorch-ignite/code-generator/pull/255
+- chore(deps): bump semver from 7.3.5 to 7.5.2 by @dependabot in https://github.com/pytorch-ignite/code-generator/pull/254
+- chore(deps): bump ejs from 3.1.6 to 3.1.9 by @dependabot in https://github.com/pytorch-ignite/code-generator/pull/253
+- chore(deps): bump prismjs from 1.26.0 to 1.29.0 by @dependabot in https://github.com/pytorch-ignite/code-generator/pull/245
+- chore(deps): bump @vitejs/plugin-vue from 2.1.0 to 2.3.4 by @dependabot in https://github.com/pytorch-ignite/code-generator/pull/251
+- Restructured config by @theory-in-progress in https://github.com/pytorch-ignite/code-generator/pull/243
+- chore(deps): bump prettier from 2.5.1 to 2.8.8 by @dependabot in https://github.com/pytorch-ignite/code-generator/pull/259
+- chore(deps): bump vue from 3.2.30 to 3.3.4 by @dependabot in https://github.com/pytorch-ignite/code-generator/pull/257
+- chore(deps): bump @vue/compiler-sfc from 3.2.30 to 3.3.4 by @dependabot in https://github.com/pytorch-ignite/code-generator/pull/248
+- chore(deps): bump vue-router from 4.0.12 to 4.2.2 by @dependabot in https://github.com/pytorch-ignite/code-generator/pull/250
+- fix(deps): update dependency execa to v7 by @renovate in https://github.com/pytorch-ignite/code-generator/pull/228
+- Updated deps and versions by @vfdev-5 in https://github.com/pytorch-ignite/code-generator/pull/238
+- Update dependencies by @theory-in-progress in https://github.com/pytorch-ignite/code-generator/pull/239
+- chore(deps): bump playwright-chromium from 1.35.1 to 1.37.0 by @dependabot in https://github.com/pytorch-ignite/code-generator/pull/285
+- chore(deps): update actions/checkout action to v4 by @renovate in https://github.com/pytorch-ignite/code-generator/pull/318
+- chore(deps): update all non-major dependencies by @renovate in https://github.com/pytorch-ignite/code-generator/pull/202
+- Updated black version by @vfdev-5 in https://github.com/pytorch-ignite/code-generator/pull/195
+- Added default backend value by @vfdev-5 in https://github.com/pytorch-ignite/code-generator/pull/204
+- Add GHA CI autocancel by @trsvchn in https://github.com/pytorch-ignite/code-generator/pull/208
+- Updated app header by @vfdev-5 in https://github.com/pytorch-ignite/code-generator/pull/222
+- Updated readmes according to restructured config by @theory-in-progress in https://github.com/pytorch-ignite/code-generator/pull/266
+- Removed extra line before main fn by @vfdev-5 in https://github.com/pytorch-ignite/code-generator/pull/272
+- CI fix for Code generator by @guptaaryan16 in https://github.com/pytorch-ignite/code-generator/pull/283
+- fix(deps): update dependency @octokit/core to v5 by @renovate in https://github.com/pytorch-ignite/code-generator/pull/277
+- Refactor the code for the netlify functions by @theory-in-progress in https://github.com/pytorch-ignite/code-generator/pull/296
+- fix(deps): update dependency execa to v8 by @renovate in https://github.com/pytorch-ignite/code-generator/pull/297
+- Remove extra lines in setup_config for Argparser by @guptaaryan16 in https://github.com/pytorch-ignite/code-generator/pull/313
+- Update template-common/config.yaml by @puhuk in https://github.com/pytorch-ignite/code-generator/pull/321
+
 # [0.2.0](https://github.com/pytorch-ignite/code-generator/compare/v0.1.0...v0.2.0) (2021-06-25)
 
 ### Bug Fixes
