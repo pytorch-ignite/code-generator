@@ -1,7 +1,7 @@
 #::= from_template_common ::#
 model: bert-base-uncased # model for text classification
-model_dir: /tmp/model # directory of model located
-tokenizer_dir: /tmp/tokenizer # directory of tokenizer located
+model_dir: /tmp/model # path of model directory
+tokenizer_dir: /tmp/tokenizer # path of directory containing tokenizer
 num_classes: 1 # number of classes
 drop_out: .3 # drop out rate
 n_fc: 768 # number of fully-connected layers
