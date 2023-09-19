@@ -1,11 +1,11 @@
 #::= from_template_common ::#
-model: bert-base-uncased
-model_dir: /tmp/model
-tokenizer_dir: /tmp/tokenizer
-num_classes: 1
-drop_out: .3
-n_fc: 768
-weight_decay: 0.01
-num_warmup_epochs: 0
-max_length: 256
+model: bert-base-uncased # model for text classification
+model_dir: /tmp/model # directory of model located
+tokenizer_dir: /tmp/tokenizer # directory of tokenizer located
+num_classes: 1 # number of classes
+drop_out: .3 # drop out rate
+n_fc: 768 # number of fully-connected layers
+weight_decay: 0.01 # parameter for weight decay, default, 1e-4.
+num_warmup_epochs: 0 # number of warm-up epochs before learning rate decay
+max_length: 256 # maximum length of texts
 lr: 0.00005
