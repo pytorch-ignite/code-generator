@@ -1,4 +1,4 @@
 #::= from_template_common ::#
-lr: 0.007
-accumulation_steps: 4
-num_classes: 21
+lr: 0.007 # learning rate
+accumulation_steps: 4 # parameter for gradient accumulation
+num_classes: 21 # number of classes for segmentation
