@@ -1,0 +1,44 @@
+{
+  "templates": {
+    "template-vision-classification": {
+      "training": {
+        "name": "template-vision-classification",
+        "argparser":"all",
+        "deterministic": true,
+        "distTraining": true,
+        "distOptions": "all",
+        "backend": "all"
+      }
+    },
+    "template-vision-dcgan": {
+      "training": {
+        "name": "template-vision-dcgan",
+        "argparser":"all",
+        "deterministic": true,
+        "distTraining": true,
+        "distOptions": "all",
+        "backend": "all"
+      }
+    },
+    "template-vision-segmentation": {
+      "training": {
+        "name": "template-vision-segmentation",
+        "argparser":"all",
+        "deterministic": true,
+        "distTraining": true,
+        "distOptions": "all",
+        "backend": "all"
+      }
+    },
+    "template-text-classification": {
+      "training": {
+        "name": "template-text-classification",
+        "argparser":"all",
+        "deterministic": true,
+        "distTraining": true,
+        "distOptions": "all",
+        "backend": "all"
+      }
+    }
+  }
+}
