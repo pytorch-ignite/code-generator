@@ -137,7 +137,8 @@ export default {
             body: JSON.stringify({
               code: store.code,
               template: store.config.template,
-              config: store.config
+              config: store.config,
+              commit: store.commit
             })
           })
           if (res.ok) {

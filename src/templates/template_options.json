@@ -3,7 +3,7 @@
     "template-vision-classification": {
       "training": {
         "name": "template-vision-classification",
-        "argparser":"all",
+        "argparser": "all",
         "deterministic": true,
         "distTraining": true,
         "distOptions": "all",
@@ -13,7 +13,7 @@
     "template-vision-dcgan": {
       "training": {
         "name": "template-vision-dcgan",
-        "argparser":"all",
+        "argparser": "all",
         "deterministic": true,
         "distTraining": true,
         "distOptions": "all",
@@ -23,7 +23,7 @@
     "template-vision-segmentation": {
       "training": {
         "name": "template-vision-segmentation",
-        "argparser":"all",
+        "argparser": "all",
         "deterministic": true,
         "distTraining": true,
         "distOptions": "all",
@@ -33,7 +33,7 @@
     "template-text-classification": {
       "training": {
         "name": "template-text-classification",
-        "argparser":"all",
+        "argparser": "all",
         "deterministic": true,
         "distTraining": true,
         "distOptions": "all",

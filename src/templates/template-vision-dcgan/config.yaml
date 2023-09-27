@@ -1,5 +1,5 @@
 #::= from_template_common ::#
-lr: 0.0001
-z_dim: 100
-d_filters: 64
-g_filters: 64
+lr: 0.0001 # learning rate
+z_dim: 100 # input dimension
+d_filters: 64 # number of filters in the first conv layer of discriminator
+g_filters: 64 # number of filters in the first conv layer of generator
