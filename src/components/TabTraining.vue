@@ -144,19 +144,11 @@ export default {
           dist_options.push(option)
         }
       }
-      console.log('Printing dist options')
-      console.log(dist_options)
       return dist_options
     })
 
-    watch(store.config, () => {
-      console.log(templateOptions.value)
-      console.log(store.config.template)
-      console.log(argparserOptions.value)
-    })
-
     const saveDeterministic = computed(() => {
-      saveConfig(deterministic.name, isDeterministic)
+      saveConfig(deterministic.name, isDeterministic.value)
     })
 
     return {
