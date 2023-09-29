@@ -137,9 +137,9 @@ export default {
     const distOptions = computed(() => {
       let dist_options = []
       if (templateOptions.value.distOptions == 'all') {
-        return [spawn, torchrun]
+        return [torchrun, spawn]
       }
-      for (const option of [spawn, torchrun]) {
+      for (const option of [torchrun, spawn]) {
         if (templateOptions.value.distOptions.includes(option.name)) {
           dist_options.push(option)
         }
