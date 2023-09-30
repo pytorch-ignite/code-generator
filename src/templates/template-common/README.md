@@ -187,7 +187,7 @@ nproc_per_node: #:::= it.nproc_per_node :::#
 python main.py config.yaml --backend #:::= it.backend :::#  [--override_arg=value]
 
 #::: } else if ((it.argparser == 'hydra')) { :::#
-python main.py --config-dir=[dir-path] --config-name=[config-name] override_arg=[value]
+python main.py ++backend #:::= it.backend :::# --config-dir=[dir-path] --config-name=[config-name] override_arg=[value]
 
 #::: } else { :::#
 python main.py config.yaml --backend #:::= it.backend :::#
