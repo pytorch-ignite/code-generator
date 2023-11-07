@@ -13,7 +13,7 @@ dependencies:
     version: 5.0.0
   '@types/ejs':
     specifier: ^3.1.0
-    version: 3.1.0
+    version: 3.1.5
   '@types/file-saver':
     specifier: ^2.0.5
     version: 2.0.5
@@ -788,8 +788,8 @@ packages:
       '@babel/types': 7.15.6
     dev: false
 
-  /@types/ejs@3.1.0:
-    resolution: {integrity: sha512-DCg+Ka+uDQ31lJ/UtEXVlaeV3d6t81gifaVWKJy4MYVVgvJttyX/viREy+If7fz+tK/gVxTGMtyrFPnm4gjrVA==}
+  /@types/ejs@3.1.5:
+    resolution: {integrity: sha512-nv+GSx77ZtXiJzwKdsASqi+YQ5Z7vwHsTP0JY2SiQgjGckkBRKZnk8nIM+7oUZ1VCtuTz0+By4qVR7fqzp/Dfg==}
     dev: false
 
   /@types/file-saver@2.0.5:
