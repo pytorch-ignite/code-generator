@@ -28,7 +28,7 @@ def setup_trainer(
         with autocast(config.use_amp):
             outputs = model(samples)
             loss = loss_fn(outputs, targets)
-        
+
         optimizer.zero_grad()
         scaler.scale(loss).backward()
         scaler.step(optimizer)
