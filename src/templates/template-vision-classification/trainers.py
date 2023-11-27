@@ -3,7 +3,7 @@ from typing import Any, Union
 import ignite.distributed as idist
 import torch
 from ignite.engine import DeterministicEngine, Engine, Events
-from torch.cuda.amp import autocast
+from torch.cuda.amp import autocast, GradScaler
 from torch.nn import Module
 from torch.optim import Optimizer
 from torch.utils.data import DistributedSampler, Sampler
@@ -17,6 +17,8 @@ def setup_trainer(
     device: Union[str, torch.device],
     train_sampler: Sampler,
 ) -> Union[Engine, DeterministicEngine]:
+    scaler = GradScaler(enabled=config.use_amp)
+
     def train_function(engine: Union[Engine, DeterministicEngine], batch: Any):
         model.train()
 
@@ -26,10 +28,11 @@ def setup_trainer(
         with autocast(config.use_amp):
             outputs = model(samples)
             loss = loss_fn(outputs, targets)
-
-        loss.backward()
-        optimizer.step()
+        
         optimizer.zero_grad()
+        scaler.scale(loss).backward()
+        scaler.step(optimizer)
+        scaler.update()
 
         train_loss = loss.item()
         engine.state.metrics = {
