@@ -47,3 +47,10 @@ pnpm test
 sh ./scripts/run_tests.sh unzip
 sh ./scripts/run_tests.sh simple vision-classification
 ```
+
+
+## Low Disk Space 
+
+**Issue:** In case of the Issue of Low Space on C Drive, since this is where all the Docker and Linux Distributions of WSL are stored.
+
+**Solution:** Follow this great [HackMD Documentation](https://hackmd.io/4c9butAWRkuehtYjuf3zyg) to setup WSL & Docker on another Drive.
