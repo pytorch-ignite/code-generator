@@ -1522,8 +1522,6 @@ ul {
     }
 }</style>
 
-
-
 <script>
 window.onload = function () {
     const sun = document.getElementById('sun')
@@ -1558,6 +1556,5 @@ window.onload = function () {
         sun.classList.toggle('hidden')
         moon.classList.toggle('hidden')
     }
-
 };
 </script>

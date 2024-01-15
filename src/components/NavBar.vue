@@ -59,7 +59,6 @@ export default {
 },
   setup() {
     const currentCommit = __COMMIT__ // from vite.config.js
-
     return { version, currentCommit }
   }
 }
@@ -67,7 +66,6 @@ export default {
 
 <style scoped>
 @import url('./css/nav-right.css');
-
 
 h1 {
   margin: 0;

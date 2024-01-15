@@ -31,13 +31,16 @@
   --code-font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
   --code-font-size: 0.85em;
   --code-line-height: 24px;
+  --accent-color: #cacaca;
   --code-text-light: #476582;
   --code-inline-bg-color: rgba(27, 31, 35, 0.05);
+  --background-color-primary:#1B1B1B;
+  --background-color-secondary: #fafafa;
+  --accent-color: #cacaca;
 }
 
 :root.dark-theme {
-  --backgroun-color:var(--accent-color)
-  --background-color-primary: #1e1e1e;
+  --background-color-primary: #1B1B1B;
   --background-color-secondary: #2d2d30;
   --accent-color: #3f3f3f;
   --text-primary-color: #ddd;
@@ -50,7 +53,7 @@ body {
   margin: 0;
   height: 100%;
   color: var(--c-text);
-  background-color: var(--c-white);
+  background-color: var(--background-color-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
