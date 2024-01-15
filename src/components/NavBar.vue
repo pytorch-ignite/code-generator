@@ -27,6 +27,7 @@
         v{{ version }}@{{ currentCommit.slice(0, 7) }}
       </a>
       <NavContributors />
+      <NavToggleDarkMode />
     </div>
   </nav>
 </template>
@@ -42,7 +43,7 @@ import NavIgniteDocs from './NavIgniteDocs.vue'
 import NavTwitter from './NavTwitter.vue'
 import NavHelp from './NavHelp.vue'
 import NavContributors from './NavContributors.vue'
-
+import NavToggleDarkMode from './NavToggleDarkMode.vue'
 export default {
   components: {
     NavDiscord,
@@ -53,8 +54,9 @@ export default {
     NavTwitter,
     NavHelp,
     NavIgniteDocs,
-    NavContributors
-  },
+    NavContributors,
+    NavToggleDarkMode,
+},
   setup() {
     const currentCommit = __COMMIT__ // from vite.config.js
 
@@ -65,6 +67,7 @@ export default {
 
 <style scoped>
 @import url('./css/nav-right.css');
+
 
 h1 {
   margin: 0;

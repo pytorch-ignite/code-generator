@@ -4,7 +4,7 @@
       <component :is="Component" />
     </transition>
   </RouterView>
-</template>
+</template> 
 
 <style>
 *,
@@ -34,6 +34,15 @@
   --code-text-light: #476582;
   --code-inline-bg-color: rgba(27, 31, 35, 0.05);
 }
+
+:root.dark-theme {
+  --backgroun-color:var(--accent-color)
+  --background-color-primary: #1e1e1e;
+  --background-color-secondary: #2d2d30;
+  --accent-color: #3f3f3f;
+  --text-primary-color: #ddd;
+}
+
 body {
   font-family: var(--font-family-base);
   font-size: var(--font-size);
