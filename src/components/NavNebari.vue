@@ -254,7 +254,7 @@ export default {
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: var(--c-white-light);
+  background-color: var(--background-color-primary);
   min-width: 15vw;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 100;
@@ -303,7 +303,7 @@ export default {
 }
 .code-snippet {
   text-align: center;
-  background-color: #cccccc;
+  background-color: #3f3f3f;
 }
 
 /* Text Box CSS */
@@ -323,7 +323,7 @@ export default {
 .copy-link-input:hover {
   background: var(--c-brand-red);
   border: 1px solid #cccccc;
-  color: #f1f1f1;
+  color: black;
 }
 
 #nebari-bottom-button {

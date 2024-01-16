@@ -238,7 +238,7 @@ export default {
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: var(--c-white-light);
+  background-color: var(--background-color-primary);
   min-width: 15vw;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
@@ -273,7 +273,7 @@ export default {
   margin-left: 1.1vw;
 }
 .generate {
-  background-color: #ffffff;
+  background-color: #3f3f3f;
   width: 80%;
   font-size: 60%;
   height: 1.5rem;
@@ -282,6 +282,8 @@ export default {
   font-size: 90%;
   height: 1.6rem;
   border-radius: 3%;
+  color:white;
+  background: var(--background-color-primary);
 }
 
 .icon {
