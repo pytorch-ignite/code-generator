@@ -33,7 +33,9 @@
   --code-line-height: 24px;
   --code-text-light: #476582;
   --code-inline-bg-color: rgba(27, 31, 35, 0.05);
+  --accent-color: #cacaca;
   --background-color-primary:  #ebebeb;
+  --background-color-secondary: #fafafa;
 }
 
 :root.dark-theme {
@@ -51,7 +53,7 @@ body {
   margin: 0;
   height: 100%;
   color: var(--c-text);
-  background-color:  var(--background-color-primary);
+  background-color:  var();
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
