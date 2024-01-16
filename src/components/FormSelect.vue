@@ -95,8 +95,8 @@ function toTitleCase(v) {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  background: var(--c-white-light);
-  border-radius: 3px;
+  background: var(--primary-background-color);
+  border-radius: 3px solid var(--c-text);
   color: var(--c-text);
   cursor: pointer;
   font-family: var(--font-family-base);

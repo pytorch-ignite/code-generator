@@ -95,7 +95,7 @@ export default {
   padding-left: 1.5rem;
 }
 .left-pane-tab {
-  background-color: var(--c-white);
+  background-color: var(--background-primary-color);
   cursor: pointer;
   color: var(--c-text);
   font-family: var(--font-family-base);
