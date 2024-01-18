@@ -35,7 +35,7 @@
   --code-inline-bg-color: rgba(27, 31, 35, 0.05);
   --accent-color: #cacaca;
   --background-color-primary:  #1e1e1e;
-  --background-color-secondary: #fafafa;
+  --background-color-secondary:#2d2d30;
 }
 
 :root.dark-theme {

@@ -91,7 +91,7 @@ export default {
 }
 .help-wrapper div {
   padding: 1rem 0;
-  background-color: var(--c-white-light);
+  background-color: var(--background-color-primary);
   font-size: var(--font-size);
   color: var(--c-text);
   border-radius: 8px;

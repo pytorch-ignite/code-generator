@@ -103,7 +103,7 @@ input[type='text'],
 input[type='number'] {
   border-radius: 3px 3px 0 0;
   border: 1px solid var(--c-white-light);
-  background: var(--c-white-light);
+  background: var(--accent-color);
   padding: 0.5rem 1rem;
   width: 100%;
 }
