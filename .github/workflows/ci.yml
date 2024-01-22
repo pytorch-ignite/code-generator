@@ -40,7 +40,7 @@ jobs:
         with:
           node-version: 18
 
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: |
             ~/.pnpm-store
@@ -50,7 +50,7 @@ jobs:
             pnpm-and-pip-cache-
 
       - name: Cache datasets
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/data
@@ -107,7 +107,7 @@ jobs:
         with:
           node-version: 18
 
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: |
             ~/.pnpm-store
