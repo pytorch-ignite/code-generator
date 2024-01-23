@@ -316,6 +316,7 @@ export default {
   font-size: larger;
 }
 .text-box-nebari-details {
+  background: var(--background-color-secondary);
   width: 95%;
   height: 3vh;
 }
@@ -336,6 +337,8 @@ export default {
   margin: 2.8vh;
   margin-top: 3vh;
   margin-bottom: 2vh;
+  background: var(--background-color-primary);
+  color: var(--c-text);
 }
 .copy-button-nebari {
   font-size: 1rem;

@@ -103,7 +103,8 @@ input[type='text'],
 input[type='number'] {
   border-radius: 3px 3px 0 0;
   border: 1px solid var(--c-white-light);
-  background: var(--accent-color);
+  background: var(--background-color-secondary);
+  color: var(--c-text);
   padding: 0.5rem 1rem;
   width: 100%;
 }
@@ -120,7 +121,7 @@ input[type='number'] ~ .expand {
 input[type='text']:focus,
 input[type='number']:focus {
   outline: none;
-  background: var(--c-white);
+  background: var(--background-color-secondary);
 }
 input[type='text']:focus ~ .expand,
 input[type='number']:focus ~ .expand {
