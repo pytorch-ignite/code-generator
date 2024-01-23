@@ -317,6 +317,7 @@ export default {
 }
 .text-box-nebari-details {
   background: var(--background-color-secondary);
+  color: var(--c-text);
   width: 95%;
   height: 3vh;
 }
