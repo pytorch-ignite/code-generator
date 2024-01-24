@@ -273,7 +273,7 @@ export default {
   margin-left: 1.1vw;
 }
 .generate {
-  background-color: #3f3f3f;
+  background-color: var(--background-color-primary);
   width: 80%;
   font-size: 60%;
   height: 1.5rem;
@@ -282,7 +282,7 @@ export default {
   font-size: 90%;
   height: 1.6rem;
   border-radius: 3%;
-  color:white;
+  color:var(--c-text);
   background: var(--background-color-primary);
 }
 
@@ -303,8 +303,8 @@ export default {
   outline: none;
 }
 
-.copy-link-input:hover {
-  background: var(--c-brand-red);
+.copy-link-input:hover{
+  background: var(--c-brand-red) !important;
   border: 1px solid #cccccc;
   color: #f1f1f1;
 }

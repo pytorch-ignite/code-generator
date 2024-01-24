@@ -303,7 +303,7 @@ export default {
 }
 .code-snippet {
   text-align: center;
-  background-color: #3f3f3f;
+  background-color: var(--c-white-dark)
 }
 
 /* Text Box CSS */
@@ -323,7 +323,7 @@ export default {
 }
 
 .copy-link-input:hover {
-  background: var(--c-brand-red);
+  background: var(--c-brand-red) !important;
   border: 1px solid #cccccc;
   color: black;
 }

@@ -1528,7 +1528,7 @@ window.onload = function () {
     const moon = document.getElementById('moon')
     const toggle = document.getElementById('toggleDark')
 
-    if (document.documentElement.classList.contains('dark')) {
+    if (document.documentElement.classList.contains('dark-theme')) {
         // dark mode has turned on, change sun to moon
         toggleClassList()
     }
@@ -1542,12 +1542,12 @@ window.onload = function () {
 
     toggle.addEventListener('click', async function (e) {
         await toggleClassList()
-        document.documentElement.classList.toggle('dark')
+        document.querySelector(":root").classList.toggle('dark-theme')
         const theme = document.documentElement.dataset.theme
         if (theme) {
         document.documentElement.dataset.theme = ''
         } else {
-        document.documentElement.dataset.theme = 'dark'
+        document.documentElement.dataset.theme = 'dark-theme'
         }
         save()
     })

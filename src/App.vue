@@ -23,7 +23,7 @@
   --c-white-dark: #e4e4e7;
   --c-brand-red: #ee4c2c;
   --c-brand-yellow: #eaa700;
-  --c-text: white;
+  --c-text: #334155;
   --font-size: 1rem;
   --font-family-base: 'Inter', Avenir, -apple-system, BlinkMacSystemFont,
     'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans',
@@ -34,8 +34,8 @@
   --code-text-light: #476582;
   --code-inline-bg-color: rgba(27, 31, 35, 0.05);
   --accent-color: #cacaca;
-  --background-color-primary:  #1e1e1e;
-  --background-color-secondary:#2d2d30;
+  --background-color-primary:  #fff;
+  --background-color-secondary: #fafafa;
 }
 
 :root.dark-theme {
@@ -44,6 +44,7 @@
   --accent-color: #3f3f3f;
   --text-primary-color: #ddd;
   --c-text:white;
+  --c-white-dark:#3f3f3f;
 }
 
 body {
