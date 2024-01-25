@@ -13,10 +13,12 @@
   box-sizing: border-box;
   border-width: 0;
 }
+
 ::selection {
   color: var(--c-white-light);
   background: var(--c-brand-red);
 }
+
 :root {
   --c-white: #fff;
   --c-white-light: #f6f6f6;
@@ -56,9 +58,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 h1 {
   font-weight: 600;
 }
+
 h2,
 h3,
 h4,
@@ -66,21 +70,26 @@ h5,
 h6 {
   font-weight: 500;
 }
+
 @media (max-width: 915px) {
   h1 {
     font-size: 1.5rem;
   }
+
   h2 {
     font-size: 1.25rem;
   }
+
   h3 {
     font-size: 1.125rem;
   }
 }
+
 a {
   text-decoration: none;
   color: var(--c-text);
 }
+
 @media (prefers-reduced-motion) {
   :focus {
     border-radius: 3px;
@@ -89,18 +98,21 @@ a {
     outline: 2px solid var(--c-brand-yellow);
   }
 }
+
 /* margin for left pane tabs */
 .tab {
   --left-pane-margin-x: 1.5rem;
   margin: 0 var(--left-pane-margin-x);
   padding-bottom: 2rem;
 }
+
 /* overriding prismjs defaults */
 pre,
 code {
   font-family: var(--code-font-family) !important;
   font-size: var(--code-font-size) !important;
 }
+
 /* for three backticks code block */
 code {
   margin: 0;
@@ -109,10 +121,12 @@ code {
   color: var(--code-text-light);
   background-color: var(--code-inline-bg-color);
 }
+
 .slide-fade-leave-active,
 .slide-fade-enter-active {
   transition: all 0.25s ease-out;
 }
+
 .slide-fade-enter-from,
 .slide-fade-leave-to {
   transform: translateY(10px);

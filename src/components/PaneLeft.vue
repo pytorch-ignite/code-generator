@@ -87,13 +87,16 @@ export default {
   scrollbar-width: none;
   border-bottom: 1px solid var(--c-white-dark);
 }
+
 .left-pane-tabs::-webkit-scrollbar {
   display: none;
 }
+
 .left-pane-tabs,
 .left-pane-contexts {
   padding-left: 1.5rem;
 }
+
 .left-pane-tab {
   background-color: var(--background-primary-color);
   cursor: pointer;
@@ -104,21 +107,26 @@ export default {
   padding: 0.4rem 0.8rem;
   border-bottom: 3px solid transparent;
 }
+
 .disable {
   cursor: not-allowed;
 }
+
 .active {
   cursor: pointer;
 }
+
 .left-pane-tab:hover,
 .active {
   color: var(--c-brand-red);
   border-bottom-color: var(--c-brand-red);
 }
+
 .left-pane-contexts {
   height: 100vh;
   overflow: auto;
 }
+
 /* media queries */
 @media (max-width: 915px) {
   .left-pane-contexts {
@@ -127,6 +135,7 @@ export default {
     margin-bottom: 2.5rem;
   }
 }
+
 .download-n-colab {
   display: flex;
   align-items: center;

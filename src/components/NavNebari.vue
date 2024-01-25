@@ -303,7 +303,7 @@ export default {
 }
 .code-snippet {
   text-align: center;
-  background-color: var(--c-white-dark)
+  background-color: var(--c-white-dark);
 }
 
 /* Text Box CSS */
