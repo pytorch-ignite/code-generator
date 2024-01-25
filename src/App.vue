@@ -4,7 +4,7 @@
       <component :is="Component" />
     </transition>
   </RouterView>
-</template> 
+</template>
 
 <style>
 *,
