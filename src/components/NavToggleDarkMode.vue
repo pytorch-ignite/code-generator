@@ -46,14 +46,6 @@
     tab-size: 4
 }
 
-:root.dark-theme {
-    --backgroun-color:var(--accent-color)
-    --background-color-primary: #1e1e1e;
-    --background-color-secondary: #2d2d30;
-    --accent-color: #3f3f3f;
-    --text-primary-color: #ddd;
-}
-
 :-moz-focusring {
     outline: 1px dotted ButtonText
 }
@@ -1540,8 +1532,8 @@ window.onload = function () {
 
     save()
 
-    toggle.addEventListener('click', async function (e) {
-        await toggleClassList()
+    toggle.addEventListener('click', function (e) {
+        toggleClassList()
         document.querySelector(":root").classList.toggle('dark-theme')
         const theme = document.documentElement.dataset.theme
         if (theme) {
