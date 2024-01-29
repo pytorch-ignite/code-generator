@@ -1,9 +1,10 @@
 <template>
   <button
     aria-label="Toggle Color Scheme"
-    title="Toggle Color Scheme"
+    @click="toggleTheme"
+    title="Toggle Light/Dark mode"
+    class="sun-moon-btn"
     id="toggleDark"
-    class="mx-2"
   >
     <svg
       id="sun"
@@ -1584,38 +1585,57 @@ ul {
 </style>
 
 <script>
-window.onload = function () {
-  const sun = document.getElementById('sun')
-  const moon = document.getElementById('moon')
-  const toggle = document.getElementById('toggleDark')
+export default {
+  mounted() {
+    const initUserTheme = this.getTheme() || this.getMediaPreference();
+    this.setTheme(initUserTheme);
+  },
 
-  if (document.documentElement.classList.contains('dark-theme')) {
-    // dark mode has turned on, change sun to moon
-    toggleClassList()
-  }
+  data() {
+    return {
+      userTheme: "light-theme",
+    };
+  },
 
-  function save() {
-    const value = sun.classList.contains('hidden') ? 'dark' : 'light'
-    localStorage.setItem('user-theme', value)
-  }
+  methods: {
+    toggleTheme() {
+      const sun = document.getElementById('sun');
+      const moon = document.getElementById('moon');
+      const activeTheme = localStorage.getItem("user-theme");
+      if (activeTheme === "light-theme") {
+        this.setTheme("dark-theme");
+        this.toggleClassList();
+      } else {
+        this.setTheme("light-theme");
+        this.toggleClassList();
+      }
+    },
 
-  save()
+    getTheme() {
+      return localStorage.getItem("user-theme");
+    },
 
-  toggle.addEventListener('click', function (e) {
-    toggleClassList()
-    document.querySelector(':root').classList.toggle('dark-theme')
-    const theme = document.documentElement.dataset.theme
-    if (theme) {
-      document.documentElement.dataset.theme = ''
-    } else {
-      document.documentElement.dataset.theme = 'dark-theme'
-    }
-    save()
-  })
+    setTheme(theme) {
+      localStorage.setItem("user-theme", theme);
+      this.userTheme = theme;
+      document.documentElement.className = theme;
+    },
 
-  function toggleClassList() {
-    sun.classList.toggle('hidden')
-    moon.classList.toggle('hidden')
-  }
-}
+    toggleClassList(){
+    sun.classList.toggle('hidden');
+    moon.classList.toggle('hidden');
+  },
+
+    getMediaPreference() {
+      const hasDarkPreference = window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches;
+      if (hasDarkPreference) {
+        return "dark-theme";
+      } else {
+        return "light-theme";
+      }
+    },
+  },
+};
 </script>
