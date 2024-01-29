@@ -1587,55 +1587,55 @@ ul {
 <script>
 export default {
   mounted() {
-    const initUserTheme = this.getTheme() || this.getMediaPreference();
-    this.setTheme(initUserTheme);
+    const initUserTheme = this.getTheme() || this.getMediaPreference()
+    this.setTheme(initUserTheme)
   },
 
   data() {
     return {
-      userTheme: "light-theme",
-    };
+      userTheme: 'light-theme'
+    }
   },
 
   methods: {
     toggleTheme() {
-      const sun = document.getElementById('sun');
-      const moon = document.getElementById('moon');
-      const activeTheme = localStorage.getItem("user-theme");
-      if (activeTheme === "light-theme") {
-        this.setTheme("dark-theme");
-        this.toggleClassList();
+      const sun = document.getElementById('sun')
+      const moon = document.getElementById('moon')
+      const activeTheme = localStorage.getItem('user-theme')
+      if (activeTheme === 'light-theme') {
+        this.setTheme('dark-theme')
+        this.toggleClassList()
       } else {
-        this.setTheme("light-theme");
-        this.toggleClassList();
+        this.setTheme('light-theme')
+        this.toggleClassList()
       }
     },
 
     getTheme() {
-      return localStorage.getItem("user-theme");
+      return localStorage.getItem('user-theme')
     },
 
     setTheme(theme) {
-      localStorage.setItem("user-theme", theme);
-      this.userTheme = theme;
-      document.documentElement.className = theme;
+      localStorage.setItem('user-theme', theme)
+      this.userTheme = theme
+      document.documentElement.className = theme
     },
 
-    toggleClassList(){
-    sun.classList.toggle('hidden');
-    moon.classList.toggle('hidden');
-  },
+    toggleClassList() {
+      sun.classList.toggle('hidden')
+      moon.classList.toggle('hidden')
+    },
 
     getMediaPreference() {
       const hasDarkPreference = window.matchMedia(
-        "(prefers-color-scheme: dark)"
-      ).matches;
+        '(prefers-color-scheme: dark)'
+      ).matches
       if (hasDarkPreference) {
-        return "dark-theme";
+        return 'dark-theme'
       } else {
-        return "light-theme";
+        return 'light-theme'
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
