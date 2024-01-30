@@ -55,8 +55,8 @@ export default {
     NavHelp,
     NavIgniteDocs,
     NavContributors,
-    NavToggleDarkMode,
-},
+    NavToggleDarkMode
+  },
   setup() {
     const currentCommit = __COMMIT__ // from vite.config.js
     return { version, currentCommit }
