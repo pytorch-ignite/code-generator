@@ -98,7 +98,7 @@ h1 img {
     z-index: 6;
     width: 100%;
     padding: 0.5rem 0.5rem 0;
-    background-color: var(--c-white);
+    background-color: var(--background-color-primary);
   }
 }
 </style>
