@@ -78,6 +78,7 @@ button {
 
 button,
 [type='button'] {
+  appearance: button;
   -webkit-appearance: button;
 }
 
@@ -104,139 +105,6 @@ svg {
 .w-6 {
   width: 1.5rem;
 }
-
-@media (min-width: 640px) {
-  .sm\:grid-cols-2 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .sm\:grid-cols-3 {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .sm\:col-start-2 {
-    grid-column-start: 2;
-  }
-
-  .sm\:row-span-2 {
-    -ms-grid-row-span: span 2 / span 2;
-    grid-row: span 2 / span 2;
-  }
-}
-
-@media (min-width: 1024px) {
-  .lg\:block {
-    display: block;
-  }
-
-  .group:hover .lg\:group-hover\:block {
-    display: block;
-  }
-
-  .lg\:flex {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-  }
-
-  .lg\:grid {
-    display: -ms-grid;
-    display: grid;
-  }
-
-  .lg\:hidden {
-    display: none;
-  }
-
-  .lg\:text-3xl {
-    font-size: 1.875rem;
-    line-height: 2.25rem;
-  }
-
-  .lg\:text-xl {
-    font-size: 1.25rem;
-    line-height: 1.75rem;
-  }
-
-  .lg\:text-2xl {
-    font-size: 1.5rem;
-    line-height: 2rem;
-  }
-
-  .lg\:p-2 {
-    padding: 0.5rem;
-  }
-
-  .lg\:absolute {
-    position: absolute;
-  }
-
-  .lg\:sticky {
-    position: -webkit-sticky;
-    position: sticky;
-  }
-
-  .lg\:w-3\/5 {
-    width: 60%;
-  }
-
-  .lg\:grid-flow-row-dense {
-    grid-auto-flow: row dense;
-  }
-
-  .lg\:grid-cols-2 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .lg\:grid-cols-3 {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .lg\:col-span-1 {
-    -ms-grid-column-span: span 1 / span 1;
-    grid-column: span 1 / span 1;
-  }
-
-  .lg\:col-start-2 {
-    grid-column-start: 2;
-  }
-
-  .lg\:col-start-1 {
-    grid-column-start: 1;
-  }
-}
-
-@media (min-width: 1280px) {
-  .xl\:grid-cols-\[1fr\2c 3fr\2c 1fr\] {
-    grid-template-columns: 1fr 3fr 1fr;
-  }
-}
-
-@media (max-width: 1023.9px) {
-  .\<lg\:border-r {
-    border-right-width: 1px;
-  }
-
-  .\<lg\:hidden {
-    display: none;
-  }
-
-  .\<lg\:w-75 {
-    width: 18.75rem;
-  }
-
-  .\<lg\:-translate-x-full {
-    --tw-translate-x: -100%;
-  }
-}
-
-@media (max-width: 639.9px) {
-  .\<sm\:px-4 {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-}
 </style>
 
 <script>
@@ -256,13 +124,13 @@ export default {
     toggleTheme() {
       const sun = document.getElementById('sun')
       const moon = document.getElementById('moon')
-      const activeTheme = localStorage.getItem('user-theme')
+      this.toggleClassList()
+      let activeTheme = ''
+      activeTheme = localStorage.getItem('user-theme')
       if (activeTheme === 'light-theme') {
         this.setTheme('dark-theme')
-        this.toggleClassList()
       } else {
         this.setTheme('light-theme')
-        this.toggleClassList()
       }
     },
 
@@ -277,8 +145,8 @@ export default {
     },
 
     toggleClassList() {
-      sun.classList.toggle('hidden')
       moon.classList.toggle('hidden')
+      sun.classList.toggle('hidden')
     },
 
     getMediaPreference() {
