@@ -8,6 +8,7 @@
   >
     <svg
       id="sun"
+      v-show="isDark"
       xmlns="http://www.w3.org/2000/svg"
       class="h-6 w-6"
       fill="none"
@@ -25,7 +26,8 @@
     <svg
       id="moon"
       xmlns="http://www.w3.org/2000/svg"
-      class="h-6 w-6 hidden"
+      v-show="!isDark"
+      class="h-6 w-6"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -92,10 +94,6 @@ svg {
   vertical-align: middle;
 }
 
-.hidden {
-  display: none;
-}
-
 .before\:hidden::before {
   display: none;
 }
@@ -116,17 +114,14 @@ export default {
 
   data() {
     return {
-      userTheme: 'light-theme'
+      userTheme: 'light-theme',
+      isDark: true
     }
   },
 
   methods: {
     toggleTheme() {
-      const sun = document.getElementById('sun')
-      const moon = document.getElementById('moon')
-      this.toggleClassList()
-      let activeTheme = ''
-      activeTheme = localStorage.getItem('user-theme')
+      const activeTheme = localStorage.getItem('user-theme')
       if (activeTheme === 'light-theme') {
         this.setTheme('dark-theme')
       } else {
@@ -142,11 +137,7 @@ export default {
       localStorage.setItem('user-theme', theme)
       this.userTheme = theme
       document.documentElement.className = theme
-    },
-
-    toggleClassList() {
-      moon.classList.toggle('hidden')
-      sun.classList.toggle('hidden')
+      this.isDark = !this.isDark
     },
 
     getMediaPreference() {
