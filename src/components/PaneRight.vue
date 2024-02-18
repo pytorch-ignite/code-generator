@@ -98,7 +98,7 @@ export default {
 .right-pane-tab {
   display: flex;
   place-items: center;
-  background-color: var(--c-white);
+  background-color: var(--background-color-primary);
   cursor: pointer;
   color: var(--c-text);
   font-family: var(--font-family-base);

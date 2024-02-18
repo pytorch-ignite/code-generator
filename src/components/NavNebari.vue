@@ -254,7 +254,7 @@ export default {
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: var(--c-white-light);
+  background-color: var(--background-color-primary);
   min-width: 15vw;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 100;
@@ -303,7 +303,7 @@ export default {
 }
 .code-snippet {
   text-align: center;
-  background-color: #cccccc;
+  background-color: var(--c-white-dark);
 }
 
 /* Text Box CSS */
@@ -316,14 +316,16 @@ export default {
   font-size: larger;
 }
 .text-box-nebari-details {
+  background: var(--background-color-secondary);
+  color: var(--c-text);
   width: 95%;
   height: 3vh;
 }
 
 .copy-link-input:hover {
-  background: var(--c-brand-red);
+  background: var(--c-brand-red) !important;
   border: 1px solid #cccccc;
-  color: #f1f1f1;
+  color: black;
 }
 
 #nebari-bottom-button {
@@ -336,6 +338,8 @@ export default {
   margin: 2.8vh;
   margin-top: 3vh;
   margin-bottom: 2vh;
+  background: var(--background-color-primary);
+  color: var(--c-text);
 }
 .copy-button-nebari {
   font-size: 1rem;

@@ -234,16 +234,18 @@ export default {
   color: white;
   text-align: center;
 }
+
 /* Dropdown Content (Hidden by Default) */
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: var(--c-white-light);
+  background-color: var(--background-color-primary);
   min-width: 15vw;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
   padding: 0.5vh;
-  text-align: center; /* Center-align the dropdown content */
+  text-align: center;
+  /* Center-align the dropdown content */
   border: 1px solid var(--c-brand-red);
   border-radius: 3%;
   text-align: -webkit-center;
@@ -272,21 +274,26 @@ export default {
   align-self: center;
   margin-left: 1.1vw;
 }
+
 .generate {
-  background-color: #ffffff;
+  background-color: var(--background-color-primary);
   width: 80%;
   font-size: 60%;
   height: 1.5rem;
 }
+
 #text-box {
   font-size: 90%;
   height: 1.6rem;
   border-radius: 3%;
+  color: var(--c-text);
+  background: var(--background-color-primary);
 }
 
 .icon {
   vertical-align: bottom;
 }
+
 .inline-icon {
   display: inline-flex;
   vertical-align: bottom;
@@ -302,7 +309,7 @@ export default {
 }
 
 .copy-link-input:hover {
-  background: var(--c-brand-red);
+  background: var(--c-brand-red) !important;
   border: 1px solid #cccccc;
   color: #f1f1f1;
 }
@@ -335,9 +342,11 @@ export default {
   display: block;
   z-index: 10;
 }
+
 .copy-button {
   font-size: 1rem;
 }
+
 .wget-text {
   font-size: 0.6em;
 }
