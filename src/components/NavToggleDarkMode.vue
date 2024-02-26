@@ -115,7 +115,7 @@ export default {
   data() {
     return {
       userTheme: 'light-theme',
-      isDark: true
+      isDark: true ? localStorage.getItem('user-theme') == 'light-theme' : false
     }
   },
 
