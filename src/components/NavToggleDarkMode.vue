@@ -8,7 +8,7 @@
   >
     <svg
       id="sun"
-      v-show="isDark"
+      v-show="isLight"
       xmlns="http://www.w3.org/2000/svg"
       class="h-6 w-6"
       fill="none"
@@ -26,7 +26,7 @@
     <svg
       id="moon"
       xmlns="http://www.w3.org/2000/svg"
-      v-show="!isDark"
+      v-show="!isLight"
       class="h-6 w-6"
       fill="none"
       viewBox="0 0 24 24"
@@ -114,15 +114,15 @@ export default {
 
   data() {
     return {
-      userTheme: 'light-theme',
-      isDark: true
+      isLight: true
+        ? localStorage.getItem('user-theme') == 'light-theme'
+        : false
     }
   },
 
   methods: {
     toggleTheme() {
-      const activeTheme = localStorage.getItem('user-theme')
-      if (activeTheme === 'light-theme') {
+      if (localStorage.getItem('user-theme') == 'light-theme') {
         this.setTheme('dark-theme')
       } else {
         this.setTheme('light-theme')
@@ -137,7 +137,7 @@ export default {
       localStorage.setItem('user-theme', theme)
       this.userTheme = theme
       document.documentElement.className = theme
-      this.isDark = !this.isDark
+      this.isLight = !this.isLight
     },
 
     getMediaPreference() {
