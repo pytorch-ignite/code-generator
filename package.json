@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@iconify/iconify": "^3.1.0",
-    "@octokit/core": "^5.0.0",
+    "@octokit/core": "^6.1.2",
     "@types/ejs": "^3.1.0",
     "@types/file-saver": "^2.0.5",
     "@types/jest": "^27.4.0",
