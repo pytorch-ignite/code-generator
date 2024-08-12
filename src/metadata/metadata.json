@@ -53,7 +53,7 @@
       "name": "backend",
       "type": "array",
       "description": "Choose a backend",
-      "options": ["Nccl", "Gloo"],
+      "options": ["Nccl", "Gloo", "XLA-TPU"],
       "default": "Nccl"
     }
   },
