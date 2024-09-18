@@ -24,8 +24,8 @@ dependencies:
     specifier: ^1.26.0
     version: 1.26.0
   '@vitejs/plugin-vue':
-    specifier: ^2.1.0
-    version: 2.3.4(vite@2.7.13)(vue@3.3.4)
+    specifier: ^5.1.4
+    version: 5.1.4(vite@2.7.13)(vue@3.3.4)
   '@vue/compiler-sfc':
     specifier: ^3.2.30
     version: 3.3.4
@@ -851,11 +851,11 @@ packages:
       '@types/yargs-parser': 20.2.1
     dev: false
 
-  /@vitejs/plugin-vue@2.3.4(vite@2.7.13)(vue@3.3.4):
-    resolution: {integrity: sha512-IfFNbtkbIm36O9KB8QodlwwYvTEsJb4Lll4c2IwB3VHc2gie2mSPtSzL0eYay7X2jd/2WX02FjSGTWR6OPr/zg==}
-    engines: {node: '>=12.0.0'}
+  /@vitejs/plugin-vue@5.1.4(vite@2.7.13)(vue@3.3.4):
+    resolution: {integrity: sha512-N2XSI2n3sQqp5w7Y/AN/L2XDjBIRGqXko+eDp42sydYSBeJuSm5a1sLf8zakmo8u7tA8NmBgoDLA1HeOESjp9A==}
+    engines: {node: ^18.0.0 || >=20.0.0}
     peerDependencies:
-      vite: ^2.5.10
+      vite: ^5.0.0
       vue: ^3.2.25
     dependencies:
       vite: 2.7.13
