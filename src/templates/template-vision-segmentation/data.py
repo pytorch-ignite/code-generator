@@ -99,7 +99,7 @@ def setup_data(config: Namespace):
     transform_train = A.Compose(
         [
             A.RandomScale(scale_limit=(0.0, 1.5), interpolation=cv2.INTER_LINEAR, p=1.0),
-            A.PadIfNeeded(val_img_size, val_img_size, border_mode=cv2.BORDER_CONSTANT),
+            A.PadIfNeeded(val_img_size, val_img_size, border_mode=cv2.BORDER_CONSTANT, value=0),
             A.RandomCrop(train_img_size, train_img_size),
             A.HorizontalFlip(),
             A.Blur(blur_limit=3),
@@ -111,7 +111,7 @@ def setup_data(config: Namespace):
 
     transform_eval = A.Compose(
         [
-            A.PadIfNeeded(val_img_size, val_img_size, border_mode=cv2.BORDER_CONSTANT),
+            A.PadIfNeeded(val_img_size, val_img_size, border_mode=cv2.BORDER_CONSTANT, value=0),
             A.Normalize(mean=mean, std=std),
             ignore_mask_boundaries,
             ToTensor(),
