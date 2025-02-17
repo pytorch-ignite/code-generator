@@ -1,4 +1,4 @@
-FROM continuumio/miniconda3:24.1.2-0
+FROM continuumio/miniconda3:25.1.1-0
 
 # Install nodejs v18
 RUN apt-get update && \
