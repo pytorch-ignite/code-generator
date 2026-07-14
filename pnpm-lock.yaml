@@ -24,8 +24,8 @@ dependencies:
     specifier: ^1.26.0
     version: 1.26.0
   '@vitejs/plugin-vue':
-    specifier: ^2.1.0
-    version: 2.3.4(vite@2.7.13)(vue@3.3.4)
+    specifier: ^6.0.8
+    version: 6.0.8(vite@2.7.13)(vue@3.3.4)
   '@vue/compiler-sfc':
     specifier: ^3.2.30
     version: 3.3.4
@@ -728,6 +728,10 @@ packages:
       '@octokit/openapi-types': 18.0.0
     dev: false
 
+  /@rolldown/pluginutils@1.0.1:
+    resolution: {integrity: sha512-2j9bGt5Jh8hj+vPtgzPtl72j0yRxHAyumoo6TNfAjsLB04UtpSvPbPcDcBMxz7n+9CYB0c1GxQFxYRg2jimqGw==}
+    dev: false
+
   /@sideway/address@4.1.4:
     resolution: {integrity: sha512-7vwq+rOHVWjyXxVlR76Agnvhy8I9rpzjosTESvmhNeXOXdZZB15Fl+TI9x1SiHZH5Jv2wTGduSxFDIaq0m3DUw==}
     dependencies:
@@ -851,13 +855,14 @@ packages:
       '@types/yargs-parser': 20.2.1
     dev: false
 
-  /@vitejs/plugin-vue@2.3.4(vite@2.7.13)(vue@3.3.4):
-    resolution: {integrity: sha512-IfFNbtkbIm36O9KB8QodlwwYvTEsJb4Lll4c2IwB3VHc2gie2mSPtSzL0eYay7X2jd/2WX02FjSGTWR6OPr/zg==}
-    engines: {node: '>=12.0.0'}
+  /@vitejs/plugin-vue@6.0.8(vite@2.7.13)(vue@3.3.4):
+    resolution: {integrity: sha512-0ZjgOg7oO6farnNGup7yvoM/YXZV84OZxHAwtflItNa/6zzQyVb5LNxyea3FEKEX2XlagIKzrlH7wwxkKgtiew==}
+    engines: {node: ^20.19.0 || >=22.12.0}
     peerDependencies:
-      vite: ^2.5.10
+      vite: ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
       vue: ^3.2.25
     dependencies:
+      '@rolldown/pluginutils': 1.0.1
       vite: 2.7.13
       vue: 3.3.4
     dev: false
